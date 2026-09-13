@@ -939,8 +939,7 @@ function StaffPage() {
       accessorKey: 'classTeacherOf',
       cell: (r: StaffRecord) => (
         r.classTeacherOf ? (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold bg-[#161619] text-zinc-200 border border-[#27272e]">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
+          <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] text-xs font-semibold bg-[#161619] text-zinc-200 border border-[#27272e]">
             {r.classTeacherOf.grade}–{r.classTeacherOf.section} ({r.classTeacherOf.room})
           </span>
         ) : (
@@ -988,12 +987,14 @@ function StaffPage() {
       accessorKey: 'action',
       cell: (r: StaffRecord) => (
         <VFButton
-          size="sm"
+          size="icon"
           variant="outline"
-          leftIcon={<Eye className="h-3.5 w-3.5 text-zinc-400" />}
+          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px]"
+          title={isHindi ? 'प्रोफाइल देखें' : 'View Profile'}
+          aria-label={isHindi ? 'प्रोफाइल देखें' : 'View Profile'}
           onClick={() => openStaffDrawer(r)}
         >
-          {isHindi ? 'प्रोफाइल देखें' : 'View Profile'}
+          <Eye className="h-3.5 w-3.5 text-zinc-400" />
         </VFButton>
       ),
     },

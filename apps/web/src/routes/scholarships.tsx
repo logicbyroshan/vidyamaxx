@@ -639,13 +639,14 @@ function ScholarshipsPage() {
       accessorKey: 'action',
       cell: (r: ScholarshipRecord) => (
         <VFButton
-          size="sm"
+          size="icon"
           variant="outline"
-          className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#242424] border-border hover:border-zinc-500 text-foreground shadow-xs rounded-[4px]"
-          leftIcon={<Award className="h-3.5 w-3.5 text-amber-400" />}
+          className="h-7 w-7 bg-[#1a1a1a] hover:bg-[#242424] border-border hover:border-zinc-500 text-foreground shadow-xs rounded-[4px]"
+          title={isHindi ? 'डोजियर देखें' : 'View Dossier'}
+          aria-label={isHindi ? 'डोजियर देखें' : 'View Dossier'}
           onClick={() => openDossier(r)}
         >
-          {t('action.view')}
+          <Award className="h-3.5 w-3.5 text-amber-400" />
         </VFButton>
       ),
     },

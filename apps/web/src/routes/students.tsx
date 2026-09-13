@@ -1534,14 +1534,7 @@ function StudentsPage() {
       header: t('col.house'),
       accessorKey: 'house',
       cell: (r: any) => (
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
-          <span className={cn(
-            "h-1.5 w-1.5 rounded-full shrink-0",
-            r.house?.includes('Red') && "bg-red-400",
-            r.house?.includes('Blue') && "bg-blue-400",
-            r.house?.includes('Green') && "bg-emerald-400",
-            r.house?.includes('Yellow') && "bg-amber-400"
-          )} />
+        <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
           {r.house}
         </span>
       ),
@@ -1565,12 +1558,14 @@ function StudentsPage() {
       accessorKey: 'action',
       cell: (r: any) => (
         <VFButton
-          size="sm"
+          size="icon"
           variant="outline"
-          leftIcon={<Eye className="h-3.5 w-3.5" />}
+          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px]"
+          title={t('action.view') + ' ' + t('col.profile')}
+          aria-label={t('action.view') + ' ' + t('col.profile')}
           onClick={() => openStudentDrawer(r)}
         >
-          {t('action.view') + ' ' + t('col.profile')}
+          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
         </VFButton>
       ),
     },

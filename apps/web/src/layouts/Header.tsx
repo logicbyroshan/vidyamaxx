@@ -189,22 +189,21 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
 
       {/* Right: Configure Dashboard Button, Search, Notifications & School Identity */}
       <div className="flex items-center gap-2.5 shrink-0">
-        {/* Configure Dashboard Button — only visible on the Dashboard page */}
+        {/* Configure Dashboard Button — icon-only button visible on the Dashboard page */}
         {isOnDashboard && (
           <button
             onClick={toggleDashboardEditMode}
+            type="button"
             className={cn(
-              "flex items-center justify-center gap-1.5 px-3 h-9 rounded-md text-xs font-bold transition-all cursor-pointer border shadow-xs outline-none min-w-[155px]",
+              "relative rounded-[4px] border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group",
               isDashboardEditMode
-                ? "bg-[#1f1f1f] text-foreground border-primary/60 shadow-xs ring-1 ring-primary/40"
+                ? "bg-amber-500/15 text-amber-400 border-amber-500/50 shadow-xs ring-1 ring-amber-500/40"
                 : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-foreground border-border"
             )}
             title={isDashboardEditMode ? (isHindi ? "कस्टमाइज़ेशन से बाहर निकलें" : "Exit Dashboard Configuration") : (isHindi ? "डैशबोर्ड कॉन्फ़िगर करें" : "Configure Dashboard & Rearrange Cards")}
+            aria-label={isDashboardEditMode ? (isHindi ? "कस्टमाइज़ेशन से बाहर निकलें" : "Exit Dashboard Configuration") : (isHindi ? "डैशबोर्ड कॉन्फ़िगर करें" : "Configure Dashboard & Rearrange Cards")}
           >
-            <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-foreground" />
-            <span className="hidden sm:inline text-foreground font-semibold">
-              {isDashboardEditMode ? (isHindi ? "डन" : "Done Customizing") : (isHindi ? "डैशबोर्ड कस्टमाइज़ करें" : "Configure Dashboard")}
-            </span>
+            <LayoutGrid className={cn("h-4 w-4 shrink-0 transition-colors", isDashboardEditMode ? "text-amber-400" : "text-muted-foreground group-hover:text-foreground")} />
           </button>
         )}
 
