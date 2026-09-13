@@ -1309,6 +1309,8 @@ function AcademicsPage() {
     {
       header: isHindi ? 'सब्जेक्ट कोड' : 'Subject Code',
       accessorKey: 'code',
+      align: 'center' as const,
+      className: 'w-32 text-center',
       cell: (r: ClassSubject) => (
         <span className="font-mono font-bold text-foreground bg-muted/60 px-2 py-0.5 rounded-[3px] border border-border text-xs">
           {r.code}
@@ -1332,6 +1334,8 @@ function AcademicsPage() {
     {
       header: isHindi ? 'करिकुलम टियर' : 'Curriculum Tier',
       accessorKey: 'type',
+      align: 'center' as const,
+      className: 'w-36 text-center',
       cell: (r: ClassSubject) => (
         <VFBadge
           variant={
@@ -1350,6 +1354,8 @@ function AcademicsPage() {
     {
       header: isHindi ? 'वीकली पीरियड्स' : 'Weekly Periods',
       accessorKey: 'weeklyPeriods',
+      align: 'center' as const,
+      className: 'w-32 text-center',
       cell: (r: ClassSubject) => (
         <div className="font-mono text-xs">
           <span className="font-black text-foreground">{r.weeklyPeriods}</span>{' '}
@@ -1360,6 +1366,8 @@ function AcademicsPage() {
     {
       header: isHindi ? 'मार्क्स असेसमेंट स्कीम' : 'Assessment Scheme',
       accessorKey: 'theoryMarks',
+      align: 'center' as const,
+      className: 'w-36 text-center',
       cell: (r: ClassSubject) => (
         <div className="text-xs font-mono">
           <span className="font-bold text-emerald-400">{r.theoryMarks} Th</span>
@@ -1402,8 +1410,10 @@ function AcademicsPage() {
     {
       header: isHindi ? 'एक्शंस' : 'Actions',
       accessorKey: 'actions',
+      align: 'center' as const,
+      className: 'w-24 text-center',
       cell: (r: ClassSubject) => (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 justify-center">
           <button
             type="button"
             onClick={() => handleOpenEditSubject(r)}

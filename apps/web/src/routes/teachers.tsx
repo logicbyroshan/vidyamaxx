@@ -937,6 +937,7 @@ function StaffPage() {
     {
       header: isHindi ? 'क्लास मेंटर / रूम' : 'Class Mentor / Room',
       accessorKey: 'classTeacherOf',
+      align: 'center',
       cell: (r: StaffRecord) => (
         r.classTeacherOf ? (
           <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] text-xs font-semibold bg-[#161619] text-zinc-200 border border-[#27272e]">
@@ -967,6 +968,7 @@ function StaffPage() {
     {
       header: t('col.attendance'),
       accessorKey: 'attendance',
+      align: 'center',
       cell: (r: StaffRecord) => (
         <span className="font-mono font-bold text-emerald-400 text-xs bg-emerald-950/30 border border-emerald-800/40 px-2 py-0.5 rounded">
           {r.attendance}
@@ -976,6 +978,7 @@ function StaffPage() {
     {
       header: t('col.status'),
       accessorKey: 'status',
+      align: 'center',
       cell: (r: StaffRecord) => (
         <VFBadge variant={r.status === 'Active' ? 'success' : r.status === 'On Leave' ? 'warning' : 'default'}>
           {r.status === 'Active' ? (isHindi ? 'एक्टिव' : r.status) : r.status === 'On Leave' ? (isHindi ? 'लीव पर' : r.status) : r.status}
@@ -985,6 +988,7 @@ function StaffPage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
+      align: 'center',
       cell: (r: StaffRecord) => (
         <VFButton
           size="icon"

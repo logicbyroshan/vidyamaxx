@@ -346,8 +346,8 @@ function LicenseManagementPage() {
                 <th className="py-2.5 px-3">{t('col.description')}</th>
                 <th className="py-2.5 px-3">{t('col.amount')}</th>
                 <th className="py-2.5 px-3">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
-                <th className="py-2.5 px-3">{t('col.status')}</th>
-                <th className="py-2.5 px-3 text-right">{t('col.action')}</th>
+                <th className="py-2.5 px-3 text-center">{t('col.status')}</th>
+                <th className="py-2.5 px-3 text-center w-24">{t('col.action')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60 text-foreground font-medium">
@@ -358,17 +358,17 @@ function LicenseManagementPage() {
                   <td className="py-2.5 px-3 text-foreground font-semibold max-w-[220px] sm:max-w-[280px] truncate" title={inv.description}>{inv.description}</td>
                   <td className="py-2.5 px-3 font-mono font-extrabold text-foreground">{inv.amount}</td>
                   <td className="py-2.5 px-3 font-mono text-xs text-muted-foreground">{inv.method}</td>
-                  <td className="py-2.5 px-3">
+                  <td className="py-2.5 px-3 text-center">
                     <VFBadge variant="success" className="font-mono text-[10px] font-bold rounded-[3px] py-0.5 gap-1">
                       <Check className="h-3 w-3" /> {inv.status}
                     </VFBadge>
                   </td>
-                  <td className="py-2.5 px-3 text-right">
+                  <td className="py-2.5 px-3 text-center">
                     <VFButton
                       size="sm"
                       variant="outline"
                       onClick={() => handleDownloadInvoice(inv.invoiceNo)}
-                      className="h-7 px-2.5 text-xs font-bold rounded-[4px] text-primary border-primary/40 hover:bg-primary/10"
+                      className="h-7 px-2.5 text-xs font-bold rounded-[4px] text-primary border-primary/40 hover:bg-primary/10 mx-auto"
                       leftIcon={<Download className="h-3 w-3" />}
                     >
                       PDF

@@ -1244,6 +1244,7 @@ function AdmissionsPage() {
     {
       header: isHindi ? 'डॉक्यूमेंट वेरिफिकेशन' : 'Doc Verification',
       accessorKey: 'ocrDocStatus',
+      align: 'center',
       cell: (r: Applicant) => (
         <VFBadge variant={r.ocrDocStatus === 'Verified' ? 'success' : r.ocrDocStatus === 'Flagged' ? 'danger' : 'warning'}>
           {r.ocrDocStatus === 'Verified' ? (isHindi ? 'वेरिफाइड' : 'Verified') : r.ocrDocStatus === 'Flagged' ? (isHindi ? 'फ्लैग्ड' : 'Flagged') : (isHindi ? 'पेंडिंग' : 'Pending')}
@@ -1253,6 +1254,7 @@ function AdmissionsPage() {
     {
       header: isHindi ? 'स्टेज' : 'Stage',
       accessorKey: 'stage',
+      align: 'center',
       cell: (r: Applicant) => (
         <VFBadge variant={r.stage === 'Approved' ? 'success' : r.stage === 'Interview' ? 'warning' : 'outline'}>
           {r.stage === 'Approved' ? (isHindi ? 'एप्रूव्ड' : 'Approved') : r.stage === 'Interview' ? (isHindi ? 'इंटरव्यू' : 'Interview') : (isHindi ? 'जमा हुआ' : r.stage)}
@@ -1262,6 +1264,7 @@ function AdmissionsPage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
+      align: 'center',
       cell: (r: Applicant) => (
         <VFButton
           size="icon"

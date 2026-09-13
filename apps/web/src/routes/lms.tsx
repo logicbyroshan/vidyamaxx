@@ -44,13 +44,13 @@ function OnlineClassesPage() {
   ];
 
   const classColumns = [
-    { header: isHindi ? 'क्लास कोड' : 'Class Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: isHindi ? 'क्लास कोड' : 'Class Code', accessorKey: 'code', align: 'center' as const, className: 'w-28 text-center', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
     { header: isHindi ? 'सेशन टाइटल' : 'Session Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
     { header: isHindi ? 'इंस्ट्रक्टर / टीचर' : 'Instructor', accessorKey: 'host' },
     { header: isHindi ? 'शेड्यूल्ड समय' : 'Scheduled Time', accessorKey: 'time' },
-    { header: isHindi ? 'प्लेटफ़ॉर्म / प्रकार' : 'Platform / Type', accessorKey: 'platform', cell: (r: any) => <VFBadge variant="outline">{r.platform}</VFBadge> },
-    { header: isHindi ? 'अटेंडीज' : 'Attendees', accessorKey: 'attendees', cell: (r: any) => `${r.attendees} Students` },
-    { header: t('col.status'), accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status === 'Live Now' ? 'danger' : r.status === 'Upcoming' ? 'primary' : 'success'}>{r.status}</VFBadge> },
+    { header: isHindi ? 'प्लेटफ़ॉर्म / प्रकार' : 'Platform / Type', accessorKey: 'platform', align: 'center' as const, className: 'w-36 text-center', cell: (r: any) => <VFBadge variant="outline">{r.platform}</VFBadge> },
+    { header: isHindi ? 'अटेंडीज' : 'Attendees', accessorKey: 'attendees', align: 'center' as const, className: 'w-28 text-center', cell: (r: any) => `${r.attendees} Students` },
+    { header: t('col.status'), accessorKey: 'status', align: 'center' as const, className: 'w-28 text-center', cell: (r: any) => <VFBadge variant={r.status === 'Live Now' ? 'danger' : r.status === 'Upcoming' ? 'primary' : 'success'}>{r.status}</VFBadge> },
   ];
 
   // ----------------------------------------------------

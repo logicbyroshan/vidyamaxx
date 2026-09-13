@@ -567,13 +567,13 @@ function HomeworkPage() {
           <VFTable className="w-full text-xs border-0 rounded-none" containerClassName="border-0 rounded-none flex-1 min-h-0">
             <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
               <VFTableRow>
-                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-28">Code</VFTableHeaderCell>
+                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-28 text-center" align="center">Code</VFTableHeaderCell>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">Homework</VFTableHeaderCell>
-                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-24">Class</VFTableHeaderCell>
+                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-24 text-center" align="center">Class</VFTableHeaderCell>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-28">Due</VFTableHeaderCell>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-40">Submitted</VFTableHeaderCell>
-                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-24">Status</VFTableHeaderCell>
-                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-20 text-right">Action</VFTableHeaderCell>
+                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-24 text-center" align="center">Status</VFTableHeaderCell>
+                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-20 text-center" align="center">Action</VFTableHeaderCell>
               </VFTableRow>
             </VFTableHead>
             <VFTableBody>
@@ -588,7 +588,7 @@ function HomeworkPage() {
                   const pct = Math.round((hw.submitted / hw.totalStudents) * 100);
                   return (
                     <VFTableRow key={hw.id} className="hover:bg-[#1a1a1a]/60 transition-colors">
-                      <VFTableCell className="py-2.5 px-3">
+                      <VFTableCell className="py-2.5 px-3 text-center" align="center">
                         <span className="font-mono font-bold text-[10px] text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded-[2px] border border-border/50">
                           {hw.code}
                         </span>
@@ -597,7 +597,7 @@ function HomeworkPage() {
                         <p className="font-bold text-foreground text-xs leading-tight max-w-[200px] sm:max-w-[260px] truncate" title={hw.title}>{hw.title}</p>
                         <p className="text-[11px] text-muted-foreground mt-0.5 max-w-[200px] sm:max-w-[260px] truncate">{hw.subject}</p>
                       </VFTableCell>
-                      <VFTableCell className="py-2.5 px-3">
+                      <VFTableCell className="py-2.5 px-3 text-center" align="center">
                         <span className="font-bold text-xs text-foreground">{hw.class}</span>
                       </VFTableCell>
                       <VFTableCell className="py-2.5 px-3 font-mono text-[11px] text-muted-foreground">
@@ -619,7 +619,7 @@ function HomeworkPage() {
                           </div>
                         </div>
                       </VFTableCell>
-                      <VFTableCell className="py-2.5 px-3">
+                      <VFTableCell className="py-2.5 px-3 text-center" align="center">
                         <VFBadge
                           variant={hw.status === 'Published' ? 'success' : hw.status === 'Draft' ? 'warning' : 'outline'}
                           className="text-[10px] font-bold"
@@ -627,11 +627,11 @@ function HomeworkPage() {
                           {hw.status}
                         </VFBadge>
                       </VFTableCell>
-                      <VFTableCell className="py-2.5 px-3 text-right">
+                      <VFTableCell className="py-2.5 px-3 text-center" align="center">
                         <VFButton
                           size="icon"
                           variant="outline"
-                          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px] ml-auto"
+                          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px] mx-auto"
                           title={isHindi ? 'असाइनमेंट देखें' : 'View Homework Details'}
                           aria-label={isHindi ? 'असाइनमेंट देखें' : 'View Homework Details'}
                           onClick={() => setDetailHW(hw)}
@@ -705,11 +705,11 @@ function HomeworkPage() {
             <VFTable className="w-full text-xs border-0 rounded-none" containerClassName="border-0 rounded-none flex-1 min-h-0">
               <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
                 <VFTableRow>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-16">Roll</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-16 text-center" align="center">Roll</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">Student</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-44">Submitted At</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">File</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-4 text-xs font-bold text-muted-foreground w-24 text-right">Status</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-4 text-xs font-bold text-muted-foreground w-24 text-center" align="center">Status</VFTableHeaderCell>
                 </VFTableRow>
               </VFTableHead>
               <VFTableBody>
@@ -722,7 +722,7 @@ function HomeworkPage() {
                 ) : (
                   detailSubmissions.map((s) => (
                     <VFTableRow key={s.roll} className="hover:bg-[#1a1a1a]/60 whitespace-nowrap">
-                      <VFTableCell className="py-2.5 px-3 font-mono font-bold text-muted-foreground text-xs">{s.roll}</VFTableCell>
+                      <VFTableCell className="py-2.5 px-3 font-mono font-bold text-muted-foreground text-xs text-center" align="center">{s.roll}</VFTableCell>
                       <VFTableCell className="py-2.5 px-3 font-bold text-foreground text-xs max-w-[180px] truncate" title={s.name}>{s.name}</VFTableCell>
                       <VFTableCell className="py-2.5 px-3 text-xs font-mono text-muted-foreground">
                         {s.status === 'Pending'
@@ -736,7 +736,7 @@ function HomeworkPage() {
                           : <span className="flex items-center gap-1 text-blue-400 font-mono cursor-pointer hover:underline truncate"><FileText className="h-3 w-3 shrink-0" /> <span className="truncate">{s.file}</span></span>
                         }
                       </VFTableCell>
-                      <VFTableCell className="py-2.5 px-4 text-right">
+                      <VFTableCell className="py-2.5 px-4 text-center" align="center">
                         <VFBadge
                           variant={s.status === 'Submitted' ? 'success' : s.status === 'Late' ? 'warning' : 'danger'}
                           className="text-[10px] font-bold"

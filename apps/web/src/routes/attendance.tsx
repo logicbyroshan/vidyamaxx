@@ -921,22 +921,21 @@ function AttendancePage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
-      headerClassName: 'w-14 text-right',
-      className: 'w-14 text-right px-2',
+      headerClassName: 'w-16 text-center',
+      className: 'w-16 text-center px-2',
+      align: 'center',
       sortable: false,
       cell: (r: StudentAttendanceRecord) => (
-        <div className="flex items-center justify-end">
-          <VFButton
-            size="icon"
-            variant="outline"
-            className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px]"
-            title={isHindi ? 'अटेंडेंस देखें' : t('attendance.title')}
-            aria-label={isHindi ? 'अटेंडेंस देखें' : t('attendance.title')}
-            onClick={() => openStudentDrawer(r)}
-          >
-            <Eye className="h-3.5 w-3.5 text-muted-foreground" />
-          </VFButton>
-        </div>
+        <VFButton
+          size="icon"
+          variant="outline"
+          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px]"
+          title={isHindi ? 'अटेंडेंस देखें' : t('attendance.title')}
+          aria-label={isHindi ? 'अटेंडेंस देखें' : t('attendance.title')}
+          onClick={() => openStudentDrawer(r)}
+        >
+          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+        </VFButton>
       ),
     },
   ];

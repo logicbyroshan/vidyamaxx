@@ -501,6 +501,7 @@ function NoticesPage() {
     {
       header: isHindi ? 'लक्षित' : 'Audience',
       accessorKey: 'targetAudience',
+      align: 'center',
       cell: (r: NoticeRecord) => (
         <VFBadge variant={r.targetAudience === 'All School' ? 'default' : 'outline'} className="font-bold text-xs">
           {r.targetAudience}
@@ -515,6 +516,7 @@ function NoticesPage() {
     {
       header: isHindi ? 'डिलीवरी' : 'Delivery',
       accessorKey: 'deliveryStatus',
+      align: 'center',
       cell: (r: NoticeRecord) => (
         <span className="text-xs font-mono font-bold text-emerald-400">
           {r.deliveryStatus}
@@ -524,11 +526,13 @@ function NoticesPage() {
     {
       header: t('col.status'),
       accessorKey: 'status',
+      align: 'center',
       cell: (r: NoticeRecord) => <VFBadge variant="success">{isHindi ? 'प्रकाशित' : r.status}</VFBadge>,
     },
     {
       header: t('col.action'),
       accessorKey: 'action',
+      align: 'center',
       cell: (r: NoticeRecord) => (
         <VFButton
           size="icon"

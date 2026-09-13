@@ -45,11 +45,12 @@ export function VFTableRow({ className, ...props }: React.HTMLAttributes<HTMLTab
   );
 }
 
-export interface VFTableHeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+export interface VFTableHeaderCellProps extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, 'align'> {
   sticky?: boolean;
   maxWidth?: string | number;
   minWidth?: string | number;
   width?: string | number;
+  align?: 'left' | 'center' | 'right' | string;
 }
 
 export function VFTableHeaderCell({
@@ -58,9 +59,17 @@ export function VFTableHeaderCell({
   maxWidth,
   minWidth,
   width,
+  align,
   style,
+  children,
   ...props
 }: VFTableHeaderCellProps) {
+  const colAlign = align || (
+    className?.includes('text-center') ? 'center' :
+    className?.includes('text-right') ? 'right' :
+    'left'
+  );
+
   const mergedStyle: React.CSSProperties = {
     ...(maxWidth ? { maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth } : {}),
     ...(minWidth ? { minWidth: typeof minWidth === 'number' ? `${minWidth}px` : minWidth } : {}),
@@ -73,19 +82,34 @@ export function VFTableHeaderCell({
       style={mergedStyle}
       className={cn(
         "px-2.5 sm:px-3 py-2 sm:py-2.5 font-bold text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md",
+        colAlign === 'center' && "text-center",
+        colAlign === 'right' && "text-right",
+        colAlign === 'left' && "text-left",
         sticky && "sticky top-0 z-10 border-b border-border shadow-2xs",
         className
       )}
       {...props}
-    />
+    >
+      <div
+        className={cn(
+          "flex items-center gap-1.5",
+          colAlign === 'center' && "justify-center",
+          colAlign === 'right' && "justify-end",
+          colAlign === 'left' && "justify-start"
+        )}
+      >
+        {children}
+      </div>
+    </th>
   );
 }
 
-export interface VFTableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+export interface VFTableCellProps extends Omit<React.TdHTMLAttributes<HTMLTableCellElement>, 'align'> {
   maxWidth?: string | number;
   minWidth?: string | number;
   width?: string | number;
   truncate?: boolean;
+  align?: 'left' | 'center' | 'right' | string;
 }
 
 export function VFTableCell({
@@ -94,11 +118,18 @@ export function VFTableCell({
   minWidth,
   width,
   truncate = false,
+  align,
   title,
   style,
   children,
   ...props
 }: VFTableCellProps) {
+  const colAlign = align || (
+    className?.includes('text-center') ? 'center' :
+    className?.includes('text-right') ? 'right' :
+    'left'
+  );
+
   const mergedStyle: React.CSSProperties = {
     ...(maxWidth ? { maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth } : {}),
     ...(minWidth ? { minWidth: typeof minWidth === 'number' ? `${minWidth}px` : minWidth } : {}),
@@ -114,6 +145,9 @@ export function VFTableCell({
       title={computedTitle}
       className={cn(
         "px-2.5 sm:px-3 py-2 sm:py-2.5 align-middle text-foreground whitespace-nowrap text-xs sm:text-[13px] font-semibold",
+        colAlign === 'center' && "text-center",
+        colAlign === 'right' && "text-right",
+        colAlign === 'left' && "text-left",
         truncate && "truncate max-w-[220px]",
         className
       )}
@@ -121,10 +155,18 @@ export function VFTableCell({
     >
       {truncate ? (
         <div
-          className="truncate"
+          className={cn("truncate", colAlign === 'center' && "mx-auto text-center")}
           style={maxWidth ? { maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth } : undefined}
           title={computedTitle}
         >
+          {children}
+        </div>
+      ) : colAlign === 'center' ? (
+        <div className="flex items-center justify-center mx-auto">
+          {children}
+        </div>
+      ) : colAlign === 'right' ? (
+        <div className="flex items-center justify-end ml-auto">
           {children}
         </div>
       ) : (
@@ -146,6 +188,7 @@ export interface ColumnDef<T> {
   minWidth?: string | number;
   width?: string | number;
   truncate?: boolean;
+  align?: 'left' | 'center' | 'right' | string;
 }
 
 export interface VFDataTableProps<T> {
@@ -349,6 +392,12 @@ export function VFDataTable<T extends Record<string, any>>({
                   const key = String(col.accessorKey);
                   const sortStatus = sorting.find((s) => s.id === key);
                   const isSortable = col.sortable ?? true;
+                  const colAlign = col.align || (
+                    col.accessorKey === 'action' || col.accessorKey === 'actions' ? 'center' :
+                    col.headerClassName?.includes('text-center') || col.className?.includes('text-center') ? 'center' :
+                    col.headerClassName?.includes('text-right') || col.className?.includes('text-right') ? 'right' :
+                    'left'
+                  );
                   const colStyle: React.CSSProperties = {
                     ...(col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : {}),
                     ...(col.minWidth ? { minWidth: typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth } : {}),
@@ -361,6 +410,9 @@ export function VFDataTable<T extends Record<string, any>>({
                       style={colStyle}
                       className={cn(
                         "px-2.5 sm:px-3 py-2 sm:py-2.5 font-bold text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
+                        colAlign === 'center' && "text-center",
+                        colAlign === 'right' && "text-right",
+                        colAlign === 'left' && "text-left",
                         isSortable && "cursor-pointer hover:bg-muted/60 transition-colors",
                         col.headerClassName
                       )}
@@ -372,7 +424,12 @@ export function VFDataTable<T extends Record<string, any>>({
                         if (onSort) onSort(key, isAsc ? 'asc' : 'desc');
                       }}
                     >
-                      <div className={cn("flex items-center gap-1.5", col.headerClassName?.includes('text-right') && "justify-end", col.headerClassName?.includes('text-center') && "justify-center")}>
+                      <div className={cn(
+                        "flex items-center gap-1.5",
+                        colAlign === 'center' && "justify-center",
+                        colAlign === 'right' && "justify-end",
+                        colAlign === 'left' && "justify-start"
+                      )}>
                         <span>{col.header}</span>
                         {isSortable && (
                           <span className="text-muted-foreground/80 font-mono text-[10px]">
@@ -395,6 +452,12 @@ export function VFDataTable<T extends Record<string, any>>({
                     const key = String(col.accessorKey);
                     const rawVal = row[key];
                     const rawString = rawVal !== undefined && rawVal !== null ? String(rawVal) : '';
+                    const colAlign = col.align || (
+                      col.accessorKey === 'action' || col.accessorKey === 'actions' ? 'center' :
+                      col.headerClassName?.includes('text-center') || col.className?.includes('text-center') ? 'center' :
+                      col.headerClassName?.includes('text-right') || col.className?.includes('text-right') ? 'right' :
+                      'left'
+                    );
                     const colStyle: React.CSSProperties = {
                       ...(col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : {}),
                       ...(col.minWidth ? { minWidth: typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth } : {}),
@@ -408,13 +471,32 @@ export function VFDataTable<T extends Record<string, any>>({
                         style={colStyle}
                         className={cn(
                           "px-2.5 sm:px-3 py-2 sm:py-2.5 align-middle text-foreground whitespace-nowrap text-xs sm:text-[13px] font-semibold",
+                          colAlign === 'center' && "text-center",
+                          colAlign === 'right' && "text-right",
+                          colAlign === 'left' && "text-left",
                           (col.maxWidth || col.truncate) && "truncate",
                           col.className
                         )}
                         title={typeof rawVal === 'string' || typeof rawVal === 'number' ? rawString : undefined}
                       >
                         {col.cell ? (
-                          col.maxWidth || col.truncate ? (
+                          colAlign === 'center' ? (
+                            <div
+                              className={cn("flex items-center justify-center mx-auto", (col.maxWidth || col.truncate) && "truncate")}
+                              style={col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : undefined}
+                              title={typeof rawVal === 'string' || typeof rawVal === 'number' ? rawString : undefined}
+                            >
+                              {col.cell(row)}
+                            </div>
+                          ) : colAlign === 'right' ? (
+                            <div
+                              className={cn("flex items-center justify-end ml-auto", (col.maxWidth || col.truncate) && "truncate")}
+                              style={col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : undefined}
+                              title={typeof rawVal === 'string' || typeof rawVal === 'number' ? rawString : undefined}
+                            >
+                              {col.cell(row)}
+                            </div>
+                          ) : col.maxWidth || col.truncate ? (
                             <div
                               className="truncate"
                               style={col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : undefined}
@@ -427,7 +509,11 @@ export function VFDataTable<T extends Record<string, any>>({
                           )
                         ) : (
                           <span
-                            className={cn(isTruncated && "truncate block max-w-[240px]")}
+                            className={cn(
+                              isTruncated && "truncate block max-w-[240px]",
+                              colAlign === 'center' && "text-center mx-auto",
+                              colAlign === 'right' && "text-right ml-auto"
+                            )}
                             style={col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : undefined}
                             title={rawString}
                           >

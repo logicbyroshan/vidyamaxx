@@ -1527,8 +1527,8 @@ function ExaminationsPage() {
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'प्रायोगिक' : 'Practical'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'आंतरिक' : 'Internal'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'पूर्णांक' : 'Total'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'उत्तीर्णांक' : 'Passing Rule'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-4 text-xs font-bold text-muted-foreground text-right">{isHindi ? 'स्थिति' : 'Status'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center" align="center">{isHindi ? 'उत्तीर्णांक' : 'Passing Rule'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-4 text-xs font-bold text-muted-foreground text-center" align="center">{isHindi ? 'स्थिति' : 'Status'}</VFTableHeaderCell>
                 </VFTableRow>
               </VFTableHead>
               <VFTableBody>
@@ -1618,7 +1618,7 @@ function ExaminationsPage() {
                       </VFTableCell>
 
                       {/* Validation Status Badge */}
-                      <VFTableCell className="py-2.5 px-4 text-right">
+                      <VFTableCell className="py-2.5 px-4 text-center" align="center">
                         {isValidTotal ? (
                           <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 font-mono">
                             <CheckCircle2 className="h-3 w-3" /> Valid
@@ -1889,7 +1889,7 @@ function ExaminationsPage() {
             <VFTable className="rounded-none border-0 text-xs w-full">
               <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
                 <VFTableRow>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-16">{isHindi ? 'रोल नं.' : 'Roll #'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-16 text-center" align="center">{isHindi ? 'रोल नं.' : 'Roll #'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'स्टूडेंट का नाम' : 'Student Name'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'गणित (100)' : 'Maths'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'विज्ञान (100)' : 'Science'}</VFTableHeaderCell>
@@ -1898,7 +1898,7 @@ function ExaminationsPage() {
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'हिंदी (100)' : 'Hindi'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'टोटल (500)' : 'Total (500)'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'परसेंटेज' : 'Percentage'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-4 text-xs font-bold text-muted-foreground text-right">{isHindi ? 'ग्रेड' : 'Grade'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-4 text-xs font-bold text-muted-foreground text-center" align="center">{isHindi ? 'ग्रेड' : 'Grade'}</VFTableHeaderCell>
                 </VFTableRow>
               </VFTableHead>
               <VFTableBody>
@@ -1911,7 +1911,7 @@ function ExaminationsPage() {
                 ) : (
                   filteredStudents.map((row) => (
                     <VFTableRow key={row.rollNo} className="hover:bg-[#1a1a1a]/60">
-                      <VFTableCell className="py-2 px-3 font-mono font-bold text-muted-foreground text-xs">
+                      <VFTableCell className="py-2 px-3 font-mono font-bold text-muted-foreground text-xs text-center" align="center">
                         {row.rollNo}
                       </VFTableCell>
                       <VFTableCell className="py-2 px-3 font-bold text-foreground text-xs">
@@ -2014,7 +2014,7 @@ function ExaminationsPage() {
                       <VFTableCell className="py-2 px-3 font-mono font-bold text-emerald-400 text-center text-xs">
                         {row.pct}%
                       </VFTableCell>
-                      <VFTableCell className="py-2 px-4 text-right">
+                      <VFTableCell className="py-2 px-4 text-center" align="center">
                         <VFBadge
                           variant={row.pct >= 90 ? 'success' : row.pct >= 70 ? 'primary' : 'warning'}
                           className="text-[10px] font-bold"

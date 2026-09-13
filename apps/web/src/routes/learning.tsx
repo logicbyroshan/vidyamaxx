@@ -56,6 +56,8 @@ function LearningPage() {
     {
       header: isHindi ? 'क्लास कोड' : 'Class Code',
       accessorKey: 'code',
+      align: 'center' as const,
+      className: 'w-28 text-center',
       cell: (r: any) => <span className="font-mono font-bold text-primary text-base">{r.code}</span>,
     },
     {
@@ -71,16 +73,22 @@ function LearningPage() {
     {
       header: isHindi ? 'स्टूडेंट्स' : 'Students',
       accessorKey: 'totalStudents',
+      align: 'center' as const,
+      className: 'w-32 text-center',
       cell: (r: any) => <span className="font-black text-foreground text-base">{r.totalStudents} {isHindi ? 'स्टूडेंट्स' : 'Students'}</span>,
     },
     {
       header: isHindi ? 'एवरेज अटेंडेंस' : 'Avg Attendance',
       accessorKey: 'avgAtt',
+      align: 'center' as const,
+      className: 'w-32 text-center',
       cell: (r: any) => <span className="font-black text-success text-base">{r.avgAtt}</span>,
     },
     {
       header: t('col.status'),
       accessorKey: 'status',
+      align: 'center' as const,
+      className: 'w-28 text-center',
       cell: (r: any) => <VFBadge variant="success">{r.status === 'Active' ? (isHindi ? 'सक्रिय' : r.status) : r.status}</VFBadge>,
     },
   ];
