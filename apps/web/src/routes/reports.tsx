@@ -520,6 +520,7 @@ function ReportsPage() {
     {
       header: isHindi ? 'फॉर्मेट' : 'Format',
       accessorKey: 'format',
+      align: 'center',
       cell: (r: ReportCatalogItem) => (
         <VFBadge variant="outline" className="font-mono text-[11px] font-bold">
           {r.format}
@@ -548,10 +549,11 @@ function ReportsPage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
-      headerClassName: 'text-right',
-      className: 'text-right',
+      headerClassName: 'w-20 text-center',
+      className: 'w-20 text-center',
+      align: 'center',
       cell: (r: ReportCatalogItem) => (
-        <div className="flex items-center gap-1.5 justify-end">
+        <div className="flex items-center gap-1.5 justify-center mx-auto">
           <VFButton
             size="icon"
             variant="outline"

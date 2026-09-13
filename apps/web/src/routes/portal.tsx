@@ -241,10 +241,12 @@ function ParentStudentPortalPage() {
           { header: t('col.subject'), accessorKey: 'subject', cell: (r: HomeworkRecord) => <span className="font-bold text-foreground">{r.subject}</span> },
           { header: isHindi ? 'होमवर्क / असाइनमेंट' : 'Homework / Assignment Title', accessorKey: 'title' },
           { header: t('col.teacher'), accessorKey: 'teacher' },
-          { header: t('col.dueDate'), accessorKey: 'dueDate', cell: (r: HomeworkRecord) => <span className="font-mono text-warning font-semibold">{r.dueDate}</span> },
+          { header: t('col.dueDate'), accessorKey: 'dueDate', align: 'center' as const, className: 'w-32 text-center', cell: (r: HomeworkRecord) => <span className="font-mono text-warning font-semibold">{r.dueDate}</span> },
           {
             header: t('col.status'),
             accessorKey: 'status',
+            align: 'center' as const,
+            className: 'w-28 text-center',
             cell: (r: HomeworkRecord) => (
               <VFBadge variant={r.status === 'Submitted' ? 'success' : 'warning'}>
                 {r.status}

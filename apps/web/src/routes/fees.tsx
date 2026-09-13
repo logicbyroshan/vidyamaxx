@@ -838,6 +838,7 @@ function FeesPage() {
     {
       header: t('col.status'),
       accessorKey: 'status',
+      align: 'center',
       cell: (r: FeeRecord) => (
         <VFBadge
           variant={r.status === 'Paid' ? 'success' : r.status === 'Partial' ? 'warning' : 'danger'}
@@ -850,8 +851,9 @@ function FeesPage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
+      align: 'center',
       cell: (r: FeeRecord) => (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 justify-center mx-auto">
           {r.dueAmount > 0 ? (
             <VFButton
               size="icon"

@@ -353,25 +353,25 @@ function SurveysManagementPage() {
               <table className="w-full min-w-full text-left border-collapse text-xs table-auto">
                 <thead>
                   <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-bold uppercase tracking-wider text-[11px] whitespace-nowrap">
-                    <th className="py-2.5 px-3">#</th>
+                    <th className="py-2.5 px-3 text-center w-12">#</th>
                     <th className="py-2.5 px-3">{isHindi ? 'सर्वे टाइटल' : 'Survey Title'}</th>
                     <th className="py-2.5 px-3">{isHindi ? 'टारगेट ऑडियंस' : 'Audience'}</th>
                     <th className="py-2.5 px-3">{isHindi ? 'कंप्लीशन डेट' : 'Completion Date'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'टोटल रिस्पॉन्स' : 'Total Responses'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'फाइनल रेटिंग' : 'Final Rating'}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.action')}</th>
+                    <th className="py-2.5 px-3 text-center">{isHindi ? 'टोटल रिस्पॉन्स' : 'Total Responses'}</th>
+                    <th className="py-2.5 px-3 text-center">{isHindi ? 'फाइनल रेटिंग' : 'Final Rating'}</th>
+                    <th className="py-2.5 px-3 text-center w-20">{t('col.action')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {archives.map((a) => (
                     <tr key={a.id} className="hover:bg-[#1a1a1a] transition-colors whitespace-nowrap">
-                      <td className="py-2.5 px-3 font-mono text-xs text-muted-foreground">{a.id}</td>
+                      <td className="py-2.5 px-3 font-mono text-xs text-muted-foreground text-center">{a.id}</td>
                       <td className="py-2.5 px-3 font-bold text-foreground text-xs sm:text-sm max-w-[220px] sm:max-w-[280px] truncate" title={a.title}>{a.title}</td>
                       <td className="py-2.5 px-3 text-xs text-muted-foreground font-medium">{a.audience}</td>
                       <td className="py-2.5 px-3 font-mono text-xs text-muted-foreground">{a.completedDate}</td>
-                      <td className="py-2.5 px-3 font-mono font-bold text-xs text-foreground">{a.totalResponses}</td>
-                      <td className="py-2.5 px-3 font-mono font-bold text-xs text-emerald-400">{a.finalRating}</td>
-                      <td className="py-2.5 px-3 text-right">
+                      <td className="py-2.5 px-3 font-mono font-bold text-xs text-foreground text-center">{a.totalResponses}</td>
+                      <td className="py-2.5 px-3 font-mono font-bold text-xs text-emerald-400 text-center">{a.finalRating}</td>
+                      <td className="py-2.5 px-3 text-center">
                         <button
                           type="button"
                           onClick={() => {
@@ -381,7 +381,7 @@ function SurveysManagementPage() {
                               type: 'info',
                             });
                           }}
-                          className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer ml-auto"
+                          className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer mx-auto"
                         >
                           <Download className="h-3.5 w-3.5" />
                           <span>PDF</span>

@@ -578,6 +578,7 @@ function ScholarshipsPage() {
     {
       header: t('col.class'),
       accessorKey: 'class',
+      align: 'center',
       cell: (r: ScholarshipRecord) => (
         <VFBadge variant="outline" className="text-[11px] font-mono font-bold rounded-[4px] bg-[#181818] border-border">
           {r.class}
@@ -628,6 +629,7 @@ function ScholarshipsPage() {
     {
       header: t('col.status'),
       accessorKey: 'status',
+      align: 'center',
       cell: (r: ScholarshipRecord) => (
         <VFBadge variant={r.status === 'Active Disbursed' ? 'success' : 'warning'} className="rounded-[4px]">
           {r.status === 'Active Disbursed' ? (isHindi ? 'एक्टिव डिसबर्स्ड' : r.status) : r.status === 'Govt Verified' ? (isHindi ? 'गवर्नमेंट वेरिफाइड' : r.status) : (isHindi ? 'रिन्यूअल पेंडिंग' : r.status)}
@@ -637,6 +639,7 @@ function ScholarshipsPage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
+      align: 'center',
       cell: (r: ScholarshipRecord) => (
         <VFButton
           size="icon"

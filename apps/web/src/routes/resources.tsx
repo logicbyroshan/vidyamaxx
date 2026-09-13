@@ -43,13 +43,13 @@ function ResourcesPage() {
   ];
 
   const resourceColumns = [
-    { header: isHindi ? 'रिसोर्स कोड' : 'Resource Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: isHindi ? 'रिसोर्स कोड' : 'Resource Code', accessorKey: 'code', align: 'center' as const, className: 'w-36 text-center', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
     { header: isHindi ? 'रिसोर्स शीर्षक' : 'Resource Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
-    { header: isHindi ? 'कंटेंट प्रकार' : 'Content Type', accessorKey: 'type', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
+    { header: isHindi ? 'कंटेंट प्रकार' : 'Content Type', accessorKey: 'type', align: 'center' as const, className: 'w-36 text-center', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
     { header: t('col.subject'), accessorKey: 'subject' },
     { header: isHindi ? 'कक्षा' : 'Target Grade', accessorKey: 'class' },
-    { header: isHindi ? 'डाउनलोड्स / व्यूज' : 'Downloads / Views', accessorKey: 'downloads', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.downloads}</span> },
-    { header: t('col.status'), accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
+    { header: isHindi ? 'डाउनलोड्स / व्यूज' : 'Downloads / Views', accessorKey: 'downloads', align: 'center' as const, className: 'w-36 text-center', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.downloads}</span> },
+    { header: t('col.status'), accessorKey: 'status', align: 'center' as const, className: 'w-28 text-center', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
   ];
 
   // ----------------------------------------------------

@@ -1529,11 +1529,13 @@ function StudentsPage() {
     {
       header: t('col.roll'),
       accessorKey: 'roll',
+      align: 'center',
       cell: (r: any) => <span className="font-mono text-muted-foreground text-sm">{r.roll}</span>,
     },
     {
       header: t('col.house'),
       accessorKey: 'house',
+      align: 'center',
       cell: (r: any) => (
         <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
           {r.house}
@@ -1548,6 +1550,7 @@ function StudentsPage() {
     {
       header: t('col.status'),
       accessorKey: 'status',
+      align: 'center',
       cell: (r: any) => (
         <VFBadge variant={r.status === 'Active' ? 'success' : 'outline'}>
           {r.status === 'Active' ? (isHindi ? 'एक्टिव' : r.status) : r.status}
@@ -1557,6 +1560,7 @@ function StudentsPage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
+      align: 'center',
       cell: (r: any) => (
         <VFButton
           size="icon"
