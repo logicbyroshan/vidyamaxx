@@ -455,6 +455,7 @@ export function DashboardPage() {
         icon: <Users className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
         trendLabel: '+12 this month',
+        accentColor: 'blue',
       };
     } else if (kpiId === 'staff' || kpiId === 'teachers') {
       kpiProps = {
@@ -463,6 +464,7 @@ export function DashboardPage() {
         icon: <GraduationCap className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
         trendLabel: 'Optimal coverage',
+        accentColor: 'cyan',
       };
     } else if (kpiId === 'attendance') {
       kpiProps = {
@@ -471,6 +473,7 @@ export function DashboardPage() {
         icon: <CalendarCheck className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
         trendLabel: '+1.2% vs yesterday',
+        accentColor: 'emerald',
       };
     } else if (kpiId === 'admissions') {
       kpiProps = {
@@ -479,6 +482,7 @@ export function DashboardPage() {
         icon: <FileText className="h-5.5 w-5.5 text-foreground" />,
         trend: 'neutral',
         trendLabel: '18 auto-verified',
+        accentColor: 'amber',
       };
     }
 
@@ -510,9 +514,9 @@ export function DashboardPage() {
       >
         <VFStatCard
           {...kpiProps}
-          accentColor="none"
+          accentColor={kpiProps.accentColor || 'blue'}
           showTopBar={false}
-          className="bg-card border-border/80 hover:bg-[#181818] hover:border-border/90 rounded-[4px] shadow-xs transition-all"
+          className="hover:bg-[#181818] rounded-[4px] shadow-xs transition-all"
         />
 
         {/* Corner move handle — ONLY visible when Configure Dashboard is active */}

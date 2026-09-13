@@ -95,6 +95,7 @@ function LearningPage() {
           icon={<Users className="h-5 w-5" />}
           trend="up"
           trendLabel={isHindi ? 'टोटल 156 स्टूडेंट्स' : '156 Total Students'}
+          accentColor="blue"
         />
         <VFStatCard
           title={isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods'}
@@ -102,6 +103,7 @@ function LearningPage() {
           icon={<Clock className="h-5 w-5" />}
           trend="neutral"
           trendLabel="45-min slots"
+          accentColor="cyan"
         />
         <VFStatCard
           title={isHindi ? 'सिलेबस गति' : 'Syllabus Pacing'}
@@ -109,6 +111,7 @@ function LearningPage() {
           icon={<TrendingUp className="h-5 w-5" />}
           trend="up"
           trendLabel={isHindi ? 'शेड्यूल से आगे' : 'Ahead of schedule'}
+          accentColor="emerald"
         />
         <VFStatCard
           title={isHindi ? 'औसत क्लास GPA' : 'Average Class GPA'}
@@ -116,6 +119,7 @@ function LearningPage() {
           icon={<Award className="h-5 w-5" />}
           trend="up"
           trendLabel="Term 1 Average"
+          accentColor="purple"
         />
       </div>
 

@@ -58,10 +58,10 @@ function ResourcesPage() {
   const dashboardContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Total Uploaded Resources" value="482 Files" icon={<FolderGit className="h-5 w-5 text-primary" />} trend="up" trendLabel="+24 This Month" />
-        <VFStatCard title="Total Downloads" value="8,420 Views" icon={<Download className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="High Student Usage" />
-        <VFStatCard title="Video Tutorials" value="64 Videos" icon={<Video className="h-5 w-5 text-amber-500" />} description="1080p HD Lectures" />
-        <VFStatCard title="Digital E-books" value="38 E-books" icon={<BookOpen className="h-5 w-5 text-purple-500" />} description="NCERT & Reference Books" />
+        <VFStatCard title="Total Uploaded Resources" value="482 Files" icon={<FolderGit className="h-5 w-5" />} trend="up" trendLabel="+24 This Month" accentColor="primary" />
+        <VFStatCard title="Total Downloads" value="8,420 Views" icon={<Download className="h-5 w-5" />} trend="up" trendLabel="High Student Usage" accentColor="emerald" />
+        <VFStatCard title="Video Tutorials" value="64 Videos" icon={<Video className="h-5 w-5" />} trend="neutral" trendLabel="1080p HD Lectures" accentColor="amber" />
+        <VFStatCard title="Digital E-books" value="38 E-books" icon={<BookOpen className="h-5 w-5" />} trend="neutral" trendLabel="NCERT & Ref Books" accentColor="purple" />
       </div>
     </div>
   );
@@ -209,10 +209,10 @@ function ResourcesPage() {
   const analyticsContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Most Downloaded PDF" value="Physics Ch 4 Notes" icon={<Download className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="412 Downloads" />
-        <VFStatCard title="Most Viewed Video" value="Quadratic Eq Lesson" icon={<Video className="h-5 w-5 text-primary" />} trend="up" trendLabel="680 Views" />
-        <VFStatCard title="Active Student Viewers" value="1,120 Students" icon={<Users className="h-5 w-5 text-amber-500" />} description="This Week" />
-        <VFStatCard title="Avg Viewing Duration" value="18 Minutes" icon={<BarChart3 className="h-5 w-5 text-purple-500" />} description="Per Session" />
+        <VFStatCard title="Most Downloaded PDF" value="Physics Ch 4 Notes" icon={<Download className="h-5 w-5" />} trend="up" trendLabel="412 Downloads" accentColor="emerald" />
+        <VFStatCard title="Most Viewed Video" value="Quadratic Eq Lesson" icon={<Video className="h-5 w-5" />} trend="up" trendLabel="680 Views" accentColor="primary" />
+        <VFStatCard title="Active Student Viewers" value="1,120 Students" icon={<Users className="h-5 w-5" />} trend="neutral" trendLabel="Active This Week" accentColor="amber" />
+        <VFStatCard title="Avg Viewing Duration" value="18 Minutes" icon={<BarChart3 className="h-5 w-5" />} trend="neutral" trendLabel="Per Session" accentColor="purple" />
       </div>
     </div>
   );

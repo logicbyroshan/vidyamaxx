@@ -59,10 +59,10 @@ function OnlineClassesPage() {
   const dashboardContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Live Classes Running" value="2 Classes" icon={<Video className="h-5 w-5 text-rose-500" />} trend="up" trendLabel="76 Active Students" />
-        <VFStatCard title="Today's Sessions" value="8 Classes" icon={<Calendar className="h-5 w-5 text-primary" />} trend="neutral" trendLabel="Scheduled Today" />
-        <VFStatCard title="Recorded Lectures" value="142 Videos" icon={<PlayCircle className="h-5 w-5 text-emerald-500" />} description="Available On-Demand" />
-        <VFStatCard title="Avg Virtual Attendance" value="92.4%" icon={<CheckCircle2 className="h-5 w-5 text-purple-500" />} description="High Participation" />
+        <VFStatCard title="Live Classes Running" value="2 Classes" icon={<Video className="h-5 w-5" />} trend="up" trendLabel="76 Active Students" accentColor="rose" />
+        <VFStatCard title="Today's Sessions" value="8 Classes" icon={<Calendar className="h-5 w-5" />} trend="neutral" trendLabel="Scheduled Today" accentColor="primary" />
+        <VFStatCard title="Recorded Lectures" value="142 Videos" icon={<PlayCircle className="h-5 w-5" />} trend="up" trendLabel="Available On-Demand" accentColor="emerald" />
+        <VFStatCard title="Avg Virtual Attendance" value="92.4%" icon={<CheckCircle2 className="h-5 w-5" />} trend="up" trendLabel="High Participation" accentColor="purple" />
       </div>
     </div>
   );
@@ -200,10 +200,10 @@ function OnlineClassesPage() {
   const reportsContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Total Classes Held" value="340 Sessions" icon={<Laptop className="h-5 w-5 text-primary" />} trend="up" trendLabel="100% Completed" />
-        <VFStatCard title="Total Live Hours" value="480 Hours" icon={<Clock className="h-5 w-5 text-emerald-500" />} description="Streamed Live" />
-        <VFStatCard title="Bandwidth Quality" value="99.4% HD" icon={<CheckCircle2 className="h-5 w-5 text-purple-500" />} description="Low Latency" />
-        <VFStatCard title="Recording Storage" value="240 GB" icon={<Download className="h-5 w-5 text-amber-500" />} description="Cloud Storage" />
+        <VFStatCard title="Total Classes Held" value="340 Sessions" icon={<Laptop className="h-5 w-5" />} trend="up" trendLabel="100% Completed" accentColor="primary" />
+        <VFStatCard title="Total Live Hours" value="480 Hours" icon={<Clock className="h-5 w-5" />} trend="up" trendLabel="Streamed Live" accentColor="emerald" />
+        <VFStatCard title="Bandwidth Quality" value="99.4% HD" icon={<CheckCircle2 className="h-5 w-5" />} trend="neutral" trendLabel="Low Latency" accentColor="purple" />
+        <VFStatCard title="Recording Storage" value="240 GB" icon={<Download className="h-5 w-5" />} trend="neutral" trendLabel="Cloud Storage" accentColor="amber" />
       </div>
     </div>
   );

@@ -128,7 +128,7 @@ export function VFStatCard({
           <div
             className={cn(
               "h-11 w-11 rounded-[4px] flex items-center justify-center shrink-0 transition-all duration-200 shadow-xs group-hover:scale-105",
-              accent ? accent.icon : "bg-blue-500/15 text-blue-400 border border-blue-500/30"
+              accent ? accent.icon : "bg-muted/80 text-foreground border border-border"
             )}
           >
             {icon}
@@ -164,7 +164,7 @@ export function VFStatCard({
           {!trend && (
             <span className="text-xs font-semibold text-muted-foreground truncate">{displayLabel}</span>
           )}
-          {trend && description && trendLabel && (
+          {trend && description && trendLabel && description !== trendLabel && (
             <span className="text-xs text-muted-foreground truncate font-medium">{description}</span>
           )}
         </div>

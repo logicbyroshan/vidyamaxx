@@ -948,34 +948,34 @@ function AttendancePage() {
         <VFStatCard
           title={isHindi ? 'अटेंडेंस रेट' : 'Attendance Rate'}
           value={`${attendanceRate}%`}
-          description={`${presentCount} of ${studentRoster.length} Students Present`}
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
-          trendLabel="+1.8% vs last week"
+          trendLabel={`${presentCount} / ${studentRoster.length} Present`}
+          accentColor="emerald"
         />
         <VFStatCard
           title={isHindi ? 'एब्सेंट स्टूडेंट्स' : 'Absentees'}
           value={`${absentCount} Absent`}
-          description={absentCount > 0 ? `${absentCount} Pending Parent Alert` : 'All Present'}
           icon={<UserX className="h-5 w-5" />}
           trend={absentCount > 2 ? 'down' : 'up'}
-          trendLabel={absentCount > 0 ? `${absentCount} Absent` : 'Zero Absentees'}
+          trendLabel={absentCount > 0 ? `${absentCount} Alert Pending` : 'Zero Absentees'}
+          accentColor="rose"
         />
         <VFStatCard
           title={isHindi ? 'देर से आने वाले' : 'Late Arrivals'}
           value={`${lateCount} Late`}
-          description="Recorded today"
           icon={<Clock className="h-5 w-5" />}
           trend="neutral"
-          trendLabel="Bus Route 4"
+          trendLabel="Bus Route 4 Delayed"
+          accentColor="amber"
         />
         <VFStatCard
           title={isHindi ? 'स्वीकृत छुट्टियां' : 'Approved Leaves'}
           value={`${leaveCount} On Leave`}
-          description={pendingLeaves > 0 ? `${pendingLeaves} Pending Review` : 'All Applications Reviewed'}
           icon={<FileCheck className="h-5 w-5" />}
           trend={pendingLeaves > 0 ? 'down' : 'up'}
-          trendLabel={pendingLeaves > 0 ? `${pendingLeaves} Action Required` : 'Up to Date'}
+          trendLabel={pendingLeaves > 0 ? `${pendingLeaves} Pending Review` : 'All Reviewed'}
+          accentColor="blue"
         />
       </div>
 
