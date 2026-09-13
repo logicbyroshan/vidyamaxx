@@ -16,6 +16,7 @@ import {
   Search,
   Check,
   Building2,
+  X,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/complaints')({
@@ -124,6 +125,7 @@ function ComplaintsManagementPage() {
   const [statusFilter, setStatusFilter] = React.useState<'All' | 'Open' | 'In Progress' | 'Resolved'>('All');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
   const [searchGrievance, setSearchGrievance] = React.useState('');
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
 
   const [isLodgeModalOpen, setIsLodgeModalOpen] = React.useState(false);
   const [viewingTicket, setViewingTicket] = React.useState<GrievanceTicket | null>(null);
@@ -180,16 +182,16 @@ function ComplaintsManagementPage() {
 
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
-      {/* ── SINGLE UNIFIED HEADER (No Double Header, No Stat Cards) ── */}
-      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
-        {/* Left: 2 Tabs */}
-        <div className="flex items-center gap-3">
+      {/* ── SINGLE UNIFIED TOOLBAR & HEADER ── */}
+      <div className="p-2.5 sm:p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-2.5 shrink-0 shadow-xs">
+        {/* Left: Tabs & Inline Dropdown Filters */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
           <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
             <button
               type="button"
               id="tab-registry"
               onClick={() => setActiveTab('registry')}
-              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
+              className={`px-3 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'registry'
                   ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
@@ -202,7 +204,7 @@ function ComplaintsManagementPage() {
               type="button"
               id="tab-queue"
               onClick={() => setActiveTab('queue')}
-              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
+              className={`px-3 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'queue'
                   ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
@@ -212,30 +214,11 @@ function ComplaintsManagementPage() {
               {isHindi ? 'सक्रिय कतार व एसएलए' : 'Action Queue & SLA'}
             </button>
           </div>
-        </div>
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2 shrink-0">
-          <VFButton
-            size="sm"
-            onClick={() => setIsLodgeModalOpen(true)}
-            className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
-            leftIcon={<Plus className="h-3.5 w-3.5" />}
-          >
-            {isHindi ? '+ शिकायत दर्ज करें' : '+ Lodge Grievance'}
-          </VFButton>
-        </div>
-      </div>
-
-      {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 1: GRIEVANCE REGISTRY
-          ────────────────────────────────────────────────────────────────────────── */}
-      {activeTab === 'registry' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-4">
-          {/* Filters Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#141414] border border-border/80 p-3 rounded-[4px]">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <div className="flex items-center gap-2 bg-[#181818] px-2.5 py-1.5 rounded-[3px] border border-border/70">
+          {/* Inline Dropdown Filters (Moved into top bar) */}
+          {activeTab === 'registry' && (
+            <div className="flex items-center gap-2 animate-in fade-in duration-150">
+              <div className="flex items-center gap-1.5 bg-[#181818] px-2.5 py-1.5 rounded-[3px] border border-border/70">
                 <span className="text-xs text-muted-foreground font-semibold">{isHindi ? 'स्थिति:' : 'Status:'}</span>
                 <select
                   value={statusFilter}
@@ -249,7 +232,7 @@ function ComplaintsManagementPage() {
                 </select>
               </div>
 
-              <div className="flex items-center gap-2 bg-[#181818] px-2.5 py-1.5 rounded-[3px] border border-border/70">
+              <div className="flex items-center gap-1.5 bg-[#181818] px-2.5 py-1.5 rounded-[3px] border border-border/70">
                 <span className="text-xs text-muted-foreground font-semibold">{isHindi ? 'विभाग:' : 'Dept:'}</span>
                 <select
                   value={categoryFilter}
@@ -265,18 +248,66 @@ function ComplaintsManagementPage() {
                 </select>
               </div>
             </div>
+          )}
+        </div>
 
-            <div className="relative w-full sm:w-64">
-              <input
-                type="text"
-                value={searchGrievance}
-                onChange={(e) => setSearchGrievance(e.target.value)}
-                placeholder={isHindi ? 'शिकायतकर्ता या विषय खोजें...' : 'Search ticket, subject or name...'}
-                className="w-full px-3 py-1.5 pl-8 border border-border rounded-[3px] bg-[#181818] text-foreground text-xs focus:outline-none"
-              />
-              <Search className="h-3.5 w-3.5 absolute left-2.5 top-2.5 text-muted-foreground" />
+        {/* Right: Icon-only / Expandable Search + Single '+' Lodge Grievance Action */}
+        <div className="flex items-center gap-2 shrink-0 ml-auto">
+          {activeTab === 'registry' && (
+            <div className="flex items-center">
+              {isSearchOpen || searchGrievance ? (
+                <div className="relative flex items-center animate-in fade-in duration-150">
+                  <input
+                    type="text"
+                    autoFocus
+                    value={searchGrievance}
+                    onChange={(e) => setSearchGrievance(e.target.value)}
+                    placeholder={isHindi ? 'खोजें...' : 'Search ticket or name...'}
+                    className="w-44 sm:w-56 h-8 px-2.5 pl-7 pr-7 border border-border rounded-[3px] bg-[#181818] text-foreground text-xs focus:outline-none focus:border-zinc-500"
+                  />
+                  <Search className="h-3.5 w-3.5 absolute left-2 text-muted-foreground pointer-events-none" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchGrievance('');
+                      setIsSearchOpen(false);
+                    }}
+                    className="absolute right-2 text-muted-foreground hover:text-foreground cursor-pointer p-0.5"
+                    title="Close search"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <VFButton
+                  size="icon"
+                  variant="outline"
+                  onClick={() => setIsSearchOpen(true)}
+                  className="h-8 w-8 rounded-[4px] text-muted-foreground hover:text-foreground hover:border-zinc-700"
+                  title={isHindi ? 'शिकायत खोजें' : 'Search Grievances'}
+                >
+                  <Search className="h-3.5 w-3.5" />
+                </VFButton>
+              )}
             </div>
-          </div>
+          )}
+
+          <VFButton
+            size="sm"
+            onClick={() => setIsLodgeModalOpen(true)}
+            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+            leftIcon={<Plus className="h-3.5 w-3.5" />}
+          >
+            {isHindi ? 'शिकायत दर्ज करें' : 'Lodge Grievance'}
+          </VFButton>
+        </div>
+      </div>
+
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 1: GRIEVANCE REGISTRY
+          ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === 'registry' && (
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
 
           {/* Table */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card w-full min-w-full">

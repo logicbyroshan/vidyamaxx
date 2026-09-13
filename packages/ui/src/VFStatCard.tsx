@@ -50,9 +50,9 @@ const ACCENT_STYLES: Record<string, { card: string; topBar: string; icon: string
     icon: "bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 shadow-xs",
   },
   primary: {
-    card: "bg-gradient-to-br from-primary/10 via-card to-card border-primary/30 hover:border-primary/60 shadow-xs",
-    topBar: "bg-gradient-to-r from-primary via-primary/80 to-transparent",
-    icon: "bg-primary/15 text-primary border border-primary/30 shadow-xs",
+    card: "bg-gradient-to-br from-white/[0.03] via-card to-card border-border hover:border-zinc-700 shadow-xs",
+    topBar: "bg-gradient-to-r from-zinc-500 via-zinc-600 to-transparent",
+    icon: "bg-muted text-foreground border border-border shadow-xs",
   },
 };
 
@@ -64,8 +64,8 @@ const ACCENT_GLOW_COLORS: Record<string, string> = {
   rose: 'rgba(244, 63, 94, 0.04)',
   cyan: 'rgba(6, 182, 212, 0.04)',
   indigo: 'rgba(99, 102, 241, 0.04)',
-  primary: 'rgba(234, 88, 12, 0.035)',
-  none: 'rgba(234, 88, 12, 0.025)',
+  primary: 'rgba(255, 255, 255, 0.025)',
+  none: 'rgba(255, 255, 255, 0.02)',
 };
 
 export function VFStatCard({
@@ -83,13 +83,13 @@ export function VFStatCard({
 }: VFStatCardProps) {
   const displayLabel = trendLabel || description;
   const accent = accentColor !== 'none' && accentColor ? (ACCENT_STYLES[accentColor] || ACCENT_STYLES.primary) : null;
-  const glowColor = (accentColor && ACCENT_GLOW_COLORS[accentColor]) || 'rgba(234, 88, 12, 0.025)';
+  const glowColor = (accentColor && ACCENT_GLOW_COLORS[accentColor]) || 'rgba(255, 255, 255, 0.02)';
 
   return (
     <div
       className={cn(
         "rounded-[4px] border bg-card p-3 sm:p-3.5 text-card-foreground flex flex-col justify-center relative overflow-hidden transition-all duration-200 group min-w-0 shadow-xs",
-        accent ? accent.card : "border-border hover:border-primary/40",
+        accent ? accent.card : "border-border hover:border-zinc-700",
         className
       )}
       {...props}

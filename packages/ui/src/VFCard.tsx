@@ -21,8 +21,8 @@ const ACCENT_GLOW_COLORS: Record<string, string> = {
   rose: 'rgba(244, 63, 94, 0.035)',
   cyan: 'rgba(6, 182, 212, 0.035)',
   indigo: 'rgba(99, 102, 241, 0.035)',
-  primary: 'rgba(234, 88, 12, 0.03)',
-  none: 'rgba(234, 88, 12, 0.025)',
+  primary: 'rgba(255, 255, 255, 0.02)',
+  none: 'rgba(255, 255, 255, 0.015)',
 };
 
 export function VFCard({
@@ -39,12 +39,12 @@ export function VFCard({
   showAmbientGlow = true,
   ...props
 }: VFCardProps) {
-  const glowColor = (accentColor && ACCENT_GLOW_COLORS[accentColor]) || 'rgba(234, 88, 12, 0.025)';
+  const glowColor = (accentColor && ACCENT_GLOW_COLORS[accentColor]) || 'rgba(255, 255, 255, 0.015)';
 
   return (
     <div
       className={cn(
-        "rounded-[4px] border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col group/vfcard",
+        "rounded-[4px] border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col group/vfcard hover:border-zinc-700/80",
         className
       )}
       {...props}

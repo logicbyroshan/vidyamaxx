@@ -62,7 +62,7 @@ function StatisticsPage() {
             trend="up"
             trendLabel={`Session ${activeSession}`}
             accentColor="blue"
-            className="group-hover:border-primary/50 transition-colors"
+            className="group-hover:border-zinc-700 transition-colors"
           />
         </Link>
         <Link to="/teachers" className="block group focus:outline-hidden">
@@ -73,7 +73,7 @@ function StatisticsPage() {
             trend="neutral"
             trendLabel="CBSE Standard"
             accentColor="cyan"
-            className="group-hover:border-cyan-500/50 transition-colors"
+            className="group-hover:border-zinc-700 transition-colors"
           />
         </Link>
         <Link to="/attendance" className="block group focus:outline-hidden">
@@ -84,7 +84,7 @@ function StatisticsPage() {
             trend="up"
             trendLabel="1,210 Active Daily"
             accentColor="emerald"
-            className="group-hover:border-emerald-500/50 transition-colors"
+            className="group-hover:border-zinc-700 transition-colors"
           />
         </Link>
         <Link to="/examinations" className="block group focus:outline-hidden">
@@ -95,7 +95,7 @@ function StatisticsPage() {
             trend="up"
             trendLabel="+1.4% vs State Avg"
             accentColor="primary"
-            className="group-hover:border-primary/50 transition-colors"
+            className="group-hover:border-zinc-700 transition-colors"
           />
         </Link>
       </div>
@@ -322,7 +322,7 @@ function StatisticsPage() {
               </VFButton>
             </Link>
           }
-          className="bg-[#0d0d0d] border-border/90 hover:border-primary/40 transition-colors"
+          className="bg-[#0d0d0d] border-border/90 hover:border-zinc-700 transition-colors"
           bodyClassName="p-3.5 space-y-3"
         >
           <div className="grid grid-cols-3 gap-2 text-center">

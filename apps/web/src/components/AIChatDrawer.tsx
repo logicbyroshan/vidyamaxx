@@ -382,7 +382,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                       key={idx}
                       onClick={() => handleSendMessage(p.prompt)}
                       disabled={isTyping}
-                      className="p-2.5 rounded-md border border-border bg-muted/40 hover:bg-muted/90 text-left transition-all hover:border-primary/40 group flex flex-col justify-between cursor-pointer"
+                      className="p-2.5 rounded-md border border-border bg-muted/40 hover:bg-muted/90 text-left transition-all hover:border-zinc-700 group flex flex-col justify-between cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
                         <Icon className="h-3.5 w-3.5 text-primary shrink-0 group-hover:scale-110 transition-transform" />
