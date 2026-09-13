@@ -951,18 +951,12 @@ function StaffPage() {
     {
       header: isHindi ? 'वीकली वर्कलोड' : 'Weekly Load',
       accessorKey: 'weeklyPeriods',
+      align: 'center',
+      className: 'w-32 text-center',
       cell: (r: StaffRecord) => (
-        <div className="space-y-1">
-          <span className="font-mono font-bold text-white text-xs block">
-            {r.weeklyPeriods} / {r.maxWeeklyPeriods} P/Wk
-          </span>
-          <div className="w-20 h-1 bg-[#161619] rounded-xs overflow-hidden">
-            <div
-              className="h-full bg-zinc-300 rounded-xs"
-              style={{ width: `${Math.round((r.weeklyPeriods / r.maxWeeklyPeriods) * 100)}%` }}
-            />
-          </div>
-        </div>
+        <span className="font-mono font-bold text-foreground text-xs">
+          {r.weeklyPeriods} / {r.maxWeeklyPeriods} P/Wk
+        </span>
       ),
     },
     {

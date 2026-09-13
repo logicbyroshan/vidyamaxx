@@ -1226,19 +1226,17 @@ function AdmissionsPage() {
     {
       header: isHindi ? 'मेरिट स्कोर' : 'Merit Score',
       accessorKey: 'fitScore',
+      align: 'center',
+      className: 'w-28 text-center',
       cell: (r: Applicant) => (
-        <div className="flex items-center gap-2">
-          <span className="font-black text-xs sm:text-sm text-foreground">{r.fitScore}%</span>
-          <div className="h-2 w-14 bg-muted rounded-[3px] overflow-hidden border border-border/50">
-            <div
-              className={cn(
-                'h-full rounded-[3px] transition-all',
-                r.fitScore >= 80 ? 'bg-emerald-400' : r.fitScore >= 60 ? 'bg-amber-400' : 'bg-rose-400'
-              )}
-              style={{ width: `${r.fitScore}%` }}
-            />
-          </div>
-        </div>
+        <span
+          className={cn(
+            'font-black font-mono text-xs sm:text-sm',
+            r.fitScore >= 80 ? 'text-emerald-400' : r.fitScore >= 60 ? 'text-amber-400' : 'text-rose-400'
+          )}
+        >
+          {r.fitScore}%
+        </span>
       ),
     },
     {
