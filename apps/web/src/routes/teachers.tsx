@@ -1007,34 +1007,34 @@ function StaffPage() {
         <VFStatCard
           title={isHindi ? 'टोटल फैकल्टी' : 'Faculty Strength'}
           value={`${staffList.length} Teachers`}
-          description="94 Teaching · 30 Operations"
           icon={<Users className="h-5 w-5" />}
           trend="up"
-          trendLabel="Full Quota"
+          trendLabel="94 Teaching · 30 Ops"
+          accentColor="blue"
         />
         <VFStatCard
           title={isHindi ? 'आज प्रेजेंट' : "Today's Present"}
           value={`${staffList.filter((s) => s.status === 'Active').length} Present`}
-          description="Institutional Coverage"
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="96.8% Attendance"
+          accentColor="emerald"
         />
         <VFStatCard
           title={isHindi ? 'एवरेज वर्कलोड' : 'Average Load'}
           value="22.8 / Wk"
-          description="Balanced Teaching Hours"
           icon={<Clock className="h-5 w-5" />}
           trend="neutral"
           trendLabel="Optimal Load"
+          accentColor="cyan"
         />
         <VFStatCard
           title={isHindi ? 'फैकल्टी रिटेंशन' : 'Faculty Retention'}
           value="98.2%"
-          description="Exemplary Satisfaction"
           icon={<Sparkles className="h-5 w-5" />}
           trend="up"
           trendLabel="+2.4% vs last term"
+          accentColor="purple"
         />
       </div>
 

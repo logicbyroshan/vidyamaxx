@@ -106,27 +106,34 @@ function ParentStudentPortalPage() {
         <VFStatCard
           title={t('nav.attendance')}
           value={activeChild.attendancePct}
-          icon={<CheckCircle2 className="h-5 w-5 text-success" />}
+          icon={<CheckCircle2 className="h-5 w-5" />}
           trend="up"
-          trendLabel={`${activeChild.todayStatus} Today 🟢`}
+          trendLabel={`${activeChild.todayStatus} Today`}
+          accentColor="emerald"
         />
         <VFStatCard
           title={isHindi ? 'होमवर्क कतार' : 'Homework Queue'}
           value={`${activeChild.homeworkDueCount} Due`}
-          icon={<BookOpen className="h-5 w-5 text-primary" />}
-          description={isHindi ? '1 कल देय' : '1 Due Tomorrow'}
+          icon={<BookOpen className="h-5 w-5" />}
+          trend="neutral"
+          trendLabel={isHindi ? '1 कल देय' : '1 Due Tomorrow'}
+          accentColor="primary"
         />
         <VFStatCard
           title={isHindi ? 'फीस भुगतान बकाया' : 'Fee Payment Balance'}
           value={activeChild.feeDueAmount}
-          icon={<CreditCard className="h-5 w-5 text-warning" />}
-          description={isHindi ? 'किस्त 15 अगस्त को देय' : 'Installment Due 15 Aug'}
+          icon={<CreditCard className="h-5 w-5" />}
+          trend="down"
+          trendLabel={isHindi ? 'किस्त 15 अगस्त को देय' : 'Installment Due 15 Aug'}
+          accentColor="amber"
         />
         <VFStatCard
           title={isHindi ? 'अपकमिंग एग्जाम्स' : 'Upcoming Examinations'}
           value="2 Exams Soon"
-          icon={<CalendarIcon className="h-5 w-5 text-secondary" />}
-          description="Mathematics on 18 Aug"
+          icon={<CalendarIcon className="h-5 w-5" />}
+          trend="neutral"
+          trendLabel="Mathematics on 18 Aug"
+          accentColor="blue"
         />
       </div>
 

@@ -165,8 +165,8 @@ function StatisticsPage() {
             }
             description={
               isHindi
-                ? 'सेशन 2026-2027 के लिए मंथली स्टूडेंट एडमिशन्स और डेली अटेंडेंस ट्रेंड्स'
-                : 'Realtime monthly intake volume vs attendance velocity for AY 2026-2027'
+                ? 'मंथली एडमिशन्स और डेली अटेंडेंस ट्रेंड्स'
+                : 'Monthly intake volume & daily attendance rate'
             }
             actions={
               <div className="flex items-center gap-2 flex-wrap">
@@ -176,7 +176,7 @@ function StatisticsPage() {
                     variant="outline"
                     className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
                   >
-                    {isHindi ? 'अटेंडेंस रजिस्टर ↗' : 'Attendance Register ↗'}
+                    {isHindi ? 'अटेंडेंस ↗' : 'Attendance ↗'}
                   </VFButton>
                 </Link>
                 <Link to="/admissions">
@@ -185,16 +185,16 @@ function StatisticsPage() {
                     variant="outline"
                     className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
                   >
-                    {isHindi ? 'एडमिशन्स रिकॉर्ड ↗' : 'Admissions Intake ↗'}
+                    {isHindi ? 'एडमिशन्स ↗' : 'Admissions ↗'}
                   </VFButton>
                 </Link>
               </div>
             }
             className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
-            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-4"
+            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-3"
           >
-            {/* Trajectory Graphic Visual Bars with Smooth Trendline */}
-            <div className="space-y-3 pt-1">
+            {/* Trajectory Graphic Visual Bars with Full Height Utilization */}
+            <div className="space-y-3 pt-1 flex-1 flex flex-col justify-between">
               <div className="flex items-center justify-between text-xs text-muted-foreground pb-1 border-b border-[#202020]">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
@@ -209,31 +209,31 @@ function StatisticsPage() {
                 <span className="text-[11px] font-mono text-muted-foreground">Session AY 2026–27</span>
               </div>
 
-              {/* Responsive Metric Visual Track */}
-              <div className="grid grid-cols-6 gap-2 sm:gap-3 items-end pt-4 h-48">
+              {/* Responsive Full-Height Metric Visual Track */}
+              <div className="grid grid-cols-6 gap-2 sm:gap-3.5 items-stretch pt-2 flex-1 min-h-[220px]">
                 {monthlyTrends.map((m, idx) => {
-                  const intakeHeight = Math.round((m.intake / 350) * 100);
-                  const attHeight = Math.round(((m.attendance - 85) / 15) * 100);
+                  const intakeHeight = Math.max(12, Math.round((m.intake / 350) * 100));
+                  const attHeight = Math.max(15, Math.round(((m.attendance - 80) / 20) * 100));
                   return (
-                    <div key={idx} className="flex flex-col items-center justify-end h-full gap-2 group/bar">
-                      <div className="text-[10px] font-mono text-muted-foreground opacity-70 group-hover/bar:opacity-100 transition-opacity">
+                    <div key={idx} className="flex flex-col items-center justify-end h-full gap-1.5 group/bar">
+                      <div className="text-[10.5px] font-mono font-bold text-emerald-400/90 group-hover/bar:text-emerald-400 transition-colors">
                         {m.attendance}%
                       </div>
-                      <div className="w-full flex items-end justify-center gap-1 h-32 bg-[#141414] rounded-[3px] p-1 border border-border/60">
+                      <div className="w-full flex items-end justify-center gap-1.5 flex-1 min-h-[160px] bg-[#141414] rounded-[3px] p-1.5 border border-border/60">
                         {/* Intake Bar */}
                         <div
                           style={{ height: `${intakeHeight}%` }}
-                          className="w-1/2 bg-gradient-to-t from-orange-600 to-primary rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110"
-                          title={`Intake: ${m.intake}`}
+                          className="w-1/2 bg-gradient-to-t from-orange-600 to-primary rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110 shadow-xs"
+                          title={`Intake: ${m.intake} Pupils`}
                         />
                         {/* Attendance Bar */}
                         <div
                           style={{ height: `${attHeight}%` }}
-                          className="w-1/2 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110"
+                          className="w-1/2 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110 shadow-xs"
                           title={`Attendance: ${m.attendance}%`}
                         />
                       </div>
-                      <span className="text-xs font-bold font-mono text-foreground">{m.month}</span>
+                      <span className="text-xs font-bold font-mono text-foreground shrink-0">{m.month}</span>
                     </div>
                   );
                 })}
@@ -267,7 +267,7 @@ function StatisticsPage() {
                 <span>{isHindi ? 'विंग अनुसार स्टूडेंट डिस्ट्रिब्यूशन' : 'Enrollment by Academic Wing'}</span>
               </div>
             }
-            description={isHindi ? '1,248 स्टूडेंट्स का विंग-वाइज़ ब्रेकअप' : 'Tier strength distribution across 1,248 enrolled pupils'}
+            description={isHindi ? 'विंग अनुसार स्टूडेंट एनरोलमेंट' : 'Student distribution across academic wings'}
             actions={
               <Link to="/students">
                 <VFButton
@@ -275,7 +275,7 @@ function StatisticsPage() {
                   variant="outline"
                   className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
                 >
-                  {isHindi ? 'स्टूडेंट डायरेक्टरी ↗' : 'Student Dossiers ↗'}
+                  {isHindi ? 'स्टूडेंट्स ↗' : 'Students ↗'}
                 </VFButton>
               </Link>
             }
@@ -285,8 +285,8 @@ function StatisticsPage() {
             {/* Modern Segmented Progress Stack */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-foreground">Total Capacity Allocation</span>
-                <span className="font-mono font-extrabold text-primary">1,248 Students (100%)</span>
+                <span className="font-bold text-foreground">Capacity Allocation</span>
+                <span className="font-mono font-extrabold text-primary">1,248 Pupils (100%)</span>
               </div>
               <div className="h-3.5 w-full bg-[#161616] rounded-[3px] overflow-hidden flex gap-0.5 p-0.5 border border-[#282828]">
                 {wingBreakdown.map((w, idx) => (
@@ -346,8 +346,8 @@ function StatisticsPage() {
             }
             description={
               isHindi
-                ? 'क्वार्टरली बजट एनालिसिस (कलेक्टेड बनाम टारगेट बजट)'
-                : 'Quarterly collection audit across ₹ Lakhs (Realized vs Annual Target)'
+                ? 'क्वार्टरली कलेक्शन एनालिसिस'
+                : 'Quarterly collection vs annual budget target'
             }
             actions={
               <div className="flex items-center gap-2">
@@ -403,8 +403,8 @@ function StatisticsPage() {
             }
             description={
               isHindi
-                ? 'बोर्ड एग्जाम रिजल्ट्स, मेरिट डिस्टिंक्शन और सब्जेक्ट-वाइज़ परफॉरमेंस'
-                : 'Board standings, merit honors, and subject distinction benchmarks'
+                ? 'बोर्ड रिजल्ट्स और मेरिट डिस्टिंक्शन'
+                : 'Board standings & merit honors'
             }
             actions={
               <Link to="/examinations">
