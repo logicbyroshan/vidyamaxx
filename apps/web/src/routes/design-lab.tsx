@@ -199,17 +199,17 @@ function DesignLabOverviewPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── TOP HEADER & LAUNCHER BAR ── */}
-      <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'डिजाइन लैब & डॉक्यूमेंट पब्लिशर (Design Lab & Card Studio)' : 'Design Lab & Document Publisher'}
+              {isHindi ? 'डिजाइन लैब & डॉक्यूमेंट पब्लिशर' : 'Design Lab & Document Publisher'}
             </h1>
-            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-primary border-primary/30">
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#1a1a1a] text-zinc-300 border-border/80">
               Port: {standalonePort}
             </VFBadge>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
             {isHindi
               ? 'स्टूडेंट स्मार्ट PVC आईडी कार्ड्स, CBSE मार्कशीट्स, एडमिट कार्ड्स और मेरिट सर्टिफिकेट्स का विजुअल डिज़ाइन स्टूडियो।'
               : 'Visual document generator for smart biometric PVC ID cards, CBSE report cards, admit cards & merit certificates.'}
@@ -221,7 +221,7 @@ function DesignLabOverviewPage() {
             size="sm"
             variant="outline"
             onClick={handlePrintSample}
-            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414]"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414] hover:border-zinc-700"
           >
             <Printer className="w-3.5 h-3.5 text-foreground" />
             <span>{isHindi ? 'सैंपल टेस्ट प्रिंट' : 'Print Sample'}</span>
@@ -250,8 +250,8 @@ function DesignLabOverviewPage() {
               }}
               className={`p-3 rounded-[4px] border text-left transition-all cursor-pointer flex flex-col justify-between group ${
                 isSelected
-                  ? 'bg-[#181818] border-primary/70 ring-1 ring-primary/40 shadow-xs'
-                  : 'bg-[#101010] border-border/80 hover:bg-[#141414] hover:border-zinc-500/40'
+                  ? 'bg-[#1c1c1c] border-zinc-500 shadow-xs'
+                  : 'bg-[#141414] border-border/80 hover:bg-[#181818] hover:border-zinc-700'
               }`}
             >
               <div className="flex items-center justify-between w-full mb-1">
@@ -260,7 +260,7 @@ function DesignLabOverviewPage() {
                 </span>
                 <span className="text-[10px] font-mono text-zinc-500">{tpl.dimensions.split(' ')[0]}</span>
               </div>
-              <p className={`text-xs font-bold line-clamp-1 ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+              <p className={`text-xs font-bold line-clamp-1 ${isSelected ? 'text-foreground' : 'text-foreground/90'}`}>
                 {isHindi ? tpl.hindiTitle : tpl.title}
               </p>
               <span className="text-[10.5px] text-muted-foreground mt-1 font-mono">
@@ -320,20 +320,20 @@ function DesignLabOverviewPage() {
               </div>
 
               {/* Theme palette selector */}
-              <div className="flex items-center gap-1 pl-2 border-l border-border/80">
+              <div className="flex items-center gap-1.5 pl-2 border-l border-border/80">
                 <button
                   onClick={() => setColorTheme('navy')}
-                  className={`w-4 h-4 rounded-full bg-blue-700 cursor-pointer border ${colorTheme === 'navy' ? 'border-white ring-1 ring-blue-500' : 'border-transparent'}`}
+                  className={`w-4 h-4 rounded-[3px] bg-blue-700 cursor-pointer border ${colorTheme === 'navy' ? 'border-white ring-1 ring-blue-500' : 'border-transparent'}`}
                   title="Navy Theme"
                 />
                 <button
                   onClick={() => setColorTheme('emerald')}
-                  className={`w-4 h-4 rounded-full bg-emerald-700 cursor-pointer border ${colorTheme === 'emerald' ? 'border-white ring-1 ring-emerald-500' : 'border-transparent'}`}
+                  className={`w-4 h-4 rounded-[3px] bg-emerald-700 cursor-pointer border ${colorTheme === 'emerald' ? 'border-white ring-1 ring-emerald-500' : 'border-transparent'}`}
                   title="Emerald Theme"
                 />
                 <button
                   onClick={() => setColorTheme('maroon')}
-                  className={`w-4 h-4 rounded-full bg-rose-800 cursor-pointer border ${colorTheme === 'maroon' ? 'border-white ring-1 ring-rose-500' : 'border-transparent'}`}
+                  className={`w-4 h-4 rounded-[3px] bg-rose-800 cursor-pointer border ${colorTheme === 'maroon' ? 'border-white ring-1 ring-rose-500' : 'border-transparent'}`}
                   title="Maroon Theme"
                 />
               </div>

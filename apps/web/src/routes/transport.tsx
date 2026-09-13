@@ -163,18 +163,18 @@ function TransportOverviewPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── TOP HEADER & LAUNCH BAR ── */}
-      <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'ट्रांसपोर्ट फ्लीट & लाइव टेलीमैटिक्स (Transport Fleet)' : 'Transport Fleet & Live Telematics'}
+              {isHindi ? 'ट्रांसपोर्ट फ्लीट & लाइव टेलीमैटिक्स' : 'Transport Fleet & Live Telematics'}
             </h1>
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-[3px] bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10.5px] font-mono font-bold">
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-emerald-500/30 text-emerald-400 text-[10.5px] font-mono font-bold">
               <Radio className="w-3 h-3 text-emerald-500 animate-pulse" />
               <span>ALL 4 BUSES ON ROAD · GPS LIVE</span>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
             {isHindi
               ? 'लाइव GPS बस टेलीमैटिक्स, स्टूडेंट RFID बोर्डिंग लॉग्स, रूट मैप और ड्राइवर रोस्टर।'
               : 'Live GPS bus telemetry, real-time student RFID boarding logs, speed governors & safety telemetry.'}
@@ -186,7 +186,7 @@ function TransportOverviewPage() {
             size="sm"
             variant="outline"
             onClick={() => handleLaunchTransport('/map')}
-            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414]"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414] hover:border-zinc-700"
           >
             <MapPin className="w-3.5 h-3.5 text-emerald-400" />
             <span>{isHindi ? 'लाइव मैप ट्रैकिंग' : 'Live Fleet Map'}</span>
@@ -204,43 +204,43 @@ function TransportOverviewPage() {
 
       {/* ── TELEMETRY HUD KPI CARDS ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="p-3 rounded-[4px] bg-[#121212] border border-border/80 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[3px] bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0">
+        <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-700 transition-colors flex items-center gap-3 shadow-xs">
+          <div className="w-10 h-10 rounded-[4px] bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
             <Bus className="w-5 h-5" />
           </div>
-          <div>
-            <p className="text-[10.5px] font-bold text-muted-foreground uppercase">{isHindi ? 'सक्रिय बसें' : 'Active Fleet'}</p>
-            <p className="text-sm sm:text-base font-extrabold text-foreground font-mono">4 / 4 on Route</p>
+          <div className="min-w-0">
+            <p className="text-xs font-bold text-muted-foreground uppercase">{isHindi ? 'सक्रिय बसें' : 'Active Fleet'}</p>
+            <p className="text-base sm:text-lg font-black text-foreground font-mono truncate">4 / 4 on Route</p>
           </div>
         </div>
 
-        <div className="p-3 rounded-[4px] bg-[#121212] border border-border/80 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[3px] bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0">
+        <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-700 transition-colors flex items-center gap-3 shadow-xs">
+          <div className="w-10 h-10 rounded-[4px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
             <Users className="w-5 h-5" />
           </div>
-          <div>
-            <p className="text-[10.5px] font-bold text-muted-foreground uppercase">{isHindi ? 'स्टूडेंट्स बोर्डेड' : 'Boarded RFID'}</p>
-            <p className="text-sm sm:text-base font-extrabold text-foreground font-mono">{totalBoarded} / {totalCapacity}</p>
+          <div className="min-w-0">
+            <p className="text-xs font-bold text-muted-foreground uppercase">{isHindi ? 'स्टूडेंट्स बोर्डेड' : 'Boarded RFID'}</p>
+            <p className="text-base sm:text-lg font-black text-foreground font-mono truncate">{totalBoarded} / {totalCapacity}</p>
           </div>
         </div>
 
-        <div className="p-3 rounded-[4px] bg-[#121212] border border-border/80 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[3px] bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0">
+        <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-700 transition-colors flex items-center gap-3 shadow-xs">
+          <div className="w-10 h-10 rounded-[4px] bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
             <Gauge className="w-5 h-5" />
           </div>
-          <div>
-            <p className="text-[10.5px] font-bold text-muted-foreground uppercase">{isHindi ? 'औसत स्पीड' : 'Fleet Speed'}</p>
-            <p className="text-sm sm:text-base font-extrabold text-foreground font-mono">41.2 km/h (Safe)</p>
+          <div className="min-w-0">
+            <p className="text-xs font-bold text-muted-foreground uppercase">{isHindi ? 'औसत स्पीड' : 'Fleet Speed'}</p>
+            <p className="text-base sm:text-lg font-black text-foreground font-mono truncate">41.2 km/h (Safe)</p>
           </div>
         </div>
 
-        <div className="p-3 rounded-[4px] bg-[#121212] border border-border/80 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[3px] bg-purple-500/15 text-purple-400 flex items-center justify-center shrink-0">
+        <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-700 transition-colors flex items-center gap-3 shadow-xs">
+          <div className="w-10 h-10 rounded-[4px] bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <div>
-            <p className="text-[10.5px] font-bold text-muted-foreground uppercase">{isHindi ? 'सेफ्टी अपटाइम' : 'Safety Radar'}</p>
-            <p className="text-sm sm:text-base font-extrabold text-foreground font-mono">100% (No SOS)</p>
+          <div className="min-w-0">
+            <p className="text-xs font-bold text-muted-foreground uppercase">{isHindi ? 'सेफ्टी अपटाइम' : 'Safety Radar'}</p>
+            <p className="text-base sm:text-lg font-black text-foreground font-mono truncate">100% (No SOS)</p>
           </div>
         </div>
       </div>
@@ -287,7 +287,7 @@ function TransportOverviewPage() {
           {/* Driver & Telematics Quick Bar */}
           <div className="p-3 bg-[#121212] border-t border-border flex items-center justify-between text-xs flex-wrap gap-2">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#1e1e1e] border border-border flex items-center justify-center font-bold text-primary font-mono text-xs">
+              <div className="w-8 h-8 rounded-[4px] bg-[#1e1e1e] border border-border flex items-center justify-center font-bold text-primary font-mono text-xs">
                 {selectedRoute.driverName.split(' ')[0][0]}{selectedRoute.driverName.split(' ')[1]?.[0] || ''}
               </div>
               <div>

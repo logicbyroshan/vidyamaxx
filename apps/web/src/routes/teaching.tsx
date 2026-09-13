@@ -199,7 +199,7 @@ function TeachingPage() {
             className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            {isHindi ? '+ न्यू लेसन प्लान' : '+ New Lesson Plan'}
+            {isHindi ? 'न्यू लेसन प्लान' : 'New Lesson Plan'}
           </VFButton>
         </div>
       </div>
@@ -267,7 +267,7 @@ function TeachingPage() {
                       onClick={() => setActivePlan(p)}
                       className={`p-3.5 rounded-[4px] border cursor-pointer transition-all ${
                         isSelected
-                          ? 'bg-[#1c1c1c] border-primary/50 text-foreground shadow-xs'
+                          ? 'bg-[#1c1c1c] border-zinc-500 text-foreground shadow-xs'
                           : 'bg-card border-border/80 hover:bg-[#161616] text-muted-foreground'
                       }`}
                     >

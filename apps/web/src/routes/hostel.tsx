@@ -111,17 +111,17 @@ function HostelOverviewPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── TOP HEADER & LAUNCH BAR ── */}
-      <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'छात्रावास प्रबंधन & मेस ऑपरेशंस (Hostel & Residential Life)' : 'Hostel Management & Residential Life'}
+              {isHindi ? 'छात्रावास प्रबंधन & मेस ऑपरेशंस' : 'Hostel Management & Residential Life'}
             </h1>
-            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-emerald-400 border-emerald-500/30">
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#1a1a1a] text-emerald-400 border-emerald-500/30">
               Occupancy: 94.2% · Port: {standalonePort}
             </VFBadge>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
             {isHindi
               ? 'डोरमेट्री बेड आवंटन, फ्लोर मैप, दैनिक मेस मेनू और डिजिटल गेट आउटपास ट्रैकिंग।'
               : 'Interactive floor bed allocation, dormitory occupancy radar, daily mess nutrition & digital gate outpass.'}
@@ -133,9 +133,9 @@ function HostelOverviewPage() {
             size="sm"
             variant="outline"
             onClick={() => handleLaunchHostel('/outpass')}
-            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414]"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414] hover:border-zinc-700"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>{isHindi ? 'गेट आउटपास स्कैनर' : 'Gate Outpass Scanner'}</span>
           </VFButton>
           <VFButton
@@ -159,12 +159,12 @@ function HostelOverviewPage() {
               onClick={() => setActiveWing(wing.id)}
               className={`p-3.5 rounded-[4px] border text-left transition-all cursor-pointer flex flex-col justify-between group ${
                 isSelected
-                  ? 'bg-[#181818] border-primary/70 ring-1 ring-primary/40 shadow-xs'
-                  : 'bg-[#101010] border-border/80 hover:bg-[#141414] hover:border-zinc-500/40'
+                  ? 'bg-[#1c1c1c] border-zinc-500 shadow-xs'
+                  : 'bg-[#141414] border-border/80 hover:bg-[#181818] hover:border-zinc-700'
               }`}
             >
               <div className="flex items-center justify-between w-full mb-1">
-                <span className={`text-xs font-extrabold ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                <span className={`text-xs font-extrabold ${isSelected ? 'text-foreground' : 'text-foreground/90'}`}>
                   {isHindi ? wing.hindiName : wing.name}
                 </span>
                 <span className="text-[10.5px] font-mono font-bold text-emerald-400">
@@ -173,16 +173,16 @@ function HostelOverviewPage() {
               </div>
 
               {/* Progress Bar */}
-              <div className="w-full bg-[#1e1e1e] rounded-full h-1.5 overflow-hidden mt-2">
+              <div className="w-full bg-[#1e1e1e] rounded-[2px] h-1.5 overflow-hidden mt-2">
                 <div
-                  className="bg-emerald-500 h-full rounded-full"
+                  className="bg-emerald-500 h-full rounded-[2px]"
                   style={{ width: `${(wing.occupied / wing.capacity) * 100}%` }}
                 />
               </div>
 
               <div className="mt-2 text-[10.5px] font-mono text-muted-foreground flex justify-between">
                 <span>{wing.floors} Floors · {wing.totalRooms} Rooms</span>
-                <span className="text-primary font-bold">Floorplan ↗</span>
+                <span className="text-muted-foreground group-hover:text-foreground font-bold transition-colors">Floorplan ↗</span>
               </div>
             </button>
           );
@@ -193,18 +193,18 @@ function HostelOverviewPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         
         {/* ── LEFT: INTERACTIVE FLOOR BED GRID (8 cols) ── */}
-        <div className="lg:col-span-8 flex flex-col rounded-[4px] border border-border/90 bg-[#0d0d0d] shadow-md overflow-hidden">
+        <div className="lg:col-span-8 flex flex-col rounded-[4px] border border-border/80 bg-[#121212] shadow-xs overflow-hidden">
           
           {/* Floor Bar & Legend */}
-          <div className="p-3 bg-[#121212] border-b border-border flex items-center justify-between text-xs flex-wrap gap-2">
+          <div className="p-3 bg-[#141414] border-b border-border flex items-center justify-between text-xs flex-wrap gap-2">
             <div className="flex items-center gap-2">
               <span className="font-bold text-foreground font-mono">Floor Level:</span>
               {[1, 2, 3].map((fl) => (
                 <button
                   key={fl}
                   onClick={() => setSelectedFloor(fl)}
-                  className={`px-2.5 py-1 rounded text-xs font-mono font-bold cursor-pointer transition-colors ${
-                    selectedFloor === fl ? 'bg-primary text-white' : 'bg-[#1c1c1c] text-muted-foreground hover:text-foreground'
+                  className={`px-2.5 py-1 rounded-[3px] text-xs font-mono font-bold cursor-pointer transition-colors ${
+                    selectedFloor === fl ? 'bg-[#242424] text-foreground border border-border/80' : 'bg-[#181818] text-muted-foreground hover:text-foreground hover:bg-[#202020]'
                   }`}
                 >
                   Floor {fl}
@@ -215,13 +215,13 @@ function HostelOverviewPage() {
             {/* Bed Status Legend */}
             <div className="flex items-center gap-3 font-mono text-[10.5px]">
               <span className="flex items-center gap-1 text-emerald-400">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Occupied
+                <span className="w-2 h-2 rounded-[2px] bg-emerald-500" /> Occupied
               </span>
               <span className="flex items-center gap-1 text-blue-400">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" /> Vacant
+                <span className="w-2 h-2 rounded-[2px] bg-blue-500" /> Vacant
               </span>
               <span className="flex items-center gap-1 text-amber-400">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Maintenance
+                <span className="w-2 h-2 rounded-[2px] bg-amber-500" /> Maintenance
               </span>
             </div>
           </div>
@@ -384,7 +384,7 @@ function HostelOverviewPage() {
         >
           <div className="space-y-3 text-xs">
             <div className="p-3 rounded-[4px] bg-[#141414] border border-border flex items-center gap-3">
-              <img src={selectedBed.avatar || ''} alt="Student" className="w-12 h-12 rounded-full object-cover border-2 border-primary" />
+              <img src={selectedBed.avatar || ''} alt="Student" className="w-12 h-12 rounded-[4px] object-cover border border-border/80 shadow-xs" />
               <div>
                 <h3 className="font-extrabold text-sm text-foreground">{selectedBed.residentName}</h3>
                 <p className="text-muted-foreground font-mono text-[11px]">{selectedBed.residentRoll}</p>

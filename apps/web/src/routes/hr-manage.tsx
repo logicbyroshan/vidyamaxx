@@ -145,18 +145,18 @@ function HRManageOverviewPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── TOP HEADER & LAUNCH BAR ── */}
-      <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'एचआर प्रबंधन & स्टाफ रोस्टर (HR Management)' : 'HR Operations & Faculty Staff Roster'}
+              {isHindi ? 'एचआर प्रबंधन & स्टाफ रोस्टर' : 'HR Operations & Faculty Staff Roster'}
             </h1>
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-[3px] bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10.5px] font-mono font-bold">
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-emerald-500/30 text-emerald-400 text-[10.5px] font-mono font-bold">
               <Fingerprint className="w-3 h-3 text-emerald-400" />
               <span>BIOMETRIC TERMINAL ONLINE</span>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
             {isHindi
               ? 'फैकल्टी अटेंडेंस, बायोमेट्रिक RFID टाइम-क्लॉक, पेरोल वेतन लेजर और स्टाफ लीव मैनेजमेंट।'
               : 'Faculty attendance, real-time biometric RFID time-clock terminal, shift roster & payroll processing.'}
@@ -168,7 +168,7 @@ function HRManageOverviewPage() {
             size="sm"
             variant="outline"
             onClick={handleSimulatePunch}
-            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414]"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414] hover:border-zinc-700"
           >
             <Fingerprint className="w-3.5 h-3.5 text-emerald-400" />
             <span>{isHindi ? 'RFID पंच सिम्युलेट करें' : 'Test RFID Punch'}</span>
@@ -193,8 +193,8 @@ function HRManageOverviewPage() {
               onClick={() => setSelectedDept(dept)}
               className={`px-3 py-1 rounded-[3px] text-xs font-bold transition-all cursor-pointer ${
                 selectedDept === dept
-                  ? 'bg-primary text-primary-foreground shadow-xs'
-                  : 'bg-[#141414] text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a] border border-border/60'
+                  ? 'bg-[#242424] text-foreground font-bold shadow-xs border border-border/80'
+                  : 'bg-[#141414] text-muted-foreground font-semibold hover:text-foreground hover:bg-[#1a1a1a] border border-border/60'
               }`}
             >
               {dept}
@@ -217,7 +217,7 @@ function HRManageOverviewPage() {
               <div
                 key={staff.id}
                 onClick={() => setSelectedStaff(staff)}
-                className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xs space-y-3"
+                className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-700 transition-all cursor-pointer flex flex-col justify-between group shadow-xs space-y-3"
               >
                 <div className="flex items-start gap-3">
                   <img
@@ -227,7 +227,7 @@ function HRManageOverviewPage() {
                   />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono text-primary font-bold">{staff.id}</span>
+                      <span className="text-[10px] font-mono text-zinc-400 font-bold">{staff.id}</span>
                       <VFBadge
                         variant={staff.dutyStatus === 'On-Duty' ? 'success' : staff.dutyStatus === 'On Leave' ? 'warning' : 'secondary'}
                         className="text-[9.5px]"
@@ -235,7 +235,7 @@ function HRManageOverviewPage() {
                         {staff.dutyStatus}
                       </VFBadge>
                     </div>
-                    <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                    <h3 className="text-xs font-bold text-foreground transition-colors truncate">
                       {staff.name}
                     </h3>
                     <p className="text-[11px] text-muted-foreground truncate">{staff.designation}</p>
