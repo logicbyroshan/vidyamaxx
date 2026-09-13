@@ -1360,10 +1360,11 @@ function ExaminationsPage() {
                             <button
                               type="button"
                               onClick={() => setSeatingModalPaper(paper)}
-                              className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border/70 text-[11px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
+                              title={isHindi ? 'सिटिंग व्यवस्था' : 'Seating Plan'}
+                              aria-label={isHindi ? 'सिटिंग व्यवस्था' : 'Seating Plan'}
+                              className="h-6 w-6 rounded-[3px] bg-[#1a1a1a] hover:bg-[#252525] border border-border/70 text-amber-400 hover:text-amber-300 flex items-center justify-center cursor-pointer transition-colors"
                             >
                               <MapPin className="h-3 w-3" />
-                              <span>{isHindi ? 'सिटिंग व्यवस्था' : 'Seating'}</span>
                             </button>
                           </div>
                         </div>

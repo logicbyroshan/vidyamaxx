@@ -531,13 +531,14 @@ function NoticesPage() {
       accessorKey: 'action',
       cell: (r: NoticeRecord) => (
         <VFButton
-          size="sm"
+          size="icon"
           variant="outline"
-          leftIcon={<Eye className="h-3.5 w-3.5" />}
-          className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px]"
+          title={isHindi ? 'देखें' : 'View'}
+          aria-label={isHindi ? 'देखें' : 'View'}
           onClick={() => setSelectedNotice(r)}
         >
-          {isHindi ? 'देखें' : 'View'}
+          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
         </VFButton>
       ),
     },

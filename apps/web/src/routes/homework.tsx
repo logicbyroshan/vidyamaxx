@@ -629,13 +629,14 @@ function HomeworkPage() {
                       </VFTableCell>
                       <VFTableCell className="py-2.5 px-3 text-right">
                         <VFButton
-                          size="sm"
+                          size="icon"
                           variant="outline"
-                          className="h-7 px-2 text-[11px] font-bold rounded-[3px]"
-                          leftIcon={<Eye className="h-3 w-3" />}
+                          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px] ml-auto"
+                          title={isHindi ? 'असाइनमेंट देखें' : 'View Homework Details'}
+                          aria-label={isHindi ? 'असाइनमेंट देखें' : 'View Homework Details'}
                           onClick={() => setDetailHW(hw)}
                         >
-                          View
+                          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
                         </VFButton>
                       </VFTableCell>
                     </VFTableRow>

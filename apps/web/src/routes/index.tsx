@@ -609,12 +609,13 @@ export function DashboardPage() {
             actions={
               <Link to="/attendance">
                 <VFButton
-                  size="sm"
+                  size="icon"
                   variant="outline"
-                  className="h-8 px-2.5 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs rounded-[4px]"
-                  leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />}
+                  className="h-7 w-7 bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs rounded-[4px]"
+                  title={isHindi ? 'व्यू ऑल अटेंडेंस' : 'View All Attendance'}
+                  aria-label={isHindi ? 'व्यू ऑल अटेंडेंस' : 'View All Attendance'}
                 >
-                  {isHindi ? 'व्यू ऑल' : 'View All'}
+                  <SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />
                 </VFButton>
               </Link>
             }
@@ -733,12 +734,13 @@ export function DashboardPage() {
             actions={
               <Link to="/shortcuts">
                 <VFButton
-                  size="sm"
+                  size="icon"
                   variant="outline"
-                  className="h-8 px-2.5 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs rounded-[4px]"
-                  leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />}
+                  className="h-7 w-7 bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs rounded-[4px]"
+                  title={t('action.edit')}
+                  aria-label={t('action.edit')}
                 >
-                  {t('action.edit')}
+                  <SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />
                 </VFButton>
               </Link>
             }

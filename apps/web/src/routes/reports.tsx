@@ -551,22 +551,24 @@ function ReportsPage() {
       headerClassName: 'text-right',
       className: 'text-right',
       cell: (r: ReportCatalogItem) => (
-        <div className="flex items-center gap-2 justify-end">
+        <div className="flex items-center gap-1.5 justify-end">
           <VFButton
-            size="sm"
+            size="icon"
             variant="outline"
-            className="h-8 px-2.5 text-xs font-bold rounded-[4px] bg-[#181818] hover:bg-[#222222] border-border text-foreground shadow-xs shrink-0"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
+            className="h-7 w-7 rounded-[4px] bg-[#181818] hover:bg-[#222222] border-border text-foreground shadow-xs shrink-0"
+            title={isHindi ? 'डाउनलोड' : 'Download Report'}
+            aria-label={isHindi ? 'डाउनलोड' : 'Download Report'}
             onClick={() => handleInstantRowExport(r)}
           >
-            {isHindi ? 'डाउनलोड' : 'Download'}
+            <Download className="h-3.5 w-3.5" />
           </VFButton>
           <VFButton
-            size="sm"
+            size="icon"
             variant="outline"
-            className="h-8 w-8 p-0 rounded-[4px] bg-[#181818] hover:bg-[#222222] border-border text-zinc-400 hover:text-foreground flex items-center justify-center shadow-xs transition-colors shrink-0 cursor-pointer"
+            className="h-7 w-7 rounded-[4px] bg-[#181818] hover:bg-[#222222] border-border text-zinc-400 hover:text-foreground shadow-xs transition-colors shrink-0 cursor-pointer"
             onClick={() => handleOpenDrawerWithDomain(r.domain)}
             title={isHindi ? "कस्टम पैरामीटर कॉन्फ़िगर करें" : "Configure custom criteria"}
+            aria-label={isHindi ? "कस्टम पैरामीटर कॉन्फ़िगर करें" : "Configure custom criteria"}
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />
           </VFButton>

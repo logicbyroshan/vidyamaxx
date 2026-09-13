@@ -1263,12 +1263,14 @@ function AdmissionsPage() {
       accessorKey: 'action',
       cell: (r: Applicant) => (
         <VFButton
-          size="sm"
+          size="icon"
           variant="outline"
-          leftIcon={<Eye className="h-4 w-4" />}
+          className="h-7 w-7 border-border hover:border-zinc-500 rounded-[4px]"
+          title={isHindi ? 'एप्लिकेशन रिव्यू करें' : 'Review Application'}
+          aria-label={isHindi ? 'एप्लिकेशन रिव्यू करें' : 'Review Application'}
           onClick={() => openApplicantDrawer(r)}
         >
-          {isHindi ? 'एप्लिकेशन रिव्यू करें' : 'Review Application'}
+          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
         </VFButton>
       ),
     },

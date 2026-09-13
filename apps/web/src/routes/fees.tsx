@@ -854,22 +854,24 @@ function FeesPage() {
         <div className="flex items-center gap-1.5">
           {r.dueAmount > 0 ? (
             <VFButton
-              size="sm"
-              className="h-8 px-3 text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-xs rounded-[4px]"
-              leftIcon={<CreditCard className="h-3.5 w-3.5" />}
+              size="icon"
+              className="h-7 w-7 bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-xs rounded-[4px] shrink-0"
+              title={t('action.payNow')}
+              aria-label={t('action.payNow')}
               onClick={() => openStudentFeeDrawer(r, 'pay')}
             >
-              {t('action.payNow')}
+              <CreditCard className="h-3.5 w-3.5" />
             </VFButton>
           ) : (
             <VFButton
-              size="sm"
+              size="icon"
               variant="outline"
-              className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
-              leftIcon={<Receipt className="h-3.5 w-3.5" />}
+              className="h-7 w-7 bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px] shrink-0"
+              title={t('col.receipt')}
+              aria-label={t('col.receipt')}
               onClick={() => openStudentFeeDrawer(r, 'history')}
             >
-              {t('col.receipt')}
+              <Receipt className="h-3.5 w-3.5" />
             </VFButton>
           )}
 
@@ -877,8 +879,9 @@ function FeesPage() {
             <button
               type="button"
               title={isHindi ? "व्हाट्सएप पेमेंट रिमाइंडर भेजें" : "Send WhatsApp Payment Reminder"}
+              aria-label={isHindi ? "व्हाट्सएप पेमेंट रिमाइंडर भेजें" : "Send WhatsApp Payment Reminder"}
               onClick={() => handleSendIndividualReminder(r)}
-              className="h-8 w-8 rounded-[4px] bg-[#1a1a1a] hover:bg-[#242424] border border-border flex items-center justify-center text-zinc-400 hover:text-emerald-400 transition-colors"
+              className="h-7 w-7 rounded-[4px] bg-[#1a1a1a] hover:bg-[#242424] border border-border flex items-center justify-center text-zinc-400 hover:text-emerald-400 transition-colors shrink-0 cursor-pointer"
             >
               <Bell className="h-3.5 w-3.5" />
             </button>
