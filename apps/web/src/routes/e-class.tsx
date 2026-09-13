@@ -186,18 +186,18 @@ function EClassOverviewPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── TOP HEADER & LAUNCH BAR ── */}
-      <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'ई-क्लास & डिजिटल ब्रॉडकास्ट स्टूडियो (E-Classroom)' : 'E-Classroom & Digital Broadcast Studio'}
+              {isHindi ? 'ई-क्लास & डिजिटल ब्रॉडकास्ट स्टूडियो' : 'E-Classroom & Digital Broadcast Studio'}
             </h1>
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-[3px] bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[10.5px] font-bold">
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-rose-500/30 text-rose-400 text-[10.5px] font-bold">
               <Radio className="w-3 h-3 animate-pulse text-rose-500" />
               <span>LIVE BROADCAST READY</span>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
             {isHindi
               ? 'डिजिटल स्मार्ट बोर्ड स्क्रीनकास्ट, लाइव लेक्चर ब्रॉडकास्ट, रिकॉर्डिंग वॉल्ट और AI लेक्चर नोट्स।'
               : 'Interactive smart board screencasting, live classroom streaming, lecture video vault & AI summary notes.'}
@@ -209,7 +209,7 @@ function EClassOverviewPage() {
             size="sm"
             variant="outline"
             onClick={() => handleLaunchEClass('/live')}
-            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414]"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414] hover:border-zinc-700"
           >
             <Video className="w-3.5 h-3.5 text-rose-400" />
             <span>{isHindi ? 'लाइव क्लास स्टार्ट करें' : 'Start Live Class'}</span>
@@ -227,13 +227,13 @@ function EClassOverviewPage() {
 
       {/* ── WORKSPACE MODE TABS ── */}
       <div className="flex items-center justify-between border-b border-border/80 pb-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
           <button
             onClick={() => setActiveTab('live-studio')}
-            className={`px-3 py-1.5 rounded-[4px] text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'live-studio'
-                ? 'bg-primary text-primary-foreground shadow-xs'
-                : 'bg-[#141414] text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a] border border-border/60'
+                ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             <Monitor className="w-3.5 h-3.5" />
@@ -241,15 +241,15 @@ function EClassOverviewPage() {
           </button>
           <button
             onClick={() => setActiveTab('recordings')}
-            className={`px-3 py-1.5 rounded-[4px] text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'recordings'
-                ? 'bg-primary text-primary-foreground shadow-xs'
-                : 'bg-[#141414] text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a] border border-border/60'
+                ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             <Play className="w-3.5 h-3.5" />
             <span>{isHindi ? 'लेक्चर रिकॉर्डिंग्स & AI नोट्स' : 'Lecture Vault & AI Notes'}</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px] font-mono font-bold">
+            <span className="px-1.5 py-0.2 rounded-[2px] bg-white/10 text-[10px] font-mono font-bold">
               {LECTURE_VAULT.length}
             </span>
           </button>
@@ -458,7 +458,7 @@ function EClassOverviewPage() {
               <div
                 key={lec.id}
                 onClick={() => setSelectedLecture(lec)}
-                className="rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group overflow-hidden shadow-xs"
+                className="rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-700 transition-all cursor-pointer flex flex-col justify-between group overflow-hidden shadow-xs"
               >
                 {/* Thumbnail Container */}
                 <div className="relative aspect-video w-full bg-black overflow-hidden">
@@ -472,12 +472,12 @@ function EClassOverviewPage() {
                     {lec.duration}
                   </div>
                   {/* Subject Tag */}
-                  <div className="absolute top-2 left-2 px-2 py-0.5 rounded-[2px] bg-primary/90 text-primary-foreground font-mono text-[9.5px] font-bold uppercase">
+                  <div className="absolute top-2 left-2 px-2 py-0.5 rounded-[2px] bg-[#1a1a1a] text-zinc-300 border border-border font-mono text-[9.5px] font-bold uppercase">
                     {lec.subject}
                   </div>
                   {/* Play Hover Overlay */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg">
+                    <div className="w-10 h-10 rounded-[4px] bg-primary text-primary-foreground flex items-center justify-center shadow-lg">
                       <Play className="w-4 h-4 fill-current ml-0.5" />
                     </div>
                   </div>
@@ -486,7 +486,7 @@ function EClassOverviewPage() {
                 {/* Video Info */}
                 <div className="p-3 space-y-2 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                    <h3 className="text-xs font-bold text-foreground line-clamp-2 leading-tight">
                       {isHindi ? lec.hindiTitle : lec.title}
                     </h3>
                     <p className="text-[11px] text-muted-foreground mt-1 line-clamp-2">
@@ -496,7 +496,7 @@ function EClassOverviewPage() {
 
                   <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[10.5px] text-muted-foreground">
                     <div className="flex items-center gap-1.5">
-                      <img src={lec.avatar} alt={lec.teacher} className="w-4 h-4 rounded-full object-cover" />
+                      <img src={lec.avatar} alt={lec.teacher} className="w-4 h-4 rounded-[2px] object-cover" />
                       <span className="truncate max-w-[110px]">{lec.teacher}</span>
                     </div>
                     <span className="font-mono">{lec.views} views</span>

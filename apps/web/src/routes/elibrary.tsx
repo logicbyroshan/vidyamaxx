@@ -190,18 +190,18 @@ function ELibraryOverviewPage() {
 
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
-      {/* ── TOP HEADER & LAUNCHER BAR ── */}
-      <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      {/* ── TOP HEADER & LAUNCH BAR ── */}
+      <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'ई-लाइब्रेरी & NCERT डिजिटल रिपोजिटरी (E-Library)' : 'E-Library & NCERT Digital Repository'}
+              {isHindi ? 'ई-लाइब्रेरी & NCERT डिजिटल रिपोजिटरी' : 'E-Library & NCERT Digital Repository'}
             </h1>
-            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-purple-400 border-purple-500/30">
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#1a1a1a] text-purple-400 border-purple-500/30">
               DIKSHA Integrated · Port: {standalonePort}
             </VFBadge>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
             {isHindi
               ? 'कक्षा 6 से 12 की आधिकारिक NCERT डिजिटल पाठ्यपुस्तकें, इंटरएक्टिव बुक रीडर और डिजिटल सर्कुलेशन लेजर।'
               : 'Official NCERT digital textbooks for classes 6–12, interactive in-browser book reader & borrowing circulation ledger.'}
@@ -213,7 +213,7 @@ function ELibraryOverviewPage() {
             size="sm"
             variant="outline"
             onClick={() => setActiveBookForReader(NCERT_BOOKSHELF[0])}
-            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414]"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414] hover:border-zinc-700"
           >
             <BookOpen className="w-3.5 h-3.5 text-purple-400" />
             <span>{isHindi ? 'रीडर लॉन्च करें' : 'Launch In-App Reader'}</span>
@@ -238,8 +238,8 @@ function ELibraryOverviewPage() {
               onClick={() => setSelectedGrade(grd)}
               className={`px-3 py-1 rounded-[3px] text-xs font-bold transition-all cursor-pointer ${
                 selectedGrade === grd
-                  ? 'bg-primary text-primary-foreground shadow-xs'
-                  : 'bg-[#141414] text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a] border border-border/60'
+                  ? 'bg-[#242424] text-foreground font-bold shadow-xs border border-border/80'
+                  : 'bg-[#141414] text-muted-foreground font-semibold hover:text-foreground hover:bg-[#1a1a1a] border border-border/60'
               }`}
             >
               {grd}
@@ -261,7 +261,7 @@ function ELibraryOverviewPage() {
             {filteredBooks.map((book) => (
               <div
                 key={book.id}
-                className="rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all p-3.5 flex gap-3.5 group shadow-xs cursor-pointer"
+                className="rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-700 transition-all p-3.5 flex gap-3.5 group shadow-xs cursor-pointer"
                 onClick={() => setActiveBookForReader(book)}
               >
                 {/* Visual Book Spine / Cover Mockup */}
@@ -288,7 +288,7 @@ function ELibraryOverviewPage() {
                 <div className="flex-1 flex flex-col justify-between min-w-0">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono font-bold text-primary uppercase">
+                      <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase">
                         {book.subject}
                       </span>
                       <span className="text-[10px] font-mono text-muted-foreground flex items-center gap-1">
@@ -297,7 +297,7 @@ function ELibraryOverviewPage() {
                       </span>
                     </div>
 
-                    <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                    <h3 className="text-xs font-bold text-foreground line-clamp-2 leading-tight">
                       {isHindi ? book.hindiTitle : book.title}
                     </h3>
                     <p className="text-[11px] text-muted-foreground line-clamp-2">
