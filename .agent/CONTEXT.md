@@ -147,7 +147,7 @@ src/
 
 ---
 
-## 5. Important Conventions & Constraints
+## 5. Important Conventions, Design System & UI Tokens
 
 1. **Desktop-Only Viewport Requirement**:
    * The web application requires a minimum screen width of **1000px**.
@@ -156,19 +156,29 @@ src/
    * The top Navbar (`Header.tsx`) and Sidebar brand header (`Sidebar.tsx`) are strictly locked to `h-[72px]`.
 3. **Bilingual Localization (i18n)**:
    * All user-facing UI labels must use the `useTranslation` hook (`en` / `hi`).
-   * Single font for both locales: **Mukta** (humanist sans covering Latin + Devanagari).
-4. **Sharp Border Radius Rule** (strict — see AGENTS.md):
-   * Never use `rounded-xl`, `rounded-2xl`, `rounded-3xl`. Maximum allowed: `rounded-md` (≈6px) for containers, `rounded-sm`/`rounded-[4px]` preferred.
-5. **Component Library First**:
-   * Always use `@vidyamaxx/ui` primitives (`VFCard`, `VFButton`, `VFBadge`, `VFTable`, `VFDataTable`, `VFDialog`, `VFTabs`, `VFStatCard`, etc.) instead of re-implementing custom HTML.
-6. **Zero Secrets & Credentials**:
-   * User IDs, passwords, API tokens, private keys, and `.env` files must NEVER be committed or pushed. Mock state must use generic placeholders.
-7. **Single-Level Divided Hierarchy**:
-   * Avoid deep nested card boxes; prefer flat, border-divided lists (`divide-y divide-border`) on `VFCard`.
-8. **Globally Dark Mode**:
-   * Theme is permanently dark. `initTheme()` in `globalStore.ts` forces `.dark` class on `<html>`. No light mode toggle exists.
-9. **Mandatory Branching & GitHub CLI PR Workflow** (strict — see AGENTS.md Rule 8):
-   * NEVER commit or push directly to `main`. Every change must be developed on an isolated branch (`fix/*` or `feature/*`), verified with tests and secrets audit, pushed to `origin`, and submitted via `gh pr create`. Direct commits to `main` are strictly prohibited.
+   * Single font for both locales: **Mukta** (humanist sans covering Latin + Devanagari). Loaded via Google Fonts and bound to `--ui-font`.
+4. **Sharp Geometric Border Radius Rule** (strict — see AGENTS.md Rule 7):
+   * Never use bubbly or excessive radius (`rounded-xl`, `rounded-2xl`, `rounded-3xl`, `rounded-full` except icon plates or status indicators).
+   * Strict sharp geometry: `rounded-[4px]`, `rounded-[3px]`, `rounded-[2px]`, or `rounded-sm`. Cards, dialogs, tables, buttons, and inputs must maintain crisp geometric edges.
+5. **Subtle Grey Hover System (Zero Orange Hover Clutter)**:
+   * Interactive hover and active focus states must use subtle grey accents (`hover:border-zinc-700`, `hover:bg-[#181818]`, active selector `bg-[#1c1c1c] border-zinc-500`).
+   * Avoid aggressive orange hover outlines across cards, table rows, and buttons.
+6. **Unified Top Toolbar Architecture (`VFPageToolbar`)**:
+   * All modules must use `@vidyamaxx/ui`'s `VFPageToolbar` primitive (`p-3 rounded-[4px] bg-[#141414] border border-border/80 shadow-xs`) to house contextual tabs, action buttons, and filters uniformly.
+7. **Universal Table Layout & Alignment Standards**:
+   * Tables must stretch `w-full min-w-full` across the available container, scrolling horizontally without visible scrollbars (`no-scrollbar`).
+   * **Column Alignment**: Text and identity columns (names, emails, subjects) are left-aligned; codes, student counts, period counts, percentages, statuses, and action buttons must be centered.
+   * **Text Truncation**: Wide text cells must use `max-w-[180px] truncate` with native `title="..."` attributes to avoid column explosion.
+8. **In-Bar Progress Metrics**:
+   * Numeric percentages in progress meters must be rendered directly inside the bar, eliminating redundant lines of explanatory text underneath.
+9. **Component Library First**:
+   * Always use `@vidyamaxx/ui` primitives (`VFCard`, `VFPageToolbar`, `VFButton`, `VFBadge`, `VFTable`, `VFDataTable`, `VFDialog`, `VFTabs`, `VFStatCard`, etc.) instead of re-implementing bespoke HTML duplicates.
+10. **Zero Secrets & Credentials (NEVER PUSH ID/PASS)**:
+    * User IDs, passwords, API tokens, private keys, and `.env` files must NEVER be committed or pushed. Mock state must use generic placeholders.
+11. **Globally Dark Mode**:
+    * Theme is permanently dark. `initTheme()` in `globalStore.ts` forces `.dark` class on `<html>`. No light mode toggle exists.
+12. **Mandatory Branching & GitHub CLI PR Workflow** (strict — see AGENTS.md Rule 8):
+    * NEVER commit or push directly to `main`. Every change must be developed on an isolated branch (`fix/*` or `feature/*`), verified with tests and secrets audit, pushed to `origin`, submitted via `gh pr create`, and merged via `gh pr merge --merge`. Direct commits to `main` are strictly prohibited.
 
 ---
 

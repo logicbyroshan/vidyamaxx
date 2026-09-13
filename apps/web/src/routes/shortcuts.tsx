@@ -194,7 +194,7 @@ function ShortcutsConfigPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* Top Header & Navigation Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-lg border border-border bg-[#101010] shadow-xs shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-[4px] border border-border/80 bg-[#141414] shadow-xs shrink-0">
         <div className="flex items-center gap-3">
           <Link to="/">
             <VFButton
@@ -302,7 +302,7 @@ function ShortcutsConfigPage() {
                   <div
                     key={action.id}
                     className={cn(
-                      "p-2.5 rounded-lg border transition-all flex items-center justify-between gap-3 shadow-xs",
+                      "p-2.5 rounded-[4px] border transition-all flex items-center justify-between gap-3 shadow-xs",
                       isActive
                         ? "bg-[#141414] border-[#2c2c2c] hover:border-[#3a3a3a]"
                         : "bg-[#0f0f0f] border-border/60 hover:border-border opacity-75 hover:opacity-100"
@@ -407,7 +407,7 @@ function ShortcutsConfigPage() {
                   return (
                     <div
                       key={action.id}
-                      className="p-3 rounded-lg border border-border/80 bg-[#141414] hover:bg-[#1a1a1a] hover:border-[#383838] transition-all flex flex-col items-center justify-between text-center group shadow-xs select-none min-h-[108px] relative overflow-hidden"
+                      className="p-3 rounded-[4px] border border-border/80 bg-[#141414] hover:bg-[#1a1a1a] hover:border-zinc-700 transition-all flex flex-col items-center justify-between text-center group shadow-xs select-none min-h-[108px] relative overflow-hidden"
                     >
                       {/* Top bar with sequence number & reorder controls */}
                       <div className="w-full flex items-center justify-between text-[10px] text-muted-foreground mb-1">
@@ -471,9 +471,9 @@ function ShortcutsConfigPage() {
                   return (
                     <div
                       key={`empty-${emptyIdx}`}
-                      className="p-3 rounded-lg border border-dashed border-border/60 bg-[#0e0e0e]/50 flex flex-col items-center justify-center text-center select-none min-h-[108px] text-muted-foreground/60 space-y-1"
+                      className="p-3 rounded-[4px] border border-dashed border-border/60 bg-[#0e0e0e]/50 flex flex-col items-center justify-center text-center select-none min-h-[108px] text-muted-foreground/60 space-y-1"
                     >
-                      <div className="h-8 w-8 rounded-md border border-dashed border-border/60 flex items-center justify-center text-xs font-mono font-bold">
+                      <div className="h-8 w-8 rounded-[4px] border border-dashed border-border/60 flex items-center justify-center text-xs font-mono font-bold">
                         {slotNum}
                       </div>
                       <span className="text-[10px] font-semibold">

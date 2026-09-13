@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import {
   VFPageContainer,
+  VFPageToolbar,
   VFStatCard,
   VFDataTable,
   VFButton,
@@ -244,7 +245,7 @@ function OnlineClassesPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. Header Toolbar Box */}
-      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <VFPageToolbar>
         <div className="flex items-center gap-2">
           <div className="h-7 w-7 rounded-md bg-indigo-500/15 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/30">
             <Video className="h-4 w-4" />
@@ -267,7 +268,7 @@ function OnlineClassesPage() {
             {isHindi ? 'क्लास शुरू करें' : 'Launch Class'}
           </VFButton>
         </div>
-      </div>
+      </VFPageToolbar>
 
       <VFTabs
         items={submoduleTabs}

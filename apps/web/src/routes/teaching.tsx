@@ -4,6 +4,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
 import {
   VFPageContainer,
+  VFPageToolbar,
   VFButton,
   VFCard,
   VFBadge,
@@ -158,7 +159,7 @@ function TeachingPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── SINGLE UNIFIED HEADER (Consistent Standard Padding & Typography) ── */}
-      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <VFPageToolbar>
         {/* Left: Tab Switcher */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
@@ -202,7 +203,7 @@ function TeachingPage() {
             {isHindi ? 'न्यू लेसन प्लान' : 'New Lesson Plan'}
           </VFButton>
         </div>
-      </div>
+      </VFPageToolbar>
 
       {/* ──────────────────────────────────────────────────────────────────────────
           TAB 1: ASSIGNED CLASSES & WORKLOAD (Standardized Cell Padding & Hierarchy)
