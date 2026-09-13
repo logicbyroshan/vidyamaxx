@@ -570,8 +570,8 @@ function HomeworkPage() {
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-28 text-center" align="center">Code</VFTableHeaderCell>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">Homework</VFTableHeaderCell>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-24 text-center" align="center">Class</VFTableHeaderCell>
-                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-28">Due</VFTableHeaderCell>
-                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-40">Submitted</VFTableHeaderCell>
+                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-28 text-center" align="center">Due</VFTableHeaderCell>
+                <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-36 text-center" align="center">Submitted</VFTableHeaderCell>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-24 text-center" align="center">Status</VFTableHeaderCell>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-20 text-center" align="center">Action</VFTableHeaderCell>
               </VFTableRow>
@@ -603,20 +603,12 @@ function HomeworkPage() {
                       <VFTableCell className="py-2.5 px-3 font-mono text-[11px] text-muted-foreground">
                         {hw.dueDate}
                       </VFTableCell>
-                      <VFTableCell className="py-2.5 px-3">
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-[11px] font-mono font-bold">
-                            <span className="text-muted-foreground">{hw.submitted}/{hw.totalStudents}</span>
-                            <span className={pct >= 80 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-rose-400'}>
-                              {pct}%
-                            </span>
-                          </div>
-                          <div className="w-full h-1.5 rounded-[2px] bg-[#111] overflow-hidden border border-border/40">
-                            <div
-                              className={cn('h-full rounded-[2px]', pct >= 80 ? 'bg-emerald-400' : pct >= 50 ? 'bg-amber-400' : 'bg-rose-400')}
-                              style={{ width: `${pct}%` }}
-                            />
-                          </div>
+                      <VFTableCell className="py-2.5 px-3 text-center" align="center">
+                        <div className="font-mono text-xs font-bold">
+                          <span className="text-foreground">{hw.submitted}/{hw.totalStudents}</span>{' '}
+                          <span className={pct >= 80 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-rose-400'}>
+                            ({pct}%)
+                          </span>
                         </div>
                       </VFTableCell>
                       <VFTableCell className="py-2.5 px-3 text-center" align="center">

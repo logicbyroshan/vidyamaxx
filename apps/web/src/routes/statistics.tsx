@@ -3,7 +3,6 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFCard,
-  VFBadge,
   VFStatCard,
   VFButton,
 } from '@vidyamaxx/ui';
@@ -12,11 +11,10 @@ import {
   UserCheck,
   TrendingUp,
   CreditCard,
-  Sparkles,
   Award,
   School,
-  CheckCircle2,
   Layers,
+  ArrowUpRight,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -46,23 +44,15 @@ function StatisticsPage() {
 
   // Wing distribution data
   const wingBreakdown = [
-    { title: isHindi ? 'प्राइमरी विंग' : 'Primary Wing', grade: 'Grades 1 – 5', count: 430, pct: 34.5, color: '#3b82f6' },
-    { title: isHindi ? 'मिडिल स्कूल' : 'Middle School', grade: 'Grades 6 – 8', count: 374, pct: 30.0, color: '#06b6d4' },
-    { title: isHindi ? 'हाई स्कूल' : 'High School', grade: 'Grades 9 – 10', count: 250, pct: 20.0, color: '#10b981' },
-    { title: isHindi ? 'सीनियर सेकेंडरी' : 'Senior Secondary', grade: 'Grades 11 – 12', count: 194, pct: 15.5, color: '#f59e0b' },
-  ];
-
-  // Quarterly revenue realization
-  const quarterlyFeeData = [
-    { quarter: 'Q1 (Apr–Jun)', target: '₹ 85 L', collected: '₹ 80 L', pct: 94.1, status: 'Completed' },
-    { quarter: 'Q2 (Jul–Sep)', target: '₹ 95 L', collected: '₹ 92 L', pct: 96.8, status: 'Active' },
-    { quarter: 'Q3 (Oct–Dec)', target: '₹ 90 L', collected: '₹ 70 L', pct: 77.7, status: 'Upcoming' },
-    { quarter: 'Q4 (Jan–Mar)', target: '₹ 100 L', collected: '₹ 88 L', pct: 88.0, status: 'Projected' },
+    { title: isHindi ? 'प्राइमरी विंग' : 'Primary Wing', grade: 'Grades 1–5', count: 430, pct: 34.5, color: '#3b82f6' },
+    { title: isHindi ? 'मिडिल स्कूल' : 'Middle School', grade: 'Grades 6–8', count: 374, pct: 30.0, color: '#06b6d4' },
+    { title: isHindi ? 'हाई स्कूल' : 'High School', grade: 'Grades 9–10', count: 250, pct: 20.0, color: '#10b981' },
+    { title: isHindi ? 'सीनियर सेकेंडरी' : 'Senior Secondary', grade: 'Grades 11–12', count: 194, pct: 15.5, color: '#f59e0b' },
   ];
 
   return (
-    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
-      {/* 1. Top Executive KPI Metric Cards (Clickable Deep Links to Detailed Domains) */}
+    <VFPageContainer className="space-y-3.5">
+      {/* 1. Top Executive KPI Metric Cards (Clickable Deep Links) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
         <Link to="/students" className="block group focus:outline-hidden">
           <VFStatCard
@@ -110,96 +100,43 @@ function StatisticsPage() {
         </Link>
       </div>
 
-      {/* 2. Quick Domain Navigation Register (Direct jump to detailed functional pages) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-2.5 px-3 rounded-[4px] bg-[#0d0d0d] border border-border/80 text-xs">
-        <div className="flex items-center gap-2 shrink-0">
-          <Layers className="h-3.5 w-3.5 text-primary" />
-          <span className="font-bold text-foreground">
-            {isHindi ? 'डिटेल्ड रिकॉर्ड रजिस्टर:' : 'Detailed Registers & Reports:'}
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <Link to="/attendance">
-            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'अटेंडेंस' : 'Attendance'} ↗
-            </VFButton>
-          </Link>
-          <Link to="/admissions">
-            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'एडमिशन्स' : 'Admissions'} ↗
-            </VFButton>
-          </Link>
-          <Link to="/students">
-            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'स्टूडेंट डायरेक्टरी' : 'Students'} ↗
-            </VFButton>
-          </Link>
-          <Link to="/fees">
-            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'फीस लेजर' : 'Fee Ledgers'} ↗
-            </VFButton>
-          </Link>
-          <Link to="/examinations">
-            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'एग्जाम्स' : 'Exams'} ↗
-            </VFButton>
-          </Link>
-          <Link to="/academics">
-            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'क्लासेज' : 'Academics'} ↗
-            </VFButton>
-          </Link>
-        </div>
-      </div>
-
-      {/* 3. Section 1: Modern Attendance & Intake Trajectory + Wing Distribution */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Modern Interactive Trajectory Visual (7 cols) */}
+      {/* 2. Primary Analytical Visuals: Trajectory Chart (% inside bars) + Wing Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5">
+        {/* Trajectory Visual (7 cols) */}
         <div className="lg:col-span-7">
           <VFCard
             title={
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-emerald-400" />
-                <span>{isHindi ? 'अटेंडेंस & स्टूडेंट एडमिशन ट्रेंड्स' : 'Attendance & Intake Trajectory'}</span>
+                <span className="font-bold text-foreground">{isHindi ? 'अटेंडेंस & एडमिशन ट्रेंड्स' : 'Attendance & Intake Trajectory'}</span>
               </div>
             }
-            description={
-              isHindi
-                ? 'मंथली एडमिशन्स और डेली अटेंडेंस ट्रेंड्स'
-                : 'Monthly intake volume & daily attendance rate'
-            }
             actions={
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5">
                 <Link to="/attendance">
-                  <VFButton
-                    size="sm"
-                    variant="outline"
-                    className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
-                  >
-                    {isHindi ? 'अटेंडेंस ↗' : 'Attendance ↗'}
+                  <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                    <span>{isHindi ? 'अटेंडेंस' : 'Attendance'}</span>
+                    <ArrowUpRight className="h-3 w-3" />
                   </VFButton>
                 </Link>
                 <Link to="/admissions">
-                  <VFButton
-                    size="sm"
-                    variant="outline"
-                    className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
-                  >
-                    {isHindi ? 'एडमिशन्स ↗' : 'Admissions ↗'}
+                  <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                    <span>{isHindi ? 'एडमिशन्स' : 'Admissions'}</span>
+                    <ArrowUpRight className="h-3 w-3" />
                   </VFButton>
                 </Link>
               </div>
             }
             className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
-            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-3"
+            bodyClassName="p-3.5 flex-1 flex flex-col justify-between space-y-3"
           >
-            {/* Trajectory Graphic Visual Bars with Full Height Utilization */}
-            <div className="space-y-3 pt-1 flex-1 flex flex-col justify-between">
-              <div className="flex items-center justify-between text-xs text-muted-foreground pb-1 border-b border-[#202020]">
+            {/* Visual Track */}
+            <div className="space-y-2 pt-1 flex-1 flex flex-col justify-between">
+              <div className="flex items-center justify-between text-xs pb-1 border-b border-[#202020]">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
                     <span className="h-2.5 w-2.5 rounded-[2px] bg-primary" />
-                    New Student Intake (Pupils)
+                    Intake (Pupils)
                   </span>
                   <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
                     <span className="h-2.5 w-2.5 rounded-[2px] bg-emerald-400" />
@@ -209,29 +146,30 @@ function StatisticsPage() {
                 <span className="text-[11px] font-mono text-muted-foreground">Session AY 2026–27</span>
               </div>
 
-              {/* Responsive Full-Height Metric Visual Track */}
-              <div className="grid grid-cols-6 gap-2 sm:gap-3.5 items-stretch pt-2 flex-1 min-h-[220px]">
+              {/* Trajectory Bars with % INSIDE the attendance bars only */}
+              <div className="grid grid-cols-6 gap-2 sm:gap-3 items-stretch pt-2 flex-1 min-h-[170px]">
                 {monthlyTrends.map((m, idx) => {
-                  const intakeHeight = Math.max(12, Math.round((m.intake / 350) * 100));
-                  const attHeight = Math.max(15, Math.round(((m.attendance - 80) / 20) * 100));
+                  const intakeHeight = Math.max(14, Math.round((m.intake / 350) * 100));
+                  const attHeight = Math.max(26, Math.round(((m.attendance - 75) / 25) * 100));
                   return (
                     <div key={idx} className="flex flex-col items-center justify-end h-full gap-1.5 group/bar">
-                      <div className="text-[10.5px] font-mono font-bold text-emerald-400/90 group-hover/bar:text-emerald-400 transition-colors">
-                        {m.attendance}%
-                      </div>
-                      <div className="w-full flex items-end justify-center gap-1.5 flex-1 min-h-[160px] bg-[#141414] rounded-[3px] p-1.5 border border-border/60">
+                      <div className="w-full flex items-end justify-center gap-1.5 flex-1 min-h-[150px] bg-[#141414] rounded-[3px] p-1.5 border border-border/60">
                         {/* Intake Bar */}
                         <div
                           style={{ height: `${intakeHeight}%` }}
                           className="w-1/2 bg-gradient-to-t from-orange-600 to-primary rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110 shadow-xs"
                           title={`Intake: ${m.intake} Pupils`}
                         />
-                        {/* Attendance Bar */}
+                        {/* Attendance Bar with % INSIDE the bar */}
                         <div
                           style={{ height: `${attHeight}%` }}
-                          className="w-1/2 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110 shadow-xs"
+                          className="w-1/2 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110 shadow-xs flex flex-col items-center justify-start pt-1 overflow-hidden"
                           title={`Attendance: ${m.attendance}%`}
-                        />
+                        >
+                          <span className="text-[9.5px] font-mono font-black text-black leading-none select-none tracking-tight">
+                            {m.attendance}%
+                          </span>
+                        </div>
                       </div>
                       <span className="text-xs font-bold font-mono text-foreground shrink-0">{m.month}</span>
                     </div>
@@ -240,60 +178,56 @@ function StatisticsPage() {
               </div>
             </div>
 
-            {/* Quick Summary Highlights Footer */}
-            <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#202020] text-xs">
-              <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
+            {/* Quick Metrics Footer */}
+            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#202020] text-xs">
+              <div className="p-2 rounded-[3px] bg-[#141414] border border-[#242424] text-center">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold block">Peak Intake</span>
-                <span className="font-mono font-extrabold text-primary">340 Students</span>
+                <span className="font-mono font-extrabold text-primary text-xs sm:text-sm">340 Pupils</span>
               </div>
-              <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
+              <div className="p-2 rounded-[3px] bg-[#141414] border border-[#242424] text-center">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold block">Avg Attendance</span>
-                <span className="font-mono font-extrabold text-emerald-400">96.9%</span>
+                <span className="font-mono font-extrabold text-emerald-400 text-xs sm:text-sm">96.9%</span>
               </div>
-              <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
+              <div className="p-2 rounded-[3px] bg-[#141414] border border-[#242424] text-center">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold block">Biometric Sync</span>
-                <span className="font-mono font-extrabold text-blue-400">100% Realtime</span>
+                <span className="font-mono font-extrabold text-blue-400 text-xs sm:text-sm">Realtime</span>
               </div>
             </div>
           </VFCard>
         </div>
 
-        {/* Modern Wing Enrollment Distribution (5 cols) */}
+        {/* Wing Enrollment Distribution (5 cols) */}
         <div className="lg:col-span-5">
           <VFCard
             title={
               <div className="flex items-center gap-2">
                 <Layers className="h-4 w-4 text-blue-400" />
-                <span>{isHindi ? 'विंग अनुसार स्टूडेंट डिस्ट्रिब्यूशन' : 'Enrollment by Academic Wing'}</span>
+                <span className="font-bold text-foreground">{isHindi ? 'विंग स्टूडेंट एनरोलमेंट' : 'Enrollment by Academic Wing'}</span>
               </div>
             }
-            description={isHindi ? 'विंग अनुसार स्टूडेंट एनरोलमेंट' : 'Student distribution across academic wings'}
             actions={
               <Link to="/students">
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
-                >
-                  {isHindi ? 'स्टूडेंट्स ↗' : 'Students ↗'}
+                <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                  <span>{isHindi ? 'स्टूडेंट्स' : 'Students'}</span>
+                  <ArrowUpRight className="h-3 w-3" />
                 </VFButton>
               </Link>
             }
             className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
-            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-4"
+            bodyClassName="p-3.5 flex-1 flex flex-col justify-between space-y-3"
           >
-            {/* Modern Segmented Progress Stack */}
-            <div className="space-y-2">
+            {/* Segmented Stack */}
+            <div className="space-y-1.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-foreground">Capacity Allocation</span>
                 <span className="font-mono font-extrabold text-primary">1,248 Pupils (100%)</span>
               </div>
-              <div className="h-3.5 w-full bg-[#161616] rounded-[3px] overflow-hidden flex gap-0.5 p-0.5 border border-[#282828]">
+              <div className="h-3 w-full bg-[#161616] rounded-[3px] overflow-hidden flex gap-0.5 p-0.5 border border-[#282828]">
                 {wingBreakdown.map((w, idx) => (
                   <div
                     key={idx}
                     style={{ width: `${w.pct}%`, backgroundColor: w.color }}
-                    className="h-full rounded-[1px] transition-all hover:opacity-90"
+                    className="h-full rounded-[1px]"
                     title={`${w.title}: ${w.count} (${w.pct}%)`}
                   />
                 ))}
@@ -301,226 +235,287 @@ function StatisticsPage() {
             </div>
 
             {/* Wing Tiles List */}
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {wingBreakdown.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-2.5 px-3 rounded-[4px] border border-border/80 bg-[#141414] flex items-center justify-between gap-3 hover:border-border transition-colors"
+                  className="p-2 px-2.5 rounded-[3px] border border-border/70 bg-[#141414] flex items-center justify-between gap-2 hover:border-border transition-colors"
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <span
-                      className="h-3 w-3 rounded-[2px] shrink-0"
-                      style={{ backgroundColor: item.color }}
-                    />
-                    <div>
-                      <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
-                      <p className="text-[10px] text-muted-foreground font-medium">{item.grade}</p>
-                    </div>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="h-2.5 w-2.5 rounded-[2px] shrink-0" style={{ backgroundColor: item.color }} />
+                    <span className="text-xs font-bold text-foreground truncate">{item.title}</span>
+                    <span className="text-[10px] text-muted-foreground font-mono">({item.grade})</span>
                   </div>
-                  <div className="text-right shrink-0">
-                    <span className="text-sm font-extrabold text-foreground font-mono">{item.count}</span>
-                    <span className="text-[11px] font-semibold text-muted-foreground block">{item.pct}%</span>
+                  <div className="flex items-center gap-2 shrink-0 font-mono">
+                    <span className="text-xs font-extrabold text-foreground">{item.count}</span>
+                    <span className="text-[10px] text-muted-foreground">({item.pct}%)</span>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex items-center justify-between text-xs">
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-[#242424] flex items-center justify-between text-xs">
               <span className="text-muted-foreground font-medium">Class Section Ratio:</span>
-              <span className="font-mono font-bold text-foreground">~31.2 Pupils / Class</span>
+              <span className="font-mono font-bold text-foreground">~31.2 Pupils / Section</span>
             </div>
           </VFCard>
         </div>
       </div>
 
-      {/* 4. Section 2: Fee Realization vs Target + Academic Honors */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Fee Realization Progress Gauges (7 cols) */}
-        <div className="lg:col-span-7">
-          <VFCard
-            title={
-              <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-primary" />
-                <span>{isHindi ? 'फीस कलेक्शन बनाम बजट टारगेट' : 'Fee Collection vs Budget Target'}</span>
-              </div>
-            }
-            description={
-              isHindi
-                ? 'क्वार्टरली कलेक्शन एनालिसिस'
-                : 'Quarterly collection vs annual budget target'
-            }
-            actions={
-              <div className="flex items-center gap-2">
-                <VFBadge variant="success" className="text-xs font-bold font-mono">98.1% Realized</VFBadge>
-                <Link to="/fees">
-                  <VFButton
-                    size="sm"
-                    variant="outline"
-                    className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
-                  >
-                    {isHindi ? 'फीस लेजर ↗' : 'Fee Ledgers ↗'}
-                  </VFButton>
-                </Link>
-              </div>
-            }
-            className="bg-[#0d0d0d] border-border/90"
-            bodyClassName="p-4 space-y-4"
-          >
-            <div className="space-y-3">
-              {quarterlyFeeData.map((q, idx) => (
-                <div key={idx} className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-foreground">{q.quarter}</span>
-                      <span className="text-[10px] font-mono text-muted-foreground">({q.status})</span>
-                    </div>
-                    <div className="flex items-center gap-2 font-mono">
-                      <span className="font-extrabold text-emerald-400">{q.collected}</span>
-                      <span className="text-muted-foreground">/ {q.target}</span>
-                      <span className="font-bold text-foreground">({q.pct}%)</span>
-                    </div>
-                  </div>
-                  <div className="w-full h-2 rounded-[2px] bg-[#222222] overflow-hidden">
-                    <div
-                      className="h-full rounded-[2px] bg-gradient-to-r from-orange-500 to-emerald-400 transition-all duration-300"
-                      style={{ width: `${q.pct}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+      {/* 3. Six Dedicated Domain Operational Sections (1 Section Per Core Page with Direct Navigation) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5">
+        {/* 1. ATTENDANCE REGISTER */}
+        <VFCard
+          title={
+            <div className="flex items-center gap-2">
+              <UserCheck className="h-4 w-4 text-emerald-400" />
+              <span className="font-bold text-foreground">{isHindi ? 'अटेंडेंस रजिस्टर' : 'Attendance Register'}</span>
             </div>
-          </VFCard>
-        </div>
-
-        {/* Academic Excellence & Distinction Standings (5 cols) */}
-        <div className="lg:col-span-5">
-          <VFCard
-            title={
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-amber-400" />
-                <span>{isHindi ? 'एकेडमिक एक्सीलेंस & अचीवमेंट्स' : 'Academic Standing & Distinctions'}</span>
-              </div>
-            }
-            description={
-              isHindi
-                ? 'बोर्ड रिजल्ट्स और मेरिट डिस्टिंक्शन'
-                : 'Board standings & merit honors'
-            }
-            actions={
-              <Link to="/examinations">
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
-                >
-                  {isHindi ? 'एग्जाम रिजल्ट्स ↗' : 'Exam Standings ↗'}
-                </VFButton>
-              </Link>
-            }
-            className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
-            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-3"
-          >
-            <div className="grid grid-cols-2 gap-2.5">
-              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'डिस्टिंक्शन रेट' : 'Distinction (>75%)'}
-                </span>
-                <p className="text-xl font-black text-foreground font-mono">89.2%</p>
-                <p className="text-[11px] text-emerald-400 font-medium">324 Students with Honors</p>
-              </div>
-              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'स्टेट मेरिट रैंकर्स' : 'State Merit Rankers'}
-                </span>
-                <p className="text-xl font-black text-foreground font-mono">14 Pupils</p>
-                <p className="text-[11px] text-blue-400 font-medium">Top 0.5 percentile CBSE</p>
-              </div>
+          }
+          actions={
+            <Link to="/attendance">
+              <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                <span>{isHindi ? 'अटेंडेंस' : 'Attendance'}</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </VFButton>
+            </Link>
+          }
+          className="bg-[#0d0d0d] border-border/90 hover:border-emerald-500/40 transition-colors"
+          bodyClassName="p-3.5 space-y-3"
+        >
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'उपस्थिति' : 'Present'}</span>
+              <span className="font-mono font-extrabold text-emerald-400 text-sm">96.9%</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">1,210 pupils</span>
             </div>
-
-            <div className="space-y-2 pt-2 border-t border-[#202020]">
-              <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
-                {isHindi ? 'मेन सब्जेक्ट-वाइज़ एवरेज मार्क्स' : 'Core Subject Averages'}
-              </span>
-              <div className="space-y-2 text-xs">
-                {[
-                  { subject: 'Mathematics', score: 92.4, color: 'bg-blue-500' },
-                  { subject: 'Science & Tech', score: 91.8, color: 'bg-emerald-500' },
-                  { subject: 'English & Lit', score: 94.1, color: 'bg-amber-500' },
-                ].map((s, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="font-semibold text-foreground">{s.subject}</span>
-                      <span className="font-mono font-bold text-foreground">{s.score}%</span>
-                    </div>
-                    <div className="w-full h-1.5 rounded-[2px] bg-[#222222] overflow-hidden">
-                      <div
-                        className={`h-full rounded-[2px] ${s.color}`}
-                        style={{ width: `${s.score}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'विलंबित' : 'Late'}</span>
+              <span className="font-mono font-extrabold text-amber-400 text-sm">26</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">2.1%</span>
             </div>
-          </VFCard>
-        </div>
-      </div>
-
-      {/* 5. Section 3: Class Roster Summary (4-Column Grid) */}
-      <VFCard
-        title={
-          <div className="flex items-center gap-2">
-            <School className="h-4 w-4 text-primary" />
-            <span>{isHindi ? 'कक्षावार नामांकन व अटेंडेंस सारांश' : 'Senior Secondary & High School Roster Summary'}</span>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'अनुपस्थित' : 'Absent'}</span>
+              <span className="font-mono font-extrabold text-rose-400 text-sm">12</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">1.0%</span>
+            </div>
           </div>
-        }
-        description={
-          isHindi
-            ? 'क्लास 9 से 12 के स्टूडेंट्स, सेक्शन्स और एक्टिव अटेंडेंस रेट का संक्षिप्त विवरण'
-            : 'Operational division strength and realtime attendance benchmark across core grades'
-        }
-        actions={
-          <Link to="/academics">
-            <VFButton
-              size="sm"
-              variant="outline"
-              className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
-            >
-              {isHindi ? 'एकेडमिक डिवीजनों ↗' : 'Academic Divisions ↗'}
-            </VFButton>
-          </Link>
-        }
-        className="bg-[#0d0d0d] border-border/90"
-        bodyClassName="p-4"
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {[
-            { grade: 'Class 9', total: '320 Students', sections: '4 Sections', standing: '96.2% Attendance', ratio: '80 / Section' },
-            { grade: 'Class 10', total: '310 Students', sections: '4 Sections', standing: '97.8% Attendance', ratio: '77 / Section' },
-            { grade: 'Class 11', total: '308 Students', sections: '4 Sections', standing: '94.5% Attendance', ratio: '77 / Section' },
-            { grade: 'Class 12', total: '310 Students', sections: '4 Sections', standing: '98.1% Attendance', ratio: '77 / Section' },
-          ].map((c, i) => (
-            <div
-              key={i}
-              className="p-3 rounded-[4px] bg-[#141414] border border-border/80 space-y-2 hover:border-primary/40 transition-colors shadow-xs"
-            >
-              <div className="flex items-center justify-between">
-                <p className="font-extrabold text-foreground text-sm">{c.grade}</p>
-                <VFBadge variant="outline" className="text-[10px] font-mono font-bold">
-                  {c.sections}
-                </VFBadge>
-              </div>
-              <p className="text-xl font-black text-foreground font-mono">{c.total}</p>
-              <div className="flex items-center justify-between text-[11px] font-semibold text-muted-foreground pt-1.5 border-t border-border/50">
-                <span className="text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="h-3 w-3" /> {c.standing}
-                </span>
-                <span className="font-mono text-[10px]">{c.ratio}</span>
-              </div>
+          <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50 text-muted-foreground">
+            <span>Faculty Present: <strong className="text-foreground font-mono">61 / 62 (98.4%)</strong></span>
+            <span className="text-emerald-400 font-semibold font-mono">Realtime Live</span>
+          </div>
+        </VFCard>
+
+        {/* 2. ADMISSIONS & INTAKE */}
+        <VFCard
+          title={
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              <span className="font-bold text-foreground">{isHindi ? 'एडमिशन्स & इंटेक' : 'Admissions & Intake'}</span>
             </div>
-          ))}
-        </div>
-      </VFCard>
+          }
+          actions={
+            <Link to="/admissions">
+              <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                <span>{isHindi ? 'एडमिशन्स' : 'Admissions'}</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </VFButton>
+            </Link>
+          }
+          className="bg-[#0d0d0d] border-border/90 hover:border-primary/40 transition-colors"
+          bodyClassName="p-3.5 space-y-3"
+        >
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'आवेदन' : 'Intake'}</span>
+              <span className="font-mono font-extrabold text-primary text-sm">340</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">AY 2026-27</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'स्क्रीनिंग' : 'Screened'}</span>
+              <span className="font-mono font-extrabold text-amber-400 text-sm">142</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">In review</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'स्वीकृत' : 'Admitted'}</span>
+              <span className="font-mono font-extrabold text-emerald-400 text-sm">188</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Enrolled</span>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50 text-muted-foreground">
+            <span>Conversion Rate: <strong className="text-foreground font-mono">55.3%</strong></span>
+            <span className="text-primary font-semibold font-mono">Stage Active</span>
+          </div>
+        </VFCard>
+
+        {/* 3. STUDENTS DIRECTORY */}
+        <VFCard
+          title={
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-blue-400" />
+              <span className="font-bold text-foreground">{isHindi ? 'स्टूडेंट डायरेक्टरी' : 'Students Directory'}</span>
+            </div>
+          }
+          actions={
+            <Link to="/students">
+              <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                <span>{isHindi ? 'स्टूडेंट्स' : 'Students'}</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </VFButton>
+            </Link>
+          }
+          className="bg-[#0d0d0d] border-border/90 hover:border-blue-500/40 transition-colors"
+          bodyClassName="p-3.5 space-y-3"
+        >
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'कुल छात्र' : 'Enrolled'}</span>
+              <span className="font-mono font-extrabold text-blue-400 text-sm">1,248</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Active</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'विंग्स' : 'Wings'}</span>
+              <span className="font-mono font-extrabold text-foreground text-sm">4</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Grades 1-12</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'औसत अनुपात' : 'Avg Section'}</span>
+              <span className="font-mono font-extrabold text-foreground text-sm">31.2</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Pupils/sec</span>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50 text-muted-foreground">
+            <span>Gender Distribution: <strong className="text-foreground font-mono">52% M / 48% F</strong></span>
+            <span className="text-blue-400 font-semibold font-mono">CBSE Indexed</span>
+          </div>
+        </VFCard>
+
+        {/* 4. FEES & FINANCE */}
+        <VFCard
+          title={
+            <div className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4 text-emerald-400" />
+              <span className="font-bold text-foreground">{isHindi ? 'फीस लेजर & कलेक्शन' : 'Fee Ledgers & Finance'}</span>
+            </div>
+          }
+          actions={
+            <Link to="/fees">
+              <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                <span>{isHindi ? 'फीस लेजर' : 'Fee Ledgers'}</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </VFButton>
+            </Link>
+          }
+          className="bg-[#0d0d0d] border-border/90 hover:border-emerald-500/40 transition-colors"
+          bodyClassName="p-3.5 space-y-3"
+        >
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'कलेक्शन' : 'Realized'}</span>
+              <span className="font-mono font-extrabold text-emerald-400 text-sm">₹ 3.30 Cr</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">96.8%</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'टारगेट' : 'Target'}</span>
+              <span className="font-mono font-extrabold text-foreground text-sm">₹ 3.70 Cr</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Annual</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'बकाया' : 'Due'}</span>
+              <span className="font-mono font-extrabold text-amber-400 text-sm">₹ 18 L</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Outstanding</span>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50 text-muted-foreground">
+            <span>Online Realization: <strong className="text-foreground font-mono">82.4%</strong></span>
+            <span className="text-emerald-400 font-semibold font-mono">98.1% Target</span>
+          </div>
+        </VFCard>
+
+        {/* 5. EXAMINATIONS & RESULTS */}
+        <VFCard
+          title={
+            <div className="flex items-center gap-2">
+              <Award className="h-4 w-4 text-amber-400" />
+              <span className="font-bold text-foreground">{isHindi ? 'बोर्ड रिजल्ट्स & एग्जाम्स' : 'Examinations & Standings'}</span>
+            </div>
+          }
+          actions={
+            <Link to="/examinations">
+              <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                <span>{isHindi ? 'एग्जाम्स' : 'Exams'}</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </VFButton>
+            </Link>
+          }
+          className="bg-[#0d0d0d] border-border/90 hover:border-amber-500/40 transition-colors"
+          bodyClassName="p-3.5 space-y-3"
+        >
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'पास दर' : 'Pass Rate'}</span>
+              <span className="font-mono font-extrabold text-amber-400 text-sm">98.6%</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">+1.4% State</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'डिस्टिंक्शन' : 'Honors'}</span>
+              <span className="font-mono font-extrabold text-foreground text-sm">89.2%</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">324 pupils</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'रैंकर्स' : 'Rankers'}</span>
+              <span className="font-mono font-extrabold text-emerald-400 text-sm">14</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Top 0.5%</span>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50 text-muted-foreground">
+            <span>Core Score Leader: <strong className="text-foreground font-mono">English (94.1%)</strong></span>
+            <span className="text-amber-400 font-semibold font-mono">CBSE 9-Point</span>
+          </div>
+        </VFCard>
+
+        {/* 6. ACADEMIC OPERATIONS */}
+        <VFCard
+          title={
+            <div className="flex items-center gap-2">
+              <School className="h-4 w-4 text-cyan-400" />
+              <span className="font-bold text-foreground">{isHindi ? 'एकेडमिक ऑपरेशन्स' : 'Academics & Operations'}</span>
+            </div>
+          }
+          actions={
+            <Link to="/academics">
+              <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
+                <span>{isHindi ? 'क्लासेज' : 'Academics'}</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </VFButton>
+            </Link>
+          }
+          className="bg-[#0d0d0d] border-border/90 hover:border-cyan-500/40 transition-colors"
+          bodyClassName="p-3.5 space-y-3"
+        >
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'सेक्शन्स' : 'Divisions'}</span>
+              <span className="font-mono font-extrabold text-cyan-400 text-sm">16</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">Class 1-12</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'पेसिंग' : 'Syllabus'}</span>
+              <span className="font-mono font-extrabold text-emerald-400 text-sm">68.4%</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">On schedule</span>
+            </div>
+            <div className="p-2 rounded-[3px] bg-[#141414] border border-border/60">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">{isHindi ? 'फैकल्टी' : 'Faculty'}</span>
+              <span className="font-mono font-extrabold text-foreground text-sm">62</span>
+              <span className="text-[10px] text-muted-foreground block font-mono">18:1 Ratio</span>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50 text-muted-foreground">
+            <span>Curriculum Tier: <strong className="text-foreground font-mono">CBSE Core</strong></span>
+            <span className="text-cyan-400 font-semibold font-mono">100% Assigned</span>
+          </div>
+        </VFCard>
+      </div>
     </VFPageContainer>
   );
 }
