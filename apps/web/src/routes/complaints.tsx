@@ -279,19 +279,19 @@ function ComplaintsManagementPage() {
           </div>
 
           {/* Table */}
-          <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+          <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card w-full min-w-full">
+            <div className="overflow-x-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden w-full min-w-full">
+              <table className="w-full min-w-full text-left border-collapse text-xs table-auto">
                 <thead>
-                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'टिकट आईडी' : 'Ticket ID'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'शिकायतकर्ता' : 'Complainant'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'विभाग' : 'Category'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'विषय' : 'Subject'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'प्राथमिकता' : 'Priority'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'दर्ज तिथि' : 'Lodged'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{t('col.status')}</th>
-                    <th className="py-3 px-4 text-xs font-semibold text-right">{t('col.action')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-bold uppercase tracking-wider text-[11px] whitespace-nowrap">
+                    <th className="py-2.5 px-3">{isHindi ? 'टिकट आईडी' : 'Ticket ID'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'शिकायतकर्ता' : 'Complainant'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'विभाग' : 'Category'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'विषय' : 'Subject'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'प्राथमिकता' : 'Priority'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'दर्ज तिथि' : 'Lodged'}</th>
+                    <th className="py-2.5 px-3">{t('col.status')}</th>
+                    <th className="py-2.5 px-3 text-right">{t('col.action')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -305,20 +305,20 @@ function ComplaintsManagementPage() {
                         g.id.toLowerCase().includes(searchGrievance.toLowerCase())
                     )
                     .map((item) => (
-                      <tr key={item.id} className="hover:bg-[#1a1a1a] transition-colors">
-                        <td className="py-3 px-4 font-mono font-bold text-xs text-primary">{item.id}</td>
-                        <td className="py-3 px-4">
-                          <div className="text-sm font-bold text-foreground">{item.complainantName}</div>
-                          <div className="text-xs text-muted-foreground mt-0.5">{item.complainantType}</div>
+                      <tr key={item.id} className="hover:bg-[#1a1a1a] transition-colors whitespace-nowrap">
+                        <td className="py-2.5 px-3 font-mono font-bold text-xs text-primary">{item.id}</td>
+                        <td className="py-2.5 px-3">
+                          <div className="text-xs sm:text-sm font-bold text-foreground max-w-[170px] truncate" title={item.complainantName}>{item.complainantName}</div>
+                          <div className="text-[11px] text-muted-foreground mt-0.5 truncate max-w-[170px]">{item.complainantType}</div>
                         </td>
-                        <td className="py-3 px-4">
+                        <td className="py-2.5 px-3">
                           <VFBadge variant="outline" className="text-xs px-2 py-0.5 rounded-[3px]">{item.category}</VFBadge>
                         </td>
-                        <td className="py-3 px-4">
-                          <div className="text-sm font-bold text-foreground max-w-[280px] truncate">{item.subject}</div>
-                          <div className="text-xs text-muted-foreground truncate max-w-[280px] mt-0.5">{item.description}</div>
+                        <td className="py-2.5 px-3">
+                          <div className="text-xs sm:text-sm font-bold text-foreground max-w-[240px] lg:max-w-[300px] truncate" title={item.subject}>{item.subject}</div>
+                          <div className="text-[11px] text-muted-foreground truncate max-w-[240px] lg:max-w-[300px] mt-0.5" title={item.description}>{item.description}</div>
                         </td>
-                        <td className="py-3 px-4">
+                        <td className="py-2.5 px-3">
                           <VFBadge
                             variant={item.priority === 'Urgent' ? 'danger' : item.priority === 'High' ? 'warning' : 'outline'}
                             className="text-xs px-2 py-0.5 rounded-[3px]"
@@ -326,8 +326,8 @@ function ComplaintsManagementPage() {
                             {item.priority}
                           </VFBadge>
                         </td>
-                        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">{item.lodgedDate}</td>
-                        <td className="py-3 px-4">
+                        <td className="py-2.5 px-3 font-mono text-xs text-muted-foreground">{item.lodgedDate}</td>
+                        <td className="py-2.5 px-3">
                           <VFBadge
                             variant={item.status === 'Resolved' ? 'success' : item.status === 'In Progress' ? 'warning' : 'danger'}
                             className="text-xs px-2 py-0.5 rounded-[3px]"
@@ -335,11 +335,11 @@ function ComplaintsManagementPage() {
                             {item.status}
                           </VFBadge>
                         </td>
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-2.5 px-3 text-right">
                           <button
                             type="button"
                             onClick={() => setViewingTicket(item)}
-                            className="px-3 py-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground transition-colors cursor-pointer"
+                            className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground transition-colors cursor-pointer"
                           >
                             {isHindi ? 'डिटेल्स' : 'Details'}
                           </button>

@@ -209,32 +209,32 @@ function TeachingPage() {
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'classes' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
-          <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+          <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card w-full min-w-full">
+            <div className="overflow-x-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden w-full min-w-full">
+              <table className="w-full min-w-full text-left border-collapse text-xs table-auto">
                 <thead>
-                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'क्लास कोड' : 'Class Code'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'क्लास & सेक्शन' : 'Grade & Section'}</th>
-                    <th className="py-3 px-4 text-xs">{t('col.subject')}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'रूम नंबर' : 'Room'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'स्टूडेंट्स काउंट' : 'Students'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'वीकली पीरियड्स' : 'Weekly Periods'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'एवरेज अटेंडेंस' : 'Avg Attendance'}</th>
-                    <th className="py-3 px-4 text-xs text-right">{t('col.status')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-bold uppercase tracking-wider text-[11px] whitespace-nowrap">
+                    <th className="py-2.5 px-3">{isHindi ? 'क्लास कोड' : 'Class Code'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'क्लास & सेक्शन' : 'Grade & Section'}</th>
+                    <th className="py-2.5 px-3">{t('col.subject')}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'रूम नंबर' : 'Room'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'स्टूडेंट्स काउंट' : 'Students'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'वीकली पीरियड्स' : 'Weekly Periods'}</th>
+                    <th className="py-2.5 px-3">{isHindi ? 'एवरेज अटेंडेंस' : 'Avg Attendance'}</th>
+                    <th className="py-2.5 px-3 text-right">{t('col.status')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {classes.map((cls) => (
-                    <tr key={cls.code} className="hover:bg-[#1a1a1a] transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-primary text-xs">{cls.code}</td>
-                      <td className="py-3 px-4 font-bold text-foreground text-sm">{cls.grade} – {cls.section}</td>
-                      <td className="py-3 px-4 text-foreground font-medium text-xs">{cls.subject}</td>
-                      <td className="py-3 px-4 text-muted-foreground font-mono text-xs">{cls.room}</td>
-                      <td className="py-3 px-4 font-bold text-foreground text-xs">{cls.students} students</td>
-                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{cls.weeklyPeriods} periods/wk</td>
-                      <td className="py-3 px-4 font-bold text-emerald-400 text-xs">{cls.avgAttendance}</td>
-                      <td className="py-3 px-4 text-right">
+                    <tr key={cls.code} className="hover:bg-[#1a1a1a] transition-colors whitespace-nowrap">
+                      <td className="py-2.5 px-3 font-mono font-bold text-primary text-xs">{cls.code}</td>
+                      <td className="py-2.5 px-3 font-bold text-foreground text-xs sm:text-sm">{cls.grade} – {cls.section}</td>
+                      <td className="py-2.5 px-3 text-foreground font-medium text-xs max-w-[180px] truncate" title={cls.subject}>{cls.subject}</td>
+                      <td className="py-2.5 px-3 text-muted-foreground font-mono text-xs">{cls.room}</td>
+                      <td className="py-2.5 px-3 font-bold text-foreground text-xs">{cls.students} students</td>
+                      <td className="py-2.5 px-3 font-mono text-muted-foreground text-xs">{cls.weeklyPeriods} periods/wk</td>
+                      <td className="py-2.5 px-3 font-bold text-emerald-400 text-xs">{cls.avgAttendance}</td>
+                      <td className="py-2.5 px-3 text-right">
                         <VFBadge variant="success" className="text-xs px-2 py-0.5 rounded-[3px]">{cls.status}</VFBadge>
                       </td>
                     </tr>

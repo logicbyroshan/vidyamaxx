@@ -483,16 +483,16 @@ function NoticesPage() {
       header: isHindi ? 'नोटिस शीर्षक व श्रेणी' : 'Notice Title & Category',
       accessorKey: 'title',
       cell: (r: NoticeRecord) => (
-        <div>
-          <p className="font-extrabold text-foreground text-sm leading-tight flex items-center gap-1.5">
-            {r.title}
+        <div className="max-w-[220px] sm:max-w-[280px] lg:max-w-[360px]">
+          <p className="font-extrabold text-foreground text-xs sm:text-sm leading-tight flex items-center gap-1.5 truncate" title={r.title}>
+            <span className="truncate">{r.title}</span>
             {r.priority === 'Urgent' && (
-              <span className="px-1.5 py-0.5 rounded-[2px] bg-rose-500/20 text-rose-400 text-[10px] font-bold border border-rose-500/30">
+              <span className="px-1.5 py-0.5 rounded-[2px] bg-rose-500/20 text-rose-400 text-[10px] font-bold border border-rose-500/30 shrink-0">
                 URGENT
               </span>
             )}
           </p>
-          <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+          <p className="text-[11px] text-muted-foreground font-semibold mt-0.5 truncate">
             {r.category} {isHindi ? 'सूचना' : 'Circular'}
           </p>
         </div>

@@ -1510,7 +1510,8 @@ function StudentsPage() {
       cell: (r: any) => (
         <button
           onClick={() => openStudentDrawer(r)}
-          className="text-left font-bold text-foreground hover:underline cursor-pointer tracking-tight text-sm"
+          className="text-left font-bold text-foreground hover:underline cursor-pointer tracking-tight text-xs sm:text-sm max-w-[180px] sm:max-w-[220px] truncate block"
+          title={r.name}
         >
           {r.name}
         </button>

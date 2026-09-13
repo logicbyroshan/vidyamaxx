@@ -564,7 +564,7 @@ function HomeworkPage() {
           ══════════════════════════════════════════ */}
       {activeTab === 'review' && !detailHW && (
         <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 flex-1 flex flex-col overflow-hidden">
-          <VFTable className="w-full text-xs border-0 rounded-none">
+          <VFTable className="w-full text-xs border-0 rounded-none" containerClassName="border-0 rounded-none flex-1 min-h-0">
             <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
               <VFTableRow>
                 <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-28">Code</VFTableHeaderCell>
@@ -594,8 +594,8 @@ function HomeworkPage() {
                         </span>
                       </VFTableCell>
                       <VFTableCell className="py-2.5 px-3">
-                        <p className="font-bold text-foreground text-xs leading-tight">{hw.title}</p>
-                        <p className="text-[11px] text-muted-foreground mt-0.5">{hw.subject}</p>
+                        <p className="font-bold text-foreground text-xs leading-tight max-w-[200px] sm:max-w-[260px] truncate" title={hw.title}>{hw.title}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5 max-w-[200px] sm:max-w-[260px] truncate">{hw.subject}</p>
                       </VFTableCell>
                       <VFTableCell className="py-2.5 px-3">
                         <span className="font-bold text-xs text-foreground">{hw.class}</span>
@@ -702,7 +702,7 @@ function HomeworkPage() {
 
           {/* Student table */}
           <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 flex-1 overflow-auto">
-            <VFTable className="w-full text-xs border-0 rounded-none">
+            <VFTable className="w-full text-xs border-0 rounded-none" containerClassName="border-0 rounded-none flex-1 min-h-0">
               <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
                 <VFTableRow>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-16">Roll</VFTableHeaderCell>
@@ -721,19 +721,19 @@ function HomeworkPage() {
                   </VFTableRow>
                 ) : (
                   detailSubmissions.map((s) => (
-                    <VFTableRow key={s.roll} className="hover:bg-[#1a1a1a]/60">
+                    <VFTableRow key={s.roll} className="hover:bg-[#1a1a1a]/60 whitespace-nowrap">
                       <VFTableCell className="py-2.5 px-3 font-mono font-bold text-muted-foreground text-xs">{s.roll}</VFTableCell>
-                      <VFTableCell className="py-2.5 px-3 font-bold text-foreground text-xs">{s.name}</VFTableCell>
+                      <VFTableCell className="py-2.5 px-3 font-bold text-foreground text-xs max-w-[180px] truncate" title={s.name}>{s.name}</VFTableCell>
                       <VFTableCell className="py-2.5 px-3 text-xs font-mono text-muted-foreground">
                         {s.status === 'Pending'
                           ? <span className="text-rose-400 flex items-center gap-1"><AlertCircle className="h-3 w-3" /> Not submitted</span>
                           : <span className="flex items-center gap-1"><Clock className="h-3 w-3 text-zinc-500" /> {s.submittedAt}</span>
                         }
                       </VFTableCell>
-                      <VFTableCell className="py-2.5 px-3 text-xs">
+                      <VFTableCell className="py-2.5 px-3 text-xs max-w-[180px] truncate" title={s.file}>
                         {s.file === '—'
                           ? <span className="text-muted-foreground">—</span>
-                          : <span className="flex items-center gap-1 text-blue-400 font-mono cursor-pointer hover:underline"><FileText className="h-3 w-3" /> {s.file}</span>
+                          : <span className="flex items-center gap-1 text-blue-400 font-mono cursor-pointer hover:underline truncate"><FileText className="h-3 w-3 shrink-0" /> <span className="truncate">{s.file}</span></span>
                         }
                       </VFTableCell>
                       <VFTableCell className="py-2.5 px-4 text-right">

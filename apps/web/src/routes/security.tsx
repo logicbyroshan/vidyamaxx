@@ -137,29 +137,29 @@ function SecurityManagementPage() {
         }
         description={isHindi ? 'मॉड्यूल एक्सेस टॉगल करने के लिए किसी भी सेल पर क्लिक करें। टीचर परमिशन्स सीधे स्कूल प्रिंसिपल द्वारा मैनेज की जाती हैं।' : 'Click any cell to toggle module capabilities. Faculty permissions are managed directly by the School Principal.'}
         className="bg-[#0d0d0d] border-border/90"
-        bodyClassName="p-0 overflow-x-auto no-scrollbar"
+        bodyClassName="p-0 overflow-x-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden w-full min-w-full"
       >
-        <table className="w-full text-xs text-left border-collapse">
+        <table className="w-full min-w-full text-xs text-left border-collapse table-auto">
           <thead>
-            <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-extrabold uppercase tracking-wider text-[10px]">
-              <th className="py-3.5 px-4">{isHindi ? 'ERP मॉड्यूल्स' : 'Core Portal Module'}</th>
-              <th className="py-3.5 px-3 text-center">
+            <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-extrabold uppercase tracking-wider text-[10px] whitespace-nowrap">
+              <th className="py-2.5 px-3">{isHindi ? 'ERP मॉड्यूल्स' : 'Core Portal Module'}</th>
+              <th className="py-2.5 px-3 text-center">
                 {isHindi ? 'सुपर एडमिन' : 'Super Admin'}
                 <span className="block text-[9px] text-muted-foreground font-normal lowercase">{isHindi ? '(फुल रूट एक्सेस)' : '(full root)'}</span>
               </th>
-              <th className="py-3.5 px-3 text-center">
+              <th className="py-2.5 px-3 text-center">
                 {isHindi ? 'स्कूल प्रिंसिपल' : 'School Principal'}
                 <span className="block text-[9px] text-primary font-bold lowercase">{isHindi ? '(फैकल्टी गवर्नेंस)' : '(faculty governance)'}</span>
               </th>
-              <th className="py-3.5 px-3 text-center">
+              <th className="py-2.5 px-3 text-center">
                 {isHindi ? 'फ्रंट ऑफिस' : 'Front Office'}
                 <span className="block text-[9px] text-amber-400/80 font-normal lowercase">{isHindi ? '(एडमिशन & रिकॉर्ड्स)' : '(intake & records)'}</span>
               </th>
-              <th className="py-3.5 px-3 text-center">
+              <th className="py-2.5 px-3 text-center">
                 {isHindi ? 'अकाउंटेंट' : 'Accountant'}
                 <span className="block text-[9px] text-purple-400/80 font-normal lowercase">{isHindi ? '(फाइनेंस & फीस)' : '(finance & fees)'}</span>
               </th>
-              <th className="py-3.5 px-3 text-center">
+              <th className="py-2.5 px-3 text-center">
                 {isHindi ? 'पैरेंट & स्टूडेंट' : 'Parent & Student'}
                 <span className="block text-[9px] text-blue-400/80 font-normal lowercase">{isHindi ? '(पोर्टल एक्सेस)' : '(self-service)'}</span>
               </th>
@@ -167,8 +167,8 @@ function SecurityManagementPage() {
           </thead>
           <tbody className="divide-y divide-border/60">
             {permissions.map((row, idx) => (
-              <tr key={idx} className="hover:bg-[#141414]/60 transition-colors">
-                <td className="py-3.5 px-4 font-bold text-foreground">{row.module}</td>
+              <tr key={idx} className="hover:bg-[#141414]/60 transition-colors whitespace-nowrap">
+                <td className="py-2.5 px-3 font-bold text-foreground">{row.module}</td>
                 
                 {/* Super Admin */}
                 <td className="py-3.5 px-3 text-center">

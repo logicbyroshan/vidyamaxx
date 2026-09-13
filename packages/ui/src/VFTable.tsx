@@ -6,10 +6,21 @@ import { VFEmptyState } from './VFEmptyState';
 import { VFButton } from './VFButton';
 
 // Base semantic table wrappers
-export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
+export interface VFTableProps extends React.HTMLAttributes<HTMLTableElement> {
+  containerClassName?: string;
+  maxHeight?: string | number;
+}
+
+export function VFTable({ className, containerClassName, maxHeight, style, ...props }: VFTableProps) {
   return (
-    <div className="w-full overflow-x-auto border border-border rounded-[4px] bg-card no-scrollbar">
-      <table className={cn("w-full border-collapse text-left text-sm", className)} {...props} />
+    <div
+      className={cn(
+        "w-full min-w-full overflow-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border border-border rounded-[4px] bg-card",
+        containerClassName
+      )}
+      style={maxHeight ? { maxHeight, ...style } : style}
+    >
+      <table className={cn("w-full min-w-full border-collapse text-left text-xs sm:text-sm table-auto", className)} {...props} />
     </div>
   );
 }
@@ -34,15 +45,34 @@ export function VFTableRow({ className, ...props }: React.HTMLAttributes<HTMLTab
   );
 }
 
+export interface VFTableHeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  sticky?: boolean;
+  maxWidth?: string | number;
+  minWidth?: string | number;
+  width?: string | number;
+}
+
 export function VFTableHeaderCell({
   className,
   sticky = true,
+  maxWidth,
+  minWidth,
+  width,
+  style,
   ...props
-}: React.ThHTMLAttributes<HTMLTableCellElement> & { sticky?: boolean }) {
+}: VFTableHeaderCellProps) {
+  const mergedStyle: React.CSSProperties = {
+    ...(maxWidth ? { maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth } : {}),
+    ...(minWidth ? { minWidth: typeof minWidth === 'number' ? `${minWidth}px` : minWidth } : {}),
+    ...(width ? { width: typeof width === 'number' ? `${width}px` : width } : {}),
+    ...style,
+  };
+
   return (
     <th
+      style={mergedStyle}
       className={cn(
-        "px-5 py-3.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md",
+        "px-2.5 sm:px-3 py-2 sm:py-2.5 font-bold text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md",
         sticky && "sticky top-0 z-10 border-b border-border shadow-2xs",
         className
       )}
@@ -51,8 +81,57 @@ export function VFTableHeaderCell({
   );
 }
 
-export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold", className)} {...props} />;
+export interface VFTableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+  maxWidth?: string | number;
+  minWidth?: string | number;
+  width?: string | number;
+  truncate?: boolean;
+}
+
+export function VFTableCell({
+  className,
+  maxWidth,
+  minWidth,
+  width,
+  truncate = false,
+  title,
+  style,
+  children,
+  ...props
+}: VFTableCellProps) {
+  const mergedStyle: React.CSSProperties = {
+    ...(maxWidth ? { maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth } : {}),
+    ...(minWidth ? { minWidth: typeof minWidth === 'number' ? `${minWidth}px` : minWidth } : {}),
+    ...(width ? { width: typeof width === 'number' ? `${width}px` : width } : {}),
+    ...style,
+  };
+
+  const computedTitle = title ?? (truncate && (typeof children === 'string' || typeof children === 'number') ? String(children) : undefined);
+
+  return (
+    <td
+      style={mergedStyle}
+      title={computedTitle}
+      className={cn(
+        "px-2.5 sm:px-3 py-2 sm:py-2.5 align-middle text-foreground whitespace-nowrap text-xs sm:text-[13px] font-semibold",
+        truncate && "truncate max-w-[220px]",
+        className
+      )}
+      {...props}
+    >
+      {truncate ? (
+        <div
+          className="truncate"
+          style={maxWidth ? { maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth } : undefined}
+          title={computedTitle}
+        >
+          {children}
+        </div>
+      ) : (
+        children
+      )}
+    </td>
+  );
 }
 
 // VFDataTable: High-level, fail-safe data table component
@@ -63,6 +142,10 @@ export interface ColumnDef<T> {
   sortable?: boolean;
   className?: string;
   headerClassName?: string;
+  maxWidth?: string | number;
+  minWidth?: string | number;
+  width?: string | number;
+  truncate?: boolean;
 }
 
 export interface VFDataTableProps<T> {
@@ -176,10 +259,10 @@ export function VFDataTable<T extends Record<string, any>>({
   const hasToolbar = showSearch || showColumnToggle || Boolean(rightActions) || Boolean(leftActions);
 
   return (
-    <div className={cn("w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-[4px] shadow-xs overflow-hidden", className)}>
+    <div className={cn("w-full min-w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-[4px] shadow-xs overflow-hidden", className)}>
       {/* Unified Table Header Command Toolbar */}
       {hasToolbar && (
-        <div className="p-3 sm:p-3.5 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
+        <div className="p-2.5 sm:p-3 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2.5 shrink-0">
           {showSearch ? (
             <div className="relative max-w-md flex-1">
               <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
@@ -199,7 +282,7 @@ export function VFDataTable<T extends Record<string, any>>({
 
           {/* Right Controls: Column Visibility Selector + Action Buttons */}
           {(showColumnToggle || rightActions) && (
-            <div className="flex items-center gap-2.5 shrink-0 ml-auto self-end sm:self-auto">
+            <div className="flex items-center gap-2 shrink-0 ml-auto self-end sm:self-auto">
               {/* Column Visibility Selector Dropdown */}
               {showColumnToggle && (
                 <div className="relative" ref={dropdownRef}>
@@ -207,7 +290,7 @@ export function VFDataTable<T extends Record<string, any>>({
                     variant="outline"
                     size="sm"
                     onClick={() => setShowColumnDropdown(!showColumnDropdown)}
-                    leftIcon={<SlidersHorizontal className="h-4 w-4 text-muted-foreground" />}
+                    leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-muted-foreground" />}
                   >
                     Columns ({activeColumns.length}/{columns.length})
                   </VFButton>
@@ -246,7 +329,7 @@ export function VFDataTable<T extends Record<string, any>>({
       )}
 
       {/* Main Scrollable Table Area */}
-      <div className="flex-1 overflow-auto no-scrollbar w-full relative min-h-0 bg-card">
+      <div className="flex-1 overflow-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden w-full min-w-full relative min-h-0 bg-card">
         {isLoading ? (
           <div className="p-6">
             <VFLoadingTable rows={6} cols={activeColumns.length} />
@@ -259,73 +342,111 @@ export function VFDataTable<T extends Record<string, any>>({
             />
           </div>
         ) : (
-          <table className={cn("w-full border-collapse text-left text-sm", tableClassName)}>
+          <table className={cn("w-full min-w-full border-collapse text-left text-xs sm:text-sm table-auto", tableClassName)}>
             <thead className="bg-card sticky top-0 z-10 border-b border-border shadow-2xs">
               <tr>
                 {activeColumns.map((col) => {
                   const key = String(col.accessorKey);
                   const sortStatus = sorting.find((s) => s.id === key);
                   const isSortable = col.sortable ?? true;
-                    return (
-                      <th
-                        key={key}
-                        className={cn(
-                          "px-3.5 sm:px-4 py-3 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
-                          isSortable && "cursor-pointer hover:bg-muted/60 transition-colors",
-                          col.headerClassName
+                  const colStyle: React.CSSProperties = {
+                    ...(col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : {}),
+                    ...(col.minWidth ? { minWidth: typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth } : {}),
+                    ...(col.width ? { width: typeof col.width === 'number' ? `${col.width}px` : col.width } : {}),
+                  };
+
+                  return (
+                    <th
+                      key={key}
+                      style={colStyle}
+                      className={cn(
+                        "px-2.5 sm:px-3 py-2 sm:py-2.5 font-bold text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
+                        isSortable && "cursor-pointer hover:bg-muted/60 transition-colors",
+                        col.headerClassName
+                      )}
+                      onClick={() => {
+                        if (!isSortable) return;
+                        const isAsc = sortStatus?.id === key && !sortStatus.desc;
+                        const nextSort = [{ id: key, desc: isAsc }];
+                        setSorting(nextSort);
+                        if (onSort) onSort(key, isAsc ? 'asc' : 'desc');
+                      }}
+                    >
+                      <div className={cn("flex items-center gap-1.5", col.headerClassName?.includes('text-right') && "justify-end", col.headerClassName?.includes('text-center') && "justify-center")}>
+                        <span>{col.header}</span>
+                        {isSortable && (
+                          <span className="text-muted-foreground/80 font-mono text-[10px]">
+                            {sortStatus?.id === key ? (sortStatus.desc ? '↓' : '↑') : '↕'}
+                          </span>
                         )}
-                        onClick={() => {
-                          if (!isSortable) return;
-                          const isAsc = sortStatus?.id === key && !sortStatus.desc;
-                          const nextSort = [{ id: key, desc: isAsc }];
-                          setSorting(nextSort);
-                          if (onSort) onSort(key, isAsc ? 'asc' : 'desc');
-                        }}
+                      </div>
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/80">
+              {processedData.map((row: any, rowIndex: number) => (
+                <tr
+                  key={row.id || rowIndex}
+                  className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
+                >
+                  {activeColumns.map((col) => {
+                    const key = String(col.accessorKey);
+                    const rawVal = row[key];
+                    const rawString = rawVal !== undefined && rawVal !== null ? String(rawVal) : '';
+                    const colStyle: React.CSSProperties = {
+                      ...(col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : {}),
+                      ...(col.minWidth ? { minWidth: typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth } : {}),
+                      ...(col.width ? { width: typeof col.width === 'number' ? `${col.width}px` : col.width } : {}),
+                    };
+                    const isTruncated = col.truncate ?? (!col.cell && rawVal !== undefined);
+
+                    return (
+                      <td
+                        key={key}
+                        style={colStyle}
+                        className={cn(
+                          "px-2.5 sm:px-3 py-2 sm:py-2.5 align-middle text-foreground whitespace-nowrap text-xs sm:text-[13px] font-semibold",
+                          (col.maxWidth || col.truncate) && "truncate",
+                          col.className
+                        )}
+                        title={typeof rawVal === 'string' || typeof rawVal === 'number' ? rawString : undefined}
                       >
-                        <div className={cn("flex items-center gap-1.5", col.headerClassName?.includes('text-right') && "justify-end", col.headerClassName?.includes('text-center') && "justify-center")}>
-                          <span>{col.header}</span>
-                          {isSortable && (
-                            <span className="text-muted-foreground/80 font-mono text-[10px]">
-                              {sortStatus?.id === key ? (sortStatus.desc ? '↓' : '↑') : '↕'}
-                            </span>
-                          )}
-                        </div>
-                      </th>
+                        {col.cell ? (
+                          col.maxWidth || col.truncate ? (
+                            <div
+                              className="truncate"
+                              style={col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : undefined}
+                              title={typeof rawVal === 'string' || typeof rawVal === 'number' ? rawString : undefined}
+                            >
+                              {col.cell(row)}
+                            </div>
+                          ) : (
+                            col.cell(row)
+                          )
+                        ) : (
+                          <span
+                            className={cn(isTruncated && "truncate block max-w-[240px]")}
+                            style={col.maxWidth ? { maxWidth: typeof col.maxWidth === 'number' ? `${col.maxWidth}px` : col.maxWidth } : undefined}
+                            title={rawString}
+                          >
+                            {rawVal !== undefined && rawVal !== null ? rawString : '—'}
+                          </span>
+                        )}
+                      </td>
                     );
                   })}
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-border/80">
-                {processedData.map((row: any, rowIndex: number) => (
-                  <tr
-                    key={row.id || rowIndex}
-                    className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
-                  >
-                    {activeColumns.map((col) => {
-                      const key = String(col.accessorKey);
-                      const rawVal = row[key];
-                      return (
-                        <td
-                          key={key}
-                          className={cn(
-                            "px-3.5 sm:px-4 py-3 align-middle text-foreground whitespace-nowrap text-xs sm:text-sm font-semibold",
-                            col.className
-                          )}
-                        >
-                          {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
+              ))}
+            </tbody>
           </table>
         )}
       </div>
 
       {/* Pagination Footer Controls */}
       {pagination && !isLoading && processedData.length > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between border-t border-border bg-card px-5 py-3 gap-2 shrink-0">
+        <div className="flex flex-col sm:flex-row items-center justify-between border-t border-border bg-card px-3.5 py-2.5 sm:px-4 sm:py-2.5 gap-2 shrink-0">
           <p className="text-xs text-muted-foreground">
             Showing page <span className="font-bold text-foreground">{pagination.currentPage}</span> of{' '}
             <span className="font-bold text-foreground">{pagination.totalPages}</span> (

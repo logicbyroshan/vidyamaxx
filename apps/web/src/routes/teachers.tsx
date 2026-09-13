@@ -895,22 +895,22 @@ function StaffPage() {
       header: isHindi ? 'टीचर / फैकल्टी' : 'Faculty Member',
       accessorKey: 'name',
       cell: (r: StaffRecord) => (
-        <div className="flex items-center gap-3.5">
+        <div className="flex items-center gap-2.5">
           <div
             onClick={(e) => openPhotoPreview(r, e)}
-            className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-[#161616] shrink-0 cursor-pointer group relative hover:border-foreground/40 transition-colors"
+            className="overflow-hidden rounded-[3px] border border-border/80 shadow-xs w-8 h-[40px] bg-[#161616] shrink-0 cursor-pointer group relative hover:border-foreground/40 transition-colors"
             title="Click to view full photo"
           >
             <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-              <Eye className="h-3.5 w-3.5 text-white" />
+              <Eye className="h-3 w-3 text-white" />
             </div>
           </div>
-          <div>
-            <p className="font-bold text-white text-sm leading-tight hover:text-zinc-200 cursor-pointer" onClick={() => openStaffDrawer(r)}>
+          <div className="min-w-0 max-w-[160px] sm:max-w-[200px]">
+            <p className="font-bold text-white text-xs sm:text-sm leading-tight hover:text-zinc-200 cursor-pointer truncate" onClick={() => openStaffDrawer(r)} title={r.name}>
               {r.name}
             </p>
-            <p className="text-xs text-zinc-400 font-medium mt-0.5">{r.designation}</p>
+            <p className="text-[11px] text-zinc-400 font-medium mt-0.5 truncate" title={r.designation}>{r.designation}</p>
           </div>
         </div>
       ),
