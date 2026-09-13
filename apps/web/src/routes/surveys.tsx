@@ -212,7 +212,7 @@ function SurveysManagementPage() {
               return (
                 <div
                   key={s.id}
-                  className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between"
+                  className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-zinc-700 transition-all flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">

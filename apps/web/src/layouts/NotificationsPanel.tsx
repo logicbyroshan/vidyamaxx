@@ -150,7 +150,7 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
                   onClick={() => markNotificationRead(notif.id)}
                   className={`p-3 rounded-md border transition-all cursor-pointer flex gap-3 ${
                     !notif.read
-                      ? 'bg-card border-border shadow-xs hover:border-primary/40'
+                      ? 'bg-card border-border shadow-xs hover:border-zinc-700'
                       : 'bg-muted/30 border-border/70 hover:bg-muted/60 opacity-80'
                   }`}
                 >
