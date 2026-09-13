@@ -20,6 +20,19 @@ export function VFPageContainer({ className, ...props }: React.HTMLAttributes<HT
   );
 }
 
+// VFPageToolbar: Standardized unified top header toolbar box across modules
+export function VFPageToolbar({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
 // VFPageActions: standard flex list for actions in headers
 export function VFPageActions({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (

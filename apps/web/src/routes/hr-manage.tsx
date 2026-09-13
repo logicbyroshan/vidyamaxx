@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
+  VFPageToolbar,
   VFButton,
   VFBadge,
   VFCard,
@@ -145,7 +146,7 @@ function HRManageOverviewPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── TOP HEADER & LAUNCH BAR ── */}
-      <div className="p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <VFPageToolbar className="sm:p-3.5">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
@@ -182,7 +183,7 @@ function HRManageOverviewPage() {
             <span>{isHindi ? 'एचआर पोर्टल खोलें' : 'Open HR Portal'}</span>
           </VFButton>
         </div>
-      </div>
+      </VFPageToolbar>
 
       {/* ── DEPARTMENT FILTER TABS ── */}
       <div className="flex items-center justify-between flex-wrap gap-2 border-b border-border/80 pb-2">

@@ -6,6 +6,30 @@ Concise record of verified milestones and structural changes reconstructed from 
 
 ## [Unreleased / Active] — September 2026
 
+### Component Architecture, Deep Consistency & Unified Toolbar (PR #31 — 2026-09-14)
+* **Introduced `VFPageToolbar` in `@vidyamaxx/ui`**: Added reusable top header toolbar primitive encapsulating the standard `#141414` container pattern (`p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs`), eliminating repeated markup across 10+ modules (`teaching.tsx`, `complaints.tsx`, `design-lab.tsx`, `hostel.tsx`, `transport.tsx`, `elibrary.tsx`, `e-class.tsx`, `hr-manage.tsx`, `security.tsx`, `audit.tsx`, `resources.tsx`, `lms.tsx`, `learning.tsx`).
+* **Sleek Grey Hover Polish**: Audited all interactive elements to ensure strict adherence to subtle grey hover borders (`hover:border-zinc-700`, `hover:bg-[#181818]`), eliminating remaining orange hover borders on dashboard shortcut tiles and login institutional badges.
+* **Strict Geometric Sharp Border Enforcement**: Standardized leftover `rounded-lg` elements across `shortcuts.tsx`, `learning.tsx`, and `security.tsx` to explicit sharp `rounded-[4px]`.
+
+### Single-Page Subsystems UI Harmonization (PR #30 — 2026-09-14)
+* **Harmonized 8 Single-Page Subsystem Modules**: Cleaned up styling, typography hierarchy, and borders across `/teaching`, `/design-lab`, `/hostel`, `/transport`, `/elibrary`, `/e-class`, `/hr-manage`, `/security`, and `/audit`.
+* **Eliminated Orange Glows & Swatch Geometry**: Replaced orange selection outlines on presets/wings with crisp `border-zinc-500 bg-[#1c1c1c]`, and replaced `rounded-full` color swatches with sharp `rounded-[3px]`.
+* **Fixed Duplicate Button Icon in Teaching**: Corrected the New Lesson Plan button to display a single `+` icon without duplicate text.
+* **Preserved Route Isolation**: Kept all subsystems fully decoupled on their respective single routes without merging them.
+
+### Subtle Grey Hover System & Complaints Toolbar Modernization (PR #29 — 2026-09-14)
+* **Global Hover Color Refinement**: Replaced bright orange hover states (`hover:border-primary/50`, `hover:border-orange-500`) across tables and buttons with subtle, muted grey tones (`hover:bg-[#1a1a1a]`, `hover:border-zinc-700`).
+* **Complaints Module Toolbar Modernization**: Consolidated duplicate filter bars into a single unified top toolbar with tab switchers, department dropdowns, expandable search icon, and single `+ Lodge Grievance` action.
+
+### Clean In-Bar Metrics & 6-Section Navigation on Statistics (PR #28 — 2026-09-14)
+* **In-Bar Progress Metrics**: Embedded numerical percentage labels directly inside horizontal progress bars, eliminating excessive text below bars.
+* **Streamlined Academic Section Links**: Replaced multi-page button rows with 6 dedicated, clean navigation cards linking directly to `/attendance`, `/examinations`, `/academics`, `/homework`, `/students`, and `/timetable`.
+
+### Responsive Table Layout Engine & Column Alignment Standardization (PR #27 — 2026-09-14)
+* **Universal Full-Width Table Layout**: Updated `VFTable.tsx` and custom tables to stretch `w-full min-w-full`, expanding intelligently with viewport size and scrolling horizontally without visible scrollbars.
+* **Max-Width Column Truncation**: Standardized column text truncation (`max-w-[180px] truncate`) with native `title="..."` tooltips so wide text does not blow out column widths.
+* **Strict Column Alignment Standard**: Aligned text and identity columns (names, emails, subjects) to the left, and centered codes, counts, statuses, and action buttons for visual balance.
+
 ### Complete Platform Rebranding to VidyaMaxx (2026-09-13)
 * **Comprehensive Rebrand Across Entire Monorepo**: Rebranded platform from VidyaFloww to VidyaMaxx across all packages, frontend apps, backend settings/configuration, documentation, routes, tests, and configuration files.
 * **Workspace Package Renaming**: Updated all 11 monorepo packages to `@vidyamaxx/*` (`@vidyamaxx/api`, `@vidyamaxx/ui`, `@vidyamaxx/utils`, etc.), updated `pnpm-lock.yaml` and all dependencies.

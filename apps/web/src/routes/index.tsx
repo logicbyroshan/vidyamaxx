@@ -756,7 +756,7 @@ export function DashboardPage() {
                   <Link
                     key={action.id}
                     to={action.route}
-                    className="aspect-square relative overflow-hidden p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#121212] hover:bg-[#181818] hover:border-orange-500/40 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
+                    className="aspect-square relative overflow-hidden p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#121212] hover:bg-[#181818] hover:border-zinc-700 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
                   >
                     {/* Subtle warm orange ambient glow inside card matching orange theme */}
                     <div

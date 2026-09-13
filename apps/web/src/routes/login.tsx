@@ -1260,7 +1260,7 @@ function ProfessionalAuthPage() {
               return (
                 <div
                   key={i}
-                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#121212] border border-[#222222] text-xs font-semibold text-foreground/90 shadow-xs hover:border-primary/60 hover:text-primary transition-colors whitespace-nowrap shrink-0 hover:bg-[#181818] cursor-pointer"
+                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-[4px] bg-[#121212] border border-[#222222] text-xs font-semibold text-foreground/90 shadow-xs hover:border-zinc-700 hover:text-foreground transition-colors whitespace-nowrap shrink-0 hover:bg-[#181818] cursor-pointer"
                 >
                   <div className="h-4 w-4 rounded-md bg-primary/10 text-primary flex items-center justify-center shrink-0">
                     <Icon className="h-2.5 w-2.5" />

@@ -4,6 +4,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
 import {
   VFPageContainer,
+  VFPageToolbar,
   VFButton,
   VFBadge,
   VFDialog,
@@ -183,7 +184,7 @@ function ComplaintsManagementPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── SINGLE UNIFIED TOOLBAR & HEADER ── */}
-      <div className="p-2.5 sm:p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-2.5 shrink-0 shadow-xs">
+      <VFPageToolbar className="flex-wrap items-center justify-between gap-2.5">
         {/* Left: Tabs & Inline Dropdown Filters */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
           <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
@@ -301,7 +302,7 @@ function ComplaintsManagementPage() {
             {isHindi ? 'शिकायत दर्ज करें' : 'Lodge Grievance'}
           </VFButton>
         </div>
-      </div>
+      </VFPageToolbar>
 
       {/* ──────────────────────────────────────────────────────────────────────────
           TAB 1: GRIEVANCE REGISTRY

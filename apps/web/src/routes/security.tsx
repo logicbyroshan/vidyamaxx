@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   VFPageContainer,
+  VFPageToolbar,
   VFCard,
   VFButton,
   VFBadge,
@@ -92,7 +93,7 @@ function SecurityManagementPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. Sleek Header Toolbar Box */}
-      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <VFPageToolbar>
         {/* Left: Back to Settings + Title */}
         <div className="flex items-center gap-3">
           <Link to="/settings">
@@ -123,7 +124,7 @@ function SecurityManagementPage() {
             {t('action.saveChanges')}
           </VFButton>
         </div>
-      </div>
+      </VFPageToolbar>
 
       {/* 3. Role-Based Module Permission Matrix */}
       <VFCard
@@ -320,7 +321,7 @@ function SecurityManagementPage() {
                   step="5"
                   value={sessionTimeout}
                   onChange={(e) => setSessionTimeout(Number(e.target.value))}
-                  className="w-full h-1.5 bg-[#141414] rounded-lg appearance-none cursor-pointer accent-primary"
+                  className="w-full h-1.5 bg-[#141414] rounded-[2px] appearance-none cursor-pointer accent-primary"
                 />
                 <div className="flex justify-between text-[10px] text-muted-foreground font-mono mt-1">
                   <span>5m</span>

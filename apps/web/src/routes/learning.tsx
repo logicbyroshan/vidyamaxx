@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import {
   VFPageContainer,
+  VFPageToolbar,
   VFStatCard,
   VFDataTable,
   VFButton,
@@ -163,7 +164,7 @@ function LearningPage() {
               value={lessonTopic}
               onChange={(e) => setLessonTopic(e.target.value)}
               placeholder={isHindi ? 'विषय का नाम दर्ज करें (उदा. विद्युत प्रेरण, द्विघात समीकरण)...' : 'Enter topic name (e.g. Electromagnetic Induction, Quadratic Equations)...'}
-              className="flex-1 px-4 py-2.5 text-base border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-medium h-11"
+              className="flex-1 px-4 py-2.5 text-base border border-border rounded-[4px] bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-medium h-11"
             />
             <VFButton type="submit" size="sm" leftIcon={<Sparkles className="h-4 w-4" />}>
               {isHindi ? 'योजना बनाएं' : 'Generate Plan'}
@@ -171,7 +172,7 @@ function LearningPage() {
           </div>
 
           {generatedPlan && (
-            <div className="p-4 bg-muted/30 border border-border rounded-lg animate-fade-in">
+            <div className="p-4 bg-muted/30 border border-border rounded-[4px] animate-fade-in">
               <pre className="text-base text-foreground font-sans whitespace-pre-wrap leading-relaxed">
                 {generatedPlan}
               </pre>
@@ -219,7 +220,7 @@ function LearningPage() {
   return (
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. Header Toolbar Box */}
-      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <VFPageToolbar>
         <div className="flex items-center gap-2">
           <div className="h-7 w-7 rounded-md bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
             <BookOpen className="h-4 w-4" />
@@ -242,7 +243,7 @@ function LearningPage() {
             {isHindi ? 'AI पाठ योजना' : 'AI Lesson Plan'}
           </VFButton>
         </div>
-      </div>
+      </VFPageToolbar>
 
       <VFTabs items={tabs} defaultTabId="classes" variant="top-bar" />
     </VFPageContainer>
