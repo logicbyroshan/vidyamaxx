@@ -337,33 +337,33 @@ function LicenseManagementPage() {
         className="bg-[#0d0d0d] border-border/90"
         bodyClassName="p-0 overflow-hidden"
       >
-        <div className="overflow-x-auto no-scrollbar">
-          <table className="w-full text-left text-xs border-collapse">
+        <div className="overflow-x-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden w-full min-w-full">
+          <table className="w-full min-w-full text-left text-xs border-collapse table-auto">
             <thead>
-              <tr className="border-b border-border bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
-                <th className="py-2.5 px-4">{isHindi ? 'इनवॉइस #' : 'Invoice #'}</th>
-                <th className="py-2.5 px-4">{t('col.date')}</th>
-                <th className="py-2.5 px-4">{t('col.description')}</th>
-                <th className="py-2.5 px-4">{t('col.amount')}</th>
-                <th className="py-2.5 px-4">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
-                <th className="py-2.5 px-4">{t('col.status')}</th>
-                <th className="py-2.5 px-4 text-right">{t('col.action')}</th>
+              <tr className="border-b border-border bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px] whitespace-nowrap">
+                <th className="py-2.5 px-3">{isHindi ? 'इनवॉइस #' : 'Invoice #'}</th>
+                <th className="py-2.5 px-3">{t('col.date')}</th>
+                <th className="py-2.5 px-3">{t('col.description')}</th>
+                <th className="py-2.5 px-3">{t('col.amount')}</th>
+                <th className="py-2.5 px-3">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
+                <th className="py-2.5 px-3">{t('col.status')}</th>
+                <th className="py-2.5 px-3 text-right">{t('col.action')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60 text-foreground font-medium">
               {INVOICE_HISTORY.map((inv) => (
-                <tr key={inv.id} className="hover:bg-[#141414] transition-colors">
-                  <td className="py-3 px-4 font-mono font-bold text-foreground">{inv.invoiceNo}</td>
-                  <td className="py-3 px-4 font-mono text-muted-foreground">{inv.date}</td>
-                  <td className="py-3 px-4 text-foreground font-semibold">{inv.description}</td>
-                  <td className="py-3 px-4 font-mono font-extrabold text-foreground">{inv.amount}</td>
-                  <td className="py-3 px-4 font-mono text-xs text-muted-foreground">{inv.method}</td>
-                  <td className="py-3 px-4">
+                <tr key={inv.id} className="hover:bg-[#141414] transition-colors whitespace-nowrap">
+                  <td className="py-2.5 px-3 font-mono font-bold text-foreground">{inv.invoiceNo}</td>
+                  <td className="py-2.5 px-3 font-mono text-muted-foreground">{inv.date}</td>
+                  <td className="py-2.5 px-3 text-foreground font-semibold max-w-[220px] sm:max-w-[280px] truncate" title={inv.description}>{inv.description}</td>
+                  <td className="py-2.5 px-3 font-mono font-extrabold text-foreground">{inv.amount}</td>
+                  <td className="py-2.5 px-3 font-mono text-xs text-muted-foreground">{inv.method}</td>
+                  <td className="py-2.5 px-3">
                     <VFBadge variant="success" className="font-mono text-[10px] font-bold rounded-[3px] py-0.5 gap-1">
                       <Check className="h-3 w-3" /> {inv.status}
                     </VFBadge>
                   </td>
-                  <td className="py-3 px-4 text-right">
+                  <td className="py-2.5 px-3 text-right">
                     <VFButton
                       size="sm"
                       variant="outline"

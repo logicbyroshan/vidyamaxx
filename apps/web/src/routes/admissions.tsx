@@ -1180,7 +1180,7 @@ function AdmissionsPage() {
       header: isHindi ? 'एप्लिकेशन आईडी' : 'Applicant ID',
       accessorKey: 'applicantId',
       cell: (r: Applicant) => (
-        <span className="font-mono font-bold text-foreground bg-muted/60 px-2.5 py-1 rounded-md border border-border">
+        <span className="font-mono font-bold text-foreground bg-muted/60 px-2.5 py-1 rounded-[3px] border border-border text-xs">
           {r.applicantId}
         </span>
       ),
@@ -1189,14 +1189,15 @@ function AdmissionsPage() {
       header: isHindi ? 'कैंडिडेट का नाम' : 'Candidate Name',
       accessorKey: 'name',
       cell: (r: Applicant) => (
-        <div>
+        <div className="max-w-[160px] sm:max-w-[200px]">
           <button
             onClick={() => openApplicantDrawer(r)}
-            className="font-extrabold text-foreground text-sm leading-tight text-left hover:underline cursor-pointer tracking-tight block"
+            className="font-extrabold text-foreground text-xs sm:text-sm leading-tight text-left hover:underline cursor-pointer tracking-tight block truncate"
+            title={r.name}
           >
             {r.name}
           </button>
-          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.previousSchool}</p>
+          <p className="text-[11px] text-muted-foreground font-semibold mt-0.5 truncate" title={r.previousSchool}>{r.previousSchool}</p>
         </div>
       ),
     },
@@ -1205,7 +1206,7 @@ function AdmissionsPage() {
       accessorKey: 'appliedGrade',
       cell: (r: Applicant) => (
         <div>
-          <span className="font-bold text-foreground text-sm block">{r.appliedGrade}</span>
+          <span className="font-bold text-foreground text-xs sm:text-sm block">{r.appliedGrade}</span>
           <span className="text-[11px] text-muted-foreground font-medium block truncate max-w-[140px]">
             {r.streamPreference}
           </span>
@@ -1216,8 +1217,8 @@ function AdmissionsPage() {
       header: isHindi ? 'गार्जियन / कॉन्टैक्ट' : 'Guardian / Contact',
       accessorKey: 'phone',
       cell: (r: Applicant) => (
-        <div>
-          <span className="text-sm font-bold text-foreground block">{r.guardianName}</span>
+        <div className="max-w-[150px]">
+          <span className="text-xs sm:text-sm font-bold text-foreground block truncate" title={r.guardianName}>{r.guardianName}</span>
           <span className="text-xs text-muted-foreground font-mono">{r.phone}</span>
         </div>
       ),
@@ -1227,11 +1228,11 @@ function AdmissionsPage() {
       accessorKey: 'fitScore',
       cell: (r: Applicant) => (
         <div className="flex items-center gap-2">
-          <span className="font-black text-sm text-foreground">{r.fitScore}%</span>
-          <div className="h-2 w-14 bg-muted rounded-full overflow-hidden border border-border/50">
+          <span className="font-black text-xs sm:text-sm text-foreground">{r.fitScore}%</span>
+          <div className="h-2 w-14 bg-muted rounded-[3px] overflow-hidden border border-border/50">
             <div
               className={cn(
-                'h-full rounded-full transition-all',
+                'h-full rounded-[3px] transition-all',
                 r.fitScore >= 80 ? 'bg-emerald-400' : r.fitScore >= 60 ? 'bg-amber-400' : 'bg-rose-400'
               )}
               style={{ width: `${r.fitScore}%` }}
