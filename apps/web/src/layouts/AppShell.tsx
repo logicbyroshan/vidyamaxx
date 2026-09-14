@@ -6,6 +6,7 @@ import { Header } from './Header';
 import { CommandPalette } from './CommandPalette';
 import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
+import { AIChatDrawer } from '../components/AIChatDrawer';
 import { useGlobalStore, initTheme } from '../stores/globalStore';
 import { VFPage } from '@vidyamaxx/ui';
 import { Monitor, Smartphone, Laptop, ArrowRight } from 'lucide-react';
@@ -130,7 +131,7 @@ const ROUTE_PAGE_NAMES: Record<string, string> = {
 
 export function AppShell() {
   const location = useLocation();
-  const { addNotification, schoolProfile, language } = useGlobalStore();
+  const { addNotification, schoolProfile, language, isAIDrawerOpen, setAIDrawerOpen, toggleAIDrawer } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
@@ -190,15 +191,20 @@ export function AppShell() {
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Shift+K for VidyaMaxx AI Copilot Drawer
+      if (e.shiftKey && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        toggleAIDrawer();
+      }
       // Ctrl+K / Cmd+K for Command Palette
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setIsCommandPaletteOpen(true);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [toggleAIDrawer]);
 
   const isFullScreenPage =
     location.pathname === '/login' ||
@@ -249,6 +255,10 @@ export function AppShell() {
           <NotificationsPanel
             isOpen={isNotificationsOpen}
             onClose={() => setIsNotificationsOpen(false)}
+          />
+          <AIChatDrawer
+            isOpen={isAIDrawerOpen}
+            onClose={() => setAIDrawerOpen(false)}
           />
           <ToastContainer />
         </VFPage>

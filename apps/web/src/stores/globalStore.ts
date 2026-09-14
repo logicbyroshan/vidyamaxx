@@ -97,6 +97,11 @@ interface GlobalState {
   setDashboardShortcuts: (shortcuts: string[]) => void;
   resetDashboardShortcuts: () => void;
 
+  // AI Copilot Drawer state
+  isAIDrawerOpen: boolean;
+  setAIDrawerOpen: (isOpen: boolean) => void;
+  toggleAIDrawer: () => void;
+
   // Notifications
   notifications: Notification[];
   addNotification: (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => void;
@@ -166,6 +171,11 @@ export const useGlobalStore = create<GlobalState>()(
       dashboardShortcuts: DEFAULT_DASHBOARD_SHORTCUTS,
       setDashboardShortcuts: (dashboardShortcuts) => set({ dashboardShortcuts }),
       resetDashboardShortcuts: () => set({ dashboardShortcuts: DEFAULT_DASHBOARD_SHORTCUTS }),
+
+      // AI Copilot Drawer state
+      isAIDrawerOpen: false,
+      setAIDrawerOpen: (isAIDrawerOpen) => set({ isAIDrawerOpen }),
+      toggleAIDrawer: () => set((state) => ({ isAIDrawerOpen: !state.isAIDrawerOpen })),
 
       // Notifications state
       notifications: [],

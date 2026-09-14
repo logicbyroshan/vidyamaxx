@@ -271,5 +271,4 @@ pnpm type-check
 * **Backend URL Routing**: In `apps/backend/config/urls.py`, all `api/v1/` routes are commented out pending app-level URLconf and viewset creation.
 * **Tenant Middleware**: Multi-tenancy database isolation middleware (`TenantMiddleware` and `TenantQuerySet`) is designed in architecture documentation but not yet implemented in `apps/backend/common/`.
 * **Authentication Linkage**: Web has complete UI forms (`/login`), but live JWT exchange with Django's `rest_framework_simplejwt` requires mounting active auth endpoints and switching Zustand store from mock authentication.
-* **`AIChatDrawer.tsx`**: Component exists in `src/components/` but is not yet wired into `AppShell.tsx`. Pending AI assistant integration milestone.
-* **`ErrorPages.tsx`**: Exists in `src/pages/` as a future React Error Boundary; not yet mounted in the router tree.
+* **`AIChatDrawer.tsx` & `ErrorPages.tsx`**: Fully integrated. AI Copilot Drawer is wired into `AppShell.tsx`, `Sidebar.tsx` footer, and `Header.tsx` with global state and `Shift+K` shortcut. `Error404` and `Error500` are mounted as TanStack Router error boundaries in `__root.tsx`.
