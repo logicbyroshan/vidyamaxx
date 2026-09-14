@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, Clock, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen, Languages } from 'lucide-react';
+import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, Clock, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen, Languages, Sparkles } from 'lucide-react';
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -23,6 +23,8 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
     toggleSidebar,
     setLanguage,
     addNotification,
+    toggleAIDrawer,
+    isAIDrawerOpen,
   } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
@@ -206,6 +208,22 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             <LayoutGrid className={cn("h-4 w-4 shrink-0 transition-colors", isDashboardEditMode ? "text-amber-400" : "text-muted-foreground group-hover:text-foreground")} />
           </button>
         )}
+
+        {/* VidyaMaxx AI Copilot Trigger */}
+        <button
+          onClick={toggleAIDrawer}
+          type="button"
+          className={cn(
+            "relative rounded-md border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group",
+            isAIDrawerOpen
+              ? "bg-[#1c1c1c] text-primary border-primary/50"
+              : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-primary border-border"
+          )}
+          title={isHindi ? "विद्यामैक्स AI को-पायलट (Shift+K)" : "VidyaMaxx AI Copilot (Shift+K)"}
+          aria-label="VidyaMaxx AI Copilot"
+        >
+          <Sparkles className="h-4 w-4 shrink-0 text-primary transition-colors" />
+        </button>
 
         {/* Square Search Button Beside Notifications */}
         <button

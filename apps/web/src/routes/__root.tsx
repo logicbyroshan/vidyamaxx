@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createRootRoute } from '@tanstack/react-router';
 import { AppShell } from '../layouts/AppShell';
-import { VFEmptyState } from '@vidyamaxx/ui';
+import { Error404, Error500 } from '../pages/ErrorPages';
 
 export const Route = createRootRoute({
   component: () => (
@@ -9,16 +9,6 @@ export const Route = createRootRoute({
       <AppShell />
     </React.Fragment>
   ),
-  notFoundComponent: () => (
-    <div className="flex h-screen w-full items-center justify-center bg-background">
-      <VFEmptyState
-        title="404 - Page Not Found"
-        description="The page you are looking for doesn't exist or has been moved."
-        primaryAction={{
-          label: "Return Home",
-          onClick: () => window.history.back(),
-        }}
-      />
-    </div>
-  ),
+  notFoundComponent: () => <Error404 />,
+  errorComponent: () => <Error500 />,
 });
