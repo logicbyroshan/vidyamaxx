@@ -346,4 +346,22 @@ export const MODULE_REGISTRY: ModuleConfig[] = [
       { id: 'settings', label: 'School Settings' },
     ],
   },
+  {
+    id: 'privacy',
+    code: '14',
+    label: 'Privacy & DPDP',
+    route: '/privacy',
+    iconName: 'ShieldCheck',
+    description: 'Digital Personal Data Protection Act 2023 compliance, parental consent, DSR rights, and grievance redressal',
+    submodules: [
+      { id: 'overview', label: 'DPDP Overview' },
+      { id: 'parental-consent', label: 'Parental Consent (Sec 9)' },
+      { id: 'consent-studio', label: 'Consent Studio (Sec 6)' },
+      { id: 'data-rights', label: 'Data Rights Hub (Sec 11-14)' },
+      { id: 'grievance-registry', label: 'Grievance Redressal (Sec 13)' },
+      { id: 'privacy-notice', label: 'Privacy Notice (Sec 5)' },
+      { id: 'retention-matrix', label: 'Retention Schedule' },
+      { id: 'breach-response', label: 'Breach Response' },
+    ],
+  },
 ];

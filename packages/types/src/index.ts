@@ -13,3 +13,4 @@ export * from './domain/organization';
 export * from './domain/student';
 export * from './domain/academic';
 export * from './domain/finance';
+export * from './domain/privacy';
