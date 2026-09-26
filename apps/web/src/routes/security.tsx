@@ -8,6 +8,7 @@ import {
 } from '@vidyafloww/ui';
 import {
   Shield,
+  ShieldCheck,
   ArrowLeft,
   CheckCircle2,
   Users,
@@ -123,6 +124,37 @@ function SecurityManagementPage() {
             {t('action.saveChanges')}
           </VFButton>
         </div>
+      </div>
+
+      {/* DPDP Act 2023 Sovereign Privacy Center Banner */}
+      <div className="p-3.5 rounded-[4px] bg-gradient-to-r from-emerald-950/40 via-neutral-900 to-neutral-900 border border-emerald-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded bg-emerald-950 border border-emerald-800/80 text-emerald-400 flex items-center justify-center shrink-0">
+            <ShieldCheck className="h-5 w-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-xs font-bold text-foreground">
+                {isHindi ? 'डिजिटल पर्सनल डेटा प्रोटेक्शन (DPDP Act, 2023) संप्रभु गवर्नेंस' : 'Digital Personal Data Protection (DPDP Act, 2023) Sovereign Governance'}
+              </h3>
+              <VFBadge variant="outline" className="text-[10px] font-mono text-emerald-400 border-emerald-800">
+                DPDP 2023 Active
+              </VFBadge>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">
+              {isHindi
+                ? 'नाबालिग अभिभावक सहमति (Sec 9), डेटा अधिकार केंद्र (Sec 11-14), और शिकायत निवारण रजिस्टर (Sec 13) प्रबंधित करें।'
+                : 'Manage Section 9 Minor Parental Consents, Sections 11–14 Data Subject Rights, and Section 13 Grievance SLA tracking.'}
+            </p>
+          </div>
+        </div>
+
+        <Link to="/privacy">
+          <VFButton size="sm" className="h-8 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white gap-1.5 shadow-xs shrink-0">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            {isHindi ? 'डीपी portrait केंद्र खोलें' : 'Open DPDP Privacy Center'}
+          </VFButton>
+        </Link>
       </div>
 
       {/* 3. Role-Based Module Permission Matrix */}

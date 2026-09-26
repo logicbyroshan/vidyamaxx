@@ -20,6 +20,7 @@ import {
   MapPin,
   Upload,
   Shield,
+  ShieldCheck,
   Terminal,
   Lock,
   UserCheck,
@@ -286,6 +287,16 @@ function SchoolAdministrationPage() {
           </div>
 
           <div className="flex items-center gap-2 flex-wrap shrink-0">
+            <Link to="/privacy">
+              <VFButton
+                size="sm"
+                variant="outline"
+                className="h-8 px-3 text-xs font-bold rounded-[4px] border-emerald-800/80 text-emerald-400 hover:bg-emerald-950/40"
+                leftIcon={<ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />}
+              >
+                {isHindi ? 'प्राइवेसी & DPDP ↗' : 'Privacy & DPDP ↗'}
+              </VFButton>
+            </Link>
             <Link to="/audit">
               <VFButton
                 size="sm"

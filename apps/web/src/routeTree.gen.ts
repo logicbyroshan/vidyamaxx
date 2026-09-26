@@ -22,6 +22,7 @@ import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ScholarshipsRouteImport } from './routes/scholarships'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as NoticesRouteImport } from './routes/notices'
 import { Route as LoginRouteImport } from './routes/login'
@@ -107,6 +108,11 @@ const ResourcesRoute = ResourcesRouteImport.update({
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalRoute = PortalRouteImport.update({
@@ -237,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/scholarships': typeof ScholarshipsRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/scholarships': typeof ScholarshipsRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/scholarships': typeof ScholarshipsRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/notices'
     | '/portal'
+    | '/privacy'
     | '/reports'
     | '/resources'
     | '/scholarships'
@@ -384,6 +394,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/notices'
     | '/portal'
+    | '/privacy'
     | '/reports'
     | '/resources'
     | '/scholarships'
@@ -420,6 +431,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/notices'
     | '/portal'
+    | '/privacy'
     | '/reports'
     | '/resources'
     | '/scholarships'
@@ -457,6 +469,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   NoticesRoute: typeof NoticesRoute
   PortalRoute: typeof PortalRoute
+  PrivacyRoute: typeof PrivacyRoute
   ReportsRoute: typeof ReportsRoute
   ResourcesRoute: typeof ResourcesRoute
   ScholarshipsRoute: typeof ScholarshipsRoute
@@ -563,6 +576,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal': {
@@ -737,6 +757,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   NoticesRoute: NoticesRoute,
   PortalRoute: PortalRoute,
+  PrivacyRoute: PrivacyRoute,
   ReportsRoute: ReportsRoute,
   ResourcesRoute: ResourcesRoute,
   ScholarshipsRoute: ScholarshipsRoute,

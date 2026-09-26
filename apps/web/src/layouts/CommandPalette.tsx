@@ -26,6 +26,7 @@ import {
   FileSpreadsheet,
   Building,
   School,
+  ShieldCheck,
 } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
@@ -49,6 +50,7 @@ const ICON_MAP: Record<string, any> = {
   FileSpreadsheet,
   Building,
   School,
+  ShieldCheck,
 };
 
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {

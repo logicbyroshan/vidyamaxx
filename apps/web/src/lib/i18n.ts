@@ -37,6 +37,7 @@ export const translations = {
   'nav.portal':           { en: 'Parent Portal',     hi: 'पैरेंट पोर्टल' },
   'nav.settings':         { en: 'Settings',          hi: 'सेटिंग्स' },
   'nav.security':         { en: 'Security',          hi: 'सिक्योरिटी' },
+  'nav.privacy':          { en: 'Privacy & DPDP',    hi: 'प्राइवेसी व डेटा सुरक्षा' },
   'nav.audit':            { en: 'Audit Log',         hi: 'ऑडिट लॉग' },
   'nav.salary':           { en: 'Salary',            hi: 'सैलरी' },
   'nav.shortcuts':        { en: 'Shortcuts',         hi: 'शॉर्टकट' },
