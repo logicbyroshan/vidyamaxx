@@ -112,9 +112,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # TODO: Add custom middleware
-    # "common.middleware.RequestLoggingMiddleware",
-    # "common.middleware.TenantMiddleware",
+    "common.middleware.privacy.PrivacyPreservingSecurityHeadersMiddleware",
+    "common.middleware.privacy.SanitizedRequestLoggingMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

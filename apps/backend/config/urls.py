@@ -20,7 +20,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
     # ─── API v1 ─────────────────────────────────────────────────────────────
-    # TODO: Include app-specific URL modules as they are implemented
+    path("api/v1/privacy/", include("platform_services.audit.urls")),
     # path("api/v1/auth/", include("core.authentication.urls")),
     # path("api/v1/users/", include("core.users.urls")),
     # path("api/v1/organizations/", include("core.organizations.urls")),
