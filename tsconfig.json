@@ -19,17 +19,17 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@vidyamaxx/api": ["packages/api/index.ts"],
-      "@vidyamaxx/ui": ["packages/ui/index.ts"],
-      "@vidyamaxx/types": ["packages/types/index.ts"],
-      "@vidyamaxx/utils": ["packages/utils/index.ts"],
-      "@vidyamaxx/constants": ["packages/constants/index.ts"],
-      "@vidyamaxx/hooks": ["packages/hooks/index.ts"],
-      "@vidyamaxx/validation": ["packages/validation/index.ts"],
-      "@vidyamaxx/config": ["packages/config/index.ts"],
-      "@vidyamaxx/themes": ["packages/themes/index.ts"],
-      "@vidyamaxx/icons": ["packages/icons/index.ts"],
-      "@vidyamaxx/assets": ["packages/assets/index.ts"]
+      "@vidyafloww/api": ["packages/api/index.ts"],
+      "@vidyafloww/ui": ["packages/ui/index.ts"],
+      "@vidyafloww/types": ["packages/types/index.ts"],
+      "@vidyafloww/utils": ["packages/utils/index.ts"],
+      "@vidyafloww/constants": ["packages/constants/index.ts"],
+      "@vidyafloww/hooks": ["packages/hooks/index.ts"],
+      "@vidyafloww/validation": ["packages/validation/index.ts"],
+      "@vidyafloww/config": ["packages/config/index.ts"],
+      "@vidyafloww/themes": ["packages/themes/index.ts"],
+      "@vidyafloww/icons": ["packages/icons/index.ts"],
+      "@vidyafloww/assets": ["packages/assets/index.ts"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next"]

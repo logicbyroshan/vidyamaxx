@@ -1,19 +1,19 @@
-# VidyaMaxx Enterprise API Documentation
+# VidyaFloww Enterprise API Documentation
 
 > **Version**: `v2.6.0`  
 > **Protocol**: RESTful JSON over HTTPS (TLS 1.3 / HTTP/2)  
-> **Base URL**: `https://api.vidyamaxx.edu.in/api/v1`  
+> **Base URL**: `https://api.vidyafloww.edu.in/api/v1`  
 > **Specification Standard**: OpenAPI 3.1 & CBSE Cloud IT Security Guidelines
 
 ---
 
 ## 1. Overview & Architecture
 
-VidyaMaxx is an enterprise-grade School ERP & Institutional Intelligence Platform. All API interactions follow strict REST conventions, utilizing standard HTTP status codes, structured JSON error objects, JSON Web Tokens (JWT) for stateless authentication, and multi-tenant isolation.
+VidyaFloww is an enterprise-grade School ERP & Institutional Intelligence Platform. All API interactions follow strict REST conventions, utilizing standard HTTP status codes, structured JSON error objects, JSON Web Tokens (JWT) for stateless authentication, and multi-tenant isolation.
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│               VidyaMaxx Client Layer                   │
+│               VidyaFloww Client Layer                   │
 │   (Web Portal / Mobile App / Desktop Electron App)     │
 └─────────────────────────┬──────────────────────────────┘
                           │ HTTPS / WSS
@@ -64,7 +64,7 @@ Authenticates a user via institutional credentials.
 #### Request Payload
 ```json
 {
-  "identifier": "admin@vidyamaxx.edu.in",
+  "identifier": "admin@vidyafloww.edu.in",
   "password": "YourSecurePassword@2026",
   "rememberMe": true,
   "deviceInfo": {
@@ -85,7 +85,7 @@ Authenticates a user via institutional credentials.
   "user": {
     "id": "usr_849201",
     "name": "Roshan Singh",
-    "email": "admin@vidyamaxx.edu.in",
+    "email": "admin@vidyafloww.edu.in",
     "role": "super_admin",
     "tenantId": "sch_springfield_delhi",
     "institutionName": "Springfield Academy",
@@ -113,7 +113,7 @@ Single Sign-On authentication using Google Workspace OAuth 2.0.
 ```json
 {
   "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjY4ZGI4OGY...",
-  "domain": "vidyamaxx.edu.in"
+  "domain": "vidyafloww.edu.in"
 }
 ```
 
@@ -127,7 +127,7 @@ Single Sign-On authentication using Google Workspace OAuth 2.0.
   "user": {
     "id": "usr_992144",
     "name": "Dr. V. Malhotra",
-    "email": "principal@vidyamaxx.edu.in",
+    "email": "principal@vidyafloww.edu.in",
     "role": "principal",
     "tenantId": "sch_springfield_delhi"
   }
@@ -174,7 +174,7 @@ Validates 6-digit Multi-Factor / Registration OTP.
 #### Request Payload
 ```json
 {
-  "targetIdentifier": "admin@vidyamaxx.edu.in",
+  "targetIdentifier": "admin@vidyafloww.edu.in",
   "otpCode": "948216",
   "purpose": "registration"
 }
@@ -234,7 +234,7 @@ Recovers institutional User ID using verified phone & date of birth.
   "success": true,
   "matchedUser": {
     "name": "Roshan Singh",
-    "username": "admin@vidyamaxx.edu.in",
+    "username": "admin@vidyafloww.edu.in",
     "role": "Super Administrator",
     "institution": "Springfield Academy"
   }
@@ -255,7 +255,7 @@ Retrieves current authenticated session profile, active session, and RBAC matrix
   "user": {
     "id": "usr_849201",
     "name": "Roshan Singh",
-    "email": "admin@vidyamaxx.edu.in",
+    "email": "admin@vidyafloww.edu.in",
     "role": "super_admin",
     "activeSession": "2026–2027",
     "tenant": {
@@ -363,6 +363,6 @@ The backend microservice is implemented in `apps/backend`:
      - Fees & Accounting (`modules.fees`, `modules.accounting`)
      - Academics & Timetable (`modules.academics`, `modules.timetable`)
 4. **Step 4: Frontend API Integration**:
-   - Connect `@vidyamaxx/api` Axios client with live Django endpoints.
+   - Connect `@vidyafloww/api` Axios client with live Django endpoints.
    - Replace Zustand mock stores with TanStack Query hooks (`useQuery`, `useMutation`) talking to `/api/v1/*`.
 

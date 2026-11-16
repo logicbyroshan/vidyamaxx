@@ -48,7 +48,7 @@ export function Preloader({ onDone }: { onDone: () => void }) {
         <div className="relative flex items-center justify-center">
           <img
             src="/logo.png"
-            alt="VidyaMaxx Logo"
+            alt="VidyaFloww Logo"
             className="h-16 w-16 object-contain drop-shadow-[0_0_20px_rgba(234,88,12,0.35)]"
           />
         </div>

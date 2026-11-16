@@ -1,5 +1,5 @@
 """
-VidyaMaxx Django Settings — Base Configuration
+VidyaFloww Django Settings — Base Configuration
 
 This module contains shared settings common to all environments.
 Environment-specific settings are in development.py, production.py, and testing.py.
@@ -144,8 +144,8 @@ ASGI_APPLICATION = "config.asgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "vidyamaxx_db"),
-        "USER": os.getenv("POSTGRES_USER", "vidyamaxx"),
+        "NAME": os.getenv("POSTGRES_DB", "vidyafloww_db"),
+        "USER": os.getenv("POSTGRES_USER", "vidyafloww"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "password"),
         "HOST": os.getenv("POSTGRES_HOST", "localhost"),
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
@@ -244,7 +244,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 # ─── API Documentation ────────────────────────────────────────────────────────
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "VidyaMaxx API",
+    "TITLE": "VidyaFloww API",
     "DESCRIPTION": "Enterprise School Management Platform REST API",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
@@ -275,7 +275,7 @@ LOGGING = {
         },
         "file": {
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": BASE_DIR / "logs" / "vidyamaxx.log",
+            "filename": BASE_DIR / "logs" / "vidyafloww.log",
             "maxBytes": 1024 * 1024 * 10,  # 10 MB
             "backupCount": 5,
             "formatter": "verbose",
@@ -291,7 +291,7 @@ LOGGING = {
             "level": "INFO",
             "propagate": False,
         },
-        "vidyamaxx": {
+        "vidyafloww": {
             "handlers": ["console", "file"],
             "level": "DEBUG",
             "propagate": False,

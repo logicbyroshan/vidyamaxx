@@ -3,7 +3,7 @@
 ## Monorepo Layout
 
 ```text
-vidyamaxx/
+vidyafloww/
 ├── apps/
 │   ├── backend/          Django application (Python 3.13)
 │   ├── web/              React 19 web app (Vite + TypeScript)

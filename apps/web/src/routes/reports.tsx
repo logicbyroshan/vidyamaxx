@@ -7,7 +7,7 @@ import {
   VFBadge,
   VFSelect,
   VFDrawer,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Download,
   Plus,
@@ -66,7 +66,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
       { key: 'attendanceRate', label: 'Attendance %' },
       { key: 'feeStatus', label: 'Fee Clearance' },
     ],
-    defaultFilename: 'VidyaMaxx_Student_Master_2026',
+    defaultFilename: 'VidyaFloww_Student_Master_2026',
   },
   fees: {
     id: 'fees',
@@ -86,7 +86,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
       { key: 'paymentMode', label: 'Payment Method' },
       { key: 'status', label: 'Ledger Status' },
     ],
-    defaultFilename: 'VidyaMaxx_Fee_Collection_Q2_2026',
+    defaultFilename: 'VidyaFloww_Fee_Collection_Q2_2026',
   },
   attendance: {
     id: 'attendance',
@@ -105,7 +105,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
       { key: 'attendanceRate', label: 'Attendance Rate (%)' },
       { key: 'biometricSync', label: 'Biometric Status' },
     ],
-    defaultFilename: 'VidyaMaxx_Attendance_Register_Sep2026',
+    defaultFilename: 'VidyaFloww_Attendance_Register_Sep2026',
   },
   examinations: {
     id: 'examinations',
@@ -125,7 +125,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
       { key: 'gpa', label: 'GPA Equivalent' },
       { key: 'standing', label: 'Standing / Honors' },
     ],
-    defaultFilename: 'VidyaMaxx_Term1_Exam_Standings_2026',
+    defaultFilename: 'VidyaFloww_Term1_Exam_Standings_2026',
   },
   faculty: {
     id: 'faculty',
@@ -143,7 +143,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
       { key: 'qualification', label: 'Highest Degree' },
       { key: 'status', label: 'Tenure Status' },
     ],
-    defaultFilename: 'VidyaMaxx_Faculty_Workload_2026',
+    defaultFilename: 'VidyaFloww_Faculty_Workload_2026',
   },
   compliance: {
     id: 'compliance',
@@ -162,7 +162,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
       { key: 'conduct', label: 'Conduct Benchmark' },
       { key: 'duesCleared', label: 'Dues Cleared' },
     ],
-    defaultFilename: 'VidyaMaxx_TC_Accreditation_2026',
+    defaultFilename: 'VidyaFloww_TC_Accreditation_2026',
   },
 };
 
@@ -255,7 +255,7 @@ function generatePrintableHTML(
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>${title} – VidyaMaxx Institutional Audit</title>
+  <title>${title} – VidyaFloww Institutional Audit</title>
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; color: #111; }
     .header { border-bottom: 2px solid #2563eb; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
@@ -271,7 +271,7 @@ function generatePrintableHTML(
 <body>
   <div class="header">
     <div>
-      <h1 class="school-title">VidyaMaxx International Academy</h1>
+      <h1 class="school-title">VidyaFloww International Academy</h1>
       <p class="affiliation">Affiliation: CBSE #1630982 | Est. 1994 | ISO 27001 Certified</p>
       <h2 style="font-size:16px; margin-top:12px; color:#2563eb;">${title}</h2>
     </div>
@@ -290,7 +290,7 @@ function generatePrintableHTML(
 
   <div class="footer">
     <div>
-      <p>Tamper-evident system export generated via VidyaMaxx Institutional Command Portal.</p>
+      <p>Tamper-evident system export generated via VidyaFloww Institutional Command Portal.</p>
       <p>Document Security Checksum: SHA-256 Verified</p>
     </div>
     <div style="display:flex; gap:40px;">
@@ -339,7 +339,7 @@ function ReportsPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = t('page.reports') + ' – VidyaMaxx';
+    document.title = t('page.reports') + ' – VidyaFloww';
   }, [t]);
 
   // Catalog Table State
@@ -416,7 +416,7 @@ function ReportsPage() {
     } else if (selectedFormat === 'json') {
       const jsonData = JSON.stringify(
         {
-          institution: 'VidyaMaxx International Academy',
+          institution: 'VidyaFloww International Academy',
           affiliation: 'CBSE Affiliation #1630982',
           exportedAt: new Date().toISOString(),
           session: selectedSession,

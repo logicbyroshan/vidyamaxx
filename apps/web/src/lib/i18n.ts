@@ -1,5 +1,5 @@
 /**
- * VidyaMaxx i18n Translation Dictionary
+ * VidyaFloww i18n Translation Dictionary
  * Supports: English (en) | Hindi / Hinglish (hi)
  * Scope: ALL UI text — navigation, page titles, section headings, table columns,
  *        form labels, status badges, common actions, domain terms, empty states,
@@ -285,10 +285,10 @@ export const translations = {
   'auth.verifyOtp':       { en: 'Verify OTP',        hi: 'OTP वेरीफाई करें' },
   'auth.language':        { en: 'Language',          hi: 'लैंग्वेज' },
   'auth.institutionalEmail': { en: 'Institutional Email or User ID', hi: 'इंस्टीट्यूशनल ईमेल या यूजर ID' },
-  'auth.signInTitle':     { en: 'Sign In to VidyaMaxx', hi: 'VidyaMaxx में साइन इन करें' },
+  'auth.signInTitle':     { en: 'Sign In to VidyaFloww', hi: 'VidyaFloww में साइन इन करें' },
   'auth.signInSubtitle':  { en: 'Access your unified institutional management portal', hi: 'अपना यूनिफाइड स्कूल मैनेजमेंट पोर्टल एक्सेस करें' },
   'auth.orWith':          { en: 'or with institutional credentials', hi: 'या इंस्टीट्यूशनल क्रेडेंशियल्स के साथ' },
-  'auth.signInBtn':       { en: 'Sign In to VidyaMaxx', hi: 'VidyaMaxx में साइन इन करें' },
+  'auth.signInBtn':       { en: 'Sign In to VidyaFloww', hi: 'VidyaFloww में साइन इन करें' },
   'auth.signingIn':       { en: 'Signing in...', hi: 'साइन इन हो रहा है...' },
   'auth.roleAdmin':       { en: 'School Administrator', hi: 'स्कूल एडमिनिस्ट्रेटर' },
   'auth.roleTeacher':     { en: 'Faculty / Teaching Staff', hi: 'फैकल्टी / टीचिंग स्टाफ' },

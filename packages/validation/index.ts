@@ -1,13 +1,13 @@
 /**
- * @vidyamaxx/validation
+ * @vidyafloww/validation
  *
- * Shared Zod schemas for form validation across all VidyaMaxx apps.
+ * Shared Zod schemas for form validation across all VidyaFloww apps.
  *
  * Ensures consistent validation rules for shared domain entities
  * between web, mobile, and desktop apps.
  *
  * @example
- * import { emailSchema, phoneSchema } from '@vidyamaxx/validation';
+ * import { emailSchema, phoneSchema } from '@vidyafloww/validation';
  */
 
 export { emailSchema, phoneSchema, uuidSchema, passwordSchema, urlSchema } from './src/primitives';

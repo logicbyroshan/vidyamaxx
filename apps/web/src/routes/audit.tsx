@@ -14,7 +14,7 @@ import {
   VFTableBody,
   VFTableRow,
   VFTableCell,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ArrowLeft,
   Search,
@@ -84,7 +84,7 @@ function AuditLogPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.audit') + ' – VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.audit') + ' – VidyaFloww'; }, [t]);
 
   // Filters State
   const [searchQuery, setSearchQuery] = React.useState('');

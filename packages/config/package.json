@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/config",
+  "name": "@vidyafloww/config",
   "version": "0.1.0",
-  "description": "VidyaMaxx shared configuration utilities",
+  "description": "VidyaFloww shared configuration utilities",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

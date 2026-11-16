@@ -7,7 +7,7 @@ import {
   VFButton,
   VFBadge,
   VFDialog,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Vote,
   CheckCircle2,
@@ -108,7 +108,7 @@ function SurveysManagementPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'सर्वे & फीडबैक' : 'Surveys & Feedback') + ' – VidyaMaxx';
+    document.title = (isHindi ? 'सर्वे & फीडबैक' : 'Surveys & Feedback') + ' – VidyaFloww';
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'active' | 'results'>('active');
@@ -257,7 +257,7 @@ function SurveysManagementPage() {
                       <button
                         type="button"
                         onClick={() => {
-                          navigator.clipboard?.writeText(`https://portal.vidyamaxx.org/survey/${s.id.toLowerCase()}`);
+                          navigator.clipboard?.writeText(`https://portal.vidyafloww.org/survey/${s.id.toLowerCase()}`);
                           addNotification({
                             title: isHindi ? 'सर्वे लिंक कॉपी हुआ' : 'Survey Link Copied',
                             description: 'Shareable poll URL copied to clipboard.',

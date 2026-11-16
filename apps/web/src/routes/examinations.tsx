@@ -16,7 +16,7 @@ import {
   VFTableCell,
   VFCard,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Plus,
   Download,
@@ -528,7 +528,7 @@ function ExaminationsPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'एग्जाम्स' : 'Examinations') + ' – VidyaMaxx';
+    document.title = (isHindi ? 'एग्जाम्स' : 'Examinations') + ' – VidyaFloww';
   }, [isHindi]);
 
   // Main Active Tab View: timetable | scheme | marks
@@ -2360,7 +2360,7 @@ function ExaminationsPage() {
             {/* Formal Letterhead */}
             <div className="p-4 rounded-[4px] bg-[#161616] border border-border/80 text-center space-y-1">
               <span className="text-[10px] font-mono font-bold tracking-widest text-amber-400 uppercase">
-                VIDYAMAXX INTERNATIONAL ACADEMY · SENIOR SECONDARY CAMPUS
+                VIDYAFLOWW INTERNATIONAL ACADEMY · SENIOR SECONDARY CAMPUS
               </span>
               <h2 className="font-bold text-foreground text-sm uppercase tracking-wide">
                 Office of the Controller of Examinations — Annual Circular

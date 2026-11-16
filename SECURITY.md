@@ -14,7 +14,7 @@
 
 Please report security vulnerabilities by emailing:
 
-📧 **security@vidyamaxx.com**
+📧 **security@vidyafloww.com**
 
 Include the following information:
 
@@ -55,4 +55,4 @@ Once a vulnerability is patched and a release is published, we will:
 2. Credit the reporter (unless they wish to remain anonymous)
 3. Update the CHANGELOG with the fix details
 
-Thank you for helping keep VidyaMaxx secure.
+Thank you for helping keep VidyaFloww secure.

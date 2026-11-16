@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/utils — String & Text Utilities
+ * @vidyafloww/utils — String & Text Utilities
  */
 
 /**
@@ -22,7 +22,7 @@ export function capitalizeWords(text: string): string {
  * Extract initials from a full name (e.g., "Roshan Singh" -> "RS")
  */
 export function getInitials(name: string, maxChars: number = 2): string {
-  if (!name) return 'VM';
+  if (!name) return 'VF';
   const parts = name.trim().split(/\s+/);
   if (parts.length === 1) return parts[0].slice(0, maxChars).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).slice(0, maxChars).toUpperCase();

@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/types — Common Type Definitions
+ * @vidyafloww/types — Common Type Definitions
  *
  * Shared primitive types and utility interfaces used across all domain modules.
  *

@@ -12,7 +12,7 @@ import {
   VFSelect,
   VFTabs,
   VFBadge,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   FolderGit,
   FileText,

@@ -10,7 +10,7 @@ import {
   VFInput,
   VFDrawer,
   VFTextarea,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   BookOpen,
   Book,
@@ -973,7 +973,7 @@ function AcademicsPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'अकादमिक्स' : 'Academics') + ' \u2013 VidyaMaxx';
+    document.title = (isHindi ? 'अकादमिक्स' : 'Academics') + ' \u2013 VidyaFloww';
   }, [isHindi]);
 
   // Selected Class & Views

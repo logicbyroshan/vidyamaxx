@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug to help us improve VidyaMaxx
+about: Report a bug to help us improve VidyaFloww
 title: '[BUG] '
 labels: ['bug', 'needs-triage']
 assignees: ''

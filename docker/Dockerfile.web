@@ -1,4 +1,4 @@
-# ─── VidyaMaxx Web Dockerfile ────────────────────────────────────────────────
+# ─── VidyaFloww Web Dockerfile ────────────────────────────────────────────────
 # Multi-stage build for development and production.
 
 # ─── Base Stage ───────────────────────────────────────────────────────────────

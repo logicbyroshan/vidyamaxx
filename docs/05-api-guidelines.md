@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines standards for designing, implementing, and documenting the VidyaMaxx REST API.
+Defines standards for designing, implementing, and documenting the VidyaFloww REST API.
 All backend endpoints must follow these conventions to ensure a consistent developer experience.
 
 ## URL Structure

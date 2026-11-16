@@ -8,7 +8,7 @@ import {
   VFDrawer,
   VFSelect,
   VFInput,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Award,
   Plus,
@@ -209,7 +209,7 @@ export const SCHEME_TEMPLATES: SchemeTemplate[] = [
     category: 'Academic Merit',
     waiverPercentage: 100,
     waiverAmount: 42000,
-    fundingAgency: 'VidyaMaxx Education Foundation Endowment',
+    fundingAgency: 'VidyaFloww Education Foundation Endowment',
     disbursalMode: 'School Trust Endowment',
     checkEligibility: (s) =>
       s.academicScore >= 95
@@ -251,7 +251,7 @@ export const SCHEME_TEMPLATES: SchemeTemplate[] = [
     category: 'Sibling / Staff',
     waiverPercentage: 25,
     waiverAmount: 13000,
-    fundingAgency: 'VidyaMaxx Institutional Parent Relief Scheme',
+    fundingAgency: 'VidyaFloww Institutional Parent Relief Scheme',
     disbursalMode: 'School Trust Endowment',
     checkEligibility: (s) =>
       s.hasSiblingInSchool
@@ -309,7 +309,7 @@ const INITIAL_SCHOLARSHIPS: ScholarshipRecord[] = [
     category: 'Academic Merit',
     waiverPercentage: 100,
     waiverAmount: 42000,
-    fundingAgency: 'VidyaMaxx Education Foundation Endowment',
+    fundingAgency: 'VidyaFloww Education Foundation Endowment',
     disbursalMode: 'School Trust Endowment',
     sanctionRef: 'VFEF-MERIT-2026-01',
     sanctionDate: '01 Apr 2026',
@@ -375,7 +375,7 @@ function ScholarshipsPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.scholarships') + ' \u2013 VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.scholarships') + ' \u2013 VidyaFloww'; }, [t]);
   const [scholarships, setScholarships] = React.useState<ScholarshipRecord[]>(INITIAL_SCHOLARSHIPS);
   const [categoryFilter, setCategoryFilter] = React.useState<string>('all');
   const [selectedRecordIndex, setSelectedRecordIndex] = React.useState<number | null>(null);
@@ -390,7 +390,7 @@ function ScholarshipsPage() {
   const [customSchemeName, setCustomSchemeName] = React.useState<string>('');
   const [customCategory, setCustomCategory] = React.useState<ScholarshipRecord['category']>('Sibling / Staff');
   const [customWaiverPct, setCustomWaiverPct] = React.useState<string>('25');
-  const [customFundingAgency, setCustomFundingAgency] = React.useState<string>('VidyaMaxx Institutional Parent Relief Scheme');
+  const [customFundingAgency, setCustomFundingAgency] = React.useState<string>('VidyaFloww Institutional Parent Relief Scheme');
   const [customDisbursalMode, setCustomDisbursalMode] = React.useState<ScholarshipRecord['disbursalMode']>('School Trust Endowment');
   const [customSanctionRef, setCustomSanctionRef] = React.useState<string>('SCH-SIB-2026-08');
   const [auditRemarks, setAuditRemarks] = React.useState<string>('Parent declaration verified against institutional records.');
@@ -531,7 +531,7 @@ function ScholarshipsPage() {
       category: customCategory,
       waiverPercentage: pct,
       waiverAmount: estimatedWaiver,
-      fundingAgency: customFundingAgency.trim() || 'VidyaMaxx Institutional Parent Relief Scheme',
+      fundingAgency: customFundingAgency.trim() || 'VidyaFloww Institutional Parent Relief Scheme',
       disbursalMode: customDisbursalMode,
       sanctionRef: customSanctionRef.trim() || `SCH-${Date.now().toString().slice(-6)}`,
       sanctionDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),

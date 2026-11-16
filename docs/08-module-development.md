@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Step-by-step guide for adding new domain modules to VidyaMaxx.
+Step-by-step guide for adding new domain modules to VidyaFloww.
 
 ## Module Structure
 
@@ -78,7 +78,7 @@ from typing import Any
 
 from .models import MyModel
 
-logger = logging.getLogger("vidyamaxx.my_module")
+logger = logging.getLogger("vidyafloww.my_module")
 
 
 def create_my_entity(

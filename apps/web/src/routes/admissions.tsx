@@ -9,7 +9,7 @@ import {
   VFDrawer,
   VFDialog,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   CheckCircle2,
   Eye,
@@ -667,7 +667,7 @@ function AdmissionsPage() {
   const { activeSession, addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.admissions') + ' \u2013 VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.admissions') + ' \u2013 VidyaFloww'; }, [t]);
   const [applicantList, setApplicantList] = React.useState<Applicant[]>(INITIAL_APPLICANTS);
   const [selectedApplicantIndex, setSelectedApplicantIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
@@ -993,7 +993,7 @@ function AdmissionsPage() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `VidyaMaxx_Admissions_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}_Roster.xlsx`;
+        a.download = `VidyaFloww_Admissions_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}_Roster.xlsx`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1014,7 +1014,7 @@ function AdmissionsPage() {
         const url = URL.createObjectURL(content);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `VidyaMaxx_Applicant_Photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        a.download = `VidyaFloww_Applicant_Photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1037,7 +1037,7 @@ function AdmissionsPage() {
         const url = URL.createObjectURL(content);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `VidyaMaxx_Complete_Admissions_Bundle_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        a.download = `VidyaFloww_Complete_Admissions_Bundle_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -2852,7 +2852,7 @@ function AdmissionsPage() {
           <div className="space-y-5 p-4 rounded-md bg-card border border-border text-foreground font-serif text-sm">
             <div className="text-center pb-4 border-b border-border space-y-1">
               <h2 className="text-xl font-black tracking-tight text-foreground font-sans uppercase">
-                VidyaMaxx International Academy
+                VidyaFloww International Academy
               </h2>
               <p className="text-xs text-muted-foreground font-sans">
                 Affiliated to Central Board of Secondary Education (CBSE), New Delhi

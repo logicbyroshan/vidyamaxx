@@ -6,7 +6,7 @@ import {
   VFButton,
   VFBadge,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Users,
   GraduationCap,

@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/constants — Status Codes
+ * @vidyafloww/constants — Status Codes
  *
  * Domain status constants for students, admissions, fees, and other entities.
  *

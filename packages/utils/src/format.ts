@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/utils — Formatting Utilities
+ * @vidyafloww/utils — Formatting Utilities
  */
 
 /**

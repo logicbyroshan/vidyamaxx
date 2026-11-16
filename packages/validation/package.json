@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/validation",
+  "name": "@vidyafloww/validation",
   "version": "0.1.0",
-  "description": "VidyaMaxx shared Zod validation schemas",
+  "description": "VidyaFloww shared Zod validation schemas",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

@@ -1,1 +1,1 @@
-export const VIDYAMAXX_LOGO_PATH = './logo.png';
+export const VIDYAFLOWW_LOGO_PATH = './logo.png';

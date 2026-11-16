@@ -1,5 +1,5 @@
 """
-VidyaMaxx Root URL Configuration
+VidyaFloww Root URL Configuration
 
 All API routes are versioned under /api/v1/.
 Schema and documentation endpoints are mounted for development.

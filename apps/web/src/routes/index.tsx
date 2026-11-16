@@ -6,7 +6,7 @@ import {
   VFCard,
   VFButton,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Users,
   GraduationCap,
@@ -267,7 +267,7 @@ export function DashboardPage() {
   } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.dashboard') + ' \u2013 VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.dashboard') + ' \u2013 VidyaFloww'; }, [t]);
 
   // Section order array (excluding teacher_attendance & quick_shortcuts which is full-width)
   const currentSections = React.useMemo(() => {

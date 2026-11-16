@@ -8,7 +8,7 @@ import {
   VFDialog,
   VFInput,
   VFStatCard,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Building,
   Plus,
@@ -50,7 +50,7 @@ interface CampusRecord {
 const INITIAL_CAMPUSES: CampusRecord[] = [
   {
     code: 'CMP-01',
-    name: 'VidyaMaxx International Academy (Main Campus)',
+    name: 'VidyaFloww International Academy (Main Campus)',
     city: 'New Delhi, India',
     board: 'CBSE Affiliation #1630982',
     session: '2026-2027',
@@ -61,7 +61,7 @@ const INITIAL_CAMPUSES: CampusRecord[] = [
   },
   {
     code: 'CMP-02',
-    name: 'VidyaMaxx International Academy (North Branch)',
+    name: 'VidyaFloww International Academy (North Branch)',
     city: 'Gurugram, Haryana',
     board: 'CBSE / IB World',
     session: '2026-2027',
@@ -72,7 +72,7 @@ const INITIAL_CAMPUSES: CampusRecord[] = [
   },
   {
     code: 'CMP-03',
-    name: 'VidyaMaxx International Academy (South Campus)',
+    name: 'VidyaFloww International Academy (South Campus)',
     city: 'Noida, Uttar Pradesh',
     board: 'CBSE Affiliation #1630990',
     session: '2026-2027',
@@ -94,7 +94,7 @@ function SchoolAdministrationPage() {
   const isHindi = lang === 'hi' || language === 'hi';
 
   React.useEffect(() => {
-    document.title = t('nav.settings') + ' – VidyaMaxx';
+    document.title = t('nav.settings') + ' – VidyaFloww';
   }, [t]);
 
   // Branding Edit Mode state
@@ -162,7 +162,7 @@ function SchoolAdministrationPage() {
   const handleSaveBranding = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     updateSchoolProfile({
-      name: formData.name.trim() || 'VidyaMaxx International Academy',
+      name: formData.name.trim() || 'VidyaFloww International Academy',
       shortCode: formData.shortCode.trim(),
       tagline: formData.tagline.trim(),
       affiliation: formData.affiliation.trim(),
@@ -717,7 +717,7 @@ function SchoolAdministrationPage() {
             label="Campus / Branch Name *"
             value={newCampus.name || ''}
             onChange={(e) => setNewCampus({ ...newCampus, name: e.target.value })}
-            placeholder="e.g. VidyaMaxx International (East Wing)"
+            placeholder="e.g. VidyaFloww International (East Wing)"
             className="rounded-[4px]"
             required
           />

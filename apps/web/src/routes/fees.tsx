@@ -10,7 +10,7 @@ import {
   VFInput,
   VFDialog,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   CreditCard,
   Download,
@@ -121,7 +121,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Paid',
     lastPaymentDate: '10 Jul 2026',
     phone: '+91 98765 43210',
-    email: 'aditya.v@vidyamaxx.edu.in',
+    email: 'aditya.v@vidyafloww.edu.in',
     fatherName: 'Mr. Ramesh Verma',
     motherName: 'Mrs. Sunita Verma',
     emergencyPhone: '+91 98765 43211',
@@ -177,7 +177,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Partial',
     lastPaymentDate: '05 Aug 2026',
     phone: '+91 98123 45678',
-    email: 'priya.s@vidyamaxx.edu.in',
+    email: 'priya.s@vidyafloww.edu.in',
     fatherName: 'Dr. Suresh Sharma',
     motherName: 'Dr. Anita Sharma',
     emergencyPhone: '+91 98123 45679',
@@ -245,7 +245,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Overdue',
     lastPaymentDate: '10 Jun 2026',
     phone: '+91 97654 32109',
-    email: 'rahul.g@vidyamaxx.edu.in',
+    email: 'rahul.g@vidyafloww.edu.in',
     fatherName: 'Mr. Sunil Gupta',
     motherName: 'Mrs. Ritu Gupta',
     emergencyPhone: '+91 97654 32110',
@@ -301,7 +301,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Partial',
     lastPaymentDate: '08 Jul 2026',
     phone: '+91 99887 76655',
-    email: 'kavya.n@vidyamaxx.edu.in',
+    email: 'kavya.n@vidyafloww.edu.in',
     fatherName: 'Mr. K. R. Nair',
     motherName: 'Mrs. Deepa Nair',
     emergencyPhone: '+91 99887 76656',
@@ -357,7 +357,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Overdue',
     lastPaymentDate: '01 Apr 2026',
     phone: '+91 98234 56789',
-    email: 'ishaan.m@vidyamaxx.edu.in',
+    email: 'ishaan.m@vidyafloww.edu.in',
     fatherName: 'Mr. Vivek Malhotra',
     motherName: 'Mrs. Preeti Malhotra',
     emergencyPhone: '+91 98234 56790',
@@ -413,7 +413,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Paid',
     lastPaymentDate: '15 Apr 2026',
     phone: '+91 97111 22334',
-    email: 'ananya.sen@vidyamaxx.edu.in',
+    email: 'ananya.sen@vidyafloww.edu.in',
     fatherName: 'Mr. Anirban Sen',
     motherName: 'Mrs. Sharmila Sen',
     emergencyPhone: '+91 97111 22335',
@@ -462,7 +462,7 @@ function FeesPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.fees') + ' \u2013 VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.fees') + ' \u2013 VidyaFloww'; }, [t]);
   const [feeList, setFeeList] = React.useState<FeeRecord[]>(INITIAL_FEES);
   const [selectedFeeIndex, setSelectedFeeIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
@@ -476,7 +476,7 @@ function FeesPage() {
   const [reminderAudience, setReminderAudience] = React.useState<'all_due' | 'overdue_only' | 'monthly_only'>('all_due');
   const [reminderChannel, setReminderChannel] = React.useState<'whatsapp' | 'sms' | 'email'>('whatsapp');
   const [customReminderMsg, setCustomReminderMsg] = React.useState<string>(
-    'Dear Parent, gentle reminder from VidyaMaxx Academy that your ward {StudentName}\'s {PaymentPlan} fee of ₹{DueAmount} is due on {DueDate}. Please scan school QR or pay at fee counter. Pay link: https://vidyamaxx.edu/pay/{AdmNo}'
+    'Dear Parent, gentle reminder from VidyaFloww Academy that your ward {StudentName}\'s {PaymentPlan} fee of ₹{DueAmount} is due on {DueDate}. Please scan school QR or pay at fee counter. Pay link: https://vidyafloww.edu/pay/{AdmNo}'
   );
 
   // Active Payment Form State
@@ -593,7 +593,7 @@ function FeesPage() {
   };
 
   const handleCopyUPI = () => {
-    navigator.clipboard.writeText('vidyamaxx.fees@icici');
+    navigator.clipboard.writeText('vidyafloww.fees@icici');
     setCopiedText(true);
     setTimeout(() => setCopiedText(false), 2000);
   };
@@ -1009,10 +1009,10 @@ function FeesPage() {
             </div>
             <div className="p-2.5 rounded-[4px] bg-[#005c4b]/30 border border-[#005c4b]/50 text-foreground text-xs leading-relaxed space-y-1">
               <p>
-                Dear <span className="font-bold text-white">Mr. Sunil Gupta</span>, gentle reminder from <span className="font-bold text-emerald-400">VidyaMaxx Academy</span> that your ward <span className="font-bold text-white">Rahul Gupta</span> (ADM-2026-0843)'s Monthly Installment fee of <span className="font-mono font-bold text-emerald-300">₹31,500</span> is due on <span className="font-bold text-amber-300">10 Aug 2026</span>.
+                Dear <span className="font-bold text-white">Mr. Sunil Gupta</span>, gentle reminder from <span className="font-bold text-emerald-400">VidyaFloww Academy</span> that your ward <span className="font-bold text-white">Rahul Gupta</span> (ADM-2026-0843)'s Monthly Installment fee of <span className="font-mono font-bold text-emerald-300">₹31,500</span> is due on <span className="font-bold text-amber-300">10 Aug 2026</span>.
               </p>
               <p className="text-[11px] text-zinc-300 pt-0.5">
-                Please scan the school UPI QR at <span className="underline text-emerald-300 font-mono">https://vidyamaxx.edu/pay/ADM-2026-0843</span> or clear dues at the front fee counter.
+                Please scan the school UPI QR at <span className="underline text-emerald-300 font-mono">https://vidyafloww.edu/pay/ADM-2026-0843</span> or clear dues at the front fee counter.
               </p>
             </div>
           </div>
@@ -1554,13 +1554,13 @@ function FeesPage() {
                           <div className="flex flex-col sm:flex-row items-center gap-3 bg-[#141414] p-2.5 rounded-[4px] border border-border/50">
                             <div className="h-20 w-20 bg-white p-1 rounded-[4px] flex items-center justify-center shrink-0">
                               <img
-                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=vidyamaxx.fees@icici&pn=VidyaMaxxInternational&am=${paymentAmount || '3500'}&cu=INR`}
+                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=vidyafloww.fees@icici&pn=VidyaFlowwInternational&am=${paymentAmount || '3500'}&cu=INR`}
                                 alt="UPI QR Code"
                                 className="h-full w-full object-contain"
                               />
                             </div>
                             <div className="space-y-1 flex-1 min-w-0">
-                              <p className="text-xs font-bold text-foreground">School UPI VPA: <span className="font-mono text-zinc-200 font-bold">vidyamaxx.fees@icici</span></p>
+                              <p className="text-xs font-bold text-foreground">School UPI VPA: <span className="font-mono text-zinc-200 font-bold">vidyafloww.fees@icici</span></p>
                               <p className="text-[11px] text-muted-foreground">
                                 Parent can scan with Google Pay, PhonePe, Paytm, or BHIM. Enter the 12-digit UTR reference below:
                               </p>
@@ -1897,7 +1897,7 @@ function FeesPage() {
                             <div>
                               <span className="text-muted-foreground block text-[10px]">Funding Source:</span>
                               <span className="font-medium text-foreground">
-                                {activeStudent.studentAdmNo === 'ADM-2026-0841' ? 'Ministry of Education (Govt. of India)' : 'VidyaMaxx Foundation Endowment'}
+                                {activeStudent.studentAdmNo === 'ADM-2026-0841' ? 'Ministry of Education (Govt. of India)' : 'VidyaFloww Foundation Endowment'}
                               </span>
                             </div>
                             <div>

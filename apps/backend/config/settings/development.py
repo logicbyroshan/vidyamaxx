@@ -1,5 +1,5 @@
 """
-VidyaMaxx Django Settings — Development Environment
+VidyaFloww Django Settings — Development Environment
 
 Overrides base settings for local development.
 """

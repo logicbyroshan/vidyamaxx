@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Operating Guide
 
-Permanent operating rules and execution guidelines for AI coding agents working in the **VidyaMaxx** repository.
+Permanent operating rules and execution guidelines for AI coding agents working in the **VidyaFloww** repository.
 
 ---
 
@@ -10,7 +10,7 @@ Permanent operating rules and execution guidelines for AI coding agents working 
 2. **Minimal, Surgical Changes**: Prefer the smallest correct change that solves the issue. Never touch unrelated files or refactor code outside the scope of the task.
 3. **Preserve Existing Behavior**: Do not remove, replace, or overwrite existing behavior, comments, or configurations without explicit justification.
 4. **Follow Architecture & Conventions**: Adhere strictly to the monorepo layering, established patterns, and design system tokens described in `.agent/CONTEXT.md`.
-5. **No Unjustified Dependencies**: Use existing workspace packages (`@vidyamaxx/ui`, `@vidyamaxx/utils`, etc.) and installed libraries. Do not add external npm or pip packages without clear justification.
+5. **No Unjustified Dependencies**: Use existing workspace packages (`@vidyafloww/ui`, `@vidyafloww/utils`, etc.) and installed libraries. Do not add external npm or pip packages without clear justification.
 6. **Zero Secrets & Credentials (NEVER PUSH ID/PASS)**: Absolutely NEVER create, commit, push, log, or expose user IDs, usernames, passwords, API tokens, session credentials, private keys, or `.env` files to the repository under any circumstances. Always verify that test fixtures and mock states use generic, non-sensitive placeholders.
 7. **Strict Sharp Border Radius Rule**: NEVER use large, bubbly, or excessive border radius (avoid `rounded-xl`, `rounded-2xl`, `rounded-3xl`, or bubbly circular buttons). Maintain sharp, crisp, clean geometric corners with minimal radius (`rounded-sm`, `rounded-[4px]`, or at most `rounded-md` / 4px-6px). We strictly favor crisp, sharp borders across cards, buttons, dialogs, and modules.
 8. **Mandatory Branching, GitHub CLI PR & Merge Workflow**: NEVER commit or push changes directly to `main`. Every new task, bug fix, or feature MUST be developed on an isolated, dedicated branch named `fix/<short-description>` or `feature/<short-description>`. Once changes are tested, verified, and audited for zero secrets/credentials, the branch must be pushed to `origin`, a Pull Request must be generated using GitHub CLI (`gh pr create`), and then merged to `main` using GitHub CLI (`gh pr merge`). Direct pushes or direct commits to `main` are strictly prohibited.
@@ -34,7 +34,7 @@ To maintain high context quality and prevent token waste:
 
 * **Web (`apps/web`)**:
   * Use React 19, TypeScript (strict mode), and Tailwind CSS 3.4.
-  * Use `@vidyamaxx/ui` primitives (`VFCard`, `VFTable`, `VFButton`, `VFBadge`, `VFStatCard`, `VFTabs`) rather than creating bespoke HTML duplicates.
+  * Use `@vidyafloww/ui` primitives (`VFCard`, `VFTable`, `VFButton`, `VFBadge`, `VFStatCard`, `VFTabs`) rather than creating bespoke HTML duplicates.
   * Maintain desktop layout requirements (`≥ 1000px` viewport minimum; preserve `SmallScreenBlocker`).
   * Preserve the unified `72px` header height lock across `Header.tsx` and `Sidebar.tsx`.
   * Support bilingual i18n keys via `useTranslation` for user-visible UI text; unified bilingual font: Mukta (contemporary humanist sans covering Latin and Devanagari).
@@ -49,8 +49,8 @@ To maintain high context quality and prevent token waste:
 ## 4. Verification & Testing
 
 * **Smallest Relevant Check First**: Run the fastest, most specific test/type-check command relevant to the modified package:
-  * Web type check: `pnpm --filter @vidyamaxx/web type-check`
-  * Web unit tests: `pnpm --filter @vidyamaxx/web test`
+  * Web type check: `pnpm --filter @vidyafloww/web type-check`
+  * Web unit tests: `pnpm --filter @vidyafloww/web test`
   * Backend integrity: `python apps/backend/manage.py check`
 * **Avoid Wasteful Full Builds**: Do not trigger full monorepo builds (`turbo run build`) for trivial single-file edits unless validating a cross-package release.
 * **Credential & Secrets Audit**: Always inspect `git status` and `git diff` before committing or pushing to verify that no user IDs, passwords, private keys, or `.env` files were accidentally created or staged.

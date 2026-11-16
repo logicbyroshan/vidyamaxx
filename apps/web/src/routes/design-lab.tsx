@@ -7,7 +7,7 @@ import {
   VFBadge,
   VFCard,
   VFDialog,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ExternalLink,
   Sparkles,
@@ -361,7 +361,7 @@ function DesignLabOverviewPage() {
                           VF
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[11px] font-black uppercase tracking-wider leading-tight">VIDYAMAXX ACADEMY</p>
+                          <p className="text-[11px] font-black uppercase tracking-wider leading-tight">VIDYAFLOWW ACADEMY</p>
                           <p className="text-[8.5px] opacity-85 uppercase font-medium">Affiliated to CBSE · Code 9104</p>
                         </div>
                       </div>
@@ -430,7 +430,7 @@ function DesignLabOverviewPage() {
                       </div>
 
                       <div className="p-2 rounded bg-amber-50 border border-amber-200 text-[9px] text-amber-900 leading-tight">
-                        <strong>Terms:</strong> This identity credential remains institutional property. If found, return to VidyaMaxx Academy, Sector 42 Campus.
+                        <strong>Terms:</strong> This identity credential remains institutional property. If found, return to VidyaFloww Academy, Sector 42 Campus.
                       </div>
 
                       <div className="flex items-end justify-between pt-2 border-t border-zinc-300">
@@ -515,7 +515,7 @@ function DesignLabOverviewPage() {
                   <div className="absolute inset-1 border border-amber-500/50 pointer-events-none" />
                   
                   <div className="text-center relative z-1">
-                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-amber-800">VIDYAMAXX ACADEMIC FOUNDATION</p>
+                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-amber-800">VIDYAFLOWW ACADEMIC FOUNDATION</p>
                     <h2 className="text-lg font-black tracking-wide text-zinc-900 mt-1 uppercase font-serif">Certificate of Excellence</h2>
                     <p className="text-[9px] font-sans text-zinc-500 tracking-wider uppercase mt-0.5">THIS RECOGNITION IS PROUDLY CONFERRED UPON</p>
                   </div>

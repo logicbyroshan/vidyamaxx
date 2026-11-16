@@ -12,13 +12,13 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@vidyamaxx/api': path.resolve(__dirname, '../../packages/api/index.ts'),
-      '@vidyamaxx/ui': path.resolve(__dirname, '../../packages/ui/index.ts'),
-      '@vidyamaxx/types': path.resolve(__dirname, '../../packages/types/index.ts'),
-      '@vidyamaxx/utils': path.resolve(__dirname, '../../packages/utils/index.ts'),
-      '@vidyamaxx/constants': path.resolve(__dirname, '../../packages/constants/index.ts'),
-      '@vidyamaxx/hooks': path.resolve(__dirname, '../../packages/hooks/index.ts'),
-      '@vidyamaxx/validation': path.resolve(__dirname, '../../packages/validation/index.ts'),
+      '@vidyafloww/api': path.resolve(__dirname, '../../packages/api/index.ts'),
+      '@vidyafloww/ui': path.resolve(__dirname, '../../packages/ui/index.ts'),
+      '@vidyafloww/types': path.resolve(__dirname, '../../packages/types/index.ts'),
+      '@vidyafloww/utils': path.resolve(__dirname, '../../packages/utils/index.ts'),
+      '@vidyafloww/constants': path.resolve(__dirname, '../../packages/constants/index.ts'),
+      '@vidyafloww/hooks': path.resolve(__dirname, '../../packages/hooks/index.ts'),
+      '@vidyafloww/validation': path.resolve(__dirname, '../../packages/validation/index.ts'),
     },
   },
   server: {

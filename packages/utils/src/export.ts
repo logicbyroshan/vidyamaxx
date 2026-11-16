@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/utils — Export & Download Utilities
+ * @vidyafloww/utils — Export & Download Utilities
  */
 
 /**

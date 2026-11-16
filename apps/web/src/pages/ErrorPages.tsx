@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VFPage, VFEmptyState } from '@vidyamaxx/ui';
+import { VFPage, VFEmptyState } from '@vidyafloww/ui';
 import { ShieldAlert, Ban, FileQuestion, ServerCrash, WifiOff, Wrench } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -88,7 +88,7 @@ export function ErrorMaintenance() {
     <BaseErrorPage
       icon={<Wrench className="h-8 w-8 text-primary" />}
       title="System Maintenance"
-      description="VidyaMaxx is currently undergoing scheduled maintenance to improve performance and reliability. We will be back shortly."
+      description="VidyaFloww is currently undergoing scheduled maintenance to improve performance and reliability. We will be back shortly."
       actionLabel="Check Status"
       onAction={() => window.location.reload()}
     />

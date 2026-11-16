@@ -2,7 +2,7 @@
 
 ## System Architecture Overview
 
-VidyaMaxx follows a **modular monolith** backend architecture combined with a
+VidyaFloww follows a **modular monolith** backend architecture combined with a
 **multi-package monorepo** frontend strategy. This provides the simplicity of a
 monolith while enabling independent development of features.
 
@@ -143,7 +143,7 @@ packages/
 
 ## Multi-Tenancy Design
 
-VidyaMaxx uses a **shared schema with tenant isolation** approach:
+VidyaFloww uses a **shared schema with tenant isolation** approach:
 
 - Every model has an `organization` foreign key
 - A custom `TenantMiddleware` injects the current organization from the JWT claims
@@ -164,11 +164,11 @@ VidyaMaxx uses a **shared schema with tenant isolation** approach:
 
 ## Decoupled Standalone Subsystems Architecture
 
-VidyaMaxx decouples operation-heavy subsystems into dedicated standalone repositories and subdomains, while maintaining **integrated single-page overview dashboards** directly within the main command portal:
+VidyaFloww decouples operation-heavy subsystems into dedicated standalone repositories and subdomains, while maintaining **integrated single-page overview dashboards** directly within the main command portal:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│             VidyaMaxx Main Command Portal (apps/web)                   │
+│             VidyaFloww Main Command Portal (apps/web)                   │
 │   • Core ERP: Students, Admissions, Attendance, Academics, Fees, Exams  │
 │   • Integrated Overview Dashboards (Stats, Modals, Status Matrices)     │
 └────────┬──────────────┬───────────────┬──────────────┬─────────────────┘
@@ -183,11 +183,11 @@ VidyaMaxx decouples operation-heavy subsystems into dedicated standalone reposit
 
 | Subsystem | Main Portal Route | Standalone Target | Architectural Role |
 |:---|:---|:---|:---|
-| **Design Lab** | `/design-lab` | `designlab.vidyamaxx.com` | Vector-rendered certificates, CBSE marksheets, CR80 ID card generation engine |
-| **Hostel Management** | `/hostel` | `hostel.vidyamaxx.com` | Dormitory room matrix, 7-day nutritional timetable, night attendance, outpass ledger |
-| **Transport Telemetry** | `/transport` | `transport.vidyamaxx.com` | GPS fleet hardware telematics, live route tracking, driver compliance audit |
-| **HR & Biometrics** | `/hr-manage` | `hr.vidyamaxx.com` | Biometric turnstile logs, support staff departmental rosters, statutory payroll |
-| **E-Library & DRM** | `/elibrary` | `library.vidyamaxx.com` | DRM protected reading engine, NCERT digital textbook catalog, circulation tracking |
+| **Design Lab** | `/design-lab` | `designlab.vidyafloww.com` | Vector-rendered certificates, CBSE marksheets, CR80 ID card generation engine |
+| **Hostel Management** | `/hostel` | `hostel.vidyafloww.com` | Dormitory room matrix, 7-day nutritional timetable, night attendance, outpass ledger |
+| **Transport Telemetry** | `/transport` | `transport.vidyafloww.com` | GPS fleet hardware telematics, live route tracking, driver compliance audit |
+| **HR & Biometrics** | `/hr-manage` | `hr.vidyafloww.com` | Biometric turnstile logs, support staff departmental rosters, statutory payroll |
+| **E-Library & DRM** | `/elibrary` | `library.vidyafloww.com` | DRM protected reading engine, NCERT digital textbook catalog, circulation tracking |
 
 ---
 

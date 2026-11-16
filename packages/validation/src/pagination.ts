@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/validation — Pagination Schema
+ * @vidyafloww/validation — Pagination Schema
  *
  * Zod schema for validating pagination query parameters.
  */

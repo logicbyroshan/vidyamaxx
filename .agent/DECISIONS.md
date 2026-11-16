@@ -8,7 +8,7 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 * **Date**: 2026-07-02
 * **Decision**: Adopt a monorepo structure utilizing TurboRepo and pnpm workspaces containing `apps/` (web, backend, desktop, mobile, landing) and `packages/` (ui, types, api, constants, hooks, validation).
 * **Reason**: Enables seamless code reuse across web, desktop, and mobile clients (particularly types, UI tokens, and API schemas) while keeping tooling, linting, and build steps coordinated under a single root.
-* **Impact**: Workspace packages depend on each other via `workspace:*`; scripts must be executed using filter flags (e.g., `pnpm --filter @vidyamaxx/web dev`).
+* **Impact**: Workspace packages depend on each other via `workspace:*`; scripts must be executed using filter flags (e.g., `pnpm --filter @vidyafloww/web dev`).
 
 ---
 
@@ -36,11 +36,11 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 
 ---
 
-### Decision 5: Dedicated Component Library (`@vidyamaxx/ui`) with Radix UI & Framer Motion
+### Decision 5: Dedicated Component Library (`@vidyafloww/ui`) with Radix UI & Framer Motion
 * **Date**: 2026-08-10
 * **Decision**: Standardize all application UI primitives in `packages/ui` backed by Radix UI unstyled primitives, Tailwind CSS, and Framer Motion spring physics.
 * **Reason**: Guarantees keyboard accessibility, consistent drawer/modal animations, unified sharp border radii, and eliminates fragmented third-party styling across modules.
-* **Impact**: Application routes must import UI components from `@vidyamaxx/ui` rather than re-implementing custom dialogs, buttons, or badge wrappers.
+* **Impact**: Application routes must import UI components from `@vidyafloww/ui` rather than re-implementing custom dialogs, buttons, or badge wrappers.
 
 ---
 
@@ -71,7 +71,7 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 ### Decision 9: Strict Sharp Border Radius Enforcement
 * **Date**: 2026-09-01
 * **Decision**: Strictly prohibit `rounded-xl`, `rounded-2xl`, `rounded-3xl`, and any large bubbly border radius across all UI surfaces (cards, buttons, dialogs, badges, drawers, modules). Permitted maximum: `rounded-md` (≈6px) for container elements; preferred standard is `rounded-[4px]` / `rounded-sm`.
-* **Reason**: The VidyaMaxx design system is built on a crisp, geometric, professional enterprise aesthetic. Large rounded corners conflict with the high-information-density data table paradigm and break visual rhythm between adjacent elements.
+* **Reason**: The VidyaFloww design system is built on a crisp, geometric, professional enterprise aesthetic. Large rounded corners conflict with the high-information-density data table paradigm and break visual rhythm between adjacent elements.
 * **Impact**: All new and existing routes must use sharp geometry. The AI agent operating under `AGENTS.md` is instructed to flag and correct radius violations on every edit.
 
 ---
@@ -94,7 +94,7 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 
 ### Decision 12: Decoupled Independent Subsystems with In-Portal Integrated Overview Dashboards
 * **Date**: 2026-09-08
-* **Decision**: Decouple heavy, specialized operational subsystems (Design Lab / Certificate Studio, Hostel Management, Transport & Fleet Telemetry, HR & Support Staff Biometrics, and E-Library & DRM Reader) into dedicated standalone repositories and subdomains (`designlab.vidyamaxx.com`, `hostel.vidyamaxx.com`, `transport.vidyamaxx.com`, `hr.vidyamaxx.com`, `library.vidyamaxx.com`), while maintaining high-density, real-time integrated single-page overview dashboards within the main VidyaMaxx command portal (`/design-lab`, `/hostel`, `/transport`, `/hr-manage`, `/elibrary`).
+* **Decision**: Decouple heavy, specialized operational subsystems (Design Lab / Certificate Studio, Hostel Management, Transport & Fleet Telemetry, HR & Support Staff Biometrics, and E-Library & DRM Reader) into dedicated standalone repositories and subdomains (`designlab.vidyafloww.com`, `hostel.vidyafloww.com`, `transport.vidyafloww.com`, `hr.vidyafloww.com`, `library.vidyafloww.com`), while maintaining high-density, real-time integrated single-page overview dashboards within the main VidyaFloww command portal (`/design-lab`, `/hostel`, `/transport`, `/hr-manage`, `/elibrary`).
 * **Reason**: Full implementations of these specialized domains require complex dedicated hardware integrations (GPS telematics, biometric turnstiles, vector layout engines, DRM reader pipelines). Isolating them into dedicated repositories prevents frontend bundle bloat, permits independent engineering iteration and deployment cadences, and maintains sharp single-responsibility separation. Retaining integrated single-page overview dashboards within the core portal ensures school leadership still enjoys instantaneous telemetry, status summaries, quick preview modals, and contextual one-click redirection without cognitive disruption.
 * **Impact**: The main web app maintains snappy load times and zero dependency overhead from external vector or hardware modules. Subsystem routes in `apps/web/src/routes/` render rich operational KPI cards, recent records, active ledgers, and a standardized "Open Standalone Portal" action header directing administrators to the respective subdomain.
 

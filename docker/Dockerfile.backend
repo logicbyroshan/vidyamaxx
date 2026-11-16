@@ -1,4 +1,4 @@
-# ─── VidyaMaxx Backend Dockerfile ────────────────────────────────────────────
+# ─── VidyaFloww Backend Dockerfile ────────────────────────────────────────────
 # Multi-stage build for development and production.
 
 # ─── Base Stage ───────────────────────────────────────────────────────────────
