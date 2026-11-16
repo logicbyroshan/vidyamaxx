@@ -3,7 +3,7 @@ import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calend
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
-import { cn } from '@vidyamaxx/ui';
+import { cn } from '@vidyafloww/ui';
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -209,7 +209,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           </button>
         )}
 
-        {/* VidyaMaxx AI Copilot Trigger */}
+        {/* VidyaFloww AI Copilot Trigger */}
         <button
           onClick={toggleAIDrawer}
           type="button"
@@ -219,8 +219,8 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
               ? "bg-[#1c1c1c] text-primary border-primary/50"
               : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-primary border-border"
           )}
-          title={isHindi ? "विद्यामैक्स AI को-पायलट (Shift+K)" : "VidyaMaxx AI Copilot (Shift+K)"}
-          aria-label="VidyaMaxx AI Copilot"
+          title={isHindi ? "विद्याफ्लो AI को-पायलट (Shift+K)" : "VidyaFloww AI Copilot (Shift+K)"}
+          aria-label="VidyaFloww AI Copilot"
         >
           <Sparkles className="h-4 w-4 shrink-0 text-primary transition-colors" />
         </button>

@@ -1,12 +1,12 @@
-# 13 — 🏫 VidyaMaxx 33-Module Architecture & AI Specification
+# 13 — 🏫 VidyaFloww 33-Module Architecture & AI Specification
 
-VidyaMaxx is an AI-first, multi-tenant enterprise school management platform designed to manage the end-to-end operational, academic, financial, and administrative lifecycle of educational institutions.
+VidyaFloww is an AI-first, multi-tenant enterprise school management platform designed to manage the end-to-end operational, academic, financial, and administrative lifecycle of educational institutions.
 
 ---
 
 ## 🏛️ Core Institutional Hierarchy
 
-All data and permissions in VidyaMaxx are scoped according to the primary multi-tenant hierarchy:
+All data and permissions in VidyaFloww are scoped according to the primary multi-tenant hierarchy:
 
 ```text
 Organization (Multi-School / Group)
@@ -24,12 +24,12 @@ Organization (Multi-School / Group)
 
 - **33 Main Business Modules**: The main sidebar displays all 33 main business modules with 100% unique route URL isolation.
 - **Top Sub-module Tab Bar (`VFTabs`)**: Selecting any main module mounts its submodules in the sticky top sub-module tab bar.
-- **Global `VidyaMaxx AI` Assistant**: Accessible from anywhere in the application via the prominent `✨ VidyaMaxx AI` button located in the sidebar footer directly above the profile card, or via the `Shift+K` keyboard shortcut.
+- **Global `VidyaFloww AI` Assistant**: Accessible from anywhere in the application via the prominent `✨ VidyaFloww AI` button located in the sidebar footer directly above the profile card, or via the `Shift+K` keyboard shortcut.
 - **Fail-Safe Dual Engine Data Tables (`VFTable`)**: All data tables feature client-side text searching, column visibility toggles, multi-column sorting, and pagination controls.
 
 ---
 
-## 📑 Complete 33 VidyaMaxx Main Business Modules Specification
+## 📑 Complete 33 VidyaFloww Main Business Modules Specification
 
 ### 01 — 📊 Dashboard
 **Executive Command Center & Health Overview**
@@ -39,7 +39,7 @@ Organization (Multi-School / Group)
 ### 02 — 🎓 Admissions
 **Intake & Applicant Lifecycle**
 * **Submodules**: Admission Dashboard, Enquiries, Applications, Applicant Review, Documents, Interviews & Assessments, Selection & Offers, Enrollment, Admission Settings.
-* **VidyaMaxx AI Capabilities**:
+* **VidyaFloww AI Capabilities**:
   - OCR automated document extraction & transcript field parsing.
   - Missing document flags & duplicate applicant detection.
   - Parent enquiry conversion probability scoring.
@@ -52,31 +52,31 @@ Organization (Multi-School / Group)
 ### 04 — 📚 Academics
 **Curriculum & Class Structure Engine**
 * **Submodules**: Academic Dashboard, Academic Structure, Classes & Sections, Subjects, Curriculum, Academic Sessions, Teachers & Subject Assignment, Academic Planning, Academic Calendar, Academic Settings.
-* **VidyaMaxx AI Capabilities**:
+* **VidyaFloww AI Capabilities**:
   - Automated lesson plan generation with custom objectives, classroom activities, and assessment prompts.
 
 ### 05 — 🗓️ Timetable
 **Constraint-Based Scheduling Engine**
 * **Submodules**: Timetable Dashboard, Schedule Configuration, Class Timetable, Teacher Timetable, Rooms & Resources, Substitutions, Exam & Event Scheduling, Timetable Versions.
-* **VidyaMaxx AI Capabilities**:
+* **VidyaFloww AI Capabilities**:
   - Auto-substitution engine and workload balancing.
 
 ### 06 — ✅ Attendance
 **Biometric & Attendance Management**
 * **Submodules**: Attendance Dashboard, Student Attendance, Period Attendance, Employee Attendance, Leave, Corrections & Regularization, Devices & Biometrics, Attendance Reports.
-* **VidyaMaxx AI Capabilities**:
+* **VidyaFloww AI Capabilities**:
   - Chronic absenteeism risk prediction & automated instant parent notifications.
 
 ### 07 — 📝 Examination
 **Assessment & Grading Engine**
 * **Submodules**: Examination Dashboard, Exams, Tests & Assessments, Question Bank, Question Papers, Exam Schedule, Hall Tickets, Seating & Invigilation, Evaluation, Results & Report Cards, Examination Reports.
-* **VidyaMaxx AI Capabilities**:
+* **VidyaFloww AI Capabilities**:
   - Automated question paper generator balancing difficulty levels, bloom's taxonomy, and answer keys.
 
 ### 08 — 💰 Fees
 **Student Accounts & Counter Collections**
 * **Submodules**: Fee Dashboard, Fee Structures, Student Accounts, Collections, Discounts & Scholarships, Payments & Refunds, Dues & Defaulters, Fee Reports, Fee Settings.
-* **VidyaMaxx AI Capabilities**:
+* **VidyaFloww AI Capabilities**:
   - Predictive fee defaulter risk scoring & automated WhatsApp payment reminders.
 
 ### 09 — 🏦 Finance
@@ -161,11 +161,11 @@ Organization (Multi-School / Group)
 
 ---
 
-## 🤖 Global `VidyaMaxx AI` Assistant Engine
+## 🤖 Global `VidyaFloww AI` Assistant Engine
 
-The global `VidyaMaxx AI` Assistant is integrated across all 24 modules:
+The global `VidyaFloww AI` Assistant is integrated across all 24 modules:
 
-* **Entry Point**: Available from the sidebar footer (`VidyaMaxx AI` button) or via keyboard shortcut `Shift+K`.
+* **Entry Point**: Available from the sidebar footer (`VidyaFloww AI` button) or via keyboard shortcut `Shift+K`.
 * **Context Awareness**: Captures current page context to answer queries like *"Show me overdue fees for Class 10"* or *"Generate a physics lesson plan for Chapter 4"*.
 * **Autonomous AI Agents**:
   1. **OCR Document Extractor Agent** — Extracts text & numbers from scanned marksheets and birth certificates.

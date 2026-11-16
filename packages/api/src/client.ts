@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/api — HTTP Client
+ * @vidyafloww/api — HTTP Client
  *
  * Pre-configured Axios instance with auth token injection,
  * response normalization, and error handling interceptors.

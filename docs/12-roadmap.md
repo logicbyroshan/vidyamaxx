@@ -30,7 +30,7 @@
 
 - [x] **Single Source Navigation Registry** (`MODULE_REGISTRY` in `packages/constants/src/navigation.ts` storing 24 main modules & submodules)
 - [x] **24 Main Business Modules Architecture** (`Dashboard`, `Admissions`, `Students`, `Academics`, `Timetable`, `Attendance`, `Examination`, `Fees`, `Finance`, `HR & Payroll`, `Library`, `Transport`, `Hostel`, `Inventory & Assets`, `Homework & Learning`, `Documents & Certificates`, `Communication`, `Events & Activities`, `Front Office & Enquiries`, `School Administration`, `Parent & Student Portal`, `Reports & Analytics`, `Security & Audit`, `System Administration`)
-- [x] **Global `VidyaMaxx AI` Assistant** (Prominent button in sidebar footer directly above user profile card, context-aware global AI Chat drawer `AIChatDrawer.tsx`, `Shift+K` shortcut)
+- [x] **Global `VidyaFloww AI` Assistant** (Prominent button in sidebar footer directly above user profile card, context-aware global AI Chat drawer `AIChatDrawer.tsx`, `Shift+K` shortcut)
 - [x] **Submodule Workspace Layout** (Sidebar renders main modules only, top `VFTabs` mounts submodules)
 - [x] **Framer Motion Revealing Transitions** (Staggered revealing fade & slide-up animation on route navigation & submodule tab switching)
 - [x] **Fail-Safe Dual-Engine Data Tables** (Combined TanStack Table v9 + fail-safe rendering engine ensuring 100% data visibility, search filtering, column toggles, and pagination)
@@ -84,11 +84,11 @@
 
 ## Phase 7 — Advanced Subsystems Decoupling & In-Portal Dashboards ✅
 
-- [x] Decouple **Design Lab** into standalone repo (`designlab.vidyamaxx.com`) + build in-portal overview dashboard (`/design-lab`)
-- [x] Decouple **Hostel Management** into standalone repo (`hostel.vidyamaxx.com`) + build in-portal overview dashboard (`/hostel`)
-- [x] Decouple **Transport Management** into standalone repo (`transport.vidyamaxx.com`) + build in-portal overview dashboard (`/transport`)
-- [x] Decouple **HR Management** into standalone repo (`hr.vidyamaxx.com`) + build in-portal overview dashboard (`/hr-manage`)
-- [x] Decouple **E-Library Management** into standalone repo (`library.vidyamaxx.com`) + build in-portal overview dashboard (`/elibrary`)
+- [x] Decouple **Design Lab** into standalone repo (`designlab.vidyafloww.com`) + build in-portal overview dashboard (`/design-lab`)
+- [x] Decouple **Hostel Management** into standalone repo (`hostel.vidyafloww.com`) + build in-portal overview dashboard (`/hostel`)
+- [x] Decouple **Transport Management** into standalone repo (`transport.vidyafloww.com`) + build in-portal overview dashboard (`/transport`)
+- [x] Decouple **HR Management** into standalone repo (`hr.vidyafloww.com`) + build in-portal overview dashboard (`/hr-manage`)
+- [x] Decouple **E-Library Management** into standalone repo (`library.vidyafloww.com`) + build in-portal overview dashboard (`/elibrary`)
 
 ## Phase 8 — Portals & Security
 
@@ -103,7 +103,7 @@
 - [ ] Activate `core.accounts.User` and generate initial core migrations
 - [ ] Implement `TenantMiddleware` and `TenantModel` in `common`
 - [ ] Implement Student, Admission, and Attendance ViewSets + Serializers
-- [ ] Connect `@vidyamaxx/api` Axios client with live Django endpoints
+- [ ] Connect `@vidyafloww/api` Axios client with live Django endpoints
 
 ---
 

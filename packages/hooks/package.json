@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/hooks",
+  "name": "@vidyafloww/hooks",
   "version": "0.1.0",
-  "description": "VidyaMaxx shared React hooks",
+  "description": "VidyaFloww shared React hooks",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

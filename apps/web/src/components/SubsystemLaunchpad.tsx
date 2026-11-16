@@ -4,7 +4,7 @@ import {
   VFButton,
   VFBadge,
   VFCard,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ExternalLink,
   Copy,

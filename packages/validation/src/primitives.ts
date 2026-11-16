@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/validation — Primitive Schemas
+ * @vidyafloww/validation — Primitive Schemas
  *
  * Reusable Zod schemas for common data types.
  *

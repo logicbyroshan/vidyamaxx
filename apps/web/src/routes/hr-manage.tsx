@@ -7,7 +7,7 @@ import {
   VFBadge,
   VFCard,
   VFDialog,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ExternalLink,
   Fingerprint,

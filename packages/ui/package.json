@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/ui",
+  "name": "@vidyafloww/ui",
   "version": "0.1.0",
-  "description": "VidyaMaxx shared UI component library",
+  "description": "VidyaFloww shared UI component library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

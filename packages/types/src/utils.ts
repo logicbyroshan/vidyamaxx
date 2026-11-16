@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/types — Utility Types
+ * @vidyafloww/types — Utility Types
  *
  * Generic TypeScript utility types to reduce boilerplate.
  *

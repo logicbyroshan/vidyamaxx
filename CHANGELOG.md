@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to VidyaMaxx will be documented in this file.
+All notable changes to VidyaFloww will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -34,11 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Module 21: Reports & Analytics (`/reports`) — Multi-Metric BI Area Charts & AI Natural Language Report Builder
   - Module 22: Security & Audit (`/security`) — SOC Incident Tracking, Active Devices & Immutable Audit Trails
   - Module 23: System Administration (`/system`) — Microservice Health, Integrations Marketplace & API Telemetry
-  - Module 24: VidyaMaxx AI (`/ai`) — Intelligent Institutional AI Assistant & Automated Insights
+  - Module 24: VidyaFloww AI (`/ai`) — Intelligent Institutional AI Assistant & Automated Insights
 
 ### Fixed & Refactored
 - **Deep UI Layout Spacing & Deduplication**:
-  - Updated `VFSection` primitive in `@vidyamaxx/ui` to enforce vertical flex spacing (`space-y-3.5`).
+  - Updated `VFSection` primitive in `@vidyafloww/ui` to enforce vertical flex spacing (`space-y-3.5`).
   - Fixed microservice cards and data table search bars sticking together without margin.
   - Deduplicated top KPI stat cards so they ONLY appear on main `dashboard` tabs, keeping submodule tabs clean and focused.
 
@@ -49,5 +49,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial monorepo scaffold
 
-[v2.8.0]: https://github.com/logicbyroshan/vidyamaxx-school-management/compare/v0.1.0...main
-[0.1.0]: https://github.com/logicbyroshan/vidyamaxx-school-management/releases/tag/v0.1.0
+[v2.8.0]: https://github.com/logicbyroshan/vidyafloww-school-management/compare/v0.1.0...main
+[0.1.0]: https://github.com/logicbyroshan/vidyafloww-school-management/releases/tag/v0.1.0

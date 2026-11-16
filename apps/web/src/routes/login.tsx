@@ -27,7 +27,7 @@ import {
   Languages,
   HelpCircle,
 } from 'lucide-react';
-import { cn } from '@vidyamaxx/ui';
+import { cn } from '@vidyafloww/ui';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 
@@ -112,7 +112,7 @@ function ProfessionalAuthPage() {
     }
 
     setIsLoading(false);
-    sessionStorage.setItem('vidyamaxx_just_logged_in', 'true');
+    sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
     navigate({ to: '/' });
   };
 
@@ -125,7 +125,7 @@ function ProfessionalAuthPage() {
     });
     await new Promise((r) => setTimeout(r, 800));
     setIsLoading(false);
-    sessionStorage.setItem('vidyamaxx_just_logged_in', 'true');
+    sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
     navigate({ to: '/' });
   };
 
@@ -164,7 +164,7 @@ function ProfessionalAuthPage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight text-white">VidyaMaxx</span>
+              <span className="font-extrabold text-base tracking-tight text-white">VidyaFloww</span>
               <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30">
                 v2.4
               </span>
@@ -395,7 +395,7 @@ function ProfessionalAuthPage() {
                       ) : (
                         <>
                           <ShieldCheck className="h-4 w-4" />
-                          <span>{isHindi ? 'विद्याफ़्लो में साइन इन करें' : 'Sign In to VidyaMaxx'}</span>
+                          <span>{isHindi ? 'विद्याफ़्लो में साइन इन करें' : 'Sign In to VidyaFloww'}</span>
                           <ArrowRight className="h-4 w-4" />
                         </>
                       )}
@@ -692,7 +692,7 @@ function ProfessionalAuthPage() {
                         <span className="text-[11px] leading-tight">
                           {isHindi
                             ? 'मैं विद्याफ़्लो की सेवा शर्तों, CBSE स्टूडेंट डेटा प्रोटेक्शन नियमों और क्लाउड सिक्योरिटी पॉलिसी से सहमत हूँ।'
-                            : 'I agree to VidyaMaxx Terms of Service, CBSE Student Data Privacy Charter, and cloud security guidelines.'}
+                            : 'I agree to VidyaFloww Terms of Service, CBSE Student Data Privacy Charter, and cloud security guidelines.'}
                         </span>
                       </label>
 
@@ -846,7 +846,7 @@ function ProfessionalAuthPage() {
                           <input
                             type="text"
                             required
-                            placeholder="admin@vidyamaxx.edu.in"
+                            placeholder="admin@vidyafloww.edu.in"
                             value={fpIdentifier}
                             onChange={(e) => setFpIdentifier(e.target.value)}
                             className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
@@ -1155,9 +1155,9 @@ function ProfessionalAuthPage() {
                         onClick={() => {
                           setRecoveredUsername({
                             name: 'Principal Office',
-                            username: 'admin@vidyamaxx.edu.in',
+                            username: 'admin@vidyafloww.edu.in',
                             role: isHindi ? 'स्कूल एडमिनिस्ट्रेटर' : 'School Administrator',
-                            campus: 'VidyaMaxx International Academy, Delhi',
+                            campus: 'VidyaFloww International Academy, Delhi',
                           });
                           setFuStep(3);
                         }}

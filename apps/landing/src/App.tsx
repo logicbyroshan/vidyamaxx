@@ -127,20 +127,20 @@ export default function LandingApp() {
 
   const faqs = [
     {
-      q: 'How does VidyaMaxx handle data sovereignty and privacy compliance?',
+      q: 'How does VidyaFloww handle data sovereignty and privacy compliance?',
       a: 'All student, faculty, and institutional data is encrypted using AES-256 at rest and TLS 1.3 in transit. Databases are hosted exclusively within Indian sovereign data centers (AWS / GCP Mumbai region), fully satisfying CBSE, ICSE, and the Digital Personal Data Protection (DPDP) Act standards.',
     },
     {
-      q: 'Can VidyaMaxx integrate with existing biometric gates and RFID hardware?',
-      a: 'Yes. VidyaMaxx includes native hardware connectors for leading biometric face scanners, RFID turnstiles, and GPS bus trackers via secure webhook telemetry with sub-second synchronization.',
+      q: 'Can VidyaFloww integrate with existing biometric gates and RFID hardware?',
+      a: 'Yes. VidyaFloww includes native hardware connectors for leading biometric face scanners, RFID turnstiles, and GPS bus trackers via secure webhook telemetry with sub-second synchronization.',
     },
     {
       q: 'What is the implementation timeline for a school with 2,000+ students?',
       a: 'Most schools complete full digital migration within 48 to 72 hours using our automated CSV/Excel roster import wizard. Our deployment engineers handle timetable configuration, fee structure setup, and staff onboarding.',
     },
     {
-      q: 'Is VidyaMaxx accessible on mobile and desktop offline?',
-      a: 'Yes. VidyaMaxx is a tri-platform ecosystem featuring a responsive Web Cloud Portal, an Electron-powered Desktop Ultra App with offline SQLite fallback, and a dedicated Mobile App for teachers and parents.',
+      q: 'Is VidyaFloww accessible on mobile and desktop offline?',
+      a: 'Yes. VidyaFloww is a tri-platform ecosystem featuring a responsive Web Cloud Portal, an Electron-powered Desktop Ultra App with offline SQLite fallback, and a dedicated Mobile App for teachers and parents.',
     },
   ];
 
@@ -155,7 +155,7 @@ export default function LandingApp() {
           <a href="#" className="flex items-center gap-3 group">
             <img
               src="/logo.png"
-              alt="VidyaMaxx Logo"
+              alt="VidyaFloww Logo"
               className="h-8 w-8 object-contain transition-transform group-hover:scale-105"
             />
             <div className="flex flex-col">
@@ -341,7 +341,7 @@ export default function LandingApp() {
                   <div className="h-3 w-3 rounded-xs bg-[#2b2b2b]" />
                   <div className="h-3 w-3 rounded-xs bg-[#2b2b2b]" />
                   <span className="ml-2 text-xs font-mono font-bold text-zinc-400">
-                    vidyamaxx.internal/app/dashboard · Live Active Session
+                    vidyafloww.internal/app/dashboard · Live Active Session
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -498,7 +498,7 @@ export default function LandingApp() {
             Engineered for Campus Complexity
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-            Eliminate fragmented software tools. VidyaMaxx consolidates every operational touchpoint into a unified, high-integrity platform.
+            Eliminate fragmented software tools. VidyaFloww consolidates every operational touchpoint into a unified, high-integrity platform.
           </p>
         </div>
 
@@ -835,7 +835,7 @@ export default function LandingApp() {
               Sovereign Cloud. Zero Third-Party Leakage.
             </h2>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-medium">
-              We uphold the highest standard of student data confidentiality. VidyaMaxx never monetizes student records, runs zero advertising scripts, and guarantees 100% data residency within India.
+              We uphold the highest standard of student data confidentiality. VidyaFloww never monetizes student records, runs zero advertising scripts, and guarantees 100% data residency within India.
             </p>
             <div className="grid grid-cols-2 gap-3 pt-2">
               <div className="p-3 rounded-md bg-[#121212] border border-[#222222]">
@@ -924,7 +924,7 @@ export default function LandingApp() {
             Ready to Modernize Your Campus Management?
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto font-medium">
-            Experience the complete VidyaMaxx ecosystem live in your browser with zero commitments or setup.
+            Experience the complete VidyaFloww ecosystem live in your browser with zero commitments or setup.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
             <a
@@ -950,8 +950,8 @@ export default function LandingApp() {
       <footer className="border-t border-[#1a1a1a] bg-black py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="VidyaMaxx Logo" className="h-6 w-6 object-contain" />
-            <span className="font-bold text-zinc-300">VidyaMaxx Technologies</span>
+            <img src="/logo.png" alt="VidyaFloww Logo" className="h-6 w-6 object-contain" />
+            <span className="font-bold text-zinc-300">VidyaFloww Technologies</span>
             <span>•</span>
             <span>Enterprise Campus OS</span>
           </div>
@@ -963,7 +963,7 @@ export default function LandingApp() {
             <a href="#pricing" className="hover:text-white">Licensing</a>
           </div>
 
-          <p>© 2026 VidyaMaxx Inc. All rights reserved.</p>
+          <p>© 2026 VidyaFloww Inc. All rights reserved.</p>
         </div>
       </footer>
     </div>

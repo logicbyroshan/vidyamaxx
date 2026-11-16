@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
-import { cn, VFAvatar, VFDialog, VFButton } from '@vidyamaxx/ui';
+import { cn, VFAvatar, VFDialog, VFButton } from '@vidyafloww/ui';
 import {
   Award,
   BarChart3,
@@ -140,7 +140,7 @@ export function Sidebar() {
       >
         {/* Logo: strictly centered when collapsed at x = 34px */}
         <div className="h-8 w-8 min-w-[32px] shrink-0 flex items-center justify-center overflow-hidden">
-          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain" />
+          <img src="/logo.png" alt="VidyaFloww Logo" className="h-8 w-8 object-contain" />
         </div>
 
         {/* Brand text: CSS-only fade + collapse */}
@@ -232,7 +232,7 @@ export function Sidebar() {
         <button
           type="button"
           onClick={() => toggleAIDrawer()}
-          title={!sidebarExpanded ? (isHindi ? 'विद्यामैक्स AI (Shift+K)' : 'VidyaMaxx AI Copilot (Shift+K)') : undefined}
+          title={!sidebarExpanded ? (isHindi ? 'विद्याफ्लो AI (Shift+K)' : 'VidyaFloww AI Copilot (Shift+K)') : undefined}
           className={cn(
             'flex items-center h-10 w-full rounded-md border outline-none overflow-hidden cursor-pointer select-none',
             'transition-colors duration-150',
@@ -256,7 +256,7 @@ export function Sidebar() {
               transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
             }}
           >
-            {isHindi ? 'विद्यामैक्स AI' : 'VidyaMaxx AI'}
+            {isHindi ? 'विद्याफ्लो AI' : 'VidyaFloww AI'}
           </span>
           <span
             className="ml-auto text-[10px] font-mono font-bold text-muted-foreground bg-[#1c1c1c] px-1.5 py-0.5 rounded border border-border/60 shrink-0"
@@ -319,7 +319,7 @@ export function Sidebar() {
                 e.stopPropagation();
                 setIsLogoutModalOpen(true);
               }}
-              title="Sign Out of VidyaMaxx"
+              title="Sign Out of VidyaFloww"
               className="text-muted-foreground hover:text-rose-400 p-1.5 rounded-md hover:bg-[#1f1f1f] transition-colors duration-200 shrink-0 cursor-pointer"
             >
               <LogOut className="h-4 w-4" />
@@ -354,7 +354,7 @@ export function Sidebar() {
                 setIsLogoutModalOpen(false);
                 addNotification({
                   title: isHindi ? 'साइन आउट किया गया' : 'Signed Out',
-                  description: isHindi ? 'VidyaMaxx से सफलतापूर्वक साइन आउट हो गए।' : 'Safely signed out of VidyaMaxx.',
+                  description: isHindi ? 'VidyaFloww से सफलतापूर्वक साइन आउट हो गए।' : 'Safely signed out of VidyaFloww.',
                   type: 'info',
                 });
                 navigate({ to: '/' });

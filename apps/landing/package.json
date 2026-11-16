@@ -1,5 +1,5 @@
 {
-  "name": "@vidyamaxx/landing",
+  "name": "@vidyafloww/landing",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,10 +13,10 @@
     "clean": "rimraf dist .turbo"
   },
   "dependencies": {
-    "@vidyamaxx/constants": "workspace:*",
-    "@vidyamaxx/types": "workspace:*",
-    "@vidyamaxx/ui": "workspace:*",
-    "@vidyamaxx/utils": "workspace:*",
+    "@vidyafloww/constants": "workspace:*",
+    "@vidyafloww/types": "workspace:*",
+    "@vidyafloww/ui": "workspace:*",
+    "@vidyafloww/utils": "workspace:*",
     "clsx": "^2.1.1",
     "framer-motion": "^12.4.7",
     "lucide-react": "^1.23.0",

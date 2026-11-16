@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/api — Shared Types
+ * @vidyafloww/api — Shared Types
  *
  * Type definitions for API request/response contracts.
  *

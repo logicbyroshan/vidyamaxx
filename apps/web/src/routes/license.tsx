@@ -8,7 +8,7 @@ import {
   VFDialog,
   VFInput,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ShieldCheck,
   Key,
@@ -77,7 +77,7 @@ function LicenseManagementPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = t('nav.license') + ' – VidyaMaxx';
+    document.title = t('nav.license') + ' – VidyaFloww';
   }, [t]);
 
   const [copied, setCopied] = React.useState(false);
@@ -86,7 +86,7 @@ function LicenseManagementPage() {
   const [isPayEarlyModalOpen, setIsPayEarlyModalOpen] = React.useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = React.useState(false);
 
-  const [cardholderName, setCardholderName] = React.useState('VidyaMaxx International Academy');
+  const [cardholderName, setCardholderName] = React.useState('VidyaFloww International Academy');
   const [cardNumber, setCardNumber] = React.useState('•••• •••• •••• 4242');
   const [expiryDate, setExpiryDate] = React.useState('08/29');
 

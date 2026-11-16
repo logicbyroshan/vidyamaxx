@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/constants — User Roles
+ * @vidyafloww/constants — User Roles
  *
  * Role constants for permission control throughout the application.
  *

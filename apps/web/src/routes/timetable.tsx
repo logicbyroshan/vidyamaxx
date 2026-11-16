@@ -9,7 +9,7 @@ import {
   VFDrawer,
   VFDialog,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Clock,
   Download,
@@ -268,7 +268,7 @@ function TimetablePage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.timetable') + ' \u2013 VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.timetable') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 9-A');
   const [classTeacher, setClassTeacher] = React.useState<string>('Mrs. Sunita Verma');
   
@@ -417,7 +417,7 @@ function TimetablePage() {
 
         const csvContent =
           `"Academic Timetable Matrix - ${selectedClass}"\n` +
-          `"Class Teacher: ${classTeacher}","Academic Year: 2026-2027","Institution: VidyaMaxx International Academy"\n\n` +
+          `"Class Teacher: ${classTeacher}","Academic Year: 2026-2027","Institution: VidyaFloww International Academy"\n\n` +
           [headers.join(','), ...rows.map((r) => r.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))].join('\n');
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -460,7 +460,7 @@ function TimetablePage() {
               </head>
               <body>
                 <div class="header">
-                  <div class="school-name">VidyaMaxx International Academy</div>
+                  <div class="school-name">VidyaFloww International Academy</div>
                   <div class="sub">Official Academic Weekly Class Timetable · Session 2026–2027</div>
                 </div>
                 <div class="meta-row">
@@ -539,7 +539,7 @@ function TimetablePage() {
 
         // 2. Schedule JSON
         zip.file(`Class_Schedule_${selectedClass.replace(/\s+/g, '_')}.json`, JSON.stringify({
-          institution: 'VidyaMaxx International Academy',
+          institution: 'VidyaFloww International Academy',
           academicSession: '2026-2027',
           classSection: selectedClass,
           classTeacher,

@@ -7,7 +7,7 @@ Concise record of verified milestones and structural changes reconstructed from 
 ## [Unreleased / Active] — September 2026
 
 ### Component Architecture, Deep Consistency & Unified Toolbar (PR #31 — 2026-09-14)
-* **Introduced `VFPageToolbar` in `@vidyamaxx/ui`**: Added reusable top header toolbar primitive encapsulating the standard `#141414` container pattern (`p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs`), eliminating repeated markup across 10+ modules (`teaching.tsx`, `complaints.tsx`, `design-lab.tsx`, `hostel.tsx`, `transport.tsx`, `elibrary.tsx`, `e-class.tsx`, `hr-manage.tsx`, `security.tsx`, `audit.tsx`, `resources.tsx`, `lms.tsx`, `learning.tsx`).
+* **Introduced `VFPageToolbar` in `@vidyafloww/ui`**: Added reusable top header toolbar primitive encapsulating the standard `#141414` container pattern (`p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs`), eliminating repeated markup across 10+ modules (`teaching.tsx`, `complaints.tsx`, `design-lab.tsx`, `hostel.tsx`, `transport.tsx`, `elibrary.tsx`, `e-class.tsx`, `hr-manage.tsx`, `security.tsx`, `audit.tsx`, `resources.tsx`, `lms.tsx`, `learning.tsx`).
 * **Sleek Grey Hover Polish**: Audited all interactive elements to ensure strict adherence to subtle grey hover borders (`hover:border-zinc-700`, `hover:bg-[#181818]`), eliminating remaining orange hover borders on dashboard shortcut tiles and login institutional badges.
 * **Strict Geometric Sharp Border Enforcement**: Standardized leftover `rounded-lg` elements across `shortcuts.tsx`, `learning.tsx`, and `security.tsx` to explicit sharp `rounded-[4px]`.
 
@@ -30,10 +30,10 @@ Concise record of verified milestones and structural changes reconstructed from 
 * **Max-Width Column Truncation**: Standardized column text truncation (`max-w-[180px] truncate`) with native `title="..."` tooltips so wide text does not blow out column widths.
 * **Strict Column Alignment Standard**: Aligned text and identity columns (names, emails, subjects) to the left, and centered codes, counts, statuses, and action buttons for visual balance.
 
-### Complete Platform Rebranding to VidyaMaxx (2026-09-13)
-* **Comprehensive Rebrand Across Entire Monorepo**: Rebranded platform from VidyaFloww to VidyaMaxx across all packages, frontend apps, backend settings/configuration, documentation, routes, tests, and configuration files.
-* **Workspace Package Renaming**: Updated all 11 monorepo packages to `@vidyamaxx/*` (`@vidyamaxx/api`, `@vidyamaxx/ui`, `@vidyamaxx/utils`, etc.), updated `pnpm-lock.yaml` and all dependencies.
-* **Backend Rebrand**: Renamed Celery app and logger namespace to `vidyamaxx`, updated database defaults and production deployment configurations.
+### Complete Platform Rebranding to VidyaFloww (2026-09-13)
+* **Comprehensive Rebrand Across Entire Monorepo**: Rebranded platform from VidyaFloww to VidyaFloww across all packages, frontend apps, backend settings/configuration, documentation, routes, tests, and configuration files.
+* **Workspace Package Renaming**: Updated all 11 monorepo packages to `@vidyafloww/*` (`@vidyafloww/api`, `@vidyafloww/ui`, `@vidyafloww/utils`, etc.), updated `pnpm-lock.yaml` and all dependencies.
+* **Backend Rebrand**: Renamed Celery app and logger namespace to `vidyafloww`, updated database defaults and production deployment configurations.
 * **UI & Brand Consistency**: Synchronized header, preloader, sidebar, and landing page wordmarks and metadata.
 
 ### Architectural Decoupling, Overview Dashboards & Backend Audit (2026-09-08)
@@ -51,20 +51,20 @@ Concise record of verified milestones and structural changes reconstructed from 
 
 #### Subsystem Decoupling & Standalone Repository Architecture (PR #3 & #4)
 * **Decoupled 5 heavy operational modules**:
-  * `Design-Lab` (Target: `designlab.vidyamaxx.com`)
-  * `Hostel Management` (Target: `hostel.vidyamaxx.com`)
-  * `Transport Management` (Target: `transport.vidyamaxx.com`)
-  * `HR Management` (Target: `hr.vidyamaxx.com`)
-  * `Library Management` (Target: `library.vidyamaxx.com`)
+  * `Design-Lab` (Target: `designlab.vidyafloww.com`)
+  * `Hostel Management` (Target: `hostel.vidyafloww.com`)
+  * `Transport Management` (Target: `transport.vidyafloww.com`)
+  * `HR Management` (Target: `hr.vidyafloww.com`)
+  * `Library Management` (Target: `library.vidyafloww.com`)
 * **Scaffolded full standalone repository infrastructure** for each subsystem with dedicated Vite configs, Tailwind design systems, Mukta font typography, sharp border radii, package scripts, `.husky`, `turbo.json`, and developer documentation. Decoupled folders were then cleanly separated into their own dedicated repositories.
 
 #### In-Portal Integrated Overview Dashboards (PR #5)
 * **Preserved integrated command center experience in `apps/web`**: Rather than generic launchpad placeholders, designed 5 high-density, interactive single-page overview dashboards matching the core ERP look and feel:
-  * **`/design-lab`**: 24 document template presets (CBSE marksheets, CR80 student ID cards, sports certificates, admit cards), live template preview modal, recent export batches, and jump link to `designlab.vidyamaxx.com`.
-  * **`/hostel`**: Dormitory room occupancy matrix, real-time headcounts (156 Inside, 24 Outside, 4 Unaccounted), today's 3-course meal cards (Breakfast, Lunch, Dinner), active leave outpasses, and jump link to `hostel.vidyamaxx.com`.
-  * **`/transport`**: Live GPS route telematics cards with speed indicators, arrival ETAs, driver quick call action buttons, vehicle compliance audit ledger (fitness, insurance, pollution), and jump link to `transport.vidyamaxx.com`.
-  * **`/hr-manage`**: Support staff operational stats, 5 departmental shift rosters (Housekeeping, Security, Transport, Dining, Maintenance), live biometric turnstile punch feed, statutory payroll breakdown, and jump link to `hr.vidyamaxx.com`.
-  * **`/elibrary`**: NCERT digital curriculum catalog, protected DRM chapter preview modal, active reader telemetry, circulation ledger, and jump link to `library.vidyamaxx.com`.
+  * **`/design-lab`**: 24 document template presets (CBSE marksheets, CR80 student ID cards, sports certificates, admit cards), live template preview modal, recent export batches, and jump link to `designlab.vidyafloww.com`.
+  * **`/hostel`**: Dormitory room occupancy matrix, real-time headcounts (156 Inside, 24 Outside, 4 Unaccounted), today's 3-course meal cards (Breakfast, Lunch, Dinner), active leave outpasses, and jump link to `hostel.vidyafloww.com`.
+  * **`/transport`**: Live GPS route telematics cards with speed indicators, arrival ETAs, driver quick call action buttons, vehicle compliance audit ledger (fitness, insurance, pollution), and jump link to `transport.vidyafloww.com`.
+  * **`/hr-manage`**: Support staff operational stats, 5 departmental shift rosters (Housekeeping, Security, Transport, Dining, Maintenance), live biometric turnstile punch feed, statutory payroll breakdown, and jump link to `hr.vidyafloww.com`.
+  * **`/elibrary`**: NCERT digital curriculum catalog, protected DRM chapter preview modal, active reader telemetry, circulation ledger, and jump link to `library.vidyafloww.com`.
 
 #### Backend Architecture Deep Audit & Documentation Synchronization (PR #6)
 * **Executed deep audit of `apps/backend`**:
@@ -125,7 +125,7 @@ Concise record of verified milestones and structural changes reconstructed from 
   * Added period configuration drawer, dynamic class switching, and faculty substitution matcher.
 * **360° Dossier Drawers**:
   * Added slide-in profiles for Students and Faculty with academic history, fee records, attendance logs, and export actions.
-* **VidyaMaxx AI Assistant Drawer** (`AIChatDrawer.tsx`):
+* **VidyaFloww AI Assistant Drawer** (`AIChatDrawer.tsx`):
   * Component built and available in `apps/web/src/components/`. Pending wiring into `AppShell.tsx`.
 
 ---
@@ -141,11 +141,11 @@ Concise record of verified milestones and structural changes reconstructed from 
     * Finance & HR: `Fees`, `Salary`, `Scholarships`.
     * Governance: `Security`, `Audit Log`, `Settings`, `License`.
     * Auth: `Login`.
-  * Embedded global `VidyaMaxx AI` assistant drawer (pending AppShell integration).
+  * Embedded global `VidyaFloww AI` assistant drawer (pending AppShell integration).
 
 ### Fixed & Refactored
 * **Viewport & Spacing Standardization**:
-  * Enforced vertical spacing standard via `VFSection` / `space-y-3` in `@vidyamaxx/ui`.
+  * Enforced vertical spacing standard via `VFSection` / `space-y-3` in `@vidyafloww/ui`.
   * Removed nested vertical scrollbars on sub-navigation tabs to establish a single unified vertical scroll container.
   * Standardized KPI stat cards to render exclusively on primary dashboard views.
 
@@ -157,5 +157,5 @@ Concise record of verified milestones and structural changes reconstructed from 
 * Initial monorepo foundation with TurboRepo and pnpm workspaces.
 * Backend skeleton: Django 5, Django REST Framework, Celery, Channels, and PostgreSQL/Redis Docker Compose configurations.
 * Frontend skeleton: React 19, Vite, TypeScript, and Tailwind CSS.
-* Shared packages foundation (`@vidyamaxx/ui`, `@vidyamaxx/types`, `@vidyamaxx/api`, `@vidyamaxx/constants`, `@vidyamaxx/validation`).
+* Shared packages foundation (`@vidyafloww/ui`, `@vidyafloww/types`, `@vidyafloww/api`, `@vidyafloww/constants`, `@vidyafloww/validation`).
 * Project architecture and standards documentation suite (`docs/01-13`).

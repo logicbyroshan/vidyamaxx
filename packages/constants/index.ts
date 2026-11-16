@@ -1,10 +1,10 @@
 /**
- * @vidyamaxx/constants
+ * @vidyafloww/constants
  *
- * Application-wide constants shared across all VidyaMaxx apps.
+ * Application-wide constants shared across all VidyaFloww apps.
  *
  * @example
- * import { ROUTES, API_ENDPOINTS } from '@vidyamaxx/constants';
+ * import { ROUTES, API_ENDPOINTS } from '@vidyafloww/constants';
  */
 
 export * from './src/routes';

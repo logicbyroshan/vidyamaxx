@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { formatCurrency, formatPercentage, formatNumber, formatDate, truncate, getInitials } from '@vidyamaxx/utils';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
+import { formatCurrency, formatPercentage, formatNumber, formatDate, truncate, getInitials } from '@vidyafloww/utils';
+import { MODULE_REGISTRY } from '@vidyafloww/constants';
 
-describe('VidyaMaxx Shared Utilities', () => {
+describe('VidyaFloww Shared Utilities', () => {
   it('formats currency correctly in INR', () => {
     const formatted = formatCurrency(125000);
     expect(formatted).toContain('1,25,000');
@@ -24,7 +24,7 @@ describe('VidyaMaxx Shared Utilities', () => {
   });
 
   it('truncates strings properly', () => {
-    expect(truncate('VidyaMaxx Enterprise School Platform', 15)).toBe('VidyaMaxx Enter...');
+    expect(truncate('VidyaFloww Enterprise School Platform', 15)).toBe('VidyaFloww Ente...');
     expect(truncate('Short', 10)).toBe('Short');
   });
 
@@ -34,7 +34,7 @@ describe('VidyaMaxx Shared Utilities', () => {
   });
 });
 
-describe('VidyaMaxx Module Navigation Registry', () => {
+describe('VidyaFloww Module Navigation Registry', () => {
   it('registers all 33 business modules', () => {
     expect(MODULE_REGISTRY.length).toBeGreaterThanOrEqual(10);
     const dashboard = MODULE_REGISTRY.find((m) => m.id === 'dashboard');

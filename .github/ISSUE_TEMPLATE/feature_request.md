@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new feature or enhancement for VidyaMaxx
+about: Suggest a new feature or enhancement for VidyaFloww
 title: '[FEATURE] '
 labels: ['enhancement', 'needs-triage']
 assignees: ''

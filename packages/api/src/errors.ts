@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/api — ApiError Class
+ * @vidyafloww/api — ApiError Class
  *
  * Normalized error class for all API failures.
  *

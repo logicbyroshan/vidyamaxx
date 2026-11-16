@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/types",
+  "name": "@vidyafloww/types",
   "version": "0.1.0",
-  "description": "VidyaMaxx shared TypeScript type definitions",
+  "description": "VidyaFloww shared TypeScript type definitions",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

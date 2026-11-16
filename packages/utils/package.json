@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/utils",
+  "name": "@vidyafloww/utils",
   "version": "0.1.0",
-  "description": "VidyaMaxx shared utility functions",
+  "description": "VidyaFloww shared utility functions",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

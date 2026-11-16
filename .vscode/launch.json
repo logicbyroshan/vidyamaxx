@@ -18,7 +18,7 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev", "--filter=@vidyamaxx/web"],
+      "runtimeArgs": ["dev", "--filter=@vidyafloww/web"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
@@ -28,7 +28,7 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev", "--filter=@vidyamaxx/desktop"],
+      "runtimeArgs": ["dev", "--filter=@vidyafloww/desktop"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]

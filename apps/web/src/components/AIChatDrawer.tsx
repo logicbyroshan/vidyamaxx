@@ -15,7 +15,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import { VFBadge, VFButton, cn } from '@vidyamaxx/ui';
+import { VFBadge, VFButton, cn } from '@vidyafloww/ui';
 
 interface Message {
   id: string;
@@ -133,7 +133,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
     {
       id: 'welcome-1',
       sender: 'ai',
-      text: "Hello! I'm your **VidyaMaxx AI Copilot**. I have real-time contextual access to your institution's admissions, students, faculty timetables, fees, and examination telemetry. How can I assist you today?",
+      text: "Hello! I'm your **VidyaFloww AI Copilot**. I have real-time contextual access to your institution's admissions, students, faculty timetables, fees, and examination telemetry. How can I assist you today?",
       timestamp: 'Just now',
     },
   ]);
@@ -171,7 +171,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
 
     // Context response matching
     let responseText =
-      "I've processed your query against VidyaMaxx's institutional database. All system metrics indicate nominal operations. Let me know if you would like me to generate detailed reports or initiate automated workflows.";
+      "I've processed your query against VidyaFloww's institutional database. All system metrics indicate nominal operations. Let me know if you would like me to generate detailed reports or initiate automated workflows.";
 
     const lower = query.toLowerCase();
     if (lower.includes('proxy') || lower.includes('substitute') || lower.includes('sharma') || lower.includes('leave')) {
@@ -320,7 +320,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                         {isAI && (
                           <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between">
                             <span className="text-[10px] text-muted-foreground font-semibold">
-                              VidyaMaxx Neural Model v2.4
+                              VidyaFloww Neural Model v2.4
                             </span>
                             <button
                               onClick={() => handleCopy(msg.id, msg.text)}
@@ -412,7 +412,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                     type="text"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Ask VidyaMaxx AI anything about students, staff, timetable, fees..."
+                    placeholder="Ask VidyaFloww AI anything about students, staff, timetable, fees..."
                     className="w-full h-10 pl-4 pr-10 rounded-md bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary transition-all"
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-muted-foreground text-xs font-bold pointer-events-none">

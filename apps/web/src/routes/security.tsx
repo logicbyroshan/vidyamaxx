@@ -6,7 +6,7 @@ import {
   VFCard,
   VFButton,
   VFBadge,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Shield,
   ArrowLeft,
@@ -46,7 +46,7 @@ function SecurityManagementPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = (isHindi ? 'सिक्योरिटी & रोल्स' : 'Security & Roles') + ' – VidyaMaxx'; }, [isHindi]);
+  React.useEffect(() => { document.title = (isHindi ? 'सिक्योरिटी & रोल्स' : 'Security & Roles') + ' – VidyaFloww'; }, [isHindi]);
 
   // Permission Matrix State
   const [permissions, setPermissions] = React.useState<RolePermission[]>(DEFAULT_PERMISSIONS);

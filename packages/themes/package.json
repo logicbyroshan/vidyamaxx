@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/themes",
+  "name": "@vidyafloww/themes",
   "version": "0.1.0",
-  "description": "VidyaMaxx design tokens and theme definitions",
+  "description": "VidyaFloww design tokens and theme definitions",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

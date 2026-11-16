@@ -2,18 +2,18 @@ services:
   # ─── Database ───────────────────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
-    container_name: vidyamaxx-postgres
+    container_name: vidyafloww-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-vidyamaxx_db}
-      POSTGRES_USER: ${POSTGRES_USER:-vidyamaxx}
+      POSTGRES_DB: ${POSTGRES_DB:-vidyafloww_db}
+      POSTGRES_USER: ${POSTGRES_USER:-vidyafloww}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vidyamaxx}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vidyafloww}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -21,7 +21,7 @@ services:
   # ─── Redis ──────────────────────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
-    container_name: vidyamaxx-redis
+    container_name: vidyafloww-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
     volumes:
@@ -40,7 +40,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile.backend
       target: development
-    container_name: vidyamaxx-backend
+    container_name: vidyafloww-backend
     restart: unless-stopped
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -64,7 +64,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile.backend
       target: development
-    container_name: vidyamaxx-celery
+    container_name: vidyafloww-celery
     restart: unless-stopped
     command: celery -A config.celery worker --loglevel=info --concurrency=4
     volumes:
@@ -83,7 +83,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile.backend
       target: development
-    container_name: vidyamaxx-celery-beat
+    container_name: vidyafloww-celery-beat
     restart: unless-stopped
     command: celery -A config.celery beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     volumes:
@@ -100,7 +100,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile.web
       target: development
-    container_name: vidyamaxx-web
+    container_name: vidyafloww-web
     restart: unless-stopped
     volumes:
       - ./apps/web:/app

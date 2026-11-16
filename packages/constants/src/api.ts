@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/constants — API Endpoint Constants
+ * @vidyafloww/constants — API Endpoint Constants
  *
  * Typed API endpoint path constants.
  *

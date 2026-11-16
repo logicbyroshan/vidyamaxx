@@ -1,6 +1,6 @@
 /**
- * @vidyamaxx/hooks
- * Shared custom React hooks for VidyaMaxx applications.
+ * @vidyafloww/hooks
+ * Shared custom React hooks for VidyaFloww applications.
  */
 
 export * from './useDebounce';

@@ -2,7 +2,7 @@
 
 ## Overview
 
-VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** built on top of **Tailwind CSS 3.4**, **Radix UI Primitives**, **Framer Motion**, **TanStack Table**, **Recharts**, **cmdk**, **Sonner**, **Lenis**, and custom UI component tokens (`@vidyamaxx/ui`). All application pages adhere to strict visual consistency, micro-animations, and interaction standards.
+VidyaFloww uses a custom, high-density **AI-First Enterprise Desktop Interface** built on top of **Tailwind CSS 3.4**, **Radix UI Primitives**, **Framer Motion**, **TanStack Table**, **Recharts**, **cmdk**, **Sonner**, **Lenis**, and custom UI component tokens (`@vidyafloww/ui`). All application pages adhere to strict visual consistency, micro-animations, and interaction standards.
 
 ---
 
@@ -10,7 +10,7 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
 
 1. **Desktop Viewport Restriction**:
    - Minimum supported width is **1000px**.
-   - If accessed on viewports below 1000px, a blocking overlay prompts users to use the VidyaMaxx Mobile App (`SmallScreenBlocker`).
+   - If accessed on viewports below 1000px, a blocking overlay prompts users to use the VidyaFloww Mobile App (`SmallScreenBlocker`).
 2. **Fluid Responsive Typography Clamping (Sofia Sans)**:
    - Root HTML font uses **Sofia Sans** with fluid CSS `clamp()` and breakpoint scaling:
      ```css
@@ -91,15 +91,15 @@ To eliminate visual chaos and rainbow noise, each functional section is assigned
 
 ## Standard Technology Stack Integrations
 
-| Purpose | Integrated Library | Usage in `@vidyamaxx/ui` & `@vidyamaxx/web` |
+| Purpose | Integrated Library | Usage in `@vidyafloww/ui` & `@vidyafloww/web` |
 |---|---|---|
 | **Core UI** | React 19 + Tailwind CSS 3.4 | Core framework, `@tailwindcss/forms`, `@tailwindcss/typography` |
-| **Components** | `@vidyamaxx/ui` | CVA (`class-variance-authority`), `clsx`, and `tailwind-merge` component system |
+| **Components** | `@vidyafloww/ui` | CVA (`class-variance-authority`), `clsx`, and `tailwind-merge` component system |
 | **Accessible Primitives** | Radix UI | `@radix-ui/react-dialog` (`VFDialog`, `VFModal`, `VFDrawer`), `@radix-ui/react-select` (`VFSelect`), `@radix-ui/react-tabs`, `@radix-ui/react-popover`, `@radix-ui/react-tooltip` |
 | **Animations** | Framer Motion | `framer-motion` staggered page/tab transitions, drawer slide-ins, spring layout indicators |
 | **Smooth Scrolling** | Lenis | `lenis` smooth scroll instances in `AppShell.tsx` and `Sidebar.tsx` |
-| **Icons** | Lucide | `lucide-react` (^1.23.0) + `@vidyamaxx/icons` package |
-| **Charts** | Recharts | `@vidyamaxx/ui` exports `VFAreaChart`, `VFBarChart`, `VFPieChart` with dark theme tooltips and gradient fills |
+| **Icons** | Lucide | `lucide-react` (^1.23.0) + `@vidyafloww/icons` package |
+| **Charts** | Recharts | `@vidyafloww/ui` exports `VFAreaChart`, `VFBarChart`, `VFPieChart` with dark theme tooltips and gradient fills |
 | **Tables** | TanStack Table | `VFDataTable` powered by `@tanstack/react-table` v9 + fail-safe rendering engine |
 | **Command / Search** | cmdk | `CommandPalette.tsx` (`⌘K` modal palette) |
 | **Toasts** | Sonner | `ToastContainer.tsx` store-synced toast notifications |

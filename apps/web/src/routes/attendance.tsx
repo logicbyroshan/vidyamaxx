@@ -10,7 +10,7 @@ import {
   VFDataTable,
   VFDrawer,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   CheckSquare,
   Send,
@@ -589,7 +589,7 @@ function AttendancePage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.attendance') + ' \u2013 VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.attendance') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 8-A');
   const [selectedDate] = React.useState<string>('2026-08-20');
   const [studentRoster, setStudentRoster] = React.useState<StudentAttendanceRecord[]>(INITIAL_ROSTER);
@@ -1148,7 +1148,7 @@ function AttendancePage() {
                       window.open(
                         `https://wa.me/${activeStudent.phone.replace(/[^0-9]/g, '')}?text=Dear%20Parent,%20regarding%20${encodeURIComponent(
                           activeStudent.name
-                        )}'s%20absence%20today%20at%20VidyaMaxx%20Academy.%20Please%20submit%20a%20leave%20slip.`,
+                        )}'s%20absence%20today%20at%20VidyaFloww%20Academy.%20Please%20submit%20a%20leave%20slip.`,
                         '_blank'
                       )
                     }

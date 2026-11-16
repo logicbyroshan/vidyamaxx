@@ -4,12 +4,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@vidyamaxx/api": ["../../packages/api/src/index.ts"],
-      "@vidyamaxx/ui": ["../../packages/ui/src/index.ts"],
-      "@vidyamaxx/types": ["../../packages/types/src/index.ts"],
-      "@vidyamaxx/utils": ["../../packages/utils/src/index.ts"],
-      "@vidyamaxx/constants": ["../../packages/constants/src/index.ts"],
-      "@vidyamaxx/hooks": ["../../packages/hooks/src/index.ts"]
+      "@vidyafloww/api": ["../../packages/api/src/index.ts"],
+      "@vidyafloww/ui": ["../../packages/ui/src/index.ts"],
+      "@vidyafloww/types": ["../../packages/types/src/index.ts"],
+      "@vidyafloww/utils": ["../../packages/utils/src/index.ts"],
+      "@vidyafloww/constants": ["../../packages/constants/src/index.ts"],
+      "@vidyafloww/hooks": ["../../packages/hooks/src/index.ts"]
     }
   },
   "include": ["src", "electron", "vite.config.ts"]

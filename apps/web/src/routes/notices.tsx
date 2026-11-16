@@ -10,7 +10,7 @@ import {
   VFInput,
   VFDialog,
   VFDrawer,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Download,
   Send,
@@ -337,7 +337,7 @@ function NoticesPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.notices') + ' – VidyaMaxx'; }, [t]);
+  React.useEffect(() => { document.title = t('page.notices') + ' – VidyaFloww'; }, [t]);
   const [notices, setNotices] = React.useState<NoticeRecord[]>(INITIAL_NOTICES);
   const [audienceFilter, setAudienceFilter] = React.useState<string>('All');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
@@ -1143,7 +1143,7 @@ function NoticesPage() {
                     <span className="flex items-center gap-1 font-mono">
                       <Radio className="h-3 w-3 text-emerald-400" /> {activeAudienceLabel} ({activeRecipientCount})
                     </span>
-                    <span className="font-semibold text-zinc-400">VidyaMaxx Office</span>
+                    <span className="font-semibold text-zinc-400">VidyaFloww Office</span>
                   </div>
                 </div>
               </div>

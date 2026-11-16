@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/api",
+  "name": "@vidyafloww/api",
   "version": "0.1.0",
-  "description": "VidyaMaxx API client — typed HTTP client for all backend endpoints",
+  "description": "VidyaFloww API client — typed HTTP client for all backend endpoints",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

@@ -1,6 +1,6 @@
-# @vidyamaxx/web
+# @vidyafloww/web
 
-React 19 web application for **VidyaMaxx — Enterprise School Management Platform**.
+React 19 web application for **VidyaFloww — Enterprise School Management Platform**.
 
 ## 🛠️ Tech Stack
 
@@ -31,11 +31,11 @@ React 19 web application for **VidyaMaxx — Enterprise School Management Platfo
 
 ```bash
 # From the monorepo root
-pnpm --filter @vidyamaxx/web dev
+pnpm --filter @vidyafloww/web dev
 
 # Type check
-pnpm --filter @vidyamaxx/web type-check
+pnpm --filter @vidyafloww/web type-check
 
 # Production build
-pnpm --filter @vidyamaxx/web build
+pnpm --filter @vidyafloww/web build
 ```

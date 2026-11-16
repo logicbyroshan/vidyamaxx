@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="./screenshots/Vidy%20Max%20Banner.png" alt="VidyaMaxx School Management Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);" />
+  <img src="./screenshots/VidyaFloww%20Banner.png" alt="VidyaFloww School Management Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);" />
 </p>
 
 <div align="center">
 
-# VidyaMaxx — Enterprise School Management Platform
+# VidyaFloww — Enterprise School Management Platform
 
 **A unified, high-performance digital operating system engineered for K-12 schools, colleges, and multi-campus educational networks.**
 
@@ -20,9 +20,9 @@
 
 ---
 
-## 📖 About VidyaMaxx
+## 📖 About VidyaFloww
 
-**VidyaMaxx** is an institutional-grade, full-stack educational ERP and campus command portal. Designed specifically for school administrators, principals, and educators, VidyaMaxx eliminates administrative friction and replaces fragmented spreadsheets with an intuitive, clean, and blisteringly fast digital workspace.
+**VidyaFloww** is an institutional-grade, full-stack educational ERP and campus command portal. Designed specifically for school administrators, principals, and educators, VidyaFloww eliminates administrative friction and replaces fragmented spreadsheets with an intuitive, clean, and blisteringly fast digital workspace.
 
 ### 🎨 Institutional Design System Highlights (V1)
 - **High-Legibility Typography**: Solid 16px (`text-base`) foundation with high-contrast text and balanced metric indicators designed specifically for non-tech-friendly school personnel.
@@ -37,7 +37,7 @@
 
 ## 🏛️ Active V1 Application Modules & Overview Dashboards
 
-VidyaMaxx is organized into clean, isolated modules mapped to distinct, type-safe routes in `apps/web`:
+VidyaFloww is organized into clean, isolated modules mapped to distinct, type-safe routes in `apps/web`:
 
 | # | Module | Route | Key Capabilities |
 |:---:|---|---|---|
@@ -68,18 +68,18 @@ Specialized, operationally heavy subsystems are decoupled into dedicated standal
 
 | Subsystem | Main Portal Route | Standalone Subdomain | Overview Dashboard Capabilities |
 |:---|:---|:---|:---|
-| **Design Lab** | `/design-lab` | `designlab.vidyamaxx.com` | 24 template presets (CBSE marksheet, CR80 ID cards, certificates, admit cards), live preview modal, batch exports |
-| **Hostel Management** | `/hostel` | `hostel.vidyamaxx.com` | Dormitory block & bed occupancy matrix, 3-course daily dining timetable, inside/outside headcounts, leave ledger |
-| **Transport & Telemetry** | `/transport` | `transport.vidyamaxx.com` | Live GPS fleet telematics, bus speed monitors, driver quick-call links, vehicle fitness & compliance audit |
-| **HR & Biometrics** | `/hr-manage` | `hr.vidyamaxx.com` | Support staff operations, 5 departmental shift rosters, live biometric turnstile punch feed, statutory payroll |
-| **E-Library & DRM** | `/elibrary` | `library.vidyamaxx.com` | NCERT textbook digital library, DRM chapter preview modal, active reader telemetry, circulation ledger |
+| **Design Lab** | `/design-lab` | `designlab.vidyafloww.com` | 24 template presets (CBSE marksheet, CR80 ID cards, certificates, admit cards), live preview modal, batch exports |
+| **Hostel Management** | `/hostel` | `hostel.vidyafloww.com` | Dormitory block & bed occupancy matrix, 3-course daily dining timetable, inside/outside headcounts, leave ledger |
+| **Transport & Telemetry** | `/transport` | `transport.vidyafloww.com` | Live GPS fleet telematics, bus speed monitors, driver quick-call links, vehicle fitness & compliance audit |
+| **HR & Biometrics** | `/hr-manage` | `hr.vidyafloww.com` | Support staff operations, 5 departmental shift rosters, live biometric turnstile punch feed, statutory payroll |
+| **E-Library & DRM** | `/elibrary` | `library.vidyafloww.com` | NCERT textbook digital library, DRM chapter preview modal, active reader telemetry, circulation ledger |
 
 ---
 
 ## 🛠️ Technology Stack & Monorepo Architecture
 
 ```text
-vidyamaxx/
+vidyafloww/
 ├── apps/
 │   ├── web/                   # React 19 + Vite + TanStack Router Web Command Portal (37 routes)
 │   │   ├── src/
@@ -92,7 +92,7 @@ vidyamaxx/
 │   ├── desktop/               # Electron desktop shell wrapper
 │   └── mobile/                # Expo / React Native mobile shell
 ├── packages/
-│   ├── ui/                    # @vidyamaxx/ui standardized primitives (VFCard, VFTable, VFTabs, etc.)
+│   ├── ui/                    # @vidyafloww/ui standardized primitives (VFCard, VFTable, VFTabs, etc.)
 │   ├── constants/             # Navigation configurations, module registries & metadata
 │   ├── types/                 # Shared TypeScript interfaces
 │   ├── api/                   # Axios API client with standardized error interceptors
@@ -139,8 +139,8 @@ Ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/logicbyroshan/vidyamaxx-school-management.git
-cd vidyamaxx-school-management
+git clone https://github.com/logicbyroshan/vidyafloww-school-management.git
+cd vidyafloww-school-management
 ```
 
 ---
@@ -156,7 +156,7 @@ pnpm install
 ### Step 3: Start the Web Development Server
 
 ```bash
-pnpm --filter @vidyamaxx/web dev
+pnpm --filter @vidyafloww/web dev
 ```
 
 > The application will run at **`http://localhost:3000`** with Hot Module Replacement (HMR).
@@ -167,10 +167,10 @@ pnpm --filter @vidyamaxx/web dev
 
 ```bash
 # Validate type correctness across web portal
-pnpm --filter @vidyamaxx/web type-check
+pnpm --filter @vidyafloww/web type-check
 
 # Run web unit tests (Vitest)
-pnpm --filter @vidyamaxx/web test
+pnpm --filter @vidyafloww/web test
 
 # Verify Django backend integrity
 python apps/backend/manage.py check
@@ -202,7 +202,7 @@ Per `AGENTS.md` Rule 8, **never commit or push directly to `main`**:
 
 ## 🔐 Authentication & API Documentation
 
-VidyaMaxx features an enterprise authentication architecture adhering to CBSE cloud data compliance and OpenAPI 3.1 specifications.
+VidyaFloww features an enterprise authentication architecture adhering to CBSE cloud data compliance and OpenAPI 3.1 specifications.
 
 - 📘 **Complete REST API Specification**: [`API_DOCUMENTATION.md`](./API_DOCUMENTATION.md)
   - **Endpoints Covered**: Auth login, Google Workspace SSO, multi-role registration, OTP verification, password reset, JWT session renewal, and role-based scope verification.
@@ -212,5 +212,5 @@ VidyaMaxx features an enterprise authentication architecture adhering to CBSE cl
 
 ## 📄 License
 
-Proprietary Software. All rights reserved &copy; 2026 **VidyaMaxx Team**.
+Proprietary Software. All rights reserved &copy; 2026 **VidyaFloww Team**.
 

@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/types — Fee & Financial Domain Types
+ * @vidyafloww/types — Fee & Financial Domain Types
  */
 
 import type { Auditable, UUID } from '../common';

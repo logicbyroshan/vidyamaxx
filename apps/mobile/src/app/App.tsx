@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 export default function App(): React.JSX.Element {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>VidyaMaxx</Text>
+      <Text style={styles.title}>VidyaFloww</Text>
       <Text style={styles.subtitle}>Enterprise School Management Platform</Text>
       <Text style={styles.note}>📱 Mobile scaffold ready for development.</Text>
       <StatusBar style="auto" />

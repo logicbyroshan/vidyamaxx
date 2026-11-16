@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Command } from 'cmdk';
 import { motion, AnimatePresence } from 'framer-motion';
-import { VFBadge } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
+import { VFBadge } from '@vidyafloww/ui';
+import { MODULE_REGISTRY } from '@vidyafloww/constants';
 import {
   Search,
   LayoutDashboard,

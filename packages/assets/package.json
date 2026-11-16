@@ -1,7 +1,7 @@
 {
-  "name": "@vidyamaxx/assets",
+  "name": "@vidyafloww/assets",
   "version": "0.1.0",
-  "description": "VidyaMaxx shared static assets",
+  "description": "VidyaFloww shared static assets",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

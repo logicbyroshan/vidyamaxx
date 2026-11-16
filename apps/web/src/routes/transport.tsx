@@ -6,7 +6,7 @@ import {
   VFButton,
   VFCard,
   VFDialog,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ExternalLink,
   Bus,
@@ -51,7 +51,7 @@ const ACTIVE_FLEET: MapBusRoute[] = [
       { name: 'Ashok Vihar Block C', time: '07:45 AM', count: 12, completed: true, lat: 28.6980, lng: 77.1820 },
       { name: 'Model Town Metro Gate #2', time: '08:05 AM', count: 16, completed: true, lat: 28.7030, lng: 77.1940 },
       { name: 'GTB Nagar Crossing', time: '08:15 AM', count: 10, completed: false, lat: 28.6990, lng: 77.2060 },
-      { name: 'Main VidyaMaxx Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
   {
@@ -78,7 +78,7 @@ const ACTIVE_FLEET: MapBusRoute[] = [
       { name: 'Civil Lines Enclave', time: '07:40 AM', count: 14, completed: true, lat: 28.6810, lng: 77.2250 },
       { name: 'St. Stephen Crossing', time: '08:00 AM', count: 12, completed: true, lat: 28.6860, lng: 77.2180 },
       { name: 'Kamla Nagar Market', time: '08:18 AM', count: 8, completed: false, lat: 28.6890, lng: 77.2020 },
-      { name: 'Main VidyaMaxx Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
   {
@@ -105,7 +105,7 @@ const ACTIVE_FLEET: MapBusRoute[] = [
       { name: 'Hauz Khas Enclave', time: '07:35 AM', count: 18, completed: true, lat: 28.6650, lng: 77.1900 },
       { name: 'Green Park Market Stop #4', time: '07:55 AM', count: 15, completed: false, lat: 28.6730, lng: 77.1980 },
       { name: 'AIIMS Flyover Circle', time: '08:12 AM', count: 8, completed: false, lat: 28.6820, lng: 77.2030 },
-      { name: 'Main VidyaMaxx Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
   {
@@ -132,7 +132,7 @@ const ACTIVE_FLEET: MapBusRoute[] = [
       { name: 'Delhi Cantt Station Road', time: '07:30 AM', count: 15, completed: true, lat: 28.6800, lng: 77.1700 },
       { name: 'Defence Officers Colony', time: '07:50 AM', count: 14, completed: true, lat: 28.6850, lng: 77.1820 },
       { name: 'Dhaula Kuan Junction', time: '08:10 AM', count: 7, completed: false, lat: 28.6890, lng: 77.1950 },
-      { name: 'Main VidyaMaxx Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
 ];
