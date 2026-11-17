@@ -28,7 +28,7 @@ export function VFEmptyState({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center text-center p-8 md:p-12 rounded-lg border border-dashed border-border bg-card/30 max-w-md mx-auto my-4 animate-scale-in",
+        "flex flex-col items-center justify-center text-center p-8 md:p-12 rounded-[4px] border border-dashed border-border bg-card/30 max-w-md mx-auto my-4 animate-scale-in",
         className
       )}
       {...props}

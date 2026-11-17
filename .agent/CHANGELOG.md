@@ -4,7 +4,14 @@ Concise record of verified milestones and structural changes reconstructed from 
 
 ---
 
-## [Unreleased / Active] — September 2026
+## [Unreleased / Active] — November 2026
+
+### Frontend Architecture Consolidation & Production Readiness Audit (2026-11-17)
+* **Design System & Sharp Border Radius Finalization**: Completely eradicated all legacy `rounded-lg` instances across `admissions.tsx`, `attendance.tsx`, `portal.tsx`, `students.tsx`, `teachers.tsx`, `timetable.tsx`, `AppShell.tsx`, `Header.tsx`, `VFEmptyState.tsx`, `VFLoading.tsx`, and `App.tsx` (landing), achieving 100% monorepo compliance with the crisp `rounded-[4px]` geometric standard.
+* **ESLint Error Resolution & Code Quality**: Resolved unused assignment errors in `fees.tsx`, unused arguments in `VFCard.tsx`, Fast Refresh export warnings in `LiveTransportMap.tsx`, and hook dependency warning in `AppShell.tsx`. Full monorepo `turbo run lint` now completes with 0 errors across all 15 packages.
+* **Canonical Naming & CI Pipeline Synchronization**: Fixed legacy package filter `@vidyamaxx/web` and database credentials in `.github/workflows/ci.yml` to canonical `@vidyafloww/web` and `vidyafloww_test`.
+* **Constants & Route Synchronization**: Updated `ROUTES` constant registry in `@vidyafloww/constants` to match the 37 active TanStack Router file routes.
+* **Optimized Vendor Bundle Chunking**: Enhanced Rollup manual chunking in `apps/web/vite.config.ts` into isolated vendor chunks (`motion-vendor`, `icons-vendor`, `utils-vendor`, `router-vendor`, `query-vendor`), reducing index chunk size by ~300 KB.
 
 ### Component Architecture, Deep Consistency & Unified Toolbar (PR #31 — 2026-09-14)
 * **Introduced `VFPageToolbar` in `@vidyafloww/ui`**: Added reusable top header toolbar primitive encapsulating the standard `#141414` container pattern (`p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs`), eliminating repeated markup across 10+ modules (`teaching.tsx`, `complaints.tsx`, `design-lab.tsx`, `hostel.tsx`, `transport.tsx`, `elibrary.tsx`, `e-class.tsx`, `hr-manage.tsx`, `security.tsx`, `audit.tsx`, `resources.tsx`, `lms.tsx`, `learning.tsx`).

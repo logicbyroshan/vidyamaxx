@@ -42,7 +42,7 @@ export interface MapBusRoute {
 }
 
 // VidyaFloww Central Campus Landmark Coordinates
-export const CAMPUS_COORDS = {
+const CAMPUS_COORDS = {
   lat: 28.6925,
   lng: 77.2090,
   name: 'VidyaFloww Central Campus',

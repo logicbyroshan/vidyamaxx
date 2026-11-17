@@ -30,17 +30,17 @@ function SmallScreenBlocker() {
       <div className="relative z-10 flex flex-col items-center max-w-md">
         {/* Icon stack */}
         <div className="relative mb-8">
-          <div className="w-20 h-20 rounded-lg bg-card border border-border/80 flex items-center justify-center shadow-lg">
+          <div className="w-20 h-20 rounded-[4px] bg-card border border-border/80 flex items-center justify-center shadow-lg">
             <Monitor className="h-9 w-9 text-primary" />
           </div>
-          <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-md bg-destructive/15 border border-destructive/30 flex items-center justify-center">
+          <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-[4px] bg-destructive/15 border border-destructive/30 flex items-center justify-center">
             <Smartphone className="h-4 w-4 text-destructive" />
           </div>
         </div>
 
         {/* Heading */}
         <div className="mb-2 flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 bg-destructive/10 border border-destructive/25 text-destructive text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-md">
+          <span className="inline-flex items-center gap-1.5 bg-destructive/10 border border-destructive/25 text-destructive text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-[4px]">
             <span className="h-1.5 w-1.5 rounded-full bg-destructive animate-pulse inline-block" />
             Screen Too Small
           </span>
@@ -54,13 +54,13 @@ function SmallScreenBlocker() {
         </p>
 
         {/* Requirement card */}
-        <div className="mt-8 w-full bg-card border border-border/70 rounded-lg overflow-hidden">
+        <div className="mt-8 w-full bg-card border border-border/70 rounded-[4px] overflow-hidden">
           <div className="px-5 py-3 border-b border-border/50 bg-muted/30">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Minimum Requirements</p>
           </div>
           <div className="px-5 py-4 flex items-center gap-4">
             <div className="flex-1 flex items-center gap-3">
-              <div className="h-9 w-9 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+              <div className="h-9 w-9 rounded-[4px] bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                 <Laptop className="h-4 w-4 text-primary" />
               </div>
               <div className="text-left">
@@ -68,14 +68,14 @@ function SmallScreenBlocker() {
                 <p className="text-xs text-muted-foreground">Desktop or large tablet landscape</p>
               </div>
             </div>
-            <div className="shrink-0 px-3 py-1.5 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wide rounded-md">
+            <div className="shrink-0 px-3 py-1.5 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wide rounded-[4px]">
               Required
             </div>
           </div>
         </div>
 
         {/* Mobile app hint */}
-        <div className="mt-4 w-full bg-muted/40 border border-border/50 rounded-lg px-5 py-4 flex items-start gap-3 text-left">
+        <div className="mt-4 w-full bg-muted/40 border border-border/50 rounded-[4px] px-5 py-4 flex items-start gap-3 text-left">
           <Smartphone className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
           <div>
             <p className="text-sm font-semibold text-foreground">Need mobile access?</p>
@@ -88,7 +88,7 @@ function SmallScreenBlocker() {
         {/* CTA */}
         <button
           onClick={() => window.location.reload()}
-          className="mt-6 flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold uppercase tracking-wide px-6 py-2.5 rounded-md transition-all active:scale-95 cursor-pointer"
+          className="mt-6 flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold uppercase tracking-wide px-6 py-2.5 rounded-[4px] transition-all active:scale-95 cursor-pointer"
         >
           Try Again
           <ArrowRight className="h-4 w-4" />
@@ -187,7 +187,7 @@ export function AppShell() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [location.pathname]);
+  }, [location.pathname, addNotification]);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

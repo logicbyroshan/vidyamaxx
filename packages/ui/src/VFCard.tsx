@@ -34,7 +34,7 @@ export function VFCard({
   headerClassName,
   headerBgClassName,
   bodyClassName,
-  topBarClassName,
+  topBarClassName: _topBarClassName,
   accentColor,
   showAmbientGlow = true,
   ...props

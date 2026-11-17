@@ -30,7 +30,7 @@ import {
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   LayoutDashboard,
   UserSquare,
   Users,

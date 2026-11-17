@@ -8,48 +8,58 @@
 
 export const ROUTES = {
   // Auth
-  LOGIN: '/auth/login',
-  LOGOUT: '/auth/logout',
-  FORGOT_PASSWORD: '/auth/forgot-password',
-  RESET_PASSWORD: '/auth/reset-password',
+  LOGIN: '/login',
+  LOGOUT: '/login',
+  FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
 
   // Dashboard
   HOME: '/',
   DASHBOARD: '/dashboard',
 
-  // Students
+  // Core Management
   STUDENTS: '/students',
-  STUDENT_DETAIL: (id: string) => `/students/${id}`,
-  STUDENT_NEW: '/students/new',
-
-  // Admissions
+  STUDENT_DETAIL: (id: string) => `/students?student=${id}`,
   ADMISSIONS: '/admissions',
-  ADMISSIONS_NEW: '/admissions/new',
-
-  // Academics
-  ACADEMICS: '/academics',
-  TIMETABLE: '/timetable',
   ATTENDANCE: '/attendance',
-  EXAMINATIONS: '/examinations',
-  HOMEWORK: '/homework',
-
-  // Teachers / Faculty
+  TIMETABLE: '/timetable',
   TEACHERS: '/teachers',
   STAFF: '/teachers',
 
-  // Finance
+  // Academics
+  ACADEMICS: '/academics',
+  TEACHING: '/teaching',
+  HOMEWORK: '/homework',
+  EXAMINATIONS: '/examinations',
+
+  // Finance & Welfare
   FINANCE: '/fees',
   FEES: '/fees',
+  SCHOLARSHIPS: '/scholarships',
 
-  // Operations
-  NOTICES: '/notices',
-  REPORTS: '/reports',
+  // Operations & Admin
   STATISTICS: '/statistics',
-
-  // Settings
+  NOTICES: '/notices',
+  COMPLAINTS: '/complaints',
+  SURVEYS: '/surveys',
+  REPORTS: '/reports',
+  LICENSE: '/license',
   SETTINGS: '/settings',
-  SETTINGS_ORGANIZATION: '/settings/organization',
-  SETTINGS_USERS: '/settings/users',
+  SECURITY: '/security',
+  AUDIT: '/audit',
+  SHORTCUTS: '/shortcuts',
+
+  // Subsystems & Extensions
+  HR_MANAGE: '/hr-manage',
+  E_CLASS: '/e-class',
+  E_LIBRARY: '/elibrary',
+  TRANSPORT: '/transport',
+  HOSTEL: '/hostel',
+  DESIGN_LAB: '/design-lab',
+  LMS: '/lms',
+  LEARNING: '/learning',
+  RESOURCES: '/resources',
+  PORTAL: '/portal',
 } as const;
 
 export type Route = (typeof ROUTES)[keyof typeof ROUTES];

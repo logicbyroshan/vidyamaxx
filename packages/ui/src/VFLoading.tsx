@@ -14,7 +14,7 @@ export function VFLoadingSkeleton({ className, ...props }: React.HTMLAttributes<
 // Table loading skeleton
 export function VFLoadingTable({ rows = 5, cols = 4, className }: { rows?: number; cols?: number; className?: string }) {
   return (
-    <div className={cn("w-full border border-border rounded-lg bg-card overflow-hidden", className)}>
+    <div className={cn("w-full border border-border rounded-[4px] bg-card overflow-hidden", className)}>
       <div className="flex border-b border-border/80 bg-muted/40 p-4 gap-4">
         {Array.from({ length: cols }).map((_, i) => (
           <VFLoadingSkeleton key={i} className="h-4 flex-1" />
@@ -36,7 +36,7 @@ export function VFLoadingTable({ rows = 5, cols = 4, className }: { rows?: numbe
 // Card loading skeleton
 export function VFLoadingCard({ className }: { className?: string }) {
   return (
-    <div className={cn("p-6 border border-border rounded-lg bg-card space-y-4", className)}>
+    <div className={cn("p-6 border border-border rounded-[4px] bg-card space-y-4", className)}>
       <div className="flex gap-4 items-center">
         <VFLoadingSkeleton className="h-10 w-10 rounded-full" />
         <div className="space-y-2 flex-1">

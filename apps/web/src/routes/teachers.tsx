@@ -1517,7 +1517,7 @@ function StaffPage() {
                   {/* Principal & Academic Council Review */}
                   <div>
                     <div className="px-4 py-3">
-                      <div className="p-3.5 rounded-lg bg-[#141417] border border-[#24242a] space-y-2">
+                      <div className="p-3.5 rounded-[4px] bg-[#141417] border border-[#24242a] space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] uppercase font-bold text-zinc-400 tracking-wide flex items-center gap-1.5">
                             <Quote className="h-3 w-3 text-zinc-300" />
@@ -1659,7 +1659,7 @@ function StaffPage() {
                   <div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-4 py-3">
                       {/* 1. Integrated Digital ID Card Preview */}
-                      <div className="p-3.5 rounded-lg bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-3">
+                      <div className="p-3.5 rounded-[4px] bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-3">
                         <div className="flex items-center justify-between border-b border-[#242428] pb-2">
                           <h4 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
                             <QrCode className="h-4 w-4 text-zinc-400" />
@@ -1749,7 +1749,7 @@ function StaffPage() {
                       </div>
 
                       {/* 2. Official Teacher Registry & Certifications */}
-                      <div className="p-3.5 rounded-lg bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-3">
+                      <div className="p-3.5 rounded-[4px] bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-3">
                         <div className="flex items-center justify-between border-b border-[#242428] pb-2">
                           <h4 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
                             <ShieldCheck className="h-4 w-4 text-zinc-400" />
@@ -1827,7 +1827,7 @@ function StaffPage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                         {/* 1. Experience Certificate */}
-                        <div className="p-3 rounded-lg bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-2.5">
+                        <div className="p-3 rounded-[4px] bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-2.5">
                           <div className="space-y-1">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1.5 text-white font-bold text-xs">
@@ -1854,7 +1854,7 @@ function StaffPage() {
                         </div>
 
                         {/* 2. Service Conduct Certificate */}
-                        <div className="p-3 rounded-lg bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-2.5">
+                        <div className="p-3 rounded-[4px] bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-2.5">
                           <div className="space-y-1">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1.5 text-white font-bold text-xs">
@@ -1881,7 +1881,7 @@ function StaffPage() {
                         </div>
 
                         {/* 3. Bonafide Employment Letter */}
-                        <div className="p-3 rounded-lg bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-2.5">
+                        <div className="p-3 rounded-[4px] bg-[#141417] border border-[#24242a] shadow-xs flex flex-col justify-between space-y-2.5">
                           <div className="space-y-1">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1.5 text-white font-bold text-xs">
@@ -2200,7 +2200,7 @@ function StaffPage() {
           <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-4">
             {addStaffStep === 'personal' && (
               <div className="space-y-4 animate-fade-in">
-                <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] space-y-3">
+                <div className="p-4 rounded-[4px] bg-[#111113] border border-[#242428] space-y-3">
                   <h4 className="text-xs font-black text-white uppercase tracking-wider">
                     Demographic & Personal Identity
                   </h4>
@@ -2273,7 +2273,7 @@ function StaffPage() {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] space-y-3">
+                <div className="p-4 rounded-[4px] bg-[#111113] border border-[#242428] space-y-3">
                   <h4 className="text-xs font-black text-white uppercase tracking-wider">
                     Contact Information
                   </h4>
@@ -2304,7 +2304,7 @@ function StaffPage() {
 
             {addStaffStep === 'academic' && (
               <div className="space-y-4 animate-fade-in">
-                <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] space-y-3">
+                <div className="p-4 rounded-[4px] bg-[#111113] border border-[#242428] space-y-3">
                   <h4 className="text-xs font-black text-white uppercase tracking-wider">
                     Teaching Subject & Qualifications
                   </h4>
@@ -2347,7 +2347,7 @@ function StaffPage() {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] space-y-3">
+                <div className="p-4 rounded-[4px] bg-[#111113] border border-[#242428] space-y-3">
                   <h4 className="text-xs font-black text-white uppercase tracking-wider">
                     Homeroom Mentorship & Assigned Classes
                   </h4>
@@ -2383,7 +2383,7 @@ function StaffPage() {
 
             {addStaffStep === 'payroll' && (
               <div className="space-y-4 animate-fade-in">
-                <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] space-y-3">
+                <div className="p-4 rounded-[4px] bg-[#111113] border border-[#242428] space-y-3">
                   <h4 className="text-xs font-black text-white uppercase tracking-wider">
                     Compensation & Institutional Grade
                   </h4>
@@ -2406,7 +2406,7 @@ function StaffPage() {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] space-y-3">
+                <div className="p-4 rounded-[4px] bg-[#111113] border border-[#242428] space-y-3">
                   <h4 className="text-xs font-black text-white uppercase tracking-wider">
                     Direct Bank Deposit & Provident Fund
                   </h4>
@@ -2448,7 +2448,7 @@ function StaffPage() {
           onClick={() => setIsPhotoModalOpen(false)}
         >
           <div
-            className="relative max-w-sm w-full bg-[#111113] border border-[#27272e] rounded-lg shadow-2xl overflow-hidden animate-scale-in"
+            className="relative max-w-sm w-full bg-[#111113] border border-[#27272e] rounded-[4px] shadow-2xl overflow-hidden animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 bg-[#161619] border-b border-[#242428] flex items-center justify-between">

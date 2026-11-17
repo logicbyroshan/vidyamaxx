@@ -589,7 +589,7 @@ function TimetablePage() {
           ═══════════════════════════════════════════════════════════════════════ */}
       <div className="flex-1 min-h-0 flex flex-col space-y-3 sm:space-y-3.5 lg:space-y-4">
         {/* Action Toolbar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#101010] p-3 rounded-lg border border-[#242424] shadow-xs shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#101010] p-3 rounded-[4px] border border-[#242424] shadow-xs shrink-0">
           <div className="flex items-center gap-2 flex-wrap">
             <VFSelect
               value={selectedClass}
@@ -650,7 +650,7 @@ function TimetablePage() {
         </div>
 
         {/* Sleek Deep Dark Grid with Mathematically Equal Height & Width Distribution */}
-        <div className="flex-1 min-h-0 border border-[#242424] rounded-lg bg-[#0a0a0a] overflow-x-auto overflow-y-hidden no-scrollbar shadow-sm flex flex-col min-w-[900px]">
+        <div className="flex-1 min-h-0 border border-[#242424] rounded-[4px] bg-[#0a0a0a] overflow-x-auto overflow-y-hidden no-scrollbar shadow-sm flex flex-col min-w-[900px]">
           {/* Header Row */}
           <div className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] border-b border-[#242424] bg-[#121212] shrink-0">
             <div className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider border-r border-[#242424] select-none flex items-center justify-center text-center">
@@ -701,7 +701,7 @@ function TimetablePage() {
                     <div key={idx} className="p-1.5 bg-[#0a0a0a] flex flex-col min-h-0 h-full">
                       <div
                         onClick={() => handleOpenSlotEdit(day, idx, slot)}
-                        className="h-full w-full p-2.5 rounded-lg bg-[#141414] border border-[#242424] flex flex-col justify-between space-y-1.5 transition-all group cursor-pointer shadow-xs select-none hover:bg-[#1a1a1a] hover:border-[#383838] hover:shadow-md"
+                        className="h-full w-full p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex flex-col justify-between space-y-1.5 transition-all group cursor-pointer shadow-xs select-none hover:bg-[#1a1a1a] hover:border-[#383838] hover:shadow-md"
                         title={`Click to edit or reassign ${slot.subject} (${slot.teacher})`}
                       >
                         {/* Top Row: Subject & Lab */}
@@ -798,7 +798,7 @@ function TimetablePage() {
         }
       >
         <div className="flex-1 min-h-0 flex flex-col p-4 sm:p-5 space-y-3.5 overflow-hidden">
-          <div className="p-3.5 rounded-lg bg-[#121214] border border-[#27272a] space-y-1 shrink-0">
+          <div className="p-3.5 rounded-[4px] bg-[#121214] border border-[#27272a] space-y-1 shrink-0">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Standard Daily Session Structure
             </h4>
@@ -907,7 +907,7 @@ function TimetablePage() {
       >
         <div className="p-4 sm:p-5 space-y-5">
           {/* Operating Working Days Option */}
-          <div className="p-4 rounded-lg bg-[#121212] border border-[#242424] space-y-3">
+          <div className="p-4 rounded-[4px] bg-[#121212] border border-[#242424] space-y-3">
             <div>
               <h4 className="text-xs font-bold text-white uppercase tracking-wider">
                 Academic School Operating Week
@@ -955,7 +955,7 @@ function TimetablePage() {
           </div>
 
           {/* Class Teacher & Section Settings */}
-          <div className="p-4 rounded-lg bg-[#121212] border border-[#242424] space-y-3">
+          <div className="p-4 rounded-[4px] bg-[#121212] border border-[#242424] space-y-3">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Class Section & Mentor Assignment
             </h4>
@@ -1291,7 +1291,7 @@ function TimetablePage() {
                 {substitutionsList.map((sub) => (
                   <div
                     key={sub.id}
-                    className="p-3.5 rounded-lg bg-[#121214] border border-[#27272a] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                    className="p-3.5 rounded-[4px] bg-[#121214] border border-[#27272a] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                   >
                     <div className="space-y-1 min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -1384,7 +1384,7 @@ function TimetablePage() {
                   return (
                     <div
                       key={f.id}
-                      className="p-3.5 rounded-lg bg-[#121214] border border-[#27272a] shadow-xs space-y-2"
+                      className="p-3.5 rounded-[4px] bg-[#121214] border border-[#27272a] shadow-xs space-y-2"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div>
@@ -1437,7 +1437,7 @@ function TimetablePage() {
                 {roomList.map((r) => (
                   <div
                     key={r.id}
-                    className="p-3.5 rounded-lg bg-[#121214] border border-[#27272a] shadow-xs flex items-center justify-between gap-3"
+                    className="p-3.5 rounded-[4px] bg-[#121214] border border-[#27272a] shadow-xs flex items-center justify-between gap-3"
                   >
                     <div className="space-y-0.5 min-w-0">
                       <p className="text-sm font-bold text-white">{r.name}</p>

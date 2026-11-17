@@ -1818,7 +1818,7 @@ function AdmissionsPage() {
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-lg border border-border/80 bg-muted/30 space-y-3">
+                    <div className="p-3.5 rounded-[4px] border border-border/80 bg-muted/30 space-y-3">
                       <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide block">
                         Subject-Wise Entrance Marks Breakdown (0 to 100)
                       </span>
@@ -1927,7 +1927,7 @@ function AdmissionsPage() {
                             key={item.key}
                             onClick={() => setNewApplicantForm({ ...newApplicantForm, [item.key]: !checked })}
                             className={cn(
-                              "p-3 rounded-lg border transition-all cursor-pointer flex items-start gap-3 select-none",
+                              "p-3 rounded-[4px] border transition-all cursor-pointer flex items-start gap-3 select-none",
                               checked
                                 ? "bg-emerald-500/10 border-emerald-500/30 text-foreground"
                                 : "bg-card border-border/80 text-muted-foreground hover:bg-muted/40"
@@ -2885,7 +2885,7 @@ function AdmissionsPage() {
                 <span className="font-bold">{offerApplicant.appliedGrade}</span> ({offerApplicant.streamPreference}) for Academic Session {activeSession}.
               </p>
 
-              <div className="p-4 rounded-lg bg-muted/40 font-sans text-xs space-y-1.5 border border-border/60">
+              <div className="p-4 rounded-[4px] bg-muted/40 font-sans text-xs space-y-1.5 border border-border/60">
                 <p className="font-bold text-foreground">Admission Details Summary:</p>
                 <div className="grid grid-cols-2 gap-2 text-muted-foreground pt-1">
                   <span>Candidate Name: <strong className="text-foreground">{offerApplicant.name}</strong></span>
@@ -2959,7 +2959,7 @@ function AdmissionsPage() {
         }
       >
         <div className="space-y-5 pt-1">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-lg bg-muted/40 border border-border/80 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-[4px] bg-muted/40 border border-border/80 text-xs">
             <div className="flex items-center gap-2.5">
               <div className="h-8 w-8 rounded-md bg-violet-500/15 text-violet-400 flex items-center justify-center font-black shrink-0 border border-violet-500/30">
                 <GraduationCap className="h-4 w-4" />
@@ -3002,7 +3002,7 @@ function AdmissionsPage() {
               <div
                 onClick={() => setExportFormat('bundle')}
                 className={cn(
-                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  "p-4 rounded-[4px] border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'bundle'
                     ? "bg-blue-500/10 border-blue-500/80 shadow-md ring-1 ring-blue-500/40"
                     : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
@@ -3040,7 +3040,7 @@ function AdmissionsPage() {
               <div
                 onClick={() => setExportFormat('xlsx')}
                 className={cn(
-                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  "p-4 rounded-[4px] border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'xlsx'
                     ? "bg-emerald-500/10 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/40"
                     : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
@@ -3078,7 +3078,7 @@ function AdmissionsPage() {
               <div
                 onClick={() => setExportFormat('zip')}
                 className={cn(
-                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  "p-4 rounded-[4px] border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'zip'
                     ? "bg-purple-500/10 border-purple-500/80 shadow-md ring-1 ring-purple-500/40"
                     : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
@@ -3116,7 +3116,7 @@ function AdmissionsPage() {
           </div>
 
           {(exportFormat === 'zip' || exportFormat === 'bundle') && (
-            <div className="p-4 rounded-lg bg-[#1a1a24] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="p-4 rounded-[4px] bg-[#1a1a24] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <span className="h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-black">2</span>
@@ -3226,7 +3226,7 @@ function AdmissionsPage() {
           )}
 
           {isExporting && (
-            <div className="p-4 rounded-lg bg-primary/10 border border-primary/30 flex items-center gap-3.5 animate-pulse">
+            <div className="p-4 rounded-[4px] bg-primary/10 border border-primary/30 flex items-center gap-3.5 animate-pulse">
               <Loader2 className="h-5 w-5 text-primary animate-spin shrink-0" />
               <div>
                 <p className="text-sm font-black text-primary">{exportProgressText}</p>

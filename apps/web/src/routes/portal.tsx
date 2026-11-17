@@ -287,7 +287,7 @@ function ParentStudentPortalPage() {
               <p className="text-xs text-primary font-mono">{activeChild.classSection} · Roll No {activeChild.rollNo}</p>
               <p className="text-[11px] text-muted-foreground mt-0.5">Adm No: ADM-2026-00421 · House: Blue</p>
             </div>
-            <div className="p-2 bg-white rounded-lg inline-block shadow-xs border border-border">
+            <div className="p-2 bg-white rounded-[4px] inline-block shadow-xs border border-border">
               <QrCode className="h-16 w-16 text-black mx-auto" />
             </div>
           </div>
