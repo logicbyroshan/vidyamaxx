@@ -1089,7 +1089,7 @@ function AttendancePage() {
         {activeStudent && (
           <div className="space-y-4">
             {/* 1. Profile Header with Photo, Today's Status & Direct WhatsApp Action */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-lg bg-card border border-border shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-[4px] bg-card border border-border shadow-xs">
               <div className="flex items-center gap-4">
                 <div className="h-20 w-16 rounded-md border border-border/90 shadow-xs overflow-hidden bg-muted shrink-0 flex items-center justify-center">
                   {activeStudent.photoUrl ? (
@@ -1178,7 +1178,7 @@ function AttendancePage() {
 
             {/* 2. 4 Top Metric KPI Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <div className="p-3.5 rounded-lg bg-muted/40 border border-border">
+              <div className="p-3.5 rounded-[4px] bg-muted/40 border border-border">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                   Attendance Rate
                 </span>
@@ -1189,7 +1189,7 @@ function AttendancePage() {
                   {activeStudent.stats.presentDays} of 96 Days Present
                 </span>
               </div>
-              <div className="p-3.5 rounded-lg bg-muted/40 border border-border">
+              <div className="p-3.5 rounded-[4px] bg-muted/40 border border-border">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                   Total Absences
                 </span>
@@ -1203,7 +1203,7 @@ function AttendancePage() {
                 </span>
                 <span className="text-[10px] text-muted-foreground mt-0.5 block font-medium">This Session</span>
               </div>
-              <div className="p-3.5 rounded-lg bg-muted/40 border border-border">
+              <div className="p-3.5 rounded-[4px] bg-muted/40 border border-border">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                   Late Arrivals
                 </span>
@@ -1212,7 +1212,7 @@ function AttendancePage() {
                 </span>
                 <span className="text-[10px] text-muted-foreground mt-0.5 block font-medium">After 08:15 AM</span>
               </div>
-              <div className="p-3.5 rounded-lg bg-muted/40 border border-border">
+              <div className="p-3.5 rounded-[4px] bg-muted/40 border border-border">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                   Approved Leaves
                 </span>
@@ -1343,7 +1343,7 @@ function AttendancePage() {
                   {activeStudent.monthlyHeatmap.map((month) => (
                     <div
                       key={month.monthName}
-                      className="rounded-lg bg-card border border-border shadow-xs flex flex-col justify-between overflow-hidden"
+                      className="rounded-[4px] bg-card border border-border shadow-xs flex flex-col justify-between overflow-hidden"
                     >
                       {/* Full-Width Month Header */}
                       <div className="px-4 py-3 bg-muted/20 border-b border-border flex items-center justify-between">
@@ -1535,7 +1535,7 @@ function AttendancePage() {
                 )}
 
                 {activeStudent.leaves.length === 0 ? (
-                  <div className="p-8 rounded-lg bg-card border border-border text-center space-y-2">
+                  <div className="p-8 rounded-[4px] bg-card border border-border text-center space-y-2">
                     <FileCheck className="h-8 w-8 text-muted-foreground mx-auto opacity-50" />
                     <p className="text-sm font-bold text-foreground">No Leave Slips on Record</p>
                     <p className="text-xs text-muted-foreground">
@@ -1557,7 +1557,7 @@ function AttendancePage() {
                     {activeStudent.leaves.map((leave) => (
                       <div
                         key={leave.id}
-                        className="p-4 rounded-lg bg-card border border-border shadow-xs flex flex-col md:flex-row md:items-start justify-between gap-4"
+                        className="p-4 rounded-[4px] bg-card border border-border shadow-xs flex flex-col md:flex-row md:items-start justify-between gap-4"
                       >
                         <div className="flex items-start gap-3.5 min-w-0">
                           {leave.documentPhotoUrl ? (
@@ -1685,7 +1685,7 @@ function AttendancePage() {
           onClick={() => setPreviewingProof(null)}
         >
           <div
-            className="relative max-w-2xl w-full bg-card border border-border rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-scale-in"
+            className="relative max-w-2xl w-full bg-card border border-border rounded-[4px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}

@@ -2087,7 +2087,7 @@ function StudentsPage() {
                     {/* Faculty Remark Card */}
                     <div>
                       <div className="px-4 py-3">
-                        <div className="p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs space-y-2">
+                        <div className="p-3.5 rounded-[4px] bg-card border border-border/80 shadow-2xs space-y-2">
                           <div className="flex items-center justify-between">
                             <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wide flex items-center gap-1.5">
                               <Quote className="h-3 w-3 text-primary" />
@@ -2139,7 +2139,7 @@ function StudentsPage() {
                     <div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-4 py-3">
                         {/* 1. Student ID Badge Preview Card */}
-                        <div className="p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-3">
+                        <div className="p-3.5 rounded-[4px] bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-3">
                           <div className="flex items-center justify-between border-b border-border/60 pb-2">
                             <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
                               <QrCode className="h-4 w-4 text-muted-foreground" />
@@ -2223,7 +2223,7 @@ function StudentsPage() {
                         </div>
 
                         {/* 2. Official CBSE Board & LOC Registry */}
-                        <div className="p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-3">
+                        <div className="p-3.5 rounded-[4px] bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-3">
                           <div className="flex items-center justify-between border-b border-border/60 pb-2">
                             <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
                               <Send className="h-4 w-4 text-muted-foreground" />
@@ -2305,7 +2305,7 @@ function StudentsPage() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                           {/* 1. Transfer Certificate */}
-                          <div className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
+                          <div className="p-3 rounded-[4px] bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
                             <div className="space-y-1">
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
@@ -2332,7 +2332,7 @@ function StudentsPage() {
                           </div>
 
                           {/* 2. Character Certificate */}
-                          <div className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
+                          <div className="p-3 rounded-[4px] bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
                             <div className="space-y-1">
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
@@ -2359,7 +2359,7 @@ function StudentsPage() {
                           </div>
 
                           {/* 3. Bonafide Certificate */}
-                          <div className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
+                          <div className="p-3 rounded-[4px] bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
                             <div className="space-y-1">
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
@@ -2658,7 +2658,7 @@ function StudentsPage() {
                           {feeData.recentReceipts.map((tx, idx) => (
                             <div
                               key={idx}
-                              className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex items-center justify-between gap-3 flex-wrap text-xs hover:border-zinc-600 transition-colors"
+                              className="p-3 rounded-[4px] bg-card border border-border/80 shadow-2xs flex items-center justify-between gap-3 flex-wrap text-xs hover:border-zinc-600 transition-colors"
                             >
                               <div className="min-w-0">
                                 <span className="font-bold text-foreground block">{tx.period}</span>
@@ -3194,7 +3194,7 @@ function StudentsPage() {
         }
       >
         <div className="space-y-5 pt-1">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-lg bg-muted/40 border border-border/80 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-[4px] bg-muted/40 border border-border/80 text-xs">
             <div className="flex items-center gap-2.5">
               <div className="h-8 w-8 rounded-md bg-blue-500/15 text-blue-400 flex items-center justify-center font-black shrink-0 border border-blue-500/30">
                 <GraduationCap className="h-4 w-4" />
@@ -3239,7 +3239,7 @@ function StudentsPage() {
               <div
                 onClick={() => setExportFormat('bundle')}
                 className={cn(
-                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  "p-4 rounded-[4px] border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'bundle'
                     ? "bg-blue-500/10 border-blue-500/80 shadow-md ring-1 ring-blue-500/40"
                     : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
@@ -3280,7 +3280,7 @@ function StudentsPage() {
               <div
                 onClick={() => setExportFormat('xlsx')}
                 className={cn(
-                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  "p-4 rounded-[4px] border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'xlsx'
                     ? "bg-emerald-500/10 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/40"
                     : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
@@ -3321,7 +3321,7 @@ function StudentsPage() {
               <div
                 onClick={() => setExportFormat('zip')}
                 className={cn(
-                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  "p-4 rounded-[4px] border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'zip'
                     ? "bg-purple-500/10 border-purple-500/80 shadow-md ring-1 ring-purple-500/40"
                     : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
@@ -3362,7 +3362,7 @@ function StudentsPage() {
           </div>
 
           {(exportFormat === 'zip' || exportFormat === 'bundle') && (
-            <div className="p-4 rounded-lg bg-[#1a1a24] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="p-4 rounded-[4px] bg-[#1a1a24] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <span className="h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-black">2</span>
@@ -3498,7 +3498,7 @@ function StudentsPage() {
           )}
 
           {isExporting && (
-            <div className="p-4 rounded-lg bg-primary/10 border border-primary/30 flex items-center gap-3.5 animate-pulse">
+            <div className="p-4 rounded-[4px] bg-primary/10 border border-primary/30 flex items-center gap-3.5 animate-pulse">
               <Loader2 className="h-5 w-5 text-primary animate-spin shrink-0" />
               <div>
                 <p className="text-sm font-black text-primary">{exportProgressText}</p>
@@ -3524,7 +3524,7 @@ function StudentsPage() {
       >
         <div className="space-y-5 py-1">
           {/* Add New Custom Field Box */}
-          <div className="p-4 rounded-lg bg-muted/40 border border-border/80 space-y-3">
+          <div className="p-4 rounded-[4px] bg-muted/40 border border-border/80 space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold text-foreground">
               <Plus className="h-4 w-4 text-primary" />
               <span>Add New Custom Field</span>

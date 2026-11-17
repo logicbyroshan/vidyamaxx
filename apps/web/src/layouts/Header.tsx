@@ -137,7 +137,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
 
           {/* Custom Animated Glassmorphic Dropdown Menu */}
           {isSessionMenuOpen && (
-            <div className="absolute left-0 mt-2 w-64 rounded-lg border border-border bg-[#0e0e0e] shadow-2xl p-1.5 z-50 animate-scale-in space-y-1">
+            <div className="absolute left-0 mt-2 w-64 rounded-[4px] border border-border bg-[#0e0e0e] shadow-2xl p-1.5 z-50 animate-scale-in space-y-1">
               <div className="px-2.5 py-1.5 border-b border-border/60 mb-1">
                 <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
                   {isHindi ? 'एकेडमिक सेशन सेलेक्ट करें' : 'Select Academic Session'}

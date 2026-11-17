@@ -353,22 +353,22 @@ export default function LandingApp() {
 
               {/* Mockup KPIs */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                <div className="p-3 rounded-lg bg-[#141414] border border-[#222222]">
+                <div className="p-3 rounded-[4px] bg-[#141414] border border-[#222222]">
                   <p className="text-[10px] uppercase font-bold text-zinc-500">Enrolled Pupils</p>
                   <p className="text-xl sm:text-2xl font-black text-white mt-1">2,451</p>
                   <p className="text-[10px] text-emerald-400 font-semibold mt-1">↑ +12 this month</p>
                 </div>
-                <div className="p-3 rounded-lg bg-[#141414] border border-[#222222]">
+                <div className="p-3 rounded-[4px] bg-[#141414] border border-[#222222]">
                   <p className="text-[10px] uppercase font-bold text-zinc-500">Faculty Coverage</p>
                   <p className="text-xl sm:text-2xl font-black text-white mt-1">98.2%</p>
                   <p className="text-[10px] text-emerald-400 font-semibold mt-1">Optimal Coverage</p>
                 </div>
-                <div className="p-3 rounded-lg bg-[#141414] border border-[#222222]">
+                <div className="p-3 rounded-[4px] bg-[#141414] border border-[#222222]">
                   <p className="text-[10px] uppercase font-bold text-zinc-500">Net Attendance</p>
                   <p className="text-xl sm:text-2xl font-black text-white mt-1">94.5%</p>
                   <p className="text-[10px] text-emerald-400 font-semibold mt-1">↑ +1.2% vs yesterday</p>
                 </div>
-                <div className="p-3 rounded-lg bg-[#141414] border border-[#222222]">
+                <div className="p-3 rounded-[4px] bg-[#141414] border border-[#222222]">
                   <p className="text-[10px] uppercase font-bold text-zinc-500">Admissions Pipeline</p>
                   <p className="text-xl sm:text-2xl font-black text-white mt-1">28 Verified</p>
                   <p className="text-[10px] text-primary font-semibold mt-1">18 Auto-Verified</p>
@@ -378,7 +378,7 @@ export default function LandingApp() {
               {/* Mockup Modules Split */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 {/* Left: Faculty Proxy Widget */}
-                <div className="p-3.5 rounded-lg bg-[#141414] border border-[#222222] space-y-3">
+                <div className="p-3.5 rounded-[4px] bg-[#141414] border border-[#222222] space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-white flex items-center gap-1.5">
                       <Clock className="h-3.5 w-3.5 text-amber-400" />
@@ -402,7 +402,7 @@ export default function LandingApp() {
                 </div>
 
                 {/* Right: Quick Actions Matrix */}
-                <div className="p-3.5 rounded-lg bg-[#141414] border border-[#222222] space-y-3">
+                <div className="p-3.5 rounded-[4px] bg-[#141414] border border-[#222222] space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-white flex items-center gap-1.5">
                       <Layers className="h-3.5 w-3.5 text-primary" />
@@ -564,7 +564,7 @@ export default function LandingApp() {
             </div>
 
             {/* Metrics & Mini-Dashboard */}
-            <div className="lg:col-span-5 space-y-4 rounded-lg bg-[#141414] border border-[#242424] p-5 shadow-lg">
+            <div className="lg:col-span-5 space-y-4 rounded-[4px] bg-[#141414] border border-[#242424] p-5 shadow-lg">
               <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                 Performance Telemetry
               </span>
@@ -890,7 +890,7 @@ export default function LandingApp() {
             return (
               <div
                 key={idx}
-                className="rounded-lg bg-[#0e0e0e] border border-[#222222] overflow-hidden transition-colors"
+                className="rounded-[4px] bg-[#0e0e0e] border border-[#222222] overflow-hidden transition-colors"
               >
                 <button
                   type="button"

@@ -620,7 +620,7 @@ function FeesPage() {
       finalPayerRelation = customPayerRelation || 'Other Relative';
     }
 
-    let referenceNo = '';
+    let referenceNo: string;
     if (selectedMode === 'Cash at Counter') {
       referenceNo = `CASH-REC #${Math.floor(1000 + Math.random() * 9000)}`;
     } else if (selectedMode === 'Cheque / DD') {
@@ -637,7 +637,7 @@ function FeesPage() {
     const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
     const dateStr = now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
 
-    let settledPeriodLabel = '';
+    let settledPeriodLabel: string;
     if (settlementOption === 'annual_full') {
       settledPeriodLabel = 'Full Annual Tuition Settled';
     } else if (selectedMonthsToPay.length > 0) {
