@@ -1,5 +1,16 @@
 import * as React from 'react';
-import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, Clock, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen, Languages, Sparkles } from 'lucide-react';
+import {
+  Search,
+  Bell,
+  Calendar,
+  ChevronDown,
+  Check,
+  LayoutGrid,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Languages,
+  Sparkles,
+} from 'lucide-react';
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -13,7 +24,6 @@ interface HeaderProps {
 export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const {
     notifications,
-    schoolProfile,
     activeSession,
     setActiveSession,
     academicSessions,
@@ -34,21 +44,6 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const { location } = useRouterState();
   const isOnDashboard = location.pathname === '/';
 
-  // Universal Live Date & Time Clock
-  const [currentDateTime, setCurrentDateTime] = React.useState(() => new Date());
-  React.useEffect(() => {
-    const timer = setInterval(() => setCurrentDateTime(new Date()), 10000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const { dateFormatted, timeFormatted, dayName } = React.useMemo(() => {
-    const locale = isHindi ? 'hi-IN' : 'en-US';
-    const day = currentDateTime.toLocaleDateString(locale, { weekday: 'short' });
-    const date = currentDateTime.toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' });
-    const time = currentDateTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-    return { dayName: day, dateFormatted: date, timeFormatted: time };
-  }, [currentDateTime, isHindi]);
-
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (sessionMenuRef.current && !sessionMenuRef.current.contains(event.target as Node)) {
@@ -60,44 +55,6 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isSessionMenuOpen]);
-
-  const getLogoTheme = () => {
-    switch (schoolProfile.logoPreset) {
-      case 'shield':
-        return {
-          badge: 'bg-blue-950/30 border-blue-500/35 hover:border-blue-500/55 shadow-[0_0_10px_rgba(59,130,246,0.12)]',
-          iconContainer: 'bg-blue-500/20 border-blue-500/40 text-blue-400',
-          icon: <Shield className="h-4 w-4 text-blue-400 shrink-0" />,
-        };
-      case 'graduation':
-        return {
-          badge: 'bg-purple-950/30 border-purple-500/35 hover:border-purple-500/55 shadow-[0_0_10px_rgba(168,85,247,0.12)]',
-          iconContainer: 'bg-purple-500/20 border-purple-500/40 text-purple-400',
-          icon: <GraduationCap className="h-4 w-4 text-purple-400 shrink-0" />,
-        };
-      case 'award':
-        return {
-          badge: 'bg-amber-950/30 border-amber-500/35 hover:border-amber-500/55 shadow-[0_0_10px_rgba(245,158,11,0.12)]',
-          iconContainer: 'bg-amber-500/20 border-amber-500/40 text-amber-400',
-          icon: <Award className="h-4 w-4 text-amber-400 shrink-0" />,
-        };
-      case 'book':
-        return {
-          badge: 'bg-emerald-950/30 border-emerald-500/35 hover:border-emerald-500/55 shadow-[0_0_10px_rgba(16,185,129,0.12)]',
-          iconContainer: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400',
-          icon: <BookOpen className="h-4 w-4 text-emerald-400 shrink-0" />,
-        };
-      case 'building':
-      default:
-        return {
-          badge: 'bg-orange-950/30 border-orange-500/35 hover:border-orange-500/55 shadow-[0_0_10px_rgba(249,115,22,0.12)]',
-          iconContainer: 'bg-orange-500/20 border-orange-500/40 text-orange-400',
-          icon: <Building2 className="h-4 w-4 text-orange-400 shrink-0" />,
-        };
-    }
-  };
-
-  const logoTheme = getLogoTheme();
 
   return (
     <header className="h-[64px] border-b border-border bg-black flex items-center justify-between px-4 sticky top-0 z-20 shrink-0 select-none">
@@ -263,46 +220,6 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-destructive rounded-full" />
           )}
         </button>
-
-        {/* Universal Live Date & Time Indicator */}
-        <div className="hidden md:flex items-center justify-between gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] border border-border shadow-xs select-none min-w-[230px]" title="Universal Academic System Date & Time">
-          <div className="flex items-center gap-1.5 text-xs text-foreground font-semibold">
-            <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
-            <span className="font-bold text-foreground">{dayName}, {dateFormatted}</span>
-          </div>
-          <span className="h-3.5 w-[1px] bg-border shrink-0" />
-          <div className="flex items-center gap-1 font-mono text-[11px] font-bold text-zinc-300 bg-[#141414] px-1.5 py-0.5 rounded border border-[#242424]">
-            <Clock className="h-3 w-3 text-muted-foreground shrink-0" />
-            <span>{timeFormatted}</span>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="h-5 w-[1px] bg-border mx-0.5 hidden sm:block" />
-
-        {/* Dynamic Colorful School Logo & Name Badge on Right */}
-        <div className={cn(
-          "flex items-center gap-2 px-2.5 rounded-md border h-9 transition-all shadow-xs",
-          logoTheme.badge
-        )}>
-          <div className={cn(
-            "h-6 w-6 rounded flex items-center justify-center shrink-0 overflow-hidden border",
-            logoTheme.iconContainer
-          )}>
-            {schoolProfile.customLogoUrl ? (
-              <img
-                src={schoolProfile.customLogoUrl}
-                alt={schoolProfile.name}
-                className="h-full w-full object-contain"
-              />
-            ) : (
-              logoTheme.icon
-            )}
-          </div>
-          <span className="text-xs sm:text-sm font-extrabold text-foreground tracking-tight max-w-[160px] truncate" title={schoolProfile.name}>
-            {schoolProfile.name}
-          </span>
-        </div>
       </div>
     </header>
   );

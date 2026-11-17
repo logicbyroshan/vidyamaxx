@@ -48,19 +48,16 @@ export function Preloader({ onDone }: { onDone: () => void }) {
         <div className="relative flex items-center justify-center">
           <img
             src="/logo.png"
-            alt="VidyaFloww Logo"
+            alt="VidyaFlow Logo"
             className="h-16 w-16 object-contain drop-shadow-[0_0_20px_rgba(234,88,12,0.35)]"
           />
         </div>
 
         {/* Brand name */}
-        <div className="text-center space-y-1">
+        <div className="text-center">
           <h1 className="text-3xl font-black tracking-tight text-white">
-            Vidya<span className="text-primary">Maxx</span>
+            Vidya<span className="text-primary">Flow</span>
           </h1>
-          <p className="text-xs text-zinc-400 font-semibold tracking-widest uppercase font-mono">
-            School Management Platform
-          </p>
         </div>
 
         {/* Minimal Progress Line */}

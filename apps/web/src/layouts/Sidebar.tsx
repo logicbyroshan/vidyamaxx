@@ -24,7 +24,6 @@ import {
   Palette,
   School,
   Settings,
-  Sparkles,
   UserCheck,
   UserPlus,
   Users,
@@ -111,7 +110,7 @@ const EXPANDED_LINK_PL = 12;
 const EXPANDED_ICON_GAP = 10;
 
 export function Sidebar() {
-  const { sidebarExpanded, activeSession, addNotification, toggleAIDrawer, isAIDrawerOpen } = useGlobalStore();
+  const { sidebarExpanded, activeSession, addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
   const location = useLocation();
@@ -140,7 +139,7 @@ export function Sidebar() {
       >
         {/* Logo: strictly centered when collapsed at x = 34px */}
         <div className="h-8 w-8 min-w-[32px] shrink-0 flex items-center justify-center overflow-hidden">
-          <img src="/logo.png" alt="VidyaFloww Logo" className="h-8 w-8 object-contain" />
+          <img src="/logo.png" alt="VidyaFlow Logo" className="h-8 w-8 object-contain" />
         </div>
 
         {/* Brand text: CSS-only fade + collapse */}
@@ -154,10 +153,7 @@ export function Sidebar() {
           }}
         >
           <span className="text-[17px] font-black tracking-tight leading-none text-foreground">
-            Vidya<span className="text-primary">Maxx</span>
-          </span>
-          <span className="text-[9px] text-muted-foreground font-bold tracking-wider uppercase mt-[3px]">
-            {t('page.settings')} &amp; Management
+            Vidya<span className="text-primary">Flow</span>
           </span>
         </div>
       </div>
@@ -225,50 +221,6 @@ export function Sidebar() {
             </div>
           </div>
         ))}
-      </div>
- 
-      {/* ── AI COPILOT BUTTON ── prominent entry point above user profile card */}
-      <div className="border-t border-border bg-black shrink-0 px-3.5 py-2">
-        <button
-          type="button"
-          onClick={() => toggleAIDrawer()}
-          title={!sidebarExpanded ? (isHindi ? 'विद्याफ्लो AI (Shift+K)' : 'VidyaFloww AI Copilot (Shift+K)') : undefined}
-          className={cn(
-            'flex items-center h-10 w-full rounded-md border outline-none overflow-hidden cursor-pointer select-none',
-            'transition-colors duration-150',
-            isAIDrawerOpen
-              ? 'bg-[#1c1c1c] border-primary/50 text-primary shadow-xs'
-              : 'border-border/80 bg-[#121212] text-foreground hover:bg-[#181818] hover:border-zinc-700'
-          )}
-          style={{
-            paddingLeft: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : `${COLLAPSED_ICON_PL}px`,
-            paddingRight: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : '11px',
-            transition: 'padding 300ms ease-in-out, background-color 150ms, border-color 150ms',
-          }}
-        >
-          <Sparkles className="shrink-0 h-[18px] w-[18px] text-primary" />
-          <span
-            className="text-sm font-bold text-foreground overflow-hidden font-[inherit] whitespace-nowrap truncate"
-            style={{
-              opacity: sidebarExpanded ? 1 : 0,
-              maxWidth: sidebarExpanded ? '125px' : '0px',
-              marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
-              transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
-            }}
-          >
-            {isHindi ? 'विद्याफ्लो AI' : 'VidyaFloww AI'}
-          </span>
-          <span
-            className="ml-auto text-[10px] font-mono font-bold text-muted-foreground bg-[#1c1c1c] px-1.5 py-0.5 rounded border border-border/60 shrink-0"
-            style={{
-              opacity: sidebarExpanded ? 1 : 0,
-              maxWidth: sidebarExpanded ? '32px' : '0px',
-              transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out',
-            }}
-          >
-            ⇧K
-          </span>
-        </button>
       </div>
 
       {/* ── BOTTOM USER PROFILE CARD ── px-3.5 py-3, perfectly centered in collapsed mode */}

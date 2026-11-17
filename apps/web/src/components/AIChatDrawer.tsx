@@ -244,7 +244,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-base font-black text-foreground tracking-tight leading-none">
-                      Vidya<span className="text-primary">Maxx AI</span> Copilot
+                      Vidya<span className="text-primary">Flow AI</span> Copilot
                     </h2>
                     <VFBadge variant="success" className="text-[10px] px-1.5 py-0">
                       Live
