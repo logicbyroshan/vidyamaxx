@@ -6,6 +6,12 @@ Concise record of verified milestones and structural changes reconstructed from 
 
 ## [Unreleased / Active] — November 2026
 
+### Production Recommendations Implementation: XSS Sanitization & Subsystem Gateway (2026-11-17)
+* **XSS Sanitization & DOMPurify Integration**: Installed `dompurify` in `@vidyafloww/utils` and implemented `sanitizeHtml` with custom whitelist and script-stripping fallbacks. Integrated sanitizer into `notices.tsx` to secure all circular and preview HTML rendering against injection vulnerabilities.
+* **Decoupled Subsystem Gateway & Port Resolution (ADR-012)**: Created `SUBSYSTEMS` registry and `getSubsystemUrl` resolver in `@vidyafloww/constants`. Standardized all 6 decoupled subsystems (`/transport`, `/elibrary`, `/e-class`, `/hostel`, `/hr-manage`, `/design-lab`, and `SubsystemLaunchpad.tsx`) with automatic environment variable override support and browser runtime fallback between localhost dev ports (8010–8015) and production HTTPS subdomains.
+* **Package Exports & Typings**: Unified root and source exports in `@vidyafloww/constants` to cleanly export all routes, roles, status, API endpoints, and subsystem definitions. Added `apps/web/src/vite-env.d.ts` for typed `import.meta.env` access.
+* **Automated Unit Tests**: Added vitest unit tests in `apps/web/src/tests/app.test.ts` covering HTML sanitization and dynamic subsystem URL resolution.
+
 ### Frontend Architecture Consolidation & Production Readiness Audit (2026-11-17)
 * **Design System & Sharp Border Radius Finalization**: Completely eradicated all legacy `rounded-lg` instances across `admissions.tsx`, `attendance.tsx`, `portal.tsx`, `students.tsx`, `teachers.tsx`, `timetable.tsx`, `AppShell.tsx`, `Header.tsx`, `VFEmptyState.tsx`, `VFLoading.tsx`, and `App.tsx` (landing), achieving 100% monorepo compliance with the crisp `rounded-[4px]` geometric standard.
 * **ESLint Error Resolution & Code Quality**: Resolved unused assignment errors in `fees.tsx`, unused arguments in `VFCard.tsx`, Fast Refresh export warnings in `LiveTransportMap.tsx`, and hook dependency warning in `AppShell.tsx`. Full monorepo `turbo run lint` now completes with 0 errors across all 15 packages.

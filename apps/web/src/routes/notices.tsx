@@ -39,6 +39,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { sanitizeHtml } from '@vidyafloww/utils';
 
 export const Route = createFileRoute('/notices')({
   component: NoticesPage,
@@ -1131,7 +1132,7 @@ function NoticesPage() {
                   {noticeContent ? (
                     <div
                       className="text-xs text-muted-foreground leading-relaxed prose prose-invert prose-xs max-w-none pt-0.5"
-                      dangerouslySetInnerHTML={{ __html: noticeContent }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(noticeContent) }}
                     />
                   ) : (
                     <p className="text-xs italic text-zinc-600">
@@ -1169,7 +1170,7 @@ function NoticesPage() {
               {selectedNotice.content.includes('<') ? (
                 <div
                   className="text-foreground leading-relaxed font-medium pt-1 prose prose-invert prose-xs max-w-none"
-                  dangerouslySetInnerHTML={{ __html: selectedNotice.content }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedNotice.content) }}
                 />
               ) : (
                 <p className="text-foreground leading-relaxed font-medium pt-1 whitespace-pre-wrap">

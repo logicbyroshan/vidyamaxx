@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 
 export const Route = createFileRoute('/e-class')({
   component: EClassOverviewPage,
@@ -167,15 +168,16 @@ function EClassOverviewPage() {
   const [activeTab, setActiveTab] = React.useState<'live-studio' | 'recordings'>('live-studio');
   const [playbackSpeed, setPlaybackSpeed] = React.useState<string>('1.0x');
 
-  const standalonePort = '8012';
-  const standaloneUrl = `http://localhost:${standalonePort}`;
+  const standalonePort = SUBSYSTEMS.ECLASS.localPort;
 
   const handleLaunchEClass = (path = '') => {
-    const url = `${standaloneUrl}${path}`;
+    const url = getSubsystemUrl(SUBSYSTEMS.ECLASS, path, import.meta.env.VITE_SUBSYSTEM_ECLASS_URL);
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
       title: isHindi ? 'ई-क्लास स्टूडियो ओपन हो रहा है' : 'Opening E-Class Studio',
-      description: isHindi ? 'पोर्ट 8012 पर लाइव क्लासरूम ब्रॉडकास्ट पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to live classroom broadcast on port 8012.',
+      description: isHindi
+        ? `लाइव क्लासरूम ब्रॉडकास्ट पर रिडायरेक्ट किया जा रहा है: ${url}`
+        : `Redirecting to live classroom broadcast: ${url}`,
       type: 'info',
     });
   };

@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 
 export const Route = createFileRoute('/elibrary')({
   component: ELibraryOverviewPage,
@@ -172,15 +173,16 @@ function ELibraryOverviewPage() {
   const [readerTheme, setReaderTheme] = React.useState<'dark' | 'sepia' | 'light'>('dark');
   const [currentPage, setCurrentPage] = React.useState<number>(42);
 
-  const standalonePort = '8011';
-  const standaloneUrl = `http://localhost:${standalonePort}`;
+  const standalonePort = SUBSYSTEMS.ELIBRARY.localPort;
 
   const handleLaunchELibrary = (path = '') => {
-    const url = `${standaloneUrl}${path}`;
+    const url = getSubsystemUrl(SUBSYSTEMS.ELIBRARY, path, import.meta.env.VITE_SUBSYSTEM_ELIBRARY_URL);
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
       title: isHindi ? 'ई-लाइब्रेरी पोर्टल ओपन हो रहा है' : 'Opening E-Library Portal',
-      description: isHindi ? 'पोर्ट 8011 पर डिजिटल बुक रीडर पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to digital book repository on port 8011.',
+      description: isHindi
+        ? `डिजिटल बुक रीडर पोर्टल पर रिडायरेक्ट किया जा रहा है: ${url}`
+        : `Redirecting to digital book repository: ${url}`,
       type: 'info',
     });
   };
