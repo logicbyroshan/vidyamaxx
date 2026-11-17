@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 import { LiveTransportMap, MapBusRoute } from '../components/transport/LiveTransportMap';
 
 export const Route = createFileRoute('/transport')({
@@ -145,15 +146,14 @@ function TransportOverviewPage() {
   const [selectedRoute, setSelectedRoute] = React.useState<MapBusRoute>(ACTIVE_FLEET[0]);
   const [selectedForModal, setSelectedForModal] = React.useState<MapBusRoute | null>(null);
 
-  const standalonePort = '8010';
-  const standaloneUrl = `http://localhost:${standalonePort}`;
-
   const handleLaunchTransport = (path = '') => {
-    const url = `${standaloneUrl}${path}`;
+    const url = getSubsystemUrl(SUBSYSTEMS.TRANSPORT, path, import.meta.env.VITE_SUBSYSTEM_TRANSPORT_URL);
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
       title: isHindi ? 'ट्रांसपोर्ट पोर्टल ओपन हो रहा है' : 'Opening Transport Portal',
-      description: isHindi ? 'पोर्ट 8010 पर लाइव टेलीमैटिक्स पोर्टल पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to live telematics portal on port 8010.',
+      description: isHindi
+        ? `लाइव टेलीमैटिक्स पोर्टल पर रिडायरेक्ट किया जा रहा है: ${url}`
+        : `Redirecting to live telematics portal: ${url}`,
       type: 'info',
     });
   };

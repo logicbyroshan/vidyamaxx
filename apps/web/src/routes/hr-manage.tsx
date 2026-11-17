@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 
 export const Route = createFileRoute('/hr-manage')({
   component: HRManageOverviewPage,
@@ -118,15 +119,14 @@ function HRManageOverviewPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const standalonePort = '8014';
-  const standaloneUrl = `http://localhost:${standalonePort}`;
-
   const handleLaunchHR = (path = '') => {
-    const url = `${standaloneUrl}${path}`;
+    const url = getSubsystemUrl(SUBSYSTEMS.HR_MANAGE, path, import.meta.env.VITE_SUBSYSTEM_HR_URL);
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
       title: isHindi ? 'एचआर पोर्टल ओपन हो रहा है' : 'Opening HR Portal',
-      description: isHindi ? 'पोर्ट 8014 पर फैकल्टी रोस्टर व पेरोल पोर्टल पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to HR portal on port 8014.',
+      description: isHindi
+        ? `फैकल्टी रोस्टर व पेरोल पोर्टल पर रिडायरेक्ट किया जा रहा है: ${url}`
+        : `Redirecting to HR portal: ${url}`,
       type: 'info',
     });
   };

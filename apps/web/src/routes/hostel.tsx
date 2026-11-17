@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 
 export const Route = createFileRoute('/hostel')({
   component: HostelOverviewPage,
@@ -94,15 +95,16 @@ function HostelOverviewPage() {
   const [selectedFloor, setSelectedFloor] = React.useState<number>(1);
   const [selectedBed, setSelectedBed] = React.useState<RoomBed | null>(null);
 
-  const standalonePort = '8013';
-  const standaloneUrl = `http://localhost:${standalonePort}`;
+  const standalonePort = SUBSYSTEMS.HOSTEL.localPort;
 
   const handleLaunchHostel = (path = '') => {
-    const url = `${standaloneUrl}${path}`;
+    const url = getSubsystemUrl(SUBSYSTEMS.HOSTEL, path, import.meta.env.VITE_SUBSYSTEM_HOSTEL_URL);
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
       title: isHindi ? 'हॉस्टल पोर्टल ओपन हो रहा है' : 'Opening Hostel Portal',
-      description: isHindi ? 'पोर्ट 8013 पर रेसिडेंशियल मैनेजमेंट पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to residential portal on port 8013.',
+      description: isHindi
+        ? `रेसिडेंशियल मैनेजमेंट पोर्टल पर रिडायरेक्ट किया जा रहा है: ${url}`
+        : `Redirecting to residential portal: ${url}`,
       type: 'info',
     });
   };

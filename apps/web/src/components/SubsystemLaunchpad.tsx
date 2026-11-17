@@ -46,22 +46,35 @@ export function SubsystemLaunchpad({
   const { addNotification } = useGlobalStore();
   const [copied, setCopied] = React.useState(false);
 
+  const resolvedUrl = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      const isLocalhost =
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname === '0.0.0.0';
+      if (isLocalhost && backendPort) {
+        return `http://localhost:${backendPort}`;
+      }
+    }
+    return subdomainUrl;
+  }, [subdomainUrl, backendPort]);
+
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(subdomainUrl);
+    navigator.clipboard.writeText(resolvedUrl);
     setCopied(true);
     addNotification({
       title: 'Link Copied',
-      description: `Subdomain ${subdomainUrl} copied to clipboard.`,
+      description: `Portal link ${resolvedUrl} copied to clipboard.`,
       type: 'success',
     });
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleLaunch = () => {
-    window.open(subdomainUrl, '_blank', 'noopener,noreferrer');
+    window.open(resolvedUrl, '_blank', 'noopener,noreferrer');
     addNotification({
       title: 'Launching Subsystem',
-      description: `Redirecting to dedicated portal: ${subdomainUrl}`,
+      description: `Redirecting to dedicated portal: ${resolvedUrl}`,
       type: 'info',
     });
   };
@@ -128,7 +141,7 @@ export function SubsystemLaunchpad({
               <div className="flex items-center gap-2 min-w-0">
                 <div className="h-2 w-2 rounded-full bg-emerald-400 shrink-0" />
                 <span className="font-mono text-xs font-bold text-foreground truncate">
-                  {subdomainUrl}
+                  {resolvedUrl}
                 </span>
               </div>
               <div className="flex items-center gap-2 shrink-0">

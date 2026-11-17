@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 
 export const Route = createFileRoute('/design-lab')({
   component: DesignLabOverviewPage,
@@ -174,15 +175,16 @@ function DesignLabOverviewPage() {
   const [colorTheme, setColorTheme] = React.useState<string>('navy');
   const [selectedForModal, setSelectedForModal] = React.useState<TemplateItem | null>(null);
 
-  const standalonePort = '8015';
-  const standaloneUrl = `http://localhost:${standalonePort}`;
+  const standalonePort = SUBSYSTEMS.DESIGN_LAB.localPort;
 
   const handleLaunchDesignStudio = (path = '') => {
-    const url = `${standaloneUrl}${path}`;
+    const url = getSubsystemUrl(SUBSYSTEMS.DESIGN_LAB, path, import.meta.env.VITE_SUBSYSTEM_DESIGNLAB_URL);
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
       title: isHindi ? 'डिजाइन स्टूडियो ओपन हो रहा है' : 'Opening Design Studio',
-      description: isHindi ? 'पोर्ट 8015 पर डॉक्यूमेंट डिज़ाइनर पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to visual template studio on port 8015.',
+      description: isHindi
+        ? `डॉक्यूमेंट डिज़ाइनर पोर्टल पर रिडायरेक्ट किया जा रहा है: ${url}`
+        : `Redirecting to visual template studio: ${url}`,
       type: 'info',
     });
   };
