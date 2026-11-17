@@ -34,10 +34,8 @@ import {
   FileSpreadsheet,
   Settings,
   LucideIcon,
-  Clock,
   Shield,
   BookOpen,
-  MapPin,
 } from 'lucide-react';
 
 // 2×2 (4-dot) compact Grip Icon for ultra-minimal corner placement
@@ -298,16 +296,16 @@ export function DashboardPage() {
   const renderSchoolLogo = (preset?: string) => {
     switch (preset) {
       case 'shield':
-        return <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-orange-400 shrink-0" />;
+        return <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-white shrink-0" />;
       case 'graduation':
-        return <GraduationCap className="h-7 w-7 sm:h-8 sm:w-8 text-orange-400 shrink-0" />;
+        return <GraduationCap className="h-7 w-7 sm:h-8 sm:w-8 text-white shrink-0" />;
       case 'award':
-        return <Award className="h-7 w-7 sm:h-8 sm:w-8 text-orange-400 shrink-0" />;
+        return <Award className="h-7 w-7 sm:h-8 sm:w-8 text-white shrink-0" />;
       case 'book':
-        return <BookOpen className="h-7 w-7 sm:h-8 sm:w-8 text-orange-400 shrink-0" />;
+        return <BookOpen className="h-7 w-7 sm:h-8 sm:w-8 text-white shrink-0" />;
       case 'building':
       default:
-        return <Building2 className="h-7 w-7 sm:h-8 sm:w-8 text-orange-400 shrink-0" />;
+        return <Building2 className="h-7 w-7 sm:h-8 sm:w-8 text-white shrink-0" />;
     }
   };
 
@@ -762,23 +760,23 @@ export function DashboardPage() {
         </div>
       )}
 
-      {/* ── BIG FULL-WIDTH ORANGE SCHOOL IDENTITY & LIVE CLOCK CARD ── */}
-      <div className="w-full relative overflow-hidden rounded-[4px] border border-orange-500/40 bg-gradient-to-br from-orange-950/60 via-[#180e06] to-black p-4 sm:p-5 shadow-lg shadow-orange-950/20">
-        {/* Ambient Orange Radial Glow Overlay */}
+      {/* ── FULL-WIDTH ORANGE INSTITUTIONAL HEADER & LIVE CLOCK ── */}
+      <div className="w-full relative overflow-hidden rounded-[4px] border border-orange-400/40 bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 p-4 sm:p-5 lg:p-6 shadow-lg shadow-orange-950/20 text-white">
+        {/* Subtle Ambient Radial Highlight */}
         <div
-          className="absolute -top-24 -left-24 w-80 h-80 rounded-full pointer-events-none blur-3xl opacity-30"
-          style={{ background: 'radial-gradient(circle, rgba(249, 115, 22, 0.45) 0%, transparent 70%)' }}
+          className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none blur-3xl opacity-20"
+          style={{ background: 'radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, transparent 70%)' }}
         />
         <div
-          className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full pointer-events-none blur-3xl opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(234, 88, 12, 0.35) 0%, transparent 70%)' }}
+          className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full pointer-events-none blur-3xl opacity-15"
+          style={{ background: 'radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, transparent 70%)' }}
         />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Left: School Logo & Institutional Details */}
           <div className="flex items-center gap-3.5 sm:gap-4.5 min-w-0">
             {/* School Logo Container */}
-            <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-[4px] bg-gradient-to-br from-orange-500/25 via-orange-600/15 to-black/60 border border-orange-500/45 flex items-center justify-center shrink-0 shadow-md shadow-orange-950/40 overflow-hidden">
+            <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-[4px] bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
               {schoolProfile.customLogoUrl ? (
                 <img
                   src={schoolProfile.customLogoUrl}
@@ -790,58 +788,37 @@ export function DashboardPage() {
               )}
             </div>
 
-            {/* School Metadata */}
-            <div className="min-w-0 space-y-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-lg sm:text-2xl font-black text-white tracking-tight leading-snug truncate">
-                  {schoolProfile.name}
-                </h1>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-[3px] bg-orange-500/20 border border-orange-500/40 text-orange-300 font-mono text-[10.5px] font-bold uppercase tracking-wider shrink-0">
-                  {schoolProfile.shortCode}
-                </span>
-              </div>
+            {/* School Metadata (clean, without unnecessary badges) */}
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug truncate">
+                {schoolProfile.name}
+              </h1>
 
-              <p className="text-xs sm:text-[13px] text-orange-200/80 font-medium leading-relaxed truncate">
-                {schoolProfile.tagline}
-              </p>
+              {schoolProfile.tagline && (
+                <p className="text-xs sm:text-sm text-orange-100 font-medium leading-relaxed truncate mt-0.5">
+                  {schoolProfile.tagline}
+                </p>
+              )}
 
-              <div className="flex flex-wrap items-center gap-2.5 pt-0.5 text-[11px] text-zinc-300">
-                <span className="inline-flex items-center gap-1 font-semibold text-orange-300/90">
-                  <School className="h-3.5 w-3.5 text-orange-400 shrink-0" />
-                  {schoolProfile.affiliation}
-                </span>
-                <span className="text-zinc-600 hidden sm:inline">•</span>
-                <span className="inline-flex items-center gap-1 text-zinc-300/80">
-                  <MapPin className="h-3.5 w-3.5 text-orange-400 shrink-0" />
-                  {schoolProfile.city}
-                </span>
-                <span className="text-zinc-600 hidden sm:inline">•</span>
-                <span className="inline-flex items-center gap-1 font-mono text-orange-400 font-semibold bg-black/40 px-1.5 py-0.5 rounded-[3px] border border-orange-500/25">
-                  <Calendar className="h-3 w-3 text-orange-400 shrink-0" />
-                  {isHindi ? 'सत्र' : 'Session'} {activeSession}
-                </span>
+              <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-orange-100/90 font-medium">
+                {schoolProfile.affiliation && <span>{schoolProfile.affiliation}</span>}
+                {schoolProfile.affiliation && schoolProfile.city && <span>•</span>}
+                {schoolProfile.city && <span>{schoolProfile.city}</span>}
+                {activeSession && <span>•</span>}
+                {activeSession && <span>{isHindi ? 'सत्र' : 'Session'} {activeSession}</span>}
               </div>
             </div>
           </div>
 
-          {/* Right: Live Academic Date & Time Terminal */}
-          <div className="p-3 sm:px-4 sm:py-2.5 rounded-[4px] bg-black/60 border border-orange-500/35 flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2 shrink-0 shadow-inner">
-            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] font-bold text-orange-200">
-              <Calendar className="h-3.5 w-3.5 text-orange-400 shrink-0" />
+          {/* Right: Academic Date & Live Time (Clean typography, no nested boxes or badges) */}
+          <div className="flex flex-col md:items-end justify-center shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-white/20">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight tabular-nums leading-none">
+              {timeFormatted}
+            </div>
+            <div className="text-xs sm:text-sm font-semibold text-orange-100 mt-1.5 flex items-center gap-1.5">
+              <Calendar className="h-3.5 w-3.5 text-orange-200 shrink-0" />
               <span>{dayName}, {dateFormatted}</span>
             </div>
-
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 font-mono text-sm sm:text-base font-black text-white bg-orange-500/15 border border-orange-500/35 px-2.5 py-0.5 rounded-[3px]">
-                <Clock className="h-3.5 w-3.5 text-orange-400 animate-pulse shrink-0" />
-                <span className="tracking-wider">{timeFormatted}</span>
-              </div>
-            </div>
-
-            <span className="hidden md:flex items-center gap-1.5 text-[10px] text-orange-300/60 uppercase font-mono tracking-wider font-semibold">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
-              Live Campus System Clock
-            </span>
           </div>
         </div>
       </div>

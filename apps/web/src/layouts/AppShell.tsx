@@ -139,11 +139,11 @@ export function AppShell() {
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
 
-  // Dynamic Browser Tab Title: VidyaFloww@{schoolProfile.name} - {pageName}
+  // Dynamic Browser Tab Title: VidyaFlow@{schoolProfile.name} - {pageName}
   React.useEffect(() => {
     const pageName = ROUTE_PAGE_NAMES[location.pathname] || 'Dashboard';
-    const schoolName = schoolProfile?.name || 'VidyaFloww International Academy';
-    document.title = `VidyaFloww@${schoolName} - ${pageName}`;
+    const schoolName = schoolProfile?.name || 'VidyaFlow International Academy';
+    document.title = `VidyaFlow@${schoolName} - ${pageName}`;
   }, [location.pathname, schoolProfile?.name]);
 
   // Scroll to top on route change
