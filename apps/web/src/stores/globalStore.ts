@@ -123,7 +123,7 @@ export const useGlobalStore = create<GlobalState>()(
 
       // School Profile default
       schoolProfile: {
-        name: 'VidyaFloww International Academy',
+        name: 'VidyaFlow International Academy',
         shortCode: 'VF-DELHI',
         tagline: 'Excellence in Education & Character',
         affiliation: 'CBSE Affiliation #1630982',
