@@ -155,15 +155,12 @@ export default function LandingApp() {
           <a href="#" className="flex items-center gap-3 group">
             <img
               src="/logo.png"
-              alt="VidyaFloww Logo"
+              alt="VidyaFlow Logo"
               className="h-8 w-8 object-contain transition-transform group-hover:scale-105"
             />
             <div className="flex flex-col">
               <span className="text-lg sm:text-xl font-black tracking-tight text-white leading-none">
-                Vidya<span className="text-primary">Maxx</span>
-              </span>
-              <span className="text-[8px] sm:text-[9px] font-bold text-zinc-400 uppercase tracking-widest mt-0.5 font-mono">
-                Campus OS
+                Vidya<span className="text-primary">Flow</span>
               </span>
             </div>
           </a>
