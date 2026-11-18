@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Unified Staff Master & Academic Allocation Models
 """
 

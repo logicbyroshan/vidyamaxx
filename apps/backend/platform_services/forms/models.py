@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Institutional Surveys & Polls Models (Work Division #24 Surveys & Forms)
 Backs /surveys (`apps/web/src/routes/surveys.tsx`).
 """

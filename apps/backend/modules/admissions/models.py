@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Admissions & Intake Models
 """
 

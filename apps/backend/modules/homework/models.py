@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Homework Assignment & Student Submission Evaluation Models
 """
 

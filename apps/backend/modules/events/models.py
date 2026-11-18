@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Events & Calendar (#22), Student Activities (#23), and Front Office (#26) Models
 """
 

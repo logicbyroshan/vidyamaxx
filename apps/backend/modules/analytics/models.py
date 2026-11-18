@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Institutional Analytics Snapshot & Decoupled Subsystem Contract Models
 """
 

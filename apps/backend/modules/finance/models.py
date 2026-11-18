@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Fees, Scholarships, Invoices & Immutable Financial Ledger Models
 """
 

@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Circulars & Broadcast Models (Work Division #21 Communication)
 """
 

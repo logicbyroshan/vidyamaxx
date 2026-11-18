@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Generated Reports (#27) & Statutory Compliance Filings (#29) Models
 """
 

@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Hostel Room & Boarding Allocation Summary Models (Work Division #15)
 """
 

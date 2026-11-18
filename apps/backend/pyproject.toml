@@ -68,7 +68,7 @@ ignore_missing_imports = true
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.testing"
 python_files = "tests.py test_*.py *_test.py"
-addopts = "--reuse-db --cov=. --cov-report=html"
+addopts = "-v"
 
 [tool.coverage.run]
 omit = ["*/migrations/*", "*/tests/*", "*/test_*.py", "manage.py"]

@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Student & Staff Compliance Document Verification Models
 """
 

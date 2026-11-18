@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Examination Cycles & Lockable Student Marks Ledger Models
 """
 
