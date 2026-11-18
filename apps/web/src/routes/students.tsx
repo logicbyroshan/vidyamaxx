@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 import JSZip from 'jszip';
 import {
   VFPageContainer,
@@ -569,7 +570,6 @@ export const Route = createFileRoute('/students')({
 });
 
 function StudentsPage() {
-  const navigate = useNavigate();
   const { activeSession, addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
@@ -2414,8 +2414,7 @@ function StudentsPage() {
                             size="sm"
                             className="h-8 px-3 text-xs font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs flex items-center gap-1.5"
                             onClick={() => {
-                              navigate({ to: '/fees' });
-                              window.location.href = `/fees?student=${encodeURIComponent(activeStudent.admNo)}`;
+                              window.open(getSubsystemUrl(SUBSYSTEMS.PAYMENTS, `?student=${encodeURIComponent(activeStudent.admNo)}`), '_blank');
                             }}
                           >
                             <span>Open in Fees Module</span>
@@ -2771,8 +2770,7 @@ function StudentsPage() {
                             size="sm"
                             className="h-8 px-3 text-xs font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs flex items-center gap-1.5"
                             onClick={() => {
-                              navigate({ to: '/scholarships' });
-                              window.location.href = `/scholarships?student=${encodeURIComponent(activeStudent.admNo)}&name=${encodeURIComponent(activeStudent.name)}${activeScholarship ? '' : '&apply=true'}`;
+                              window.open(getSubsystemUrl(SUBSYSTEMS.PAYMENTS, `?student=${encodeURIComponent(activeStudent.admNo)}&name=${encodeURIComponent(activeStudent.name)}${activeScholarship ? '' : '&apply=true'}`), '_blank');
                             }}
                           >
                             <span>{activeScholarship ? 'Open in Scholarships' : 'Apply in Scholarships'}</span>
@@ -2844,8 +2842,7 @@ function StudentsPage() {
                               className="flex-1 text-xs font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
                               leftIcon={<ExternalLink className="h-3.5 w-3.5" />}
                               onClick={() => {
-                                navigate({ to: '/scholarships' });
-                                window.location.href = `/scholarships?student=${encodeURIComponent(activeStudent.admNo)}`;
+                                window.open(getSubsystemUrl(SUBSYSTEMS.PAYMENTS, `?student=${encodeURIComponent(activeStudent.admNo)}`), '_blank');
                               }}
                             >
                               Manage in Scholarships Module
@@ -2907,8 +2904,7 @@ function StudentsPage() {
                                           size="sm"
                                           className="h-6 px-2.5 text-[10px] font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-1"
                                           onClick={() => {
-                                            navigate({ to: '/scholarships' });
-                                            window.location.href = `/scholarships?student=${encodeURIComponent(activeStudent.admNo)}&scheme=${encodeURIComponent(scheme.id)}&apply=true`;
+                                            window.open(getSubsystemUrl(SUBSYSTEMS.PAYMENTS, `?student=${encodeURIComponent(activeStudent.admNo)}&scheme=${encodeURIComponent(scheme.id)}&apply=true`), '_blank');
                                           }}
                                         >
                                           <span>Apply</span>

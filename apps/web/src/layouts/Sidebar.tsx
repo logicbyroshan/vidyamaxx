@@ -2,32 +2,21 @@ import * as React from 'react';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
 import { cn, VFAvatar, VFDialog, VFButton } from '@vidyafloww/ui';
 import {
-  Award,
   BarChart3,
-  Bell,
   BookMarked,
   BookOpenCheck,
-  Building2,
-  Bus,
   Calendar,
   CalendarCheck,
-  ClipboardList,
-  CreditCard,
   FileSpreadsheet,
   GraduationCap,
   Key,
   LayoutDashboard,
-  Library,
   LogOut,
   LucideIcon,
   MessageSquareWarning,
-  Palette,
   School,
   Settings,
-  UserCheck,
-  UserPlus,
   Users,
-  Video,
   Vote,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -58,7 +47,6 @@ const NAVIGATION_GROUPS: NavGroup[] = [
     id: 'core',
     items: [
       { id: 'students', labelKey: 'nav.students', route: '/students', icon: GraduationCap },
-      { id: 'admissions', labelKey: 'nav.admissions', route: '/admissions', icon: UserPlus },
       { id: 'attendance', labelKey: 'nav.attendance', route: '/attendance', icon: CalendarCheck },
       { id: 'timetable', labelKey: 'nav.timetable', route: '/timetable', icon: Calendar },
       { id: 'teachers', labelKey: 'nav.teachers', route: '/teachers', icon: Users },
@@ -70,32 +58,12 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'academics', labelKey: 'nav.academics', route: '/academics', icon: School },
       { id: 'teaching', labelKey: 'nav.teaching', route: '/teaching', icon: BookOpenCheck },
       { id: 'homework', labelKey: 'nav.homework', route: '/homework', icon: BookMarked },
-      { id: 'examinations', labelKey: 'nav.examinations', route: '/examinations', icon: ClipboardList },
-    ],
-  },
-  {
-    id: 'subsystems-group',
-    items: [
-      { id: 'hrmanage', labelKey: 'nav.hrManage', route: '/hr-manage', icon: UserCheck },
-      { id: 'eclass', labelKey: 'nav.eclass', route: '/e-class', icon: Video },
-      { id: 'elibrary', labelKey: 'nav.elibrary', route: '/elibrary', icon: Library },
-      { id: 'transport', labelKey: 'nav.transport', route: '/transport', icon: Bus },
-      { id: 'hostel', labelKey: 'nav.hostel', route: '/hostel', icon: Building2 },
-      { id: 'designlab', labelKey: 'nav.designLab', route: '/design-lab', icon: Palette },
-    ],
-  },
-  {
-    id: 'finance-group',
-    items: [
-      { id: 'fees', labelKey: 'nav.fees', route: '/fees', icon: CreditCard },
-      { id: 'scholarships', labelKey: 'nav.scholarships', route: '/scholarships', icon: Award },
     ],
   },
   {
     id: 'admin-group',
     items: [
       { id: 'statistics', labelKey: 'nav.statistics', route: '/statistics', icon: BarChart3 },
-      { id: 'notices', labelKey: 'nav.notices', route: '/notices', icon: Bell },
       { id: 'complaints', labelKey: 'nav.complaints', route: '/complaints', icon: MessageSquareWarning },
       { id: 'surveys', labelKey: 'nav.surveys', route: '/surveys', icon: Vote },
       { id: 'reports', labelKey: 'nav.reports', route: '/reports', icon: FileSpreadsheet },

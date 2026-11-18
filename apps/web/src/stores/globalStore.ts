@@ -28,15 +28,15 @@ export interface SchoolProfile {
 
 export const DEFAULT_DASHBOARD_SHORTCUTS = [
   'attendance',
-  'admissions',
   'students',
   'teachers',
   'timetable',
-  'fees',
-  'notices',
-  'homework',
-  'examinations',
   'academics',
+  'teaching',
+  'homework',
+  'statistics',
+  'complaints',
+  'surveys',
   'reports',
   'settings',
 ];

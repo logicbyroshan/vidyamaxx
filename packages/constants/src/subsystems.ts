@@ -57,6 +57,48 @@ export const SUBSYSTEMS = {
     localPort: 8015,
     envKey: 'VITE_SUBSYSTEM_DESIGNLAB_URL',
   },
+  PORTAL: {
+    id: 'portal',
+    name: 'Parent & Student Portal',
+    subdomain: 'portal.vidyafloww.com',
+    localPort: 8017,
+    envKey: 'VITE_SUBSYSTEM_PORTAL_URL',
+  },
+  ADMISSIONS: {
+    id: 'admissions',
+    name: 'Admissions & Intake Hub',
+    subdomain: 'admissions.vidyafloww.com',
+    localPort: 8018,
+    envKey: 'VITE_SUBSYSTEM_ADMISSIONS_URL',
+  },
+  LMS: {
+    id: 'lms',
+    name: 'LMS & Learning Cloud',
+    subdomain: 'learn.vidyafloww.com',
+    localPort: 8019,
+    envKey: 'VITE_SUBSYSTEM_LMS_URL',
+  },
+  PAYMENTS: {
+    id: 'payments',
+    name: 'Payments & Fee Engine',
+    subdomain: 'pay.vidyafloww.com',
+    localPort: 8020,
+    envKey: 'VITE_SUBSYSTEM_PAYMENTS_URL',
+  },
+  EXAMINATIONS: {
+    id: 'examinations',
+    name: 'Examination Assessment Engine',
+    subdomain: 'exams.vidyafloww.com',
+    localPort: 8021,
+    envKey: 'VITE_SUBSYSTEM_EXAMINATIONS_URL',
+  },
+  COMMUNICATION: {
+    id: 'communication',
+    name: 'Communication & Broadcast Hub',
+    subdomain: 'comms.vidyafloww.com',
+    localPort: 8022,
+    envKey: 'VITE_SUBSYSTEM_COMMUNICATION_URL',
+  },
 } as const;
 
 export type SubsystemKey = keyof typeof SUBSYSTEMS;
