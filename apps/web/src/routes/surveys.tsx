@@ -2,6 +2,8 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 import {
   VFPageContainer,
   VFButton,
@@ -113,6 +115,55 @@ function SurveysManagementPage() {
 
   const [activeTab, setActiveTab] = React.useState<'active' | 'results'>('active');
   const [surveys, setSurveys] = React.useState<InstitutionalSurvey[]>(INITIAL_SURVEYS);
+
+  // Sync surveys from Django backend (/api/v1/engagement/surveys/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<
+          Array<{
+            id: string;
+            survey_code: string;
+            title: string;
+            target_audience: string;
+            category: string;
+            responses_count: number;
+            total_target: number;
+            satisfaction_score: string;
+            status: string;
+            end_date_label: string;
+            key_finding: string;
+          }>
+        >(API_ENDPOINTS.ENGAGEMENT.SURVEYS);
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setSurveys((prev) => {
+            const existingIds = new Set(prev.map((s) => s.id));
+            const mapped: InstitutionalSurvey[] = res.data
+              .filter((r) => !existingIds.has(r.survey_code))
+              .map((r) => ({
+                id: r.survey_code || r.id,
+                title: r.title,
+                targetAudience: (r.target_audience as InstitutionalSurvey['targetAudience']) || 'Parents',
+                category: r.category,
+                responsesCount: r.responses_count,
+                totalTarget: r.total_target,
+                satisfactionScore: r.satisfaction_score,
+                status: r.status === 'Completed' ? 'Completed' : 'Active',
+                endDate: r.end_date_label,
+                keyFinding: r.key_finding || 'Active survey collecting responses.',
+              }));
+            return mapped.length > 0 ? [...mapped, ...prev] : prev;
+          });
+        }
+      } catch {
+        // Fallback to INITIAL_SURVEYS
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
   const [archives] = React.useState<HistoricalSurvey[]>(ARCHIVED_SURVEYS);
   const [selectedSurvey, setSelectedSurvey] = React.useState<InstitutionalSurvey | null>(null);
   const [isNewSurveyModalOpen, setIsNewSurveyModalOpen] = React.useState(false);
@@ -141,6 +192,18 @@ function SurveysManagementPage() {
     };
 
     setSurveys([newSurvey, ...surveys]);
+    apiClient
+      .post(API_ENDPOINTS.ENGAGEMENT.SURVEYS, {
+        survey_code: newSurvey.id,
+        title: newSurvey.title,
+        target_audience: newSurvey.targetAudience,
+        category: newSurvey.category,
+        total_target: newSurvey.totalTarget,
+        status: 'Active',
+        end_date_label: newSurvey.endDate,
+        key_finding: newSurvey.keyFinding,
+      })
+      .catch(() => {});
     setIsNewSurveyModalOpen(false);
     setSurveyTitle('');
 

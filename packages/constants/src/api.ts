@@ -159,4 +159,15 @@ export const API_ENDPOINTS = {
     ACTIVITIES: `${V1}/operations/activities/`,
     VISITORS: `${V1}/operations/front-office/visitors/`,
   },
+
+  // Phase 6: Engagement, Health, Counselling & Support
+  ENGAGEMENT: {
+    HEALTH_VISITS: `${V1}/engagement/health/visits/`,
+    COUNSELLING: `${V1}/engagement/counselling/records/`,
+    CIRCULARS: `${V1}/engagement/circulars/`,
+    SURVEYS: `${V1}/engagement/surveys/`,
+    SURVEY_VOTE: (id: string) => `${V1}/engagement/surveys/${id}/vote/`,
+    COMPLAINTS: `${V1}/engagement/complaints/`,
+    COMPLAINT_DETAIL: (id: string) => `${V1}/engagement/complaints/${id}/`,
+  },
 } as const;

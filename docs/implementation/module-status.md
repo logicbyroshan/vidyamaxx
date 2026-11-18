@@ -49,19 +49,17 @@
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
 | 18 | **Staff & HR** | `modules.hr`, `core.users` (`StaffProfile`) + HR/Biometrics adapter | `apps/web/src/routes/teachers.tsx`, `HRM-VidyaFloww` | `VERIFIED COMPLETE` |
-| 19 | **Student Health** | `modules.medical` | `students.tsx` (dossier medical fields) + API | `NOT STARTED` |
-| 20 | **Counselling & Support** | `modules.welfare` | Backend API (confidential RBAC) | `NOT STARTED` |
-
-*(Note: `modules.welfare.CounsellingRecord` exists as 1 partial model without tenant FK or confidential guards.)*
+| 19 | **Student Health** | `modules.medical` (`InfirmaryVisitLog`) | `students.tsx` (dossier medical fields) + API | `VERIFIED COMPLETE` |
+| 20 | **Counselling & Support** | `modules.welfare` (`CounsellingRecord`) | Backend API (confidential RBAC tested) | `VERIFIED COMPLETE` |
 
 ### GROUP 5 — ENGAGEMENT
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
-| 21 | **Communication** | `modules.communication`, `platform_services.notifications` | `Communication-VidyaFloww` (standalone) | `NOT STARTED` |
+| 21 | **Communication** | `modules.communication`, `platform_services.notifications` | `Communication-VidyaFloww` (standalone) | `VERIFIED COMPLETE` |
 | 22 | **Events & Calendar** | `modules.events` | `academics.tsx`, `Portal-VidyaFloww` | `VERIFIED COMPLETE` |
 | 23 | **Student Activities** | `modules.events` (`StudentActivityRecord`) | `students.tsx` (Houses), Portal | `VERIFIED COMPLETE` |
-| 24 | **Surveys & Forms** | `platform_services.forms` / `modules.surveys` *(new)* | `apps/web/src/routes/surveys.tsx` | `NOT STARTED` |
-| 25 | **Complaints & Grievances** | `modules.discipline` / `modules.complaints` *(new)* | `apps/web/src/routes/complaints.tsx` | `NOT STARTED` |
+| 24 | **Surveys & Forms** | `platform_services.forms` (`SurveyCampaign`) | `apps/web/src/routes/surveys.tsx` | `VERIFIED COMPLETE` |
+| 25 | **Complaints & Grievances** | `modules.discipline` (`GrievanceTicket`) | `apps/web/src/routes/complaints.tsx` | `VERIFIED COMPLETE` |
 | 26 | **Front Office** | `modules.events` (`FrontOfficeVisitorPass`) | Backend API / Reception workflows | `VERIFIED COMPLETE` |
 
 ### GROUP 6 — GOVERNANCE

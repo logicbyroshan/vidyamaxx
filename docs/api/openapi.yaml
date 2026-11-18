@@ -653,6 +653,251 @@ paths:
               schema:
                 $ref: '#/components/schemas/UsernameLookup'
           description: ''
+  /api/v1/engagement/circulars/:
+    get:
+      operationId: v1_engagement_circulars_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CircularBroadcast'
+          description: ''
+    post:
+      operationId: v1_engagement_circulars_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CircularBroadcastRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CircularBroadcastRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CircularBroadcast'
+          description: ''
+  /api/v1/engagement/complaints/:
+    get:
+      operationId: v1_engagement_complaints_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrievanceTicket'
+          description: ''
+    post:
+      operationId: v1_engagement_complaints_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrievanceTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GrievanceTicketRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrievanceTicket'
+          description: ''
+  /api/v1/engagement/complaints/{id}/:
+    patch:
+      operationId: v1_engagement_complaints_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGrievanceTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGrievanceTicketRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrievanceTicket'
+          description: ''
+  /api/v1/engagement/counselling/records/:
+    get:
+      operationId: v1_engagement_counselling_records_retrieve
+      description: |-
+        Strictly enforces confidential RBAC on BOTH GET and POST:
+        General STAFF without `counselling_support` responsibility cannot read confidential notes.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CounsellingRecord'
+          description: ''
+    post:
+      operationId: v1_engagement_counselling_records_create
+      description: |-
+        Strictly enforces confidential RBAC on BOTH GET and POST:
+        General STAFF without `counselling_support` responsibility cannot read confidential notes.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CounsellingRecordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CounsellingRecordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CounsellingRecord'
+          description: ''
+  /api/v1/engagement/health/visits/:
+    get:
+      operationId: v1_engagement_health_visits_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfirmaryVisit'
+          description: ''
+    post:
+      operationId: v1_engagement_health_visits_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InfirmaryVisitRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InfirmaryVisitRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfirmaryVisit'
+          description: ''
+  /api/v1/engagement/surveys/:
+    get:
+      operationId: v1_engagement_surveys_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyCampaign'
+          description: ''
+    post:
+      operationId: v1_engagement_surveys_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyCampaignRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SurveyCampaignRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyCampaign'
+          description: ''
+  /api/v1/engagement/surveys/{id}/vote/:
+    post:
+      operationId: v1_engagement_surveys_vote_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyCampaignRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SurveyCampaignRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyCampaign'
+          description: ''
   /api/v1/examinations/cycles/:
     get:
       operationId: v1_examinations_cycles_retrieve
@@ -3375,6 +3620,70 @@ components:
       required:
       - account_code
       - account_name
+    CircularBroadcast:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        circular_number:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 200
+        audience:
+          type: string
+          maxLength: 80
+        channel:
+          type: string
+          maxLength: 40
+        message_body:
+          type: string
+        status:
+          type: string
+          maxLength: 25
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - circular_number
+      - created_at
+      - id
+      - message_body
+      - title
+    CircularBroadcastRequest:
+      type: object
+      properties:
+        circular_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        audience:
+          type: string
+          minLength: 1
+          maxLength: 80
+        channel:
+          type: string
+          minLength: 1
+          maxLength: 40
+        message_body:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+      required:
+      - circular_number
+      - message_body
+      - title
     ClassSubjectMapping:
       type: object
       properties:
@@ -3623,6 +3932,83 @@ components:
       - document_name
       - owner_code
       - owner_name
+    CounsellingRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        counsellor_name:
+          type: string
+          maxLength: 150
+        session_date:
+          type: string
+          format: date
+        category:
+          type: string
+          maxLength: 80
+        confidential_notes:
+          type: string
+        follow_up_date:
+          type: string
+          format: date
+          nullable: true
+        is_strictly_confidential:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - confidential_notes
+      - counsellor_name
+      - created_at
+      - id
+      - student_name
+    CounsellingRecordRequest:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        counsellor_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        session_date:
+          type: string
+          format: date
+        category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        confidential_notes:
+          type: string
+          minLength: 1
+        follow_up_date:
+          type: string
+          format: date
+          nullable: true
+        is_strictly_confidential:
+          type: boolean
+      required:
+      - admission_number
+      - confidential_notes
+      - counsellor_name
+      - student_name
     CreateResponsibilityRequest:
       type: object
       properties:
@@ -4160,6 +4546,101 @@ components:
         * `Middle Wing` - Middle Wing
         * `Secondary Wing` - Secondary Wing
         * `Senior Secondary` - Senior Secondary
+    GrievanceTicket:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        ticket_number:
+          type: string
+          maxLength: 50
+        complainant_type:
+          type: string
+          maxLength: 30
+        complainant_name:
+          type: string
+          maxLength: 150
+        category:
+          type: string
+          maxLength: 60
+        subject:
+          type: string
+          maxLength: 220
+        description:
+          type: string
+        priority:
+          type: string
+          maxLength: 20
+        assigned_officer:
+          type: string
+          maxLength: 150
+        status:
+          type: string
+          maxLength: 25
+        resolution_notes:
+          type: string
+        expected_sla:
+          type: string
+          maxLength: 60
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - complainant_name
+      - created_at
+      - id
+      - subject
+      - ticket_number
+    GrievanceTicketRequest:
+      type: object
+      properties:
+        ticket_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        complainant_type:
+          type: string
+          minLength: 1
+          maxLength: 30
+        complainant_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        category:
+          type: string
+          minLength: 1
+          maxLength: 60
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 220
+        description:
+          type: string
+        priority:
+          type: string
+          minLength: 1
+          maxLength: 20
+        assigned_officer:
+          type: string
+          minLength: 1
+          maxLength: 150
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+        resolution_notes:
+          type: string
+        expected_sla:
+          type: string
+          minLength: 1
+          maxLength: 60
+      required:
+      - complainant_name
+      - subject
+      - ticket_number
     HomeworkAssignment:
       type: object
       properties:
@@ -4466,6 +4947,82 @@ components:
       - admission_number
       - room_number
       - student_name
+    InfirmaryVisit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        class_section_label:
+          type: string
+          maxLength: 40
+        visit_date:
+          type: string
+          format: date
+        symptoms:
+          type: string
+          maxLength: 255
+        treatment_given:
+          type: string
+          maxLength: 255
+        nurse_or_doctor_name:
+          type: string
+          maxLength: 120
+        parent_notified:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - created_at
+      - id
+      - student_name
+      - symptoms
+    InfirmaryVisitRequest:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        visit_date:
+          type: string
+          format: date
+        symptoms:
+          type: string
+          minLength: 1
+          maxLength: 255
+        treatment_given:
+          type: string
+          minLength: 1
+          maxLength: 255
+        nurse_or_doctor_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        parent_notified:
+          type: boolean
+      required:
+      - admission_number
+      - student_name
+      - symptoms
     InventoryStock:
       type: object
       properties:
@@ -5430,6 +5987,49 @@ components:
           maximum: 9223372036854775807
           minimum: 0
           format: int64
+    PatchedGrievanceTicketRequest:
+      type: object
+      properties:
+        ticket_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        complainant_type:
+          type: string
+          minLength: 1
+          maxLength: 30
+        complainant_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        category:
+          type: string
+          minLength: 1
+          maxLength: 60
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 220
+        description:
+          type: string
+        priority:
+          type: string
+          minLength: 1
+          maxLength: 20
+        assigned_officer:
+          type: string
+          minLength: 1
+          maxLength: 150
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+        resolution_notes:
+          type: string
+        expected_sla:
+          type: string
+          minLength: 1
+          maxLength: 60
     PatchedHomeworkAssignmentRequest:
       type: object
       properties:
@@ -7647,6 +8247,101 @@ components:
         * `ACTIVE` - Active
         * `PAST_DUE` - Past Due
         * `CANCELLED` - Cancelled
+    SurveyCampaign:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        survey_code:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 200
+        target_audience:
+          type: string
+          maxLength: 60
+        category:
+          type: string
+          maxLength: 120
+        responses_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        total_target:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        satisfaction_score:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 25
+        end_date_label:
+          type: string
+          maxLength: 40
+        key_finding:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - survey_code
+      - title
+    SurveyCampaignRequest:
+      type: object
+      properties:
+        survey_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        target_audience:
+          type: string
+          minLength: 1
+          maxLength: 60
+        category:
+          type: string
+          minLength: 1
+          maxLength: 120
+        responses_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        total_target:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        satisfaction_score:
+          type: string
+          minLength: 1
+          maxLength: 20
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+        end_date_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        key_finding:
+          type: string
+      required:
+      - survey_code
+      - title
     TeachingDiaryEntry:
       type: object
       properties:
