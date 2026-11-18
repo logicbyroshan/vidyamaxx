@@ -134,4 +134,14 @@ export const API_ENDPOINTS = {
     CYCLE_LOCK: (id: string) => `${V1}/examinations/cycles/${id}/lock/`,
     MARKS: `${V1}/examinations/marks/`,
   },
+
+  // Phase 4: Financial Operations
+  FINANCE: {
+    INVOICES: `${V1}/finance/invoices/`,
+    COLLECT: `${V1}/finance/collect/`,
+    RECEIPT_DETAIL: (id: string) => `${V1}/finance/receipts/${id}/`,
+    RECEIPT_REVERSE: (id: string) => `${V1}/finance/receipts/${id}/reverse/`,
+    SCHOLARSHIPS: `${V1}/finance/scholarships/`,
+    ACCOUNTS: `${V1}/finance/accounts/`,
+  },
 } as const;

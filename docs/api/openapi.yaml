@@ -754,6 +754,184 @@ paths:
               schema:
                 $ref: '#/components/schemas/StudentExamMark'
           description: ''
+  /api/v1/finance/accounts/:
+    get:
+      operationId: v1_finance_accounts_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChartOfAccount'
+          description: ''
+    post:
+      operationId: v1_finance_accounts_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChartOfAccountRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChartOfAccountRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChartOfAccount'
+          description: ''
+  /api/v1/finance/collect/:
+    post:
+      operationId: v1_finance_collect_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectPaymentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectPaymentRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectPayment'
+          description: ''
+  /api/v1/finance/invoices/:
+    get:
+      operationId: v1_finance_invoices_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentFeeInvoice'
+          description: ''
+    post:
+      operationId: v1_finance_invoices_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentFeeInvoiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentFeeInvoiceRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentFeeInvoice'
+          description: ''
+  /api/v1/finance/receipts/{id}/:
+    delete:
+      operationId: v1_finance_receipts_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/finance/receipts/{id}/reverse/:
+    post:
+      operationId: v1_finance_receipts_reverse_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReverseReceiptRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReverseReceiptRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReverseReceipt'
+          description: ''
+  /api/v1/finance/scholarships/:
+    get:
+      operationId: v1_finance_scholarships_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScholarshipGrant'
+          description: ''
+    post:
+      operationId: v1_finance_scholarships_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScholarshipGrantRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ScholarshipGrantRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScholarshipGrant'
+          description: ''
   /api/v1/homework/assignments/:
     get:
       operationId: v1_homework_assignments_retrieve
@@ -2018,6 +2196,20 @@ components:
       - end_date
       - name
       - start_date
+    AccountTypeEnum:
+      enum:
+      - ASSET
+      - LIABILITY
+      - INCOME
+      - EXPENSE
+      - EQUITY
+      type: string
+      description: |-
+        * `ASSET` - Asset
+        * `LIABILITY` - Liability
+        * `INCOME` - Income
+        * `EXPENSE` - Expense
+        * `EQUITY` - Equity
     ActionsEnum:
       enum:
       - view
@@ -2688,6 +2880,54 @@ components:
             $ref: '#/components/schemas/BulkAttendanceEntryRequest'
       required:
       - entries
+    ChartOfAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        account_code:
+          type: string
+          maxLength: 50
+        account_name:
+          type: string
+          maxLength: 150
+        account_type:
+          $ref: '#/components/schemas/AccountTypeEnum'
+        balance_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - account_code
+      - account_name
+      - created_at
+      - id
+    ChartOfAccountRequest:
+      type: object
+      properties:
+        account_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        account_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        account_type:
+          $ref: '#/components/schemas/AccountTypeEnum'
+        balance_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+      required:
+      - account_code
+      - account_name
     ClassSubjectMapping:
       type: object
       properties:
@@ -2801,6 +3041,68 @@ components:
       description: |-
         * `Active` - Active
         * `Elective` - Elective
+    CollectPayment:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+        receipt_number:
+          type: string
+          maxLength: 50
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_mode:
+          type: string
+          default: UPI / QR Code
+          maxLength: 50
+        period_label:
+          type: string
+          default: Installment Payment
+          maxLength: 100
+        idempotency_key:
+          type: string
+          nullable: true
+          maxLength: 100
+      required:
+      - amount_inr
+      - invoice_id
+      - receipt_number
+    CollectPaymentRequest:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+        receipt_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_mode:
+          type: string
+          minLength: 1
+          default: UPI / QR Code
+          maxLength: 50
+        period_label:
+          type: string
+          minLength: 1
+          default: Installment Payment
+          maxLength: 100
+        idempotency_key:
+          type: string
+          nullable: true
+          minLength: 1
+          maxLength: 100
+      required:
+      - amount_inr
+      - invoice_id
+      - receipt_number
     CreateResponsibilityRequest:
       type: object
       properties:
@@ -3049,6 +3351,123 @@ components:
         * `Ongoing` - Ongoing
         * `Evaluation` - Evaluation
         * `Published` - Published
+    FeeReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        receipt_number:
+          type: string
+          maxLength: 50
+        invoice:
+          type: string
+          format: uuid
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_mode:
+          type: string
+          maxLength: 50
+        period_label:
+          type: string
+          maxLength: 100
+        cashier_name:
+          type: string
+          maxLength: 150
+        paid_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/FeeReceiptStatusEnum'
+          readOnly: true
+        reversal_reason:
+          type: string
+          maxLength: 255
+        reversed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        idempotency_key:
+          type: string
+          nullable: true
+          maxLength: 100
+      required:
+      - admission_number
+      - amount_inr
+      - id
+      - invoice
+      - paid_at
+      - receipt_number
+      - reversed_at
+      - status
+      - student_name
+    FeeReceiptRequest:
+      type: object
+      properties:
+        receipt_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        invoice:
+          type: string
+          format: uuid
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_mode:
+          type: string
+          minLength: 1
+          maxLength: 50
+        period_label:
+          type: string
+          minLength: 1
+          maxLength: 100
+        cashier_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        reversal_reason:
+          type: string
+          maxLength: 255
+        idempotency_key:
+          type: string
+          nullable: true
+          maxLength: 100
+      required:
+      - admission_number
+      - amount_inr
+      - invoice
+      - receipt_number
+      - student_name
+    FeeReceiptStatusEnum:
+      enum:
+      - ISSUED
+      - REVERSED
+      type: string
+      description: |-
+        * `ISSUED` - Issued
+        * `REVERSED` - Reversed
     GenderEnum:
       enum:
       - male
@@ -4882,6 +5301,132 @@ components:
       - event_type
       - id
       - membership_id
+    ReverseReceipt:
+      type: object
+      properties:
+        reason:
+          type: string
+          maxLength: 255
+      required:
+      - reason
+    ReverseReceiptRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - reason
+    ScholarshipGrant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        scheme_name:
+          type: string
+          maxLength: 180
+        category:
+          type: string
+          maxLength: 60
+        waiver_pct:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        waiver_amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        funding_agency:
+          type: string
+          maxLength: 180
+        sanction_ref:
+          type: string
+          maxLength: 80
+        status:
+          $ref: '#/components/schemas/ScholarshipGrantStatusEnum'
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - created_at
+      - id
+      - scheme_name
+      - student_name
+    ScholarshipGrantRequest:
+      type: object
+      properties:
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        scheme_name:
+          type: string
+          minLength: 1
+          maxLength: 180
+        category:
+          type: string
+          minLength: 1
+          maxLength: 60
+        waiver_pct:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        waiver_amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        funding_agency:
+          type: string
+          minLength: 1
+          maxLength: 180
+        sanction_ref:
+          type: string
+          maxLength: 80
+        status:
+          $ref: '#/components/schemas/ScholarshipGrantStatusEnum'
+        notes:
+          type: string
+      required:
+      - admission_number
+      - scheme_name
+      - student_name
+    ScholarshipGrantStatusEnum:
+      enum:
+      - Pending
+      - Active Disbursed
+      - Revoked
+      type: string
+      description: |-
+        * `Pending` - Pending
+        * `Active Disbursed` - Active Disbursed
+        * `Revoked` - Revoked
     School:
       type: object
       properties:
@@ -5810,6 +6355,133 @@ components:
       - student_name
       - subject_code
       - subject_name
+    StudentFeeInvoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        invoice_number:
+          type: string
+          maxLength: 50
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        class_section_label:
+          type: string
+          maxLength: 40
+        payment_plan:
+          type: string
+          maxLength: 60
+        gross_fee_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        scholarship_relief_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        net_assessed_fee_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        paid_amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        due_amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/StudentFeeInvoiceStatusEnum'
+        receipts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeeReceipt'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - created_at
+      - id
+      - invoice_number
+      - receipts
+      - student_name
+    StudentFeeInvoiceRequest:
+      type: object
+      properties:
+        invoice_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        payment_plan:
+          type: string
+          minLength: 1
+          maxLength: 60
+        gross_fee_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        scholarship_relief_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        net_assessed_fee_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        paid_amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        due_amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/StudentFeeInvoiceStatusEnum'
+      required:
+      - admission_number
+      - invoice_number
+      - student_name
+    StudentFeeInvoiceStatusEnum:
+      enum:
+      - Cleared
+      - Pending
+      - Overdue
+      type: string
+      description: |-
+        * `Cleared` - Cleared
+        * `Pending` - Pending
+        * `Overdue` - Overdue
     StudentRequest:
       type: object
       properties:
