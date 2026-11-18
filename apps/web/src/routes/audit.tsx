@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { apiClient, getAuthToken } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/audit')({
   component: AuditLogPage,
@@ -94,6 +95,33 @@ function AuditLogPage() {
 
   // Live stream log state
   const [liveStreamLogs, setLiveStreamLogs] = React.useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
+
+  // Sync live backend audit events when authenticated
+  React.useEffect(() => {
+    if (!getAuthToken()) return;
+    apiClient
+      .get('/audit/events/')
+      .then((res) => {
+        const rows = res.data?.results;
+        if (Array.isArray(rows) && rows.length > 0) {
+          const mapped: AuditLogEntry[] = rows.map((r: any) => ({
+            id: String(r.id).slice(0, 8).toUpperCase(),
+            timestamp: new Date(r.created_at).toLocaleString('en-IN'),
+            actor: r.actor_name || 'System',
+            role: r.actor_role_label || 'Staff',
+            action: r.action,
+            target: `${r.target_type || 'Resource'} ${r.target_id || ''}`.trim(),
+            category: (['Auth', 'Students', 'Exams', 'Finance', 'Settings', 'Gate'].includes(r.category)
+              ? r.category
+              : 'Settings') as AuditLogEntry['category'],
+            ip: r.ip_address || '127.0.0.1',
+            status: (['Success', 'Warning', 'Blocked'].includes(r.status) ? r.status : 'Success') as AuditLogEntry['status'],
+          }));
+          setLiveStreamLogs((prev) => [...mapped, ...prev]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Live simulation for table events
   React.useEffect(() => {

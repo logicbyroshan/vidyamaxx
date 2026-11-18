@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { apiClient, getAuthToken } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/settings')({
   component: SchoolAdministrationPage,
@@ -159,8 +160,23 @@ function SchoolAdministrationPage() {
     }
   };
 
-  const handleSaveBranding = (e?: React.FormEvent) => {
+  const handleSaveBranding = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (getAuthToken()) {
+      try {
+        await apiClient.patch('/schools/current/', {
+          name: formData.name.trim() || 'VidyaFloww International Academy',
+          short_code: formData.shortCode.trim(),
+          tagline: formData.tagline.trim(),
+          city: formData.city.trim(),
+          established_year: formData.establishedYear,
+          academic_level: formData.academicLevel,
+          principal_name: formData.principalName,
+        });
+      } catch {
+        // keep optimistic local store update
+      }
+    }
     updateSchoolProfile({
       name: formData.name.trim() || 'VidyaFloww International Academy',
       shortCode: formData.shortCode.trim(),

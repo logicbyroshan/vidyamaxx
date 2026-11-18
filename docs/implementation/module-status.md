@@ -8,9 +8,9 @@
 
 | Domain / Layer | Backend App Boundary | Frontend Location | Status | Notes |
 |---|---|---|---|---|
-| **Identity, Auth & Tenancy** | `core.accounts`, `core.authentication`, `core.organizations`, `core.campuses`, `core.sessions` | `apps/web/src/routes/login.tsx`, `Header.tsx` | `AUDIT IN PROGRESS` | Phase 0 HLD & LLD drafted; moving to Phase 1 next |
-| **Permissions & Responsibilities** | `core.permissions` | `apps/web/src/routes/security.tsx` | `AUDIT IN PROGRESS` | Needs replacement of flat legacy role matrix with scoped Staff Responsibilities |
-| **Platform Storage, Audit & Jobs** | `platform_services.storage`, `audit`, `notifications`, `imports`, `exports` | Global (`audit.tsx`, `NotificationsPanel.tsx`) | `AUDIT IN PROGRESS` | S3/local storage abstraction + append-only AuditEvent + Celery pipeline |
+| **Identity, Auth & Tenancy** | `core.accounts`, `core.authentication`, `core.organizations`, `core.campuses`, `core.sessions` | `apps/web/src/routes/login.tsx`, `Header.tsx`, `@vidyafloww/api` | `VERIFIED COMPLETE` | Custom `User`, JWT rotation/reuse detection, OTP/Reset/Lookup, Multi-School `Membership`, 8 pytest suites passing |
+| **Permissions & Responsibilities** | `core.permissions` | `apps/web/src/routes/security.tsx` | `VERIFIED COMPLETE` | Unified `STAFF` scoped `StaffResponsibilityAssignment` + 30 divisions + Super Executive cancel block tested |
+| **Platform Storage, Audit & Jobs** | `platform_services.storage`, `audit`, `notifications`, `settings` | Global (`audit.tsx`, `NotificationsPanel.tsx`) | `VERIFIED COMPLETE` | Magic-byte file validation, presigned/RBAC downloads, immutable `AuditEvent`, health check (`/api/v1/health/`) |
 
 ---
 

@@ -15,7 +15,13 @@
  * const students = await apiClient.get('/students/');
  */
 
-export { apiClient, createApiClient } from './src/client';
+export {
+  apiClient,
+  createApiClient,
+  getAuthToken,
+  setAuthToken,
+  setTenantHeaders,
+} from './src/client';
 export { ApiError } from './src/errors';
 export type { ApiResponse, PaginatedResponse, ApiClientConfig } from './src/types';
 

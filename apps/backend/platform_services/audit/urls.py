@@ -1,2 +1,6 @@
-﻿# TODO: Implement urls.py for audit
+from django.urls import path
+from .views import AuditEventListView
 
+urlpatterns = [
+    path("events/", AuditEventListView.as_view(), name="audit-events"),
+]
