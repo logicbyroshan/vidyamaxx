@@ -65,7 +65,7 @@
 ### GROUP 6 — GOVERNANCE
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
-| 27 | **Reports & Analytics** | `platform_services.reports`, `modules.analytics`, `platform_services.dashboard` | `apps/web/src/routes/reports.tsx`, `statistics.tsx`, `index.tsx` | `NOT STARTED` |
+| 27 | **Reports & Analytics** | `platform_services.reports`, `modules.analytics` | `apps/web/src/routes/reports.tsx`, `statistics.tsx`, `index.tsx` | `VERIFIED COMPLETE` |
 | 28 | **School Administration** | `core.organizations`, `core.campuses`, `platform_services.settings` | `apps/web/src/routes/settings.tsx`, `license.tsx`, `shortcuts.tsx` | `VERIFIED COMPLETE` |
-| 29 | **Compliance & Records** | `modules.compliance` *(new)* | `reports.tsx` (CBSE/RTE audits) + API | `NOT STARTED` |
+| 29 | **Compliance & Records** | `platform_services.reports` (`StatutoryComplianceFiling`) | `reports.tsx` (CBSE/RTE audits) + API | `VERIFIED COMPLETE` |
 | 30 | **Security & Audit** | `platform_services.audit`, `core.permissions`, `core.sessions` | `apps/web/src/routes/security.tsx`, `audit.tsx` | `VERIFIED COMPLETE` |

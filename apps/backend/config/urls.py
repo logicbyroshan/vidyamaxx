@@ -82,6 +82,9 @@ urlpatterns = [
     # ─── API v1 Phase 6: Engagement, Health, Counselling & Support ──────────
     path("api/v1/engagement/", include("modules.discipline.urls")),
 
+    # ─── API v1 Phase 7 & 8: Analytics, Reports, Compliance, AI & Subsystems ─
+    path("api/v1/analytics/", include("modules.analytics.urls")),
+
     # ─── API Schema & Docs ──────────────────────────────────────────────────
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),

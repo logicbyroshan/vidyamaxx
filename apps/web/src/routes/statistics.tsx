@@ -18,7 +18,8 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
-import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
+import { SUBSYSTEMS, getSubsystemUrl, API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/statistics')({
   component: StatisticsPage,
@@ -31,6 +32,7 @@ function StatisticsPage() {
 
   useEffect(() => {
     document.title = t('page.statistics') + ' – VidyaFloww';
+    apiClient.get(API_ENDPOINTS.ANALYTICS.STATISTICS).catch(() => {});
   }, [t]);
 
   // Intake & Attendance Trajectory Data

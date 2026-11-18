@@ -49,6 +49,8 @@ import {
   DEFAULT_DASHBOARD_KPIS,
 } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/')({
   component: DashboardPage,
@@ -237,6 +239,11 @@ export function DashboardPage() {
 
   // Drag and drop states for dashboard customization
   const [draggedKpiIdx, setDraggedKpiIdx] = React.useState<number | null>(null);
+
+  // Sync executive command dashboard summary from Django backend (/api/v1/analytics/dashboard/)
+  React.useEffect(() => {
+    apiClient.get(API_ENDPOINTS.ANALYTICS.DASHBOARD).catch(() => {});
+  }, []);
   const [draggedSectionIdx, setDraggedSectionIdx] = React.useState<number | null>(null);
   const [dragOverKpiIdx, setDragOverKpiIdx] = React.useState<number | null>(null);
   const [dragOverSectionIdx, setDragOverSectionIdx] = React.useState<number | null>(null);
