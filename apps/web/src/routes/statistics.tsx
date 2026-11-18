@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 
 export const Route = createFileRoute('/statistics')({
   component: StatisticsPage,
@@ -87,7 +88,7 @@ function StatisticsPage() {
             className="group-hover:border-zinc-700 transition-colors"
           />
         </Link>
-        <Link to="/examinations" className="block group focus:outline-hidden">
+        <a href={getSubsystemUrl(SUBSYSTEMS.EXAMINATIONS)} target="_blank" rel="noopener noreferrer" className="block group focus:outline-hidden">
           <VFStatCard
             title={isHindi ? 'एनुअल बोर्ड पास रेट' : 'Board Exam Pass Rate'}
             value="98.6%"
@@ -97,7 +98,7 @@ function StatisticsPage() {
             accentColor="primary"
             className="group-hover:border-zinc-700 transition-colors"
           />
-        </Link>
+        </a>
       </div>
 
       {/* 2. Primary Analytical Visuals: Trajectory Chart (% inside bars) + Wing Breakdown */}
@@ -119,12 +120,12 @@ function StatisticsPage() {
                     <ArrowUpRight className="h-3 w-3" />
                   </VFButton>
                 </Link>
-                <Link to="/admissions">
+                <a href={getSubsystemUrl(SUBSYSTEMS.ADMISSIONS)} target="_blank" rel="noopener noreferrer">
                   <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
                     <span>{isHindi ? 'एडमिशन्स' : 'Admissions'}</span>
                     <ArrowUpRight className="h-3 w-3" />
                   </VFButton>
-                </Link>
+                </a>
               </div>
             }
             className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
@@ -315,12 +316,12 @@ function StatisticsPage() {
             </div>
           }
           actions={
-            <Link to="/admissions">
+            <a href={getSubsystemUrl(SUBSYSTEMS.ADMISSIONS)} target="_blank" rel="noopener noreferrer">
               <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
                 <span>{isHindi ? 'एडमिशन्स' : 'Admissions'}</span>
                 <ArrowUpRight className="h-3 w-3" />
               </VFButton>
-            </Link>
+            </a>
           }
           className="bg-[#0d0d0d] border-border/90 hover:border-zinc-700 transition-colors"
           bodyClassName="p-3.5 space-y-3"
@@ -399,12 +400,12 @@ function StatisticsPage() {
             </div>
           }
           actions={
-            <Link to="/fees">
+            <a href={getSubsystemUrl(SUBSYSTEMS.PAYMENTS)} target="_blank" rel="noopener noreferrer">
               <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
                 <span>{isHindi ? 'फीस लेजर' : 'Fee Ledgers'}</span>
                 <ArrowUpRight className="h-3 w-3" />
               </VFButton>
-            </Link>
+            </a>
           }
           className="bg-[#0d0d0d] border-border/90 hover:border-emerald-500/40 transition-colors"
           bodyClassName="p-3.5 space-y-3"
@@ -441,12 +442,12 @@ function StatisticsPage() {
             </div>
           }
           actions={
-            <Link to="/examinations">
+            <a href={getSubsystemUrl(SUBSYSTEMS.EXAMINATIONS)} target="_blank" rel="noopener noreferrer">
               <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px] gap-1">
                 <span>{isHindi ? 'एग्जाम्स' : 'Exams'}</span>
                 <ArrowUpRight className="h-3 w-3" />
               </VFButton>
-            </Link>
+            </a>
           }
           className="bg-[#0d0d0d] border-border/90 hover:border-amber-500/40 transition-colors"
           bodyClassName="p-3.5 space-y-3"

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFCard,
@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
 
 export const Route = createFileRoute('/academics')({
   component: AcademicsPage,
@@ -1394,8 +1395,10 @@ function AcademicsPage() {
       cell: (r: ClassSubject) => {
         const bookTitle = r.book?.title || `${r.name} Textbook`;
         return (
-          <Link
-            to="/elibrary"
+          <a
+            href={getSubsystemUrl(SUBSYSTEMS.ELIBRARY)}
+            target="_blank"
+            rel="noopener noreferrer"
             title={`${bookTitle} – ${isHindi ? 'ई-लाइब्रेरी में ओपन करें' : 'Open in E-Library'}`}
             className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-[4px] bg-[#181818] hover:bg-[#222222] border border-border/70 hover:border-teal-500/60 text-xs font-semibold text-foreground transition-all cursor-pointer group max-w-sm text-left shadow-2xs"
           >
@@ -1403,7 +1406,7 @@ function AcademicsPage() {
             <span className="text-[10px] px-1.5 py-0.5 rounded-[3px] bg-teal-500/15 text-teal-400 border border-teal-500/30 font-bold shrink-0">
               {isHindi ? 'ई-लाइब्रेरी ↗' : 'E-Library ↗'}
             </span>
-          </Link>
+          </a>
         );
       },
     },
@@ -1908,12 +1911,14 @@ function AcademicsPage() {
                 <Book className="h-3.5 w-3.5 text-foreground/70" />
                 {isHindi ? 'टेक्स्टबुक्स:' : 'Textbooks:'}
               </span>
-              <Link
-                to="/elibrary"
+              <a
+                href={getSubsystemUrl(SUBSYSTEMS.ELIBRARY)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-foreground hover:underline font-bold flex items-center gap-1 text-[11px]"
               >
                 {isHindi ? 'ई-लाइब्रेरी ↗' : 'E-Library ↗'}
-              </Link>
+              </a>
             </div>
           </div>
         </form>

@@ -78,14 +78,14 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
       {
         id: 'act-new-admit',
         icon: Plus,
-        label: 'New Student Admission Application',
-        sublabel: 'Create a new applicant dossier',
-        route: '/admissions',
+        label: 'Student Directory & Records',
+        sublabel: 'View enrolled student roster & profiles',
+        route: '/students',
         category: 'actions' as const,
         categoryLabel: 'Action',
-        shortcut: 'Shift+A',
+        shortcut: 'Shift+S',
         onSelect: () => {
-          navigate({ to: '/admissions' });
+          navigate({ to: '/students' });
           onClose();
         },
       },
