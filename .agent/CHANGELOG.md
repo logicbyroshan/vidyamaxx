@@ -15,7 +15,7 @@ Concise record of verified milestones and structural changes reconstructed from 
 ### Frontend Architecture Consolidation & Production Readiness Audit (2026-11-17)
 * **Design System & Sharp Border Radius Finalization**: Completely eradicated all legacy `rounded-lg` instances across `admissions.tsx`, `attendance.tsx`, `portal.tsx`, `students.tsx`, `teachers.tsx`, `timetable.tsx`, `AppShell.tsx`, `Header.tsx`, `VFEmptyState.tsx`, `VFLoading.tsx`, and `App.tsx` (landing), achieving 100% monorepo compliance with the crisp `rounded-[4px]` geometric standard.
 * **ESLint Error Resolution & Code Quality**: Resolved unused assignment errors in `fees.tsx`, unused arguments in `VFCard.tsx`, Fast Refresh export warnings in `LiveTransportMap.tsx`, and hook dependency warning in `AppShell.tsx`. Full monorepo `turbo run lint` now completes with 0 errors across all 15 packages.
-* **Canonical Naming & CI Pipeline Synchronization**: Fixed legacy package filter `@vidyamaxx/web` and database credentials in `.github/workflows/ci.yml` to canonical `@vidyafloww/web` and `vidyafloww_test`.
+* **Canonical Naming & CI Pipeline Synchronization**: Fixed legacy package filter and database credentials in `.github/workflows/ci.yml` to canonical `@vidyafloww/web` and `vidyafloww_test`.
 * **Constants & Route Synchronization**: Updated `ROUTES` constant registry in `@vidyafloww/constants` to match the 37 active TanStack Router file routes.
 * **Optimized Vendor Bundle Chunking**: Enhanced Rollup manual chunking in `apps/web/vite.config.ts` into isolated vendor chunks (`motion-vendor`, `icons-vendor`, `utils-vendor`, `router-vendor`, `query-vendor`), reducing index chunk size by ~300 KB.
 
