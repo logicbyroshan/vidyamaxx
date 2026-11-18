@@ -1,0 +1,123 @@
+openapi: 3.1.0
+info:
+  title: VidyaFloww Enterprise API
+  version: 1.0.0
+  description: >
+    Baseline OpenAPI 3.1 specification for the VidyaFloww Multi-Tenant School Management SaaS Backend.
+    Runtime schema is dynamically compiled and served by drf-spectacular at /api/schema/.
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local Development Backend
+  - url: https://api.vidyafloww.com/api/v1
+    description: Production Gateway
+security:
+  - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    SchoolHeader:
+      name: X-School-ID
+      in: header
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    StandardError:
+      type: object
+      required: [success, code, message]
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+paths:
+  /health/:
+    get:
+      summary: System Health Check (DB, Redis, Celery)
+      security: []
+      responses:
+        "200":
+          description: Service healthy
+  /auth/login/:
+    post:
+      summary: Authenticate user and issue Access JWT + HttpOnly Refresh Cookie
+      security: []
+      responses:
+        "200":
+          description: Authenticated
+        "401":
+          description: Invalid credentials
+  /auth/token/refresh/:
+    post:
+      summary: Rotate refresh token and issue fresh Access JWT
+      security: []
+      responses:
+        "200":
+          description: Refreshed
+  /auth/me/:
+    get:
+      summary: Get active user profile, school memberships, and scoped responsibilities
+      responses:
+        "200":
+          description: User profile & authorization matrix
+  /schools/current/:
+    get:
+      summary: Get current school configuration and branches
+      parameters:
+        - $ref: "#/components/parameters/SchoolHeader"
+      responses:
+        "200":
+          description: School configuration
+  /permissions/responsibilities/:
+    get:
+      summary: List staff work responsibility assignments
+      parameters:
+        - $ref: "#/components/parameters/SchoolHeader"
+      responses:
+        "200":
+          description: Paginated responsibility assignments
+    post:
+      summary: Assign scoped work responsibility to a STAFF member
+      parameters:
+        - $ref: "#/components/parameters/SchoolHeader"
+      responses:
+        "201":
+          description: Responsibility assigned
+  /students/:
+    get:
+      summary: List paginated students scoped to user permissions
+      parameters:
+        - $ref: "#/components/parameters/SchoolHeader"
+      responses:
+        "200":
+          description: Paginated Student list
+    post:
+      summary: Create new student & initial session enrollment
+      parameters:
+        - $ref: "#/components/parameters/SchoolHeader"
+      responses:
+        "201":
+          description: Student created
+  /audit/events/:
+    get:
+      summary: Query immutable school audit trail
+      parameters:
+        - $ref: "#/components/parameters/SchoolHeader"
+      responses:
+        "200":
+          description: Paginated audit events
