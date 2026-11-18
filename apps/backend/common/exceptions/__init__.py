@@ -104,6 +104,11 @@ def custom_exception_handler(exc: Exception, context: Dict[str, Any]) -> Optiona
                 "code": exc.code_str,
                 "message": exc.message_str,
                 "errors": exc.errors_dict,
+                "error": {
+                    "code": exc.code_str,
+                    "message": exc.message_str,
+                    "errors": exc.errors_dict,
+                },
             },
             status=exc.status_code,
         )

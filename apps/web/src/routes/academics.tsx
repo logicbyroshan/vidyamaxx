@@ -26,7 +26,8 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
-import { SUBSYSTEMS, getSubsystemUrl } from '@vidyafloww/constants';
+import { SUBSYSTEMS, getSubsystemUrl, API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/academics')({
   component: AcademicsPage,
@@ -1023,6 +1024,107 @@ function AcademicsPage() {
   // ─── 3. ACADEMIC MILESTONES STATE & DRAWER ─────────────────────────────────
   const [milestones, setMilestones] = React.useState<AcademicMilestone[]>(DEFAULT_MILESTONES);
   const [isMilestoneDrawerOpen, setIsMilestoneDrawerOpen] = React.useState(false);
+
+  // Sync classes & milestones from Django backend API (/api/v1/academics/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<Array<{
+          id: string;
+          code: string;
+          name: string;
+          hindi_name?: string;
+          stage?: string;
+          class_mentor_name?: string;
+          room_number?: string;
+          sections?: Array<{ name: string }>;
+          subject_mappings?: Array<{
+            subject_code: string;
+            subject_name: string;
+            curriculum_tier: ClassSubject['type'];
+            weekly_periods: number;
+            theory_marks: number;
+            internal_marks: number;
+            teacher_in_charge: string;
+            syllabus_chapters: number;
+            prescribed_book_json?: PrescribedBook;
+          }>;
+        }>>(API_ENDPOINTS.ACADEMICS.CLASSES);
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setClassesData((prev) => {
+            const next = { ...prev };
+            for (const c of res.data) {
+              const key = c.name === 'Class 10' ? 'Class 10' : c.code;
+              if (c.subject_mappings && c.subject_mappings.length > 0) {
+                next[key] = {
+                  ...(next[key] || INITIAL_CLASSES['Class 10']),
+                  classId: key,
+                  className: c.name,
+                  hindiClassName: c.hindi_name || c.name,
+                  stage: c.stage || 'Secondary Wing',
+                  classMentor: c.class_mentor_name || 'Dr. Rajesh Sharma',
+                  room: c.room_number || 'Room 201',
+                  sections: c.sections?.length
+                    ? c.sections.map((s) => `${c.name}-${s.name}`)
+                    : next[key]?.sections || ['Class 10-A', 'Class 10-B'],
+                  subjects: c.subject_mappings.map((m) => ({
+                    code: m.subject_code,
+                    name: m.subject_name,
+                    type: m.curriculum_tier || 'Core Compulsory',
+                    weeklyPeriods: m.weekly_periods,
+                    theoryMarks: m.theory_marks,
+                    internalMarks: m.internal_marks,
+                    teacherInCharge: m.teacher_in_charge || 'Faculty',
+                    syllabusChapters: m.syllabus_chapters || 12,
+                    book: m.prescribed_book_json?.title ? m.prescribed_book_json : undefined,
+                    status: 'Active',
+                  })),
+                };
+              }
+            }
+            return next;
+          });
+        }
+      } catch {
+        // Fallback to local state when unauthenticated or offline
+      }
+      try {
+        const msRes = await apiClient.get<Array<{
+          id: string;
+          title: string;
+          term: string;
+          start_date: string;
+          end_date: string;
+          target_syllabus_coverage: number;
+          assessment_type: AcademicMilestone['assessmentType'];
+          status: AcademicMilestone['status'];
+          notes?: string;
+        }>>(API_ENDPOINTS.ACADEMICS.MILESTONES);
+        if (active && Array.isArray(msRes?.data) && msRes.data.length > 0) {
+          setMilestones(
+            msRes.data.map((m) => ({
+              id: m.id,
+              classId: 'Class 10',
+              title: m.title,
+              term: m.term,
+              startDate: m.start_date,
+              endDate: m.end_date,
+              targetSyllabusCoverage: m.target_syllabus_coverage,
+              assessmentType: m.assessment_type,
+              status: m.status,
+              notes: m.notes,
+            }))
+          );
+        }
+      } catch {
+        // Fallback to DEFAULT_MILESTONES
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
   const [editingMilestone, setEditingMilestone] = React.useState<AcademicMilestone | null>(null);
   const [milestoneForm, setMilestoneForm] = React.useState({
     title: '',
@@ -1155,6 +1257,20 @@ function AcademicsPage() {
         type: 'success',
       });
     }
+
+    apiClient
+      .post(API_ENDPOINTS.ACADEMICS.CLASS_SUBJECTS, {
+        class_code: selectedClassId === 'Class 10' ? 'CLS-10' : selectedClassId,
+        subject_code: code,
+        subject_name: subjectForm.name.trim(),
+        curriculum_tier: subjectForm.type,
+        weekly_periods: Number(subjectForm.weeklyPeriods) || 5,
+        theory_marks: Number(subjectForm.theoryMarks) || 80,
+        internal_marks: Number(subjectForm.internalMarks) || 20,
+        teacher_in_charge: subjectForm.teacherInCharge.trim() || currentClassProfile.classMentor,
+        syllabus_chapters: Number(subjectForm.syllabusChapters) || 12,
+      })
+      .catch(() => {});
 
     setIsSubjectDrawerOpen(false);
   };

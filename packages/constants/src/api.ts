@@ -68,15 +68,36 @@ export const API_ENDPOINTS = {
     DETAIL: (id: string) => `${V1}/organizations/${id}/`,
   },
 
+  // Phase 2: Core Institutional Data
+  ACADEMICS: {
+    SESSIONS: `${V1}/academics/sessions/`,
+    CLASSES: `${V1}/academics/classes/`,
+    CLASS_DETAIL: (id: string) => `${V1}/academics/classes/${id}/`,
+    CLASS_SUBJECTS: `${V1}/academics/class-subjects/`,
+    MILESTONES: `${V1}/academics/milestones/`,
+  },
+
+  STAFF: {
+    LIST: `${V1}/staff/`,
+    DETAIL: (id: string) => `${V1}/staff/${id}/`,
+    DOSSIER_FIELDS: `${V1}/staff/dossier-fields/`,
+  },
+
   STUDENTS: {
     LIST: `${V1}/students/`,
     DETAIL: (id: string) => `${V1}/students/${id}/`,
+    PROMOTE: (id: string) => `${V1}/students/${id}/promote/`,
+    WITHDRAW: (id: string) => `${V1}/students/${id}/withdraw/`,
+    READMIT: (id: string) => `${V1}/students/${id}/readmit/`,
+    DOSSIER_FIELDS: `${V1}/students/dossier-fields/`,
     ATTENDANCE: (id: string) => `${V1}/students/${id}/attendance/`,
   },
 
   ADMISSIONS: {
-    LIST: `${V1}/admissions/`,
-    DETAIL: (id: string) => `${V1}/admissions/${id}/`,
-    APPROVE: (id: string) => `${V1}/admissions/${id}/approve/`,
+    LIST: `${V1}/admissions/applications/`,
+    ENQUIRIES: `${V1}/admissions/enquiries/`,
+    DETAIL: (id: string) => `${V1}/admissions/applications/${id}/`,
+    APPROVE: (id: string) => `${V1}/admissions/applications/${id}/approve/`,
+    ENROLL: (id: string) => `${V1}/admissions/applications/${id}/enroll/`,
   },
 } as const;

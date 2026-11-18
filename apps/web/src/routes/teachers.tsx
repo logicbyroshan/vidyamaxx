@@ -50,6 +50,8 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/teachers')({
   component: StaffPage,
@@ -565,6 +567,67 @@ function StaffPage() {
   React.useEffect(() => { document.title = t('page.teachers') + ' \u2013 VidyaFloww'; }, [t]);
   const [staffList, setStaffList] = React.useState<StaffRecord[]>(INITIAL_STAFF);
   const [selectedStaffIndex, setSelectedStaffIndex] = React.useState<number | null>(null);
+
+  // Sync unified staff roster from Django backend (/api/v1/staff/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<
+          Array<{
+            id: string;
+            employee_code: string;
+            full_name: string;
+            avatar_url?: string;
+            designation_title: string;
+            department_name: string;
+            primary_subject?: string;
+            secondary_subject?: string;
+            qualification?: string;
+            experience_years?: number;
+            joining_date?: string;
+            phone?: string;
+            email?: string;
+            weekly_periods_load?: number;
+            max_weekly_periods?: number;
+            employment_status?: string;
+            base_salary_inr?: string;
+          }>
+        >(API_ENDPOINTS.STAFF.LIST);
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setStaffList((prev) => {
+            const existingCodes = new Set(prev.map((s) => s.code));
+            const mapped: StaffRecord[] = res.data
+              .filter((r) => !existingCodes.has(r.employee_code))
+              .map((r) => ({
+                ...INITIAL_STAFF[0],
+                id: r.id,
+                code: r.employee_code,
+                name: r.full_name,
+                avatarUrl: r.avatar_url || INITIAL_STAFF[0].avatarUrl,
+                designation: r.designation_title || 'Faculty',
+                department: r.department_name || 'Academics',
+                subject: r.primary_subject || 'General',
+                secondarySubject: r.secondary_subject || undefined,
+                phone: r.phone || '+91 98765 00000',
+                email: r.email || 'faculty@vidyafloww.edu.in',
+                qualification: r.qualification || 'M.Sc., B.Ed.',
+                experience: `${r.experience_years || 5} Years`,
+                weeklyPeriods: r.weekly_periods_load || 22,
+                maxWeeklyPeriods: r.max_weekly_periods || 28,
+                status: (r.employment_status as StaffRecord['status']) || 'Active',
+              }));
+            return mapped.length > 0 ? [...mapped, ...prev] : prev;
+          });
+        }
+      } catch {
+        // Fallback to INITIAL_STAFF when offline/unauthenticated
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const [drawerTab, setDrawerTab] = React.useState<'overview' | 'academics' | 'attendance' | 'credentials' | 'payroll'>('overview');
   const [isEditingStaff, setIsEditingStaff] = React.useState<boolean>(false);
@@ -684,6 +747,18 @@ function StaffPage() {
     const updated = [...staffList];
     updated[selectedStaffIndex] = { ...staffFormData };
     setStaffList(updated);
+    if (staffFormData.id && staffFormData.id.includes('-')) {
+      apiClient
+        .patch(API_ENDPOINTS.STAFF.DETAIL(staffFormData.id), {
+          full_name: staffFormData.name,
+          designation_title: staffFormData.designation,
+          department_name: staffFormData.department,
+          primary_subject: staffFormData.subject,
+          phone: staffFormData.phone,
+          email: staffFormData.email,
+        })
+        .catch(() => {});
+    }
     setIsEditingStaff(false);
     setStaffFormData(null);
     addNotification({
@@ -763,6 +838,20 @@ function StaffPage() {
     };
 
     setStaffList([createdStaff, ...staffList]);
+    apiClient
+      .post(API_ENDPOINTS.STAFF.LIST, {
+        employee_code: createdStaff.code,
+        full_name: createdStaff.name,
+        designation_title: createdStaff.designation,
+        department_name: createdStaff.department,
+        primary_subject: createdStaff.subject,
+        secondary_subject: createdStaff.secondarySubject || '',
+        qualification: createdStaff.qualification,
+        phone: createdStaff.phone,
+        email: createdStaff.email,
+        weekly_periods_load: createdStaff.weeklyPeriods,
+      })
+      .catch(() => {});
     setIsAddStaffDrawerOpen(false);
     addNotification({
       title: 'Faculty Member Onboarded',
