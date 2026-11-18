@@ -295,6 +295,157 @@ paths:
               schema:
                 $ref: '#/components/schemas/AdmissionEnquiry'
           description: ''
+  /api/v1/analytics/ai/assist/:
+    post:
+      operationId: v1_analytics_ai_assist_create
+      description: |-
+        Cross-Platform AI Capability (Master Prompt Part 7.5):
+        AI is a cross-platform capability (`ai.*`), never a 31st work division.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIAssistRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AIAssistRequestRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAssistRequest'
+          description: ''
+  /api/v1/analytics/compliance/:
+    get:
+      operationId: v1_analytics_compliance_retrieve
+      description: 'Backs Work Division #29 Compliance & Records.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatutoryCompliance'
+          description: ''
+    post:
+      operationId: v1_analytics_compliance_create
+      description: 'Backs Work Division #29 Compliance & Records.'
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatutoryComplianceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatutoryComplianceRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatutoryCompliance'
+          description: ''
+  /api/v1/analytics/dashboard/:
+    get:
+      operationId: v1_analytics_dashboard_retrieve
+      description: Backs the Executive Command Center (`/` -> `apps/web/src/routes/index.tsx`).
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedReport'
+          description: ''
+  /api/v1/analytics/reports/:
+    get:
+      operationId: v1_analytics_reports_retrieve
+      description: 'Backs `/reports` (`apps/web/src/routes/reports.tsx`) — Work Division
+        #27.'
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedReport'
+          description: ''
+    post:
+      operationId: v1_analytics_reports_create
+      description: 'Backs `/reports` (`apps/web/src/routes/reports.tsx`) — Work Division
+        #27.'
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratedReportRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GeneratedReportRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedReport'
+          description: ''
+  /api/v1/analytics/statistics/:
+    get:
+      operationId: v1_analytics_statistics_retrieve
+      description: Backs `/statistics` (`apps/web/src/routes/statistics.tsx`).
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedReport'
+          description: ''
+  /api/v1/analytics/subsystems/:
+    get:
+      operationId: v1_analytics_subsystems_retrieve
+      description: |-
+        Exposes the integration contract & live synchronization status for all 12 decoupled
+        VidyaFloww subsystems (Master Prompt Part 2.2 & Phase 8).
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedReport'
+          description: ''
   /api/v1/attendance/leaves/:
     get:
       operationId: v1_attendance_leaves_retrieve
@@ -2682,6 +2833,30 @@ paths:
           description: ''
 components:
   schemas:
+    AIAssistRequest:
+      type: object
+      properties:
+        capability:
+          type: string
+          default: lesson_plan
+          maxLength: 60
+        prompt:
+          type: string
+      required:
+      - prompt
+    AIAssistRequestRequest:
+      type: object
+      properties:
+        capability:
+          type: string
+          minLength: 1
+          default: lesson_plan
+          maxLength: 60
+        prompt:
+          type: string
+          minLength: 1
+      required:
+      - prompt
     AcademicMilestone:
       type: object
       properties:
@@ -4443,6 +4618,73 @@ components:
         * `male` - Male
         * `female` - Female
         * `other` - Other
+    GeneratedReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        report_code:
+          type: string
+          maxLength: 50
+        domain:
+          type: string
+          maxLength: 40
+        title:
+          type: string
+          maxLength: 180
+        export_format:
+          type: string
+          maxLength: 15
+        row_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        generated_by_name:
+          type: string
+          maxLength: 150
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - report_code
+      - title
+    GeneratedReportRequest:
+      type: object
+      properties:
+        report_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        domain:
+          type: string
+          minLength: 1
+          maxLength: 40
+        title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        export_format:
+          type: string
+          minLength: 1
+          maxLength: 15
+        row_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        generated_by_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+      required:
+      - report_code
+      - title
     GradeClass:
       type: object
       properties:
@@ -7417,6 +7659,77 @@ components:
         * `late` - Late
         * `half_day` - Half Day
         * `medical_leave` - Medical Leave
+    StatutoryCompliance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        filing_code:
+          type: string
+          maxLength: 50
+        authority_name:
+          type: string
+          maxLength: 120
+        title:
+          type: string
+          maxLength: 200
+        academic_session_label:
+          type: string
+          maxLength: 30
+        submission_status:
+          type: string
+          maxLength: 30
+        reference_number:
+          type: string
+          maxLength: 80
+        valid_until:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - filing_code
+      - id
+      - title
+    StatutoryComplianceRequest:
+      type: object
+      properties:
+        filing_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        authority_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        academic_session_label:
+          type: string
+          minLength: 1
+          maxLength: 30
+        submission_status:
+          type: string
+          minLength: 1
+          maxLength: 30
+        reference_number:
+          type: string
+          maxLength: 80
+        valid_until:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - filing_code
+      - title
     StoredFile:
       type: object
       properties:

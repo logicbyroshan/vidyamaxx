@@ -170,4 +170,14 @@ export const API_ENDPOINTS = {
     COMPLAINTS: `${V1}/engagement/complaints/`,
     COMPLAINT_DETAIL: (id: string) => `${V1}/engagement/complaints/${id}/`,
   },
+
+  // Phase 7 & 8: Governance, Reports, Analytics, Compliance, AI & Subsystems
+  ANALYTICS: {
+    DASHBOARD: `${V1}/analytics/dashboard/`,
+    STATISTICS: `${V1}/analytics/statistics/`,
+    REPORTS: `${V1}/analytics/reports/`,
+    COMPLIANCE: `${V1}/analytics/compliance/`,
+    AI_ASSIST: `${V1}/analytics/ai/assist/`,
+    SUBSYSTEMS: `${V1}/analytics/subsystems/`,
+  },
 } as const;
