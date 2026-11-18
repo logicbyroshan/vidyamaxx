@@ -144,4 +144,19 @@ export const API_ENDPOINTS = {
     SCHOLARSHIPS: `${V1}/finance/scholarships/`,
     ACCOUNTS: `${V1}/finance/accounts/`,
   },
+
+  // Phase 5: School Operational Domains
+  OPERATIONS: {
+    CERT_TEMPLATES: `${V1}/operations/certificates/templates/`,
+    CERT_ISSUED: `${V1}/operations/certificates/issued/`,
+    DOCUMENTS: `${V1}/operations/documents/`,
+    LIBRARY_BOOKS: `${V1}/operations/library/books/`,
+    TRANSPORT_ROUTES: `${V1}/operations/transport/routes/`,
+    HOSTEL_ALLOCATIONS: `${V1}/operations/hostel/allocations/`,
+    INVENTORY_ITEMS: `${V1}/operations/inventory/items/`,
+    ASSETS: `${V1}/operations/assets/`,
+    EVENTS: `${V1}/operations/events/`,
+    ACTIVITIES: `${V1}/operations/activities/`,
+    VISITORS: `${V1}/operations/front-office/visitors/`,
+  },
 } as const;

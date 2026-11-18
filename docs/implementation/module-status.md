@@ -38,14 +38,12 @@
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
 | 11 | **Fees & Finance** | `modules.finance`, `modules.accounting`, `integrations.payment` | `Payments-VidyaFloww` (standalone), `students.tsx` | `VERIFIED COMPLETE` |
-| 12 | **Documents & Certificates** | `modules.documents`, `modules.certificates` + `Design-Lab` adapter | `Design-VidyaFloww`, `students.tsx` | `NOT STARTED` |
-| 13 | **Library** | `modules.library` + E-Library adapter | `Library-VidyaFloww` | `NOT STARTED` |
-| 14 | **Transport** | `modules.transport` (integration adapter) | `Transport-VidyaFloww` | `NOT STARTED` |
-| 15 | **Hostel** | `modules.hostel` (integration adapter) | `Hostel-VidyaFloww` | `NOT STARTED` |
-| 16 | **Inventory** | `modules.inventory` | Backend API + Portal/Admin | `NOT STARTED` |
-| 17 | **Assets & Maintenance** | `modules.assets` *(new)* | Backend API + `HRM-VidyaFloww` asset tab | `NOT STARTED` |
-
-*(Note: `modules.accounting.ChartOfAccount` and `modules.certificates.CertificateTemplate` exist as partial single models without tenant FK or endpoints.)*
+| 12 | **Documents & Certificates** | `modules.documents`, `modules.certificates` + `Design-Lab` adapter | `Design-VidyaFloww`, `students.tsx` | `VERIFIED COMPLETE` |
+| 13 | **Library** | `modules.library` + E-Library adapter | `Library-VidyaFloww` | `VERIFIED COMPLETE` |
+| 14 | **Transport** | `modules.transport` (integration adapter) | `Transport-VidyaFloww` | `VERIFIED COMPLETE` |
+| 15 | **Hostel** | `modules.hostel` (integration adapter) | `Hostel-VidyaFloww` | `VERIFIED COMPLETE` |
+| 16 | **Inventory** | `modules.inventory` | Backend API + Portal/Admin | `VERIFIED COMPLETE` |
+| 17 | **Assets & Maintenance** | `modules.inventory` (`FixedAssetRecord`) | Backend API + `HRM-VidyaFloww` asset tab | `VERIFIED COMPLETE` |
 
 ### GROUP 4 — PEOPLE
 | # | Work Division | Backend App(s) | UI Location | Status |
@@ -60,11 +58,11 @@
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
 | 21 | **Communication** | `modules.communication`, `platform_services.notifications` | `Communication-VidyaFloww` (standalone) | `NOT STARTED` |
-| 22 | **Events & Calendar** | `modules.events` | `academics.tsx`, `Portal-VidyaFloww` | `NOT STARTED` |
-| 23 | **Student Activities** | `modules.student_activities` *(new)* | `students.tsx` (Houses), Portal | `NOT STARTED` |
+| 22 | **Events & Calendar** | `modules.events` | `academics.tsx`, `Portal-VidyaFloww` | `VERIFIED COMPLETE` |
+| 23 | **Student Activities** | `modules.events` (`StudentActivityRecord`) | `students.tsx` (Houses), Portal | `VERIFIED COMPLETE` |
 | 24 | **Surveys & Forms** | `platform_services.forms` / `modules.surveys` *(new)* | `apps/web/src/routes/surveys.tsx` | `NOT STARTED` |
 | 25 | **Complaints & Grievances** | `modules.discipline` / `modules.complaints` *(new)* | `apps/web/src/routes/complaints.tsx` | `NOT STARTED` |
-| 26 | **Front Office** | `modules.front_office` *(new)* | Backend API / Reception workflows | `NOT STARTED` |
+| 26 | **Front Office** | `modules.events` (`FrontOfficeVisitorPass`) | Backend API / Reception workflows | `VERIFIED COMPLETE` |
 
 ### GROUP 6 — GOVERNANCE
 | # | Work Division | Backend App(s) | UI Location | Status |

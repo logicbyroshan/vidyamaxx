@@ -76,6 +76,9 @@ urlpatterns = [
     # ─── API v1 Phase 4: Financial Operations ───────────────────────────────
     path("api/v1/finance/", include("modules.finance.urls")),
 
+    # ─── API v1 Phase 5: School Operational Domains ─────────────────────────
+    path("api/v1/operations/", include("modules.events.urls")),
+
     # ─── API Schema & Docs ──────────────────────────────────────────────────
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
