@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { apiClient, getAuthToken } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/license')({
   component: LicenseManagementPage,
@@ -89,6 +90,19 @@ function LicenseManagementPage() {
   const [cardholderName, setCardholderName] = React.useState('VidyaFloww International Academy');
   const [cardNumber, setCardNumber] = React.useState('•••• •••• •••• 4242');
   const [expiryDate, setExpiryDate] = React.useState('08/29');
+
+  React.useEffect(() => {
+    if (!getAuthToken()) return;
+    apiClient
+      .get('/platform/subscription/')
+      .then((res) => {
+        const sub = res.data?.subscription;
+        if (sub?.payment_method_last4) {
+          setCardNumber(`•••• •••• •••• ${sub.payment_method_last4}`);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const licenseKey = 'VFL-2026-SA98-CBSE-9481-DELHI';
 

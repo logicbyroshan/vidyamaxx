@@ -6,7 +6,9 @@ Environment-specific settings are in development.py, production.py, and testing.
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -112,9 +114,14 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # TODO: Add custom middleware
-    # "common.middleware.RequestLoggingMiddleware",
-    # "common.middleware.TenantMiddleware",
+    "common.middleware.RequestLoggingMiddleware",
+    "common.middleware.TenantContextMiddleware",
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "x-school-id",
+    "x-branch-id",
+    "x-request-id",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -173,7 +180,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# TODO: Set AUTH_USER_MODEL = "core.accounts.User" after implementing the custom user model
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+]
+
+AUTH_USER_MODEL = "accounts.User"
 
 # ─── Internationalization ─────────────────────────────────────────────────────
 
@@ -218,6 +230,24 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "common.pagination.StandardResultsSetPagination",
     "PAGE_SIZE": 20,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "common.exceptions.custom_exception_handler",
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/hour",
+        "user": "2000/hour",
+    },
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
 }
 
 # ─── Channels ─────────────────────────────────────────────────────────────────

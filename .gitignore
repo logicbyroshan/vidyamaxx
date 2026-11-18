@@ -101,6 +101,8 @@ apps/backend/staticfiles/
 apps/backend/logs/
 db.sqlite3
 db.sqlite3-journal
+*.sqlite3
+*.sqlite3-journal
 
 # ─── Test & Coverage Reports ──────────────────────────────────────────────────
 coverage/

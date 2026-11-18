@@ -10,8 +10,10 @@ from .base import *  # noqa: F401, F403
 # ─── Speed Optimizations ──────────────────────────────────────────────────────
 
 DEBUG = False
+TESTING = True
 SECRET_KEY = "test-secret-key-not-for-production"
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {"anon": "10000/hour", "user": "10000/hour"}  # noqa: F405
 
 # ─── Database ─────────────────────────────────────────────────────────────────
 

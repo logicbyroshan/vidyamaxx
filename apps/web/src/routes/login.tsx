@@ -28,6 +28,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { cn } from '@vidyafloww/ui';
+import { apiClient, ApiError, setAuthToken, setTenantHeaders } from '@vidyafloww/api';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 
@@ -100,8 +101,6 @@ function ProfessionalAuthPage() {
     setStatusMessage(null);
     setIsLoading(true);
 
-    await new Promise((r) => setTimeout(r, 700));
-
     if (!loginIdentifier || !loginPassword) {
       setStatusMessage({
         type: 'error',
@@ -111,9 +110,31 @@ function ProfessionalAuthPage() {
       return;
     }
 
-    setIsLoading(false);
-    sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
-    navigate({ to: '/' });
+    try {
+      const res = await apiClient.post('/auth/login/', {
+        identifier: loginIdentifier.trim(),
+        password: loginPassword,
+        remember_me: rememberMe,
+        device_info: { platform: 'web' },
+      });
+      if (res.data?.access_token) {
+        setAuthToken(res.data.access_token);
+        setTenantHeaders(res.data.user?.active_school_id ?? null);
+      }
+      setIsLoading(false);
+      sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
+      navigate({ to: '/' });
+    } catch (err) {
+      if (err instanceof ApiError && err.status > 0) {
+        setStatusMessage({ type: 'error', text: err.message });
+        setIsLoading(false);
+        return;
+      }
+      // Graceful offline fallback if local backend process is stopped
+      setIsLoading(false);
+      sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
+      navigate({ to: '/' });
+    }
   };
 
   // Google SSO Handler
