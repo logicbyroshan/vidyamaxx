@@ -19,9 +19,9 @@
 ### GROUP 1 — STUDENTS
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
-| 1 | **Admissions** | `modules.admissions` | `Admissions-VidyaFloww` (standalone) | `NOT STARTED` |
-| 2 | **Students** | `modules.students` | `apps/web/src/routes/students.tsx` | `NOT STARTED` |
-| 3 | **Academics** | `modules.academics` | `apps/web/src/routes/academics.tsx` | `NOT STARTED` |
+| 1 | **Admissions** | `modules.admissions` | `Admissions-VidyaFloww` (standalone) | `VERIFIED COMPLETE` |
+| 2 | **Students** | `modules.students` | `apps/web/src/routes/students.tsx` | `VERIFIED COMPLETE` |
+| 3 | **Academics** | `modules.academics` | `apps/web/src/routes/academics.tsx` | `VERIFIED COMPLETE` |
 | 4 | **Timetable** | `modules.timetable` | `apps/web/src/routes/timetable.tsx` | `NOT STARTED` |
 | 5 | **Attendance** | `modules.attendance` | `apps/web/src/routes/attendance.tsx` | `NOT STARTED` |
 
@@ -52,7 +52,7 @@
 ### GROUP 4 — PEOPLE
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
-| 18 | **Staff & HR** | `modules.hr`, `core.users` (`StaffProfile`) + HR/Biometrics adapter | `apps/web/src/routes/teachers.tsx`, `HRM-VidyaFloww` | `NOT STARTED` |
+| 18 | **Staff & HR** | `modules.hr`, `core.users` (`StaffProfile`) + HR/Biometrics adapter | `apps/web/src/routes/teachers.tsx`, `HRM-VidyaFloww` | `VERIFIED COMPLETE` |
 | 19 | **Student Health** | `modules.medical` | `students.tsx` (dossier medical fields) + API | `NOT STARTED` |
 | 20 | **Counselling & Support** | `modules.welfare` | Backend API (confidential RBAC) | `NOT STARTED` |
 
@@ -72,6 +72,6 @@
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
 | 27 | **Reports & Analytics** | `platform_services.reports`, `modules.analytics`, `platform_services.dashboard` | `apps/web/src/routes/reports.tsx`, `statistics.tsx`, `index.tsx` | `NOT STARTED` |
-| 28 | **School Administration** | `core.organizations`, `core.campuses`, `platform_services.settings` | `apps/web/src/routes/settings.tsx`, `license.tsx`, `shortcuts.tsx` | `NOT STARTED` |
+| 28 | **School Administration** | `core.organizations`, `core.campuses`, `platform_services.settings` | `apps/web/src/routes/settings.tsx`, `license.tsx`, `shortcuts.tsx` | `VERIFIED COMPLETE` |
 | 29 | **Compliance & Records** | `modules.compliance` *(new)* | `reports.tsx` (CBSE/RTE audits) + API | `NOT STARTED` |
-| 30 | **Security & Audit** | `platform_services.audit`, `core.permissions`, `core.sessions` | `apps/web/src/routes/security.tsx`, `audit.tsx` | `NOT STARTED` |
+| 30 | **Security & Audit** | `platform_services.audit`, `core.permissions`, `core.sessions` | `apps/web/src/routes/security.tsx`, `audit.tsx` | `VERIFIED COMPLETE` |

@@ -4,6 +4,297 @@ info:
   version: 1.0.0
   description: Enterprise School Management Platform REST API
 paths:
+  /api/v1/academics/class-subjects/:
+    post:
+      operationId: v1_academics_class_subjects_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassSubjectMappingRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClassSubjectMappingRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSubjectMapping'
+          description: ''
+  /api/v1/academics/classes/:
+    get:
+      operationId: v1_academics_classes_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradeClass'
+          description: ''
+    post:
+      operationId: v1_academics_classes_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GradeClassRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GradeClassRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradeClass'
+          description: ''
+  /api/v1/academics/classes/{id}/:
+    patch:
+      operationId: v1_academics_classes_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGradeClassRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGradeClassRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradeClass'
+          description: ''
+  /api/v1/academics/milestones/:
+    get:
+      operationId: v1_academics_milestones_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademicMilestone'
+          description: ''
+    post:
+      operationId: v1_academics_milestones_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademicMilestoneRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AcademicMilestoneRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademicMilestone'
+          description: ''
+  /api/v1/academics/sessions/:
+    get:
+      operationId: v1_academics_sessions_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademicSession'
+          description: ''
+    post:
+      operationId: v1_academics_sessions_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademicSessionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AcademicSessionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademicSession'
+          description: ''
+  /api/v1/admissions/applications/:
+    get:
+      operationId: v1_admissions_applications_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdmissionApplication'
+          description: ''
+    post:
+      operationId: v1_admissions_applications_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdmissionApplicationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdmissionApplicationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdmissionApplication'
+          description: ''
+  /api/v1/admissions/applications/{id}/approve/:
+    post:
+      operationId: v1_admissions_applications_approve_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveApplicationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApproveApplicationRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApproveApplication'
+          description: ''
+  /api/v1/admissions/applications/{id}/enroll/:
+    post:
+      operationId: v1_admissions_applications_enroll_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollApplicationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnrollApplicationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollApplication'
+          description: ''
+  /api/v1/admissions/enquiries/:
+    get:
+      operationId: v1_admissions_enquiries_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdmissionEnquiry'
+          description: ''
+    post:
+      operationId: v1_admissions_enquiries_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdmissionEnquiryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdmissionEnquiryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdmissionEnquiry'
+          description: ''
   /api/v1/audit/events/:
     get:
       operationId: v1_audit_events_list
@@ -567,6 +858,143 @@ paths:
               schema:
                 $ref: '#/components/schemas/School'
           description: ''
+  /api/v1/staff/:
+    get:
+      operationId: v1_staff_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffProfile'
+          description: ''
+    post:
+      operationId: v1_staff_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StaffProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffProfile'
+          description: ''
+  /api/v1/staff/{id}/:
+    get:
+      operationId: v1_staff_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffProfile'
+          description: ''
+    patch:
+      operationId: v1_staff_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStaffProfileRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffProfile'
+          description: ''
+    delete:
+      operationId: v1_staff_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/staff/dossier-fields/:
+    get:
+      operationId: v1_staff_dossier_fields_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffDossierField'
+          description: ''
+    post:
+      operationId: v1_staff_dossier_fields_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffDossierFieldRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StaffDossierFieldRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffDossierField'
+          description: ''
   /api/v1/storage/files/:
     post:
       operationId: v1_storage_files_create
@@ -611,8 +1039,388 @@ paths:
               schema:
                 $ref: '#/components/schemas/StoredFile'
           description: ''
+  /api/v1/students/:
+    get:
+      operationId: v1_students_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    post:
+      operationId: v1_students_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+  /api/v1/students/{id}/:
+    get:
+      operationId: v1_students_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    patch:
+      operationId: v1_students_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    delete:
+      operationId: v1_students_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/students/{id}/promote/:
+    post:
+      operationId: v1_students_promote_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromoteStudentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PromoteStudentRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromoteStudent'
+          description: ''
+  /api/v1/students/{id}/readmit/:
+    post:
+      operationId: v1_students_readmit_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifecycleActionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LifecycleActionRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifecycleAction'
+          description: ''
+  /api/v1/students/{id}/withdraw/:
+    post:
+      operationId: v1_students_withdraw_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifecycleActionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LifecycleActionRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifecycleAction'
+          description: ''
+  /api/v1/students/dossier-fields/:
+    get:
+      operationId: v1_students_dossier_fields_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDossierField'
+          description: ''
+    post:
+      operationId: v1_students_dossier_fields_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDossierFieldRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentDossierFieldRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDossierField'
+          description: ''
 components:
   schemas:
+    AcademicMilestone:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        grade_class:
+          type: string
+          format: uuid
+        class_code:
+          type: string
+          readOnly: true
+        academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          maxLength: 180
+        term:
+          type: string
+          maxLength: 60
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        target_syllabus_coverage:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        assessment_type:
+          $ref: '#/components/schemas/AssessmentTypeEnum'
+        status:
+          $ref: '#/components/schemas/AcademicMilestoneStatusEnum'
+        notes:
+          type: string
+      required:
+      - class_code
+      - end_date
+      - grade_class
+      - id
+      - start_date
+      - title
+    AcademicMilestoneRequest:
+      type: object
+      properties:
+        grade_class:
+          type: string
+          format: uuid
+        academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        term:
+          type: string
+          minLength: 1
+          maxLength: 60
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        target_syllabus_coverage:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        assessment_type:
+          $ref: '#/components/schemas/AssessmentTypeEnum'
+        status:
+          $ref: '#/components/schemas/AcademicMilestoneStatusEnum'
+        notes:
+          type: string
+      required:
+      - end_date
+      - grade_class
+      - start_date
+      - title
+    AcademicMilestoneStatusEnum:
+      enum:
+      - In Progress
+      - Upcoming
+      - Scheduled
+      - Completed
+      type: string
+      description: |-
+        * `In Progress` - In Progress
+        * `Upcoming` - Upcoming
+        * `Scheduled` - Scheduled
+        * `Completed` - Completed
+    AcademicSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        code:
+          type: string
+          maxLength: 30
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        is_current:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - end_date
+      - id
+      - name
+      - start_date
+    AcademicSessionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        code:
+          type: string
+          minLength: 1
+          maxLength: 30
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        is_current:
+          type: boolean
+      required:
+      - code
+      - end_date
+      - name
+      - start_date
     ActionsEnum:
       enum:
       - view
@@ -631,6 +1439,352 @@ components:
         * `approve` - approve
         * `export` - export
         * `manage` - manage
+    AdmissionApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        application_number:
+          type: string
+          maxLength: 50
+        academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        applied_class:
+          type: string
+          format: uuid
+          nullable: true
+        applied_grade_label:
+          type: string
+          maxLength: 60
+        candidate_name:
+          type: string
+          maxLength: 150
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          maxLength: 15
+        blood_group:
+          type: string
+          maxLength: 10
+        category_quota:
+          type: string
+          maxLength: 30
+        previous_school_name:
+          type: string
+          maxLength: 200
+        previous_score_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          nullable: true
+        primary_guardian_name:
+          type: string
+          maxLength: 150
+        primary_guardian_relation:
+          type: string
+          maxLength: 30
+        guardian_phone:
+          type: string
+          maxLength: 25
+        guardian_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        guardian_occupation:
+          type: string
+          maxLength: 120
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        merit_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        documents_verified:
+          type: boolean
+        stage:
+          $ref: '#/components/schemas/AdmissionApplicationStageEnum'
+        enrolled_student:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        decision_remarks:
+          type: string
+        decided_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - application_number
+      - candidate_name
+      - created_at
+      - decided_at
+      - enrolled_student
+      - guardian_phone
+      - id
+      - primary_guardian_name
+    AdmissionApplicationRequest:
+      type: object
+      properties:
+        application_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        applied_class:
+          type: string
+          format: uuid
+          nullable: true
+        applied_grade_label:
+          type: string
+          minLength: 1
+          maxLength: 60
+        candidate_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          minLength: 1
+          maxLength: 15
+        blood_group:
+          type: string
+          maxLength: 10
+        category_quota:
+          type: string
+          minLength: 1
+          maxLength: 30
+        previous_school_name:
+          type: string
+          maxLength: 200
+        previous_score_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          nullable: true
+        primary_guardian_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        primary_guardian_relation:
+          type: string
+          minLength: 1
+          maxLength: 30
+        guardian_phone:
+          type: string
+          minLength: 1
+          maxLength: 25
+        guardian_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        guardian_occupation:
+          type: string
+          maxLength: 120
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        merit_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        documents_verified:
+          type: boolean
+        stage:
+          $ref: '#/components/schemas/AdmissionApplicationStageEnum'
+        decision_remarks:
+          type: string
+      required:
+      - application_number
+      - candidate_name
+      - guardian_phone
+      - primary_guardian_name
+    AdmissionApplicationStageEnum:
+      enum:
+      - pending
+      - under_review
+      - interview_scheduled
+      - approved
+      - waitlisted
+      - rejected
+      - enrolled
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `under_review` - Under Review
+        * `interview_scheduled` - Interview Scheduled
+        * `approved` - Approved
+        * `waitlisted` - Waitlisted
+        * `rejected` - Rejected
+        * `enrolled` - Enrolled
+    AdmissionEnquiry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        enquiry_number:
+          type: string
+          maxLength: 50
+        candidate_name:
+          type: string
+          maxLength: 150
+        applied_grade_label:
+          type: string
+          maxLength: 60
+        guardian_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 25
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        source:
+          type: string
+          maxLength: 50
+        status:
+          $ref: '#/components/schemas/AdmissionEnquiryStatusEnum'
+        follow_up_notes:
+          type: string
+        next_follow_up_date:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - applied_grade_label
+      - candidate_name
+      - created_at
+      - enquiry_number
+      - guardian_name
+      - id
+      - phone
+    AdmissionEnquiryRequest:
+      type: object
+      properties:
+        enquiry_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        candidate_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        applied_grade_label:
+          type: string
+          minLength: 1
+          maxLength: 60
+        guardian_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 25
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        source:
+          type: string
+          minLength: 1
+          maxLength: 50
+        status:
+          $ref: '#/components/schemas/AdmissionEnquiryStatusEnum'
+        follow_up_notes:
+          type: string
+        next_follow_up_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - applied_grade_label
+      - candidate_name
+      - enquiry_number
+      - guardian_name
+      - phone
+    AdmissionEnquiryStatusEnum:
+      enum:
+      - OPEN
+      - FOLLOW_UP
+      - CONVERTED
+      - CLOSED
+      type: string
+      description: |-
+        * `OPEN` - Open
+        * `FOLLOW_UP` - Follow-Up
+        * `CONVERTED` - Converted
+        * `CLOSED` - Closed
+    ApproveApplication:
+      type: object
+      properties:
+        remarks:
+          type: string
+          default: ''
+    ApproveApplicationRequest:
+      type: object
+      properties:
+        remarks:
+          type: string
+          default: ''
+    AssessmentTypeEnum:
+      enum:
+      - Mid-Term Exam
+      - Periodic Test
+      - Pre-Board Exam
+      - Final CBSE Board
+      - Internal Assessment & Practical
+      type: string
+      description: |-
+        * `Mid-Term Exam` - Mid-Term Exam
+        * `Periodic Test` - Periodic Test
+        * `Pre-Board Exam` - Pre-Board Exam
+        * `Final CBSE Board` - Final CBSE Board
+        * `Internal Assessment & Practical` - Internal Assessment & Practical
     AuditEvent:
       type: object
       properties:
@@ -831,6 +1985,119 @@ components:
       description: |-
         * `ACTIVE` - Active
         * `INACTIVE` - Inactive
+    ClassSubjectMapping:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        grade_class:
+          type: string
+          format: uuid
+        subject:
+          type: string
+          format: uuid
+        code:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        subject_code:
+          type: string
+          readOnly: true
+        subject_name:
+          type: string
+          readOnly: true
+        curriculum_tier:
+          type: string
+          readOnly: true
+        weekly_periods:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        theory_marks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        internal_marks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        teacher_in_charge:
+          type: string
+          maxLength: 150
+        syllabus_chapters:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        prescribed_book_json: {}
+        status:
+          $ref: '#/components/schemas/ClassSubjectMappingStatusEnum'
+      required:
+      - code
+      - curriculum_tier
+      - grade_class
+      - id
+      - name
+      - subject
+      - subject_code
+      - subject_name
+      - type
+    ClassSubjectMappingRequest:
+      type: object
+      properties:
+        grade_class:
+          type: string
+          format: uuid
+        subject:
+          type: string
+          format: uuid
+        weekly_periods:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        theory_marks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        internal_marks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        teacher_in_charge:
+          type: string
+          maxLength: 150
+        syllabus_chapters:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        prescribed_book_json: {}
+        status:
+          $ref: '#/components/schemas/ClassSubjectMappingStatusEnum'
+      required:
+      - grade_class
+      - subject
+    ClassSubjectMappingStatusEnum:
+      enum:
+      - Active
+      - Elective
+      type: string
+      description: |-
+        * `Active` - Active
+        * `Elective` - Elective
     CreateResponsibilityRequest:
       type: object
       properties:
@@ -888,6 +2155,58 @@ components:
       - actions
       - membership_id
       - work_division
+    EmploymentStatusEnum:
+      enum:
+      - Active
+      - On Leave
+      - Resigned
+      type: string
+      description: |-
+        * `Active` - Active
+        * `On Leave` - On Leave
+        * `Resigned` - Resigned
+    EnrollApplication:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          maxLength: 50
+        section_id:
+          type: string
+          format: uuid
+          nullable: true
+        roll_number:
+          type: string
+          default: ''
+          maxLength: 20
+        house_name:
+          type: string
+          default: Ashoka
+          maxLength: 60
+      required:
+      - admission_number
+    EnrollApplicationRequest:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        section_id:
+          type: string
+          format: uuid
+          nullable: true
+        roll_number:
+          type: string
+          default: ''
+          maxLength: 20
+        house_name:
+          type: string
+          minLength: 1
+          default: Ashoka
+          maxLength: 60
+      required:
+      - admission_number
     EventTypeEnum:
       enum:
       - GRANTED
@@ -898,6 +2217,131 @@ components:
         * `GRANTED` - Granted
         * `UPDATED` - Updated
         * `REVOKED` - Revoked
+    GenderEnum:
+      enum:
+      - male
+      - female
+      - other
+      type: string
+      description: |-
+        * `male` - Male
+        * `female` - Female
+        * `other` - Other
+    GradeClass:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 30
+        name:
+          type: string
+          maxLength: 100
+        hindi_name:
+          type: string
+          maxLength: 100
+        numeric_grade:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        stage:
+          $ref: '#/components/schemas/GradeClassStageEnum'
+        class_mentor_name:
+          type: string
+          maxLength: 150
+        room_number:
+          type: string
+          maxLength: 50
+        display_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Section'
+          readOnly: true
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassSubjectMapping'
+          readOnly: true
+        subject_mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassSubjectMapping'
+          readOnly: true
+      required:
+      - code
+      - id
+      - name
+      - sections
+      - subject_mappings
+      - subjects
+    GradeClassRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 30
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        hindi_name:
+          type: string
+          maxLength: 100
+        numeric_grade:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        stage:
+          $ref: '#/components/schemas/GradeClassStageEnum'
+        class_mentor_name:
+          type: string
+          maxLength: 150
+        room_number:
+          type: string
+          maxLength: 50
+        display_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - code
+      - name
+    GradeClassStageEnum:
+      enum:
+      - Primary Wing
+      - Middle Wing
+      - Secondary Wing
+      - Senior Secondary
+      type: string
+      description: |-
+        * `Primary Wing` - Primary Wing
+        * `Middle Wing` - Middle Wing
+        * `Secondary Wing` - Secondary Wing
+        * `Senior Secondary` - Senior Secondary
+    LifecycleAction:
+      type: object
+      properties:
+        reason:
+          type: string
+          default: ''
+    LifecycleActionRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          default: ''
     Login:
       type: object
       properties:
@@ -1148,6 +2592,38 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+    PatchedGradeClassRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 30
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        hindi_name:
+          type: string
+          maxLength: 100
+        numeric_grade:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        stage:
+          $ref: '#/components/schemas/GradeClassStageEnum'
+        class_mentor_name:
+          type: string
+          maxLength: 150
+        room_number:
+          type: string
+          maxLength: 50
+        display_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
     PatchedMePreferencesRequest:
       type: object
       properties:
@@ -1233,6 +2709,198 @@ components:
           minimum: 0
           format: int64
         ip_whitelist_cidrs: {}
+    PatchedStaffProfileRequest:
+      type: object
+      properties:
+        employee_code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        avatar_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        designation_title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        department_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        primary_subject:
+          type: string
+          maxLength: 120
+        secondary_subject:
+          type: string
+          maxLength: 120
+        qualification:
+          type: string
+          maxLength: 180
+        experience_years:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        joining_date:
+          type: string
+          format: date
+        phone:
+          type: string
+          maxLength: 25
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        class_mentor_label:
+          type: string
+          maxLength: 60
+        room_number:
+          type: string
+          maxLength: 40
+        weekly_periods_load:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        max_weekly_periods:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        employment_status:
+          $ref: '#/components/schemas/EmploymentStatusEnum'
+        base_salary_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        bank_account_masked:
+          type: string
+          maxLength: 40
+        assigned_classes_json: {}
+        custom_fields_json: {}
+    PatchedStudentRequest:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        blood_group:
+          type: string
+          maxLength: 10
+        category_quota:
+          type: string
+          minLength: 1
+          maxLength: 30
+        aadhaar_masked:
+          type: string
+          maxLength: 25
+        avatar_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        status:
+          $ref: '#/components/schemas/StudentStatusEnum'
+        joined_date:
+          type: string
+          format: date
+        current_academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        current_grade_class:
+          type: string
+          format: uuid
+          nullable: true
+        current_section:
+          type: string
+          format: uuid
+          nullable: true
+        current_roll_number:
+          type: string
+          maxLength: 20
+        class_section_label:
+          type: string
+          maxLength: 40
+        house_name:
+          type: string
+          maxLength: 60
+        class_teacher_name:
+          type: string
+          maxLength: 120
+        primary_guardian_name:
+          type: string
+          maxLength: 150
+        mother_name:
+          type: string
+          maxLength: 150
+        guardian_phone:
+          type: string
+          maxLength: 25
+        guardian_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        guardian_occupation:
+          type: string
+          maxLength: 120
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        transport_route_label:
+          type: string
+          maxLength: 120
+        bus_stop_label:
+          type: string
+          maxLength: 120
+        fee_status:
+          type: string
+          minLength: 1
+          maxLength: 30
+        fee_dues_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        attendance_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        medical_notes:
+          type: string
+        custom_fields_json: {}
     PaymentMethodUpdateInputRequest:
       type: object
       properties:
@@ -1294,6 +2962,72 @@ components:
         * `PROCESSING` - Processing
         * `SCHEDULED` - Scheduled
         * `FAILED` - Failed
+    PromoteStudent:
+      type: object
+      properties:
+        target_session_id:
+          type: string
+          format: uuid
+        target_grade_class_id:
+          type: string
+          format: uuid
+        target_section_id:
+          type: string
+          format: uuid
+          nullable: true
+        new_roll_number:
+          type: string
+          default: ''
+          maxLength: 20
+        final_gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          nullable: true
+        final_attendance_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          nullable: true
+        remarks:
+          type: string
+          default: ''
+      required:
+      - target_grade_class_id
+      - target_session_id
+    PromoteStudentRequest:
+      type: object
+      properties:
+        target_session_id:
+          type: string
+          format: uuid
+        target_grade_class_id:
+          type: string
+          format: uuid
+        target_section_id:
+          type: string
+          format: uuid
+          nullable: true
+        new_roll_number:
+          type: string
+          default: ''
+          maxLength: 20
+        final_gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          nullable: true
+        final_attendance_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          nullable: true
+        remarks:
+          type: string
+          default: ''
+      required:
+      - target_grade_class_id
+      - target_session_id
     PurposeEnum:
       enum:
       - registration
@@ -1496,6 +3230,69 @@ components:
       - short_code
       - tenant_id
       - updated_at
+    Section:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        grade_class:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 30
+        code:
+          type: string
+          maxLength: 40
+        capacity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        room_number:
+          type: string
+          maxLength: 50
+        class_teacher_id:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - code
+      - grade_class
+      - id
+      - name
+    SectionRequest:
+      type: object
+      properties:
+        grade_class:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        capacity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        room_number:
+          type: string
+          maxLength: 50
+        class_teacher_id:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - code
+      - grade_class
+      - name
     SecurityPolicy:
       type: object
       properties:
@@ -1518,6 +3315,243 @@ components:
       required:
       - id
       - updated_at
+    StaffDossierField:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        field_key:
+          type: string
+          maxLength: 60
+        label:
+          type: string
+          maxLength: 120
+        category:
+          type: string
+          maxLength: 30
+        field_type:
+          type: string
+          maxLength: 20
+        is_visible:
+          type: boolean
+        is_custom:
+          type: boolean
+      required:
+      - field_key
+      - id
+      - label
+    StaffDossierFieldRequest:
+      type: object
+      properties:
+        field_key:
+          type: string
+          minLength: 1
+          maxLength: 60
+        label:
+          type: string
+          minLength: 1
+          maxLength: 120
+        category:
+          type: string
+          minLength: 1
+          maxLength: 30
+        field_type:
+          type: string
+          minLength: 1
+          maxLength: 20
+        is_visible:
+          type: boolean
+        is_custom:
+          type: boolean
+      required:
+      - field_key
+      - label
+    StaffProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        membership_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        employee_code:
+          type: string
+          maxLength: 40
+        full_name:
+          type: string
+          maxLength: 150
+        avatar_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        designation_title:
+          type: string
+          maxLength: 120
+        department_name:
+          type: string
+          maxLength: 120
+        primary_subject:
+          type: string
+          maxLength: 120
+        secondary_subject:
+          type: string
+          maxLength: 120
+        qualification:
+          type: string
+          maxLength: 180
+        experience_years:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        joining_date:
+          type: string
+          format: date
+        phone:
+          type: string
+          maxLength: 25
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        class_mentor_label:
+          type: string
+          maxLength: 60
+        room_number:
+          type: string
+          maxLength: 40
+        weekly_periods_load:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        max_weekly_periods:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        employment_status:
+          $ref: '#/components/schemas/EmploymentStatusEnum'
+        base_salary_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        bank_account_masked:
+          type: string
+          maxLength: 40
+        assigned_classes_json: {}
+        custom_fields_json: {}
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - employee_code
+      - full_name
+      - id
+      - membership_id
+      - user_id
+    StaffProfileRequest:
+      type: object
+      properties:
+        employee_code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        avatar_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        designation_title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        department_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        primary_subject:
+          type: string
+          maxLength: 120
+        secondary_subject:
+          type: string
+          maxLength: 120
+        qualification:
+          type: string
+          maxLength: 180
+        experience_years:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        joining_date:
+          type: string
+          format: date
+        phone:
+          type: string
+          maxLength: 25
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        class_mentor_label:
+          type: string
+          maxLength: 60
+        room_number:
+          type: string
+          maxLength: 40
+        weekly_periods_load:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        max_weekly_periods:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        employment_status:
+          $ref: '#/components/schemas/EmploymentStatusEnum'
+        base_salary_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        bank_account_masked:
+          type: string
+          maxLength: 40
+        assigned_classes_json: {}
+        custom_fields_json: {}
+      required:
+      - employee_code
+      - full_name
     StaffResponsibility:
       type: object
       properties:
@@ -1663,6 +3697,311 @@ components:
       - original_name
       - sha256_checksum
       - size_bytes
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        admission_number:
+          type: string
+          maxLength: 50
+        full_name:
+          type: string
+          maxLength: 150
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        blood_group:
+          type: string
+          maxLength: 10
+        category_quota:
+          type: string
+          maxLength: 30
+        aadhaar_masked:
+          type: string
+          maxLength: 25
+        avatar_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        status:
+          $ref: '#/components/schemas/StudentStatusEnum'
+        joined_date:
+          type: string
+          format: date
+        current_academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        current_grade_class:
+          type: string
+          format: uuid
+          nullable: true
+        current_section:
+          type: string
+          format: uuid
+          nullable: true
+        current_roll_number:
+          type: string
+          maxLength: 20
+        class_section_label:
+          type: string
+          maxLength: 40
+        house_name:
+          type: string
+          maxLength: 60
+        class_teacher_name:
+          type: string
+          maxLength: 120
+        primary_guardian_name:
+          type: string
+          maxLength: 150
+        mother_name:
+          type: string
+          maxLength: 150
+        guardian_phone:
+          type: string
+          maxLength: 25
+        guardian_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        guardian_occupation:
+          type: string
+          maxLength: 120
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        transport_route_label:
+          type: string
+          maxLength: 120
+        bus_stop_label:
+          type: string
+          maxLength: 120
+        fee_status:
+          type: string
+          maxLength: 30
+        fee_dues_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        attendance_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        medical_notes:
+          type: string
+        custom_fields_json: {}
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - created_at
+      - full_name
+      - id
+    StudentDossierField:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        field_key:
+          type: string
+          maxLength: 60
+        label:
+          type: string
+          maxLength: 120
+        category:
+          type: string
+          maxLength: 30
+        field_type:
+          type: string
+          maxLength: 20
+        is_visible:
+          type: boolean
+        is_custom:
+          type: boolean
+      required:
+      - field_key
+      - id
+      - label
+    StudentDossierFieldRequest:
+      type: object
+      properties:
+        field_key:
+          type: string
+          minLength: 1
+          maxLength: 60
+        label:
+          type: string
+          minLength: 1
+          maxLength: 120
+        category:
+          type: string
+          minLength: 1
+          maxLength: 30
+        field_type:
+          type: string
+          minLength: 1
+          maxLength: 20
+        is_visible:
+          type: boolean
+        is_custom:
+          type: boolean
+      required:
+      - field_key
+      - label
+    StudentRequest:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        blood_group:
+          type: string
+          maxLength: 10
+        category_quota:
+          type: string
+          minLength: 1
+          maxLength: 30
+        aadhaar_masked:
+          type: string
+          maxLength: 25
+        avatar_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        status:
+          $ref: '#/components/schemas/StudentStatusEnum'
+        joined_date:
+          type: string
+          format: date
+        current_academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        current_grade_class:
+          type: string
+          format: uuid
+          nullable: true
+        current_section:
+          type: string
+          format: uuid
+          nullable: true
+        current_roll_number:
+          type: string
+          maxLength: 20
+        class_section_label:
+          type: string
+          maxLength: 40
+        house_name:
+          type: string
+          maxLength: 60
+        class_teacher_name:
+          type: string
+          maxLength: 120
+        primary_guardian_name:
+          type: string
+          maxLength: 150
+        mother_name:
+          type: string
+          maxLength: 150
+        guardian_phone:
+          type: string
+          maxLength: 25
+        guardian_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        guardian_occupation:
+          type: string
+          maxLength: 120
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        transport_route_label:
+          type: string
+          maxLength: 120
+        bus_stop_label:
+          type: string
+          maxLength: 120
+        fee_status:
+          type: string
+          minLength: 1
+          maxLength: 30
+        fee_dues_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        attendance_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        medical_notes:
+          type: string
+        custom_fields_json: {}
+      required:
+      - admission_number
+      - full_name
+    StudentStatusEnum:
+      enum:
+      - active
+      - inactive
+      - graduated
+      - suspended
+      - withdrawn
+      - transferred
+      type: string
+      description: |-
+        * `active` - Active
+        * `inactive` - Inactive
+        * `graduated` - Graduated
+        * `suspended` - Suspended
+        * `withdrawn` - Withdrawn
+        * `transferred` - Transferred
     Subscription:
       type: object
       properties:

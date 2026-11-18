@@ -60,6 +60,12 @@ urlpatterns = [
     path("api/v1/storage/", include("platform_services.storage.urls")),
     path("api/v1/notifications/", include("platform_services.notifications.urls")),
 
+    # ─── API v1 Phase 2: Core Institutional Data ────────────────────────────
+    path("api/v1/academics/", include("modules.academics.urls")),
+    path("api/v1/staff/", include("modules.hr.urls")),
+    path("api/v1/students/", include("modules.students.urls")),
+    path("api/v1/admissions/", include("modules.admissions.urls")),
+
     # ─── API Schema & Docs ──────────────────────────────────────────────────
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
