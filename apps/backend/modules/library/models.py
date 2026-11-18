@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Library Catalog & Circulation Summary Models (Work Division #13)
 """
 

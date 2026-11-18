@@ -31,6 +31,8 @@ import {
 } from 'lucide-react';
 import { useGlobalStore, DEFAULT_DASHBOARD_SHORTCUTS } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/shortcuts')({
   component: ShortcutsConfigPage,
@@ -116,6 +118,11 @@ function ShortcutsConfigPage() {
 
   const handleSave = () => {
     setDashboardShortcuts(selectedIds);
+    apiClient
+      .patch(API_ENDPOINTS.AUTH.ME, {
+        preferences_json: { dashboardShortcuts: selectedIds },
+      })
+      .catch(() => {});
     setSaveToast(true);
     addNotification({
       title: isHindi ? 'शॉर्टकट्स सेव हुए' : 'Shortcuts Saved',

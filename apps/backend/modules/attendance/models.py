@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Daily Attendance, Immutable Correction Log & Leave Application Models
 """
 

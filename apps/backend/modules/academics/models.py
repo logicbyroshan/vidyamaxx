@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Academics & Curriculum Domain Models
 """
 

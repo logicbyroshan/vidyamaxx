@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Academics Services
 """
 

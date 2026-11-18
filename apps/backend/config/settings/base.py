@@ -279,7 +279,34 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
+    "ENUM_NAME_OVERRIDES": {
+        "BranchStatusEnum": "core.campuses.models.Branch.Status",
+        "AuditEventStatusEnum": "platform_services.audit.models.AuditEvent.Status",
+        "ClassSubjectStatusEnum": "modules.academics.models.ClassSubjectMapping.Status",
+        "MilestoneStatusEnum": "modules.academics.models.AcademicMilestone.Status",
+        "StaffEmploymentStatusEnum": "modules.hr.models.StaffProfile.EmploymentStatus",
+        "StudentStatusEnum": "modules.students.models.Student.Status",
+        "EnrollmentStatusEnum": "modules.students.models.StudentEnrollment.EnrollmentStatus",
+        "EnquiryStatusEnum": "modules.admissions.models.AdmissionEnquiry.Status",
+        "AttendanceStatusEnum": "modules.attendance.models.StudentAttendanceRecord.Status",
+        "LeaveApplicationStatusEnum": "modules.attendance.models.LeaveApplication.Status",
+        "LeaveDecisionStatusEnum": [("Approved", "Approved"), ("Rejected", "Rejected")],
+        "LessonPlanStatusEnum": "modules.lms.models.LessonPlan.Status",
+        "HomeworkAssignmentStatusEnum": "modules.homework.models.HomeworkAssignment.Status",
+        "HomeworkSubmissionStatusEnum": "modules.homework.models.HomeworkSubmission.Status",
+        "ExamCycleStatusEnum": "modules.examinations.models.ExaminationCycle.Status",
+        "ScholarshipStatusEnum": "modules.finance.models.ScholarshipGrant.Status",
+        "StudentInvoiceStatusEnum": "modules.finance.models.StudentFeeInvoice.Status",
+        "FeeReceiptStatusEnum": "modules.finance.models.FeeReceipt.Status",
+    },
 }
+
+# ─── Security Hardening Defaults ──────────────────────────────────────────────
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
 
 # ─── Logging ──────────────────────────────────────────────────────────────────
 

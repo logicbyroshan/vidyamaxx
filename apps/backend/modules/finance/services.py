@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Atomic Fee Collection, Immutable Receipt Reversal & Webhook Idempotency Services
 """
 

@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Admissions Workflow & Atomic Student Enrollment Service
 """
 

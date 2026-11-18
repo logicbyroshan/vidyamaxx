@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Transport Route & Student Commute Summary Models (Work Division #14)
 """
 

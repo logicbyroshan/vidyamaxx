@@ -1,5 +1,6 @@
-﻿from django.db.models import Q
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -57,6 +58,7 @@ class StaffListCreateView(APIView):
     def get_permissions(self):
         return [IsAuthenticatedTenantMember()] if self.request.method == "GET" else [HasWorkDivisionAccess()]
 
+    @extend_schema(operation_id="v1_staff_list")
     def get(self, request):
         resolve_user_tenant_context(request, require_school=True)
         qs = StaffProfile.objects.for_school(request.school.id)
@@ -124,6 +126,7 @@ class StaffDossierFieldListCreateView(APIView):
     def get_permissions(self):
         return [IsAuthenticatedTenantMember()] if self.request.method == "GET" else [HasWorkDivisionAccess()]
 
+    @extend_schema(operation_id="v1_staff_dossier_fields_list")
     def get(self, request):
         resolve_user_tenant_context(request, require_school=True)
         qs = StaffDossierFieldConfig.objects.for_school(request.school.id)

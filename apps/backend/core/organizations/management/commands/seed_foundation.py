@@ -34,10 +34,26 @@ from modules.academics.models import (
     Subject,
 )
 from modules.admissions.models import AdmissionApplication
+from modules.accounting.models import ChartOfAccount
+from modules.attendance.models import StudentAttendanceRecord
+from modules.certificates.models import CertificateTemplate
+from modules.communication.models import CircularBroadcast
+from modules.discipline.models import GrievanceTicket
+from modules.events.models import SchoolCalendarEvent
+from modules.examinations.models import ExaminationCycle
+from modules.finance.models import ScholarshipGrant, StudentFeeInvoice
+from modules.homework.models import HomeworkAssignment
 from modules.hr.models import StaffProfile
+from modules.inventory.models import InventoryStockItem
+from modules.library.models import LibraryBookSummary
+from modules.lms.models import LessonPlan
 from modules.students.models import Guardian, Student, StudentEnrollment, StudentGuardianLink
+from modules.timetable.models import TimetableEntry
+from modules.transport.models import TransportRouteRecord
 from platform_services.audit.models import AuditEvent
+from platform_services.forms.models import SurveyCampaign
 from platform_services.notifications.models import InAppNotification
+from platform_services.reports.models import GeneratedReportRecord, StatutoryComplianceFiling
 
 
 class Command(BaseCommand):
@@ -478,4 +494,241 @@ class Command(BaseCommand):
                 },
             )
 
-        self.stdout.write(self.style.SUCCESS(f"Seeded school '{school.name}' ({school.id}) with Phase 1 + Phase 2 data successfully."))
+        # ─── Phase 3–8 Seed: Daily Operations, Finance, School Ops & Governance ─
+        TimetableEntry.objects.get_or_create(
+            school=school,
+            class_section_label="10-A",
+            day_of_week=TimetableEntry.DayOfWeek.MONDAY,
+            period_number=1,
+            defaults={
+                "branch": primary_branch,
+                "academic_session": session_2627,
+                "grade_class": cls_10_obj,
+                "section": sec_10a_obj,
+                "subject_code": "MATH-101",
+                "subject_name": "Mathematics Standard",
+                "teacher_name": "Dr. Rajesh Kumar Verma",
+                "room_label": "R-1001",
+                "entry_type": TimetableEntry.EntryType.CORE,
+            },
+        )
+
+        StudentAttendanceRecord.objects.get_or_create(
+            school=school,
+            admission_number="ADM-2024-089",
+            attendance_date=date(2026, 8, 20),
+            defaults={
+                "branch": primary_branch,
+                "academic_session": session_2627,
+                "student_name": "Aarav Sharma",
+                "roll_number": "1",
+                "class_section_label": "10-A",
+                "status": StudentAttendanceRecord.Status.PRESENT,
+            },
+        )
+
+        LessonPlan.objects.get_or_create(
+            school=school,
+            plan_code="LP-2026-101",
+            defaults={
+                "branch": primary_branch,
+                "class_section_label": "Class 10-A",
+                "subject_name": "Physics",
+                "teacher_name": "Ms. Sunita Nair",
+                "unit_title": "Unit III: Magnetic Effects of Current",
+                "topic_title": "Electromagnetic Induction & Faraday's Laws",
+                "completion_pct": 85,
+                "status": LessonPlan.Status.IN_PROGRESS,
+            },
+        )
+
+        HomeworkAssignment.objects.get_or_create(
+            school=school,
+            assignment_code="HW-2026-01",
+            defaults={
+                "branch": primary_branch,
+                "title": "Quadratic Equations — Problem Set",
+                "class_section_label": "Class 10-A",
+                "subject_name": "Mathematics",
+                "teacher_name": "Dr. Rajesh Kumar Verma",
+                "due_date": date(2026, 9, 15),
+                "max_marks": 20,
+                "submitted_count": 38,
+                "total_students": 40,
+            },
+        )
+
+        ExaminationCycle.objects.get_or_create(
+            school=school,
+            code="MIDTERM-2026",
+            defaults={
+                "branch": primary_branch,
+                "academic_session": session_2627,
+                "name": "Term 1 Mid-Year Summative Evaluation",
+                "term_label": "Term 1",
+                "start_date": date(2026, 9, 15),
+                "end_date": date(2026, 9, 30),
+                "status": ExaminationCycle.Status.SCHEDULED,
+            },
+        )
+
+        ChartOfAccount.objects.get_or_create(
+            school=school,
+            account_code="INC-1001",
+            defaults={
+                "branch": primary_branch,
+                "account_name": "Annual Tuition & Academic Fee Revenue",
+                "account_type": ChartOfAccount.AccountType.INCOME,
+                "balance_inr": Decimal("1850000.00"),
+            },
+        )
+
+        ScholarshipGrant.objects.get_or_create(
+            school=school,
+            admission_number="ADM-2024-089",
+            scheme_name="National Means-cum-Merit Scholarship (NSP Scheme)",
+            defaults={
+                "branch": primary_branch,
+                "student_name": "Aarav Sharma",
+                "category": "Govt RTE / NSP",
+                "waiver_pct": 50,
+                "waiver_amount_inr": Decimal("21000.00"),
+                "sanction_ref": "NSP-2026-HR-991823",
+            },
+        )
+
+        StudentFeeInvoice.objects.get_or_create(
+            school=school,
+            invoice_number="INV-STU-2026-089",
+            defaults={
+                "branch": primary_branch,
+                "admission_number": "ADM-2024-089",
+                "student_name": "Aarav Sharma",
+                "class_section_label": "10-A",
+                "gross_fee_inr": Decimal("54000.00"),
+                "scholarship_relief_inr": Decimal("21000.00"),
+                "net_assessed_fee_inr": Decimal("33000.00"),
+                "paid_amount_inr": Decimal("33000.00"),
+                "due_amount_inr": Decimal("0.00"),
+                "status": StudentFeeInvoice.Status.CLEARED,
+            },
+        )
+
+        CertificateTemplate.objects.get_or_create(
+            school=school,
+            code="TMPL-BONAFIDE",
+            defaults={
+                "branch": primary_branch,
+                "title": "Official Student Bonafide Certificate",
+                "certificate_type": "Bonafide",
+            },
+        )
+
+        LibraryBookSummary.objects.get_or_create(
+            school=school,
+            isbn_or_code="NCERT-1062",
+            defaults={
+                "branch": primary_branch,
+                "title": "Mathematics – Textbook for Class X",
+                "author": "NCERT",
+                "total_copies": 45,
+                "available_copies": 38,
+            },
+        )
+
+        TransportRouteRecord.objects.get_or_create(
+            school=school,
+            route_code="RT-01",
+            defaults={
+                "branch": primary_branch,
+                "route_name": "Connaught Place – Main Campus Corridor",
+                "vehicle_number": "DL-01-PC-4021",
+            },
+        )
+
+        InventoryStockItem.objects.get_or_create(
+            school=school,
+            sku_code="LAB-OPT-01",
+            defaults={
+                "branch": primary_branch,
+                "item_name": "Convex Lenses & Optical Bench Kits",
+                "quantity_on_hand": 35,
+            },
+        )
+
+        SchoolCalendarEvent.objects.get_or_create(
+            school=school,
+            title="Annual Inter-House Science & Robotics Expo",
+            defaults={
+                "branch": primary_branch,
+                "category": "Academic",
+                "start_date": date(2026, 11, 14),
+                "end_date": date(2026, 11, 15),
+            },
+        )
+
+        CircularBroadcast.objects.get_or_create(
+            school=school,
+            circular_number="CIR-2026-01",
+            defaults={
+                "branch": primary_branch,
+                "title": "Term 1 Parent-Teacher Conclave Notification",
+                "message_body": "Scheduled for Saturday from 09:00 AM to 01:30 PM.",
+            },
+        )
+
+        SurveyCampaign.objects.get_or_create(
+            school=school,
+            survey_code="SURV-101",
+            defaults={
+                "branch": primary_branch,
+                "title": "Annual Parent Satisfaction & Academic Pacing Survey 2026",
+                "target_audience": "Parents",
+                "responses_count": 482,
+                "total_target": 600,
+                "satisfaction_score": "92.4%",
+            },
+        )
+
+        GrievanceTicket.objects.get_or_create(
+            school=school,
+            ticket_number="TKT-2026-089",
+            defaults={
+                "branch": primary_branch,
+                "complainant_type": "Parent",
+                "complainant_name": "Sunil Verma",
+                "category": "Transport",
+                "subject": "Bus Route 2 morning arrival timing adjustment",
+                "priority": "High",
+                "status": "In Progress",
+            },
+        )
+
+        GeneratedReportRecord.objects.get_or_create(
+            school=school,
+            report_code="REP-CBSE-01",
+            defaults={
+                "branch": primary_branch,
+                "domain": "compliance",
+                "title": "CBSE Annual Accreditation Compliance Dossier",
+                "export_format": "csv",
+                "row_count": 124,
+            },
+        )
+
+        StatutoryComplianceFiling.objects.get_or_create(
+            school=school,
+            filing_code="CBSE-OASIS-2026",
+            defaults={
+                "branch": primary_branch,
+                "authority_name": "CBSE OASIS / UDISE+",
+                "title": "Annual Institutional Infrastructure & Faculty Return 2026-27",
+                "submission_status": "Compliant & Verified",
+            },
+        )
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Seeded school '{school.name}' ({school.id}) across all 30 Work Divisions (Phases 1–9) successfully."
+            )
+        )

@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Grievance & Helpdesk Ticket Models (Work Division #25 Complaints & Grievances)
 Backs /complaints (`apps/web/src/routes/complaints.tsx`).
 """
