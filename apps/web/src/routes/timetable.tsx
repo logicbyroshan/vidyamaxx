@@ -32,6 +32,8 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/timetable')({
   component: TimetablePage,
@@ -277,6 +279,49 @@ function TimetablePage() {
   const [periodConfig, setPeriodConfig] = React.useState<PeriodTiming[]>(DEFAULT_PERIOD_CONFIG);
   const [scheduleData, setScheduleData] = React.useState<Record<string, PeriodSlot[]>>(INITIAL_SCHEDULE_DATA);
 
+  // Sync timetable entries & proxy substitutions from Django backend (/api/v1/timetable/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<
+          Array<{
+            day_of_week: string;
+            period_number: number;
+            subject_name: string;
+            teacher_name: string;
+            room_label: string;
+            entry_type: string;
+          }>
+        >(API_ENDPOINTS.TIMETABLE.ENTRIES, { params: { class_section: selectedClass.replace('Class ', '') } });
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setScheduleData((prev) => {
+            const next = { ...prev };
+            for (const entry of res.data) {
+              const daySlots = [...(next[entry.day_of_week] || [])];
+              const idx = Math.max(0, entry.period_number - 1);
+              if (idx < daySlots.length) {
+                daySlots[idx] = {
+                  subject: entry.subject_name,
+                  teacher: entry.teacher_name,
+                  room: entry.room_label,
+                  isLab: entry.entry_type === 'Lab',
+                };
+              }
+              next[entry.day_of_week] = daySlots;
+            }
+            return next;
+          });
+        }
+      } catch {
+        // Fallback to INITIAL_SCHEDULE_DATA
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [selectedClass]);
+
   // Configuration Drawers State
   const [isConfigurePeriodsOpen, setIsConfigurePeriodsOpen] = React.useState<boolean>(false);
   const [isConfigureTimetableOpen, setIsConfigureTimetableOpen] = React.useState<boolean>(false);
@@ -363,6 +408,18 @@ function TimetablePage() {
       description: `${editingSlot.day} Period ${editingSlot.slotIndex + 1} updated to ${editingSlot.subject} (${editingSlot.teacher}).`,
       type: 'success',
     });
+
+    apiClient
+      .post(API_ENDPOINTS.TIMETABLE.ENTRIES, {
+        class_section_label: selectedClass.replace('Class ', ''),
+        day_of_week: editingSlot.day,
+        period_number: editingSlot.slotIndex + 1,
+        subject_name: editingSlot.subject,
+        teacher_name: editingSlot.teacher,
+        room_label: editingSlot.room,
+        entry_type: editingSlot.isLab ? 'Lab' : 'Core',
+      })
+      .catch(() => {});
 
     setEditingSlot(null);
   };

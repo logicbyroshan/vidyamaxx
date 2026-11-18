@@ -2,6 +2,8 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 import {
   VFPageContainer,
   VFPageToolbar,
@@ -106,6 +108,50 @@ function TeachingPage() {
   const [activeTab, setActiveTab] = React.useState<'classes' | 'planner'>('classes');
   const [classes] = React.useState<ClassWorkload[]>(INITIAL_CLASSES);
   const [plans, setPlans] = React.useState<LessonPlanItem[]>(INITIAL_PLANS);
+
+  // Sync lesson plans from Django backend (/api/v1/teaching/lesson-plans/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<
+          Array<{
+            id: string;
+            plan_code: string;
+            topic_title: string;
+            subject_name: string;
+            class_section_label: string;
+            duration_minutes: number;
+            scheduled_date: string;
+            learning_objectives: string;
+          }>
+        >(API_ENDPOINTS.TEACHING.LESSON_PLANS);
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setPlans((prev) => {
+            const existingIds = new Set(prev.map((p) => p.id));
+            const mapped: LessonPlanItem[] = res.data
+              .filter((r) => !existingIds.has(r.plan_code))
+              .map((r) => ({
+                id: r.plan_code || r.id,
+                title: r.topic_title,
+                subject: r.subject_name,
+                grade: r.class_section_label,
+                duration: `${r.duration_minutes || 45} mins`,
+                date: r.scheduled_date,
+                objectives: r.learning_objectives ? [r.learning_objectives] : ['Master core topic concepts.'],
+                outline: `Structured classroom session for ${r.topic_title}`,
+              }));
+            return mapped.length > 0 ? [...mapped, ...prev] : prev;
+          });
+        }
+      } catch {
+        // Fallback to INITIAL_PLANS
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
   const [activePlan, setActivePlan] = React.useState<LessonPlanItem | null>(null);
   const [isNewPlanModalOpen, setIsNewPlanModalOpen] = React.useState(false);
 
@@ -135,6 +181,18 @@ function TeachingPage() {
     };
 
     setPlans([newPlan, ...plans]);
+    apiClient
+      .post(API_ENDPOINTS.TEACHING.LESSON_PLANS, {
+        plan_code: newPlan.id,
+        class_section_label: newPlan.grade,
+        subject_name: newPlan.subject,
+        teacher_name: 'Dr. Rajesh Sharma',
+        unit_title: newPlan.title,
+        topic_title: newPlan.title,
+        learning_objectives: newPlan.objectives.join('\n'),
+        status: 'In Progress',
+      })
+      .catch(() => {});
     setIsNewPlanModalOpen(false);
     setNewTitle('');
     setNewObjective('');

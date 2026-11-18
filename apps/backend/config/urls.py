@@ -66,6 +66,13 @@ urlpatterns = [
     path("api/v1/students/", include("modules.students.urls")),
     path("api/v1/admissions/", include("modules.admissions.urls")),
 
+    # ─── API v1 Phase 3: Daily Academic Operations ──────────────────────────
+    path("api/v1/timetable/", include("modules.timetable.urls")),
+    path("api/v1/attendance/", include("modules.attendance.urls")),
+    path("api/v1/teaching/", include("modules.lms.urls")),
+    path("api/v1/homework/", include("modules.homework.urls")),
+    path("api/v1/examinations/", include("modules.examinations.urls")),
+
     # ─── API Schema & Docs ──────────────────────────────────────────────────
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),

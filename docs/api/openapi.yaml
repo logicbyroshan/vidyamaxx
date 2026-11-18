@@ -295,6 +295,109 @@ paths:
               schema:
                 $ref: '#/components/schemas/AdmissionEnquiry'
           description: ''
+  /api/v1/attendance/leaves/:
+    get:
+      operationId: v1_attendance_leaves_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveApplication'
+          description: ''
+    post:
+      operationId: v1_attendance_leaves_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaveApplicationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LeaveApplicationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveApplication'
+          description: ''
+  /api/v1/attendance/leaves/{id}/decide/:
+    post:
+      operationId: v1_attendance_leaves_decide_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaveDecisionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LeaveDecisionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveDecision'
+          description: ''
+  /api/v1/attendance/mark-bulk/:
+    post:
+      operationId: v1_attendance_mark_bulk_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkAttendanceMarkRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkAttendanceMarkRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkAttendanceMark'
+          description: ''
+  /api/v1/attendance/records/:
+    get:
+      operationId: v1_attendance_records_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttendanceRecord'
+          description: ''
   /api/v1/audit/events/:
     get:
       operationId: v1_audit_events_list
@@ -549,6 +652,238 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsernameLookup'
+          description: ''
+  /api/v1/examinations/cycles/:
+    get:
+      operationId: v1_examinations_cycles_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationCycle'
+          description: ''
+    post:
+      operationId: v1_examinations_cycles_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExaminationCycleRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExaminationCycleRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationCycle'
+          description: ''
+  /api/v1/examinations/cycles/{id}/lock/:
+    post:
+      operationId: v1_examinations_cycles_lock_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockCycleRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LockCycleRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockCycle'
+          description: ''
+  /api/v1/examinations/marks/:
+    get:
+      operationId: v1_examinations_marks_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentExamMark'
+          description: ''
+    post:
+      operationId: v1_examinations_marks_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentExamMarkRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentExamMarkRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentExamMark'
+          description: ''
+  /api/v1/homework/assignments/:
+    get:
+      operationId: v1_homework_assignments_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkAssignment'
+          description: ''
+    post:
+      operationId: v1_homework_assignments_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HomeworkAssignmentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HomeworkAssignmentRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkAssignment'
+          description: ''
+  /api/v1/homework/assignments/{id}/:
+    patch:
+      operationId: v1_homework_assignments_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedHomeworkAssignmentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedHomeworkAssignmentRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkAssignment'
+          description: ''
+    delete:
+      operationId: v1_homework_assignments_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/homework/assignments/{id}/submissions/:
+    get:
+      operationId: v1_homework_assignments_submissions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkSubmission'
+          description: ''
+    post:
+      operationId: v1_homework_assignments_submissions_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HomeworkSubmissionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HomeworkSubmissionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkSubmission'
           description: ''
   /api/v1/notifications/:
     get:
@@ -1264,6 +1599,268 @@ paths:
               schema:
                 $ref: '#/components/schemas/StudentDossierField'
           description: ''
+  /api/v1/teaching/diary/:
+    get:
+      operationId: v1_teaching_diary_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeachingDiaryEntry'
+          description: ''
+    post:
+      operationId: v1_teaching_diary_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeachingDiaryEntryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TeachingDiaryEntryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeachingDiaryEntry'
+          description: ''
+  /api/v1/teaching/lesson-plans/:
+    get:
+      operationId: v1_teaching_lesson_plans_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonPlan'
+          description: ''
+    post:
+      operationId: v1_teaching_lesson_plans_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonPlanRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LessonPlanRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonPlan'
+          description: ''
+  /api/v1/teaching/lesson-plans/{id}/:
+    patch:
+      operationId: v1_teaching_lesson_plans_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonPlanRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonPlanRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonPlan'
+          description: ''
+  /api/v1/teaching/online-classes/:
+    get:
+      operationId: v1_teaching_online_classes_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnlineClassSession'
+          description: ''
+    post:
+      operationId: v1_teaching_online_classes_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnlineClassSessionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OnlineClassSessionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnlineClassSession'
+          description: ''
+  /api/v1/teaching/resources/:
+    get:
+      operationId: v1_teaching_resources_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningResource'
+          description: ''
+    post:
+      operationId: v1_teaching_resources_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LearningResourceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LearningResourceRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningResource'
+          description: ''
+  /api/v1/timetable/entries/:
+    get:
+      operationId: v1_timetable_entries_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimetableEntry'
+          description: ''
+    post:
+      operationId: v1_timetable_entries_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimetableEntryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TimetableEntryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimetableEntry'
+          description: ''
+  /api/v1/timetable/entries/{id}/:
+    delete:
+      operationId: v1_timetable_entries_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/timetable/substitutions/:
+    get:
+      operationId: v1_timetable_substitutions_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProxySubstitution'
+          description: ''
+    post:
+      operationId: v1_timetable_substitutions_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProxySubstitutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProxySubstitutionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProxySubstitution'
+          description: ''
 components:
   schemas:
     AcademicMilestone:
@@ -1759,6 +2356,14 @@ components:
         * `FOLLOW_UP` - Follow-Up
         * `CONVERTED` - Converted
         * `CLOSED` - Closed
+    ApplicantTypeEnum:
+      enum:
+      - STUDENT
+      - STAFF
+      type: string
+      description: |-
+        * `STUDENT` - Student
+        * `STAFF` - Staff
     ApproveApplication:
       type: object
       properties:
@@ -1985,6 +2590,104 @@ components:
       description: |-
         * `ACTIVE` - Active
         * `INACTIVE` - Inactive
+    BulkAttendanceEntry:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          default: ''
+          maxLength: 150
+        roll_number:
+          type: string
+          default: ''
+          maxLength: 20
+        status:
+          $ref: '#/components/schemas/Status0c7Enum'
+        check_in_time:
+          type: string
+          default: 07:50 AM
+          maxLength: 25
+        remarks:
+          type: string
+          default: ''
+          maxLength: 255
+      required:
+      - admission_number
+      - status
+    BulkAttendanceEntryRequest:
+      type: object
+      properties:
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          default: ''
+          maxLength: 150
+        roll_number:
+          type: string
+          default: ''
+          maxLength: 20
+        status:
+          $ref: '#/components/schemas/Status0c7Enum'
+        check_in_time:
+          type: string
+          minLength: 1
+          default: 07:50 AM
+          maxLength: 25
+        remarks:
+          type: string
+          default: ''
+          maxLength: 255
+      required:
+      - admission_number
+      - status
+    BulkAttendanceMark:
+      type: object
+      properties:
+        attendance_date:
+          type: string
+          format: date
+        class_section_label:
+          type: string
+          default: 10-A
+          maxLength: 40
+        correction_reason:
+          type: string
+          default: Register update
+          maxLength: 255
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkAttendanceEntry'
+      required:
+      - entries
+    BulkAttendanceMarkRequest:
+      type: object
+      properties:
+        attendance_date:
+          type: string
+          format: date
+        class_section_label:
+          type: string
+          minLength: 1
+          default: 10-A
+          maxLength: 40
+        correction_reason:
+          type: string
+          minLength: 1
+          default: Register update
+          maxLength: 255
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkAttendanceEntryRequest'
+      required:
+      - entries
     ClassSubjectMapping:
       type: object
       properties:
@@ -2155,6 +2858,22 @@ components:
       - actions
       - membership_id
       - work_division
+    DayOfWeekEnum:
+      enum:
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      type: string
+      description: |-
+        * `Monday` - Monday
+        * `Tuesday` - Tuesday
+        * `Wednesday` - Wednesday
+        * `Thursday` - Thursday
+        * `Friday` - Friday
+        * `Saturday` - Saturday
     EmploymentStatusEnum:
       enum:
       - Active
@@ -2207,6 +2926,18 @@ components:
           maxLength: 60
       required:
       - admission_number
+    EntryTypeEnum:
+      enum:
+      - Core
+      - Lab
+      - Elective
+      - Activity
+      type: string
+      description: |-
+        * `Core` - Core
+        * `Lab` - Lab
+        * `Elective` - Elective
+        * `Activity` - Activity
     EventTypeEnum:
       enum:
       - GRANTED
@@ -2217,6 +2948,107 @@ components:
         * `GRANTED` - Granted
         * `UPDATED` - Updated
         * `REVOKED` - Revoked
+    ExaminationCycle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        code:
+          type: string
+          maxLength: 40
+        name:
+          type: string
+          maxLength: 150
+        term_label:
+          type: string
+          maxLength: 60
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        weightage_pct:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        is_marks_locked:
+          type: boolean
+        is_published:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/ExaminationCycleStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - end_date
+      - id
+      - name
+      - start_date
+    ExaminationCycleRequest:
+      type: object
+      properties:
+        academic_session:
+          type: string
+          format: uuid
+          nullable: true
+        code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        term_label:
+          type: string
+          minLength: 1
+          maxLength: 60
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        weightage_pct:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        is_marks_locked:
+          type: boolean
+        is_published:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/ExaminationCycleStatusEnum'
+      required:
+      - code
+      - end_date
+      - name
+      - start_date
+    ExaminationCycleStatusEnum:
+      enum:
+      - Scheduled
+      - Ongoing
+      - Evaluation
+      - Published
+      type: string
+      description: |-
+        * `Scheduled` - Scheduled
+        * `Ongoing` - Ongoing
+        * `Evaluation` - Evaluation
+        * `Published` - Published
     GenderEnum:
       enum:
       - male
@@ -2330,6 +3162,595 @@ components:
         * `Middle Wing` - Middle Wing
         * `Secondary Wing` - Secondary Wing
         * `Senior Secondary` - Senior Secondary
+    HomeworkAssignment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        assignment_code:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        class_section_label:
+          type: string
+          maxLength: 40
+        subject_name:
+          type: string
+          maxLength: 120
+        teacher_name:
+          type: string
+          maxLength: 150
+        assigned_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        max_marks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        submission_type:
+          type: string
+          maxLength: 50
+        total_students:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        submitted_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        evaluated_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        status:
+          $ref: '#/components/schemas/HomeworkAssignmentStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - assignment_code
+      - created_at
+      - due_date
+      - id
+      - subject_name
+      - teacher_name
+      - title
+    HomeworkAssignmentRequest:
+      type: object
+      properties:
+        assignment_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        assigned_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        max_marks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        submission_type:
+          type: string
+          minLength: 1
+          maxLength: 50
+        total_students:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        submitted_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        evaluated_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        status:
+          $ref: '#/components/schemas/HomeworkAssignmentStatusEnum'
+      required:
+      - assignment_code
+      - due_date
+      - subject_name
+      - teacher_name
+      - title
+    HomeworkAssignmentStatusEnum:
+      enum:
+      - Active
+      - Due Today
+      - Closed
+      - Draft
+      type: string
+      description: |-
+        * `Active` - Active
+        * `Due Today` - Due Today
+        * `Closed` - Closed
+        * `Draft` - Draft
+    HomeworkSubmission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        assignment:
+          type: string
+          format: uuid
+          readOnly: true
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        status:
+          $ref: '#/components/schemas/HomeworkSubmissionStatusEnum'
+        marks_obtained:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+        grade_label:
+          type: string
+          maxLength: 10
+        teacher_feedback:
+          type: string
+          maxLength: 255
+        attachment_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - assignment
+      - created_at
+      - id
+      - student_name
+    HomeworkSubmissionRequest:
+      type: object
+      properties:
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        status:
+          $ref: '#/components/schemas/HomeworkSubmissionStatusEnum'
+        marks_obtained:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+        grade_label:
+          type: string
+          maxLength: 10
+        teacher_feedback:
+          type: string
+          maxLength: 255
+        attachment_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+      required:
+      - admission_number
+      - student_name
+    HomeworkSubmissionStatusEnum:
+      enum:
+      - Submitted
+      - Pending
+      - Late
+      - Graded
+      type: string
+      description: |-
+        * `Submitted` - Submitted
+        * `Pending` - Pending
+        * `Late` - Late
+        * `Graded` - Graded
+    LearningResource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        resource_code:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 200
+        subject_name:
+          type: string
+          maxLength: 120
+        class_label:
+          type: string
+          maxLength: 60
+        resource_type:
+          type: string
+          maxLength: 40
+        file_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        uploaded_by_name:
+          type: string
+          maxLength: 150
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - resource_code
+      - subject_name
+      - title
+    LearningResourceRequest:
+      type: object
+      properties:
+        resource_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        class_label:
+          type: string
+          minLength: 1
+          maxLength: 60
+        resource_type:
+          type: string
+          minLength: 1
+          maxLength: 40
+        file_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        uploaded_by_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+      required:
+      - resource_code
+      - subject_name
+      - title
+    LeaveApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        applicant_type:
+          $ref: '#/components/schemas/ApplicantTypeEnum'
+        applicant_code:
+          type: string
+          maxLength: 50
+        applicant_name:
+          type: string
+          maxLength: 150
+        class_or_dept:
+          type: string
+          maxLength: 80
+        leave_type:
+          type: string
+          maxLength: 60
+        from_date:
+          type: string
+          format: date
+        to_date:
+          type: string
+          format: date
+        days_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        reason:
+          type: string
+        status:
+          $ref: '#/components/schemas/LeaveApplicationStatusEnum'
+        decision_remarks:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - applicant_code
+      - applicant_name
+      - created_at
+      - from_date
+      - id
+      - reason
+      - to_date
+    LeaveApplicationRequest:
+      type: object
+      properties:
+        applicant_type:
+          $ref: '#/components/schemas/ApplicantTypeEnum'
+        applicant_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        applicant_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        class_or_dept:
+          type: string
+          minLength: 1
+          maxLength: 80
+        leave_type:
+          type: string
+          minLength: 1
+          maxLength: 60
+        from_date:
+          type: string
+          format: date
+        to_date:
+          type: string
+          format: date
+        days_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        reason:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/LeaveApplicationStatusEnum'
+        decision_remarks:
+          type: string
+          maxLength: 255
+      required:
+      - applicant_code
+      - applicant_name
+      - from_date
+      - reason
+      - to_date
+    LeaveApplicationStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Rejected
+      type: string
+      description: |-
+        * `Pending` - Pending
+        * `Approved` - Approved
+        * `Rejected` - Rejected
+    LeaveDecision:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/LeaveDecisionStatusEnum'
+        remarks:
+          type: string
+          default: ''
+      required:
+      - status
+    LeaveDecisionRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/LeaveDecisionStatusEnum'
+        remarks:
+          type: string
+          default: ''
+      required:
+      - status
+    LeaveDecisionStatusEnum:
+      enum:
+      - Approved
+      - Rejected
+      type: string
+      description: |-
+        * `Approved` - Approved
+        * `Rejected` - Rejected
+    LessonPlan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        plan_code:
+          type: string
+          maxLength: 50
+        class_section_label:
+          type: string
+          maxLength: 40
+        subject_name:
+          type: string
+          maxLength: 120
+        teacher_name:
+          type: string
+          maxLength: 150
+        unit_title:
+          type: string
+          maxLength: 180
+        topic_title:
+          type: string
+          maxLength: 200
+        scheduled_date:
+          type: string
+          format: date
+        duration_minutes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        pedagogy_method:
+          type: string
+          maxLength: 100
+        learning_objectives:
+          type: string
+        completion_pct:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        status:
+          $ref: '#/components/schemas/LessonPlanStatusEnum'
+        hod_remarks:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - plan_code
+      - subject_name
+      - teacher_name
+      - topic_title
+      - unit_title
+    LessonPlanRequest:
+      type: object
+      properties:
+        plan_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        unit_title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        topic_title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        scheduled_date:
+          type: string
+          format: date
+        duration_minutes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        pedagogy_method:
+          type: string
+          minLength: 1
+          maxLength: 100
+        learning_objectives:
+          type: string
+        completion_pct:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        status:
+          $ref: '#/components/schemas/LessonPlanStatusEnum'
+        hod_remarks:
+          type: string
+          maxLength: 255
+      required:
+      - plan_code
+      - subject_name
+      - teacher_name
+      - topic_title
+      - unit_title
+    LessonPlanStatusEnum:
+      enum:
+      - Completed
+      - In Progress
+      - Upcoming
+      - Pending Review
+      type: string
+      description: |-
+        * `Completed` - Completed
+        * `In Progress` - In Progress
+        * `Upcoming` - Upcoming
+        * `Pending Review` - Pending Review
     LifecycleAction:
       type: object
       properties:
@@ -2342,6 +3763,18 @@ components:
         reason:
           type: string
           default: ''
+    LockCycle:
+      type: object
+      properties:
+        locked:
+          type: boolean
+          default: true
+    LockCycleRequest:
+      type: object
+      properties:
+        locked:
+          type: boolean
+          default: true
     Login:
       type: object
       properties:
@@ -2505,6 +3938,106 @@ components:
       - identifier
       - otp_code
       - purpose
+    OnlineClassSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        session_code:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 200
+        class_section_label:
+          type: string
+          maxLength: 40
+        subject_name:
+          type: string
+          maxLength: 120
+        teacher_name:
+          type: string
+          maxLength: 150
+        scheduled_start:
+          type: string
+          format: date-time
+        duration_minutes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        meeting_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        status:
+          type: string
+          maxLength: 25
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - scheduled_start
+      - session_code
+      - subject_name
+      - teacher_name
+      - title
+    OnlineClassSessionRequest:
+      type: object
+      properties:
+        session_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        scheduled_start:
+          type: string
+          format: date-time
+        duration_minutes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        meeting_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+      required:
+      - scheduled_start
+      - session_code
+      - subject_name
+      - teacher_name
+      - title
     PaginatedAuditEventList:
       type: object
       required:
@@ -2624,6 +4157,114 @@ components:
           maximum: 9223372036854775807
           minimum: 0
           format: int64
+    PatchedHomeworkAssignmentRequest:
+      type: object
+      properties:
+        assignment_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        assigned_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        max_marks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        submission_type:
+          type: string
+          minLength: 1
+          maxLength: 50
+        total_students:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        submitted_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        evaluated_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        status:
+          $ref: '#/components/schemas/HomeworkAssignmentStatusEnum'
+    PatchedLessonPlanRequest:
+      type: object
+      properties:
+        plan_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        unit_title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        topic_title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        scheduled_date:
+          type: string
+          format: date
+        duration_minutes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        pedagogy_method:
+          type: string
+          minLength: 1
+          maxLength: 100
+        learning_objectives:
+          type: string
+        completion_pct:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        status:
+          $ref: '#/components/schemas/LessonPlanStatusEnum'
+        hod_remarks:
+          type: string
+          maxLength: 255
     PatchedMePreferencesRequest:
       type: object
       properties:
@@ -3028,6 +4669,101 @@ components:
       required:
       - target_grade_class_id
       - target_session_id
+    ProxySubstitution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        substitution_date:
+          type: string
+          format: date
+        timetable_entry:
+          type: string
+          format: uuid
+          nullable: true
+        class_section_label:
+          type: string
+          maxLength: 40
+        period_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        subject_name:
+          type: string
+          maxLength: 120
+        absent_teacher_name:
+          type: string
+          maxLength: 150
+        substitute_teacher_name:
+          type: string
+          maxLength: 150
+        reason:
+          type: string
+          maxLength: 200
+        status:
+          type: string
+          maxLength: 20
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - absent_teacher_name
+      - class_section_label
+      - created_at
+      - id
+      - period_number
+      - subject_name
+      - substitute_teacher_name
+      - substitution_date
+    ProxySubstitutionRequest:
+      type: object
+      properties:
+        substitution_date:
+          type: string
+          format: date
+        timetable_entry:
+          type: string
+          format: uuid
+          nullable: true
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        period_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        absent_teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        substitute_teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        reason:
+          type: string
+          maxLength: 200
+        status:
+          type: string
+          minLength: 1
+          maxLength: 20
+      required:
+      - absent_teacher_name
+      - class_section_label
+      - period_number
+      - subject_name
+      - substitute_teacher_name
+      - substitution_date
     PurposeEnum:
       enum:
       - registration
@@ -3609,6 +5345,20 @@ components:
       - staff_email
       - staff_name
       - work_division
+    Status0c7Enum:
+      enum:
+      - present
+      - absent
+      - late
+      - half_day
+      - medical_leave
+      type: string
+      description: |-
+        * `present` - Present
+        * `absent` - Absent
+        * `late` - Late
+        * `half_day` - Half Day
+        * `medical_leave` - Medical Leave
     StoredFile:
       type: object
       properties:
@@ -3818,6 +5568,51 @@ components:
       - created_at
       - full_name
       - id
+    StudentAttendanceRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        roll_number:
+          type: string
+          maxLength: 20
+        class_section_label:
+          type: string
+          maxLength: 40
+        attendance_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/Status0c7Enum'
+        check_in_time:
+          type: string
+          maxLength: 25
+        remarks:
+          type: string
+          maxLength: 255
+        is_locked:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - created_at
+      - id
+      - student_name
     StudentDossierField:
       type: object
       properties:
@@ -3871,6 +5666,150 @@ components:
       required:
       - field_key
       - label
+    StudentExamMark:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        examination:
+          type: string
+          format: uuid
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        class_section_label:
+          type: string
+          maxLength: 40
+        subject_code:
+          type: string
+          maxLength: 30
+        subject_name:
+          type: string
+          maxLength: 120
+        theory_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        max_theory_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        practical_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        max_practical_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        total_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          readOnly: true
+        max_total_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        grade:
+          type: string
+          maxLength: 10
+        is_absent:
+          type: boolean
+        is_locked:
+          type: boolean
+        remarks:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admission_number
+      - created_at
+      - examination
+      - id
+      - student_name
+      - subject_code
+      - subject_name
+      - total_marks
+    StudentExamMarkRequest:
+      type: object
+      properties:
+        examination:
+          type: string
+          format: uuid
+        student:
+          type: string
+          format: uuid
+          nullable: true
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_code:
+          type: string
+          minLength: 1
+          maxLength: 30
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        theory_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        max_theory_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        practical_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        max_practical_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        max_total_marks:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        grade:
+          type: string
+          minLength: 1
+          maxLength: 10
+        is_absent:
+          type: boolean
+        is_locked:
+          type: boolean
+        remarks:
+          type: string
+          maxLength: 255
+      required:
+      - admission_number
+      - examination
+      - student_name
+      - subject_code
+      - subject_name
     StudentRequest:
       type: object
       properties:
@@ -4071,6 +6010,166 @@ components:
         * `ACTIVE` - Active
         * `PAST_DUE` - Past Due
         * `CANCELLED` - Cancelled
+    TeachingDiaryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        entry_date:
+          type: string
+          format: date
+        period_label:
+          type: string
+          maxLength: 40
+        class_section_label:
+          type: string
+          maxLength: 40
+        subject_name:
+          type: string
+          maxLength: 120
+        teacher_name:
+          type: string
+          maxLength: 150
+        topic_covered:
+          type: string
+          maxLength: 250
+        homework_assigned:
+          type: string
+          maxLength: 250
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - subject_name
+      - teacher_name
+      - topic_covered
+    TeachingDiaryEntryRequest:
+      type: object
+      properties:
+        entry_date:
+          type: string
+          format: date
+        period_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        topic_covered:
+          type: string
+          minLength: 1
+          maxLength: 250
+        homework_assigned:
+          type: string
+          maxLength: 250
+        notes:
+          type: string
+      required:
+      - subject_name
+      - teacher_name
+      - topic_covered
+    TimetableEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        class_section_label:
+          type: string
+          maxLength: 40
+        day_of_week:
+          $ref: '#/components/schemas/DayOfWeekEnum'
+        period_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        time_label:
+          type: string
+          maxLength: 40
+        subject_code:
+          type: string
+          maxLength: 30
+        subject_name:
+          type: string
+          maxLength: 120
+        teacher_name:
+          type: string
+          maxLength: 150
+        room_label:
+          type: string
+          maxLength: 60
+        entry_type:
+          $ref: '#/components/schemas/EntryTypeEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - day_of_week
+      - id
+      - period_number
+      - subject_name
+      - teacher_name
+    TimetableEntryRequest:
+      type: object
+      properties:
+        class_section_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        day_of_week:
+          $ref: '#/components/schemas/DayOfWeekEnum'
+        period_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        time_label:
+          type: string
+          minLength: 1
+          maxLength: 40
+        subject_code:
+          type: string
+          maxLength: 30
+        subject_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        teacher_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        room_label:
+          type: string
+          minLength: 1
+          maxLength: 60
+        entry_type:
+          $ref: '#/components/schemas/EntryTypeEnum'
+      required:
+      - day_of_week
+      - period_number
+      - subject_name
+      - teacher_name
     UserTypeEnum:
       enum:
       - STAFF

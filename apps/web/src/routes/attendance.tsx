@@ -34,6 +34,8 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/attendance')({
   component: AttendancePage,
@@ -594,6 +596,55 @@ function AttendancePage() {
   const [selectedDate] = React.useState<string>('2026-08-20');
   const [studentRoster, setStudentRoster] = React.useState<StudentAttendanceRecord[]>(INITIAL_ROSTER);
 
+  // Sync daily attendance records from Django backend (/api/v1/attendance/records/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<
+          Array<{
+            id: string;
+            admission_number: string;
+            student_name: string;
+            roll_number: string;
+            class_section_label: string;
+            status: string;
+            check_in_time: string;
+          }>
+        >(API_ENDPOINTS.ATTENDANCE.RECORDS, {
+          params: {
+            date: selectedDate,
+            class_section: selectedClass.replace('Class ', ''),
+          },
+        });
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setStudentRoster((prev) =>
+            prev.map((s) => {
+              const matched = res.data.find((r) => r.admission_number === s.admNo);
+              if (!matched) return s;
+              const statusMap: Record<string, StudentAttendanceRecord['status']> = {
+                present: 'Present',
+                absent: 'Absent',
+                late: 'Late',
+                medical_leave: 'Leave',
+              };
+              return {
+                ...s,
+                status: statusMap[matched.status] || s.status,
+                punchTime: matched.check_in_time || s.punchTime,
+              };
+            })
+          );
+        }
+      } catch {
+        // Fallback to INITIAL_ROSTER
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [selectedClass, selectedDate]);
+
   // Drawer States
   const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
@@ -682,6 +733,20 @@ function AttendancePage() {
     setStudentRoster((prev) =>
       prev.map((s) => {
         if (s.id !== id) return s;
+        apiClient
+          .post(API_ENDPOINTS.ATTENDANCE.MARK_BULK, {
+            attendance_date: selectedDate,
+            class_section_label: selectedClass.replace('Class ', ''),
+            entries: [
+              {
+                admission_number: s.admNo,
+                student_name: s.name,
+                roll_number: s.rollNo,
+                status: newStatus === 'Leave' ? 'medical_leave' : newStatus.toLowerCase(),
+              },
+            ],
+          })
+          .catch(() => {});
         return {
           ...s,
           status: newStatus,

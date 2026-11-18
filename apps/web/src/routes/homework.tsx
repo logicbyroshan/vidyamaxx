@@ -33,6 +33,8 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/homework')({
   component: HomeworkPage,
@@ -141,6 +143,55 @@ function HomeworkPage() {
 
   // ── REVIEW STATE ──────────────────────────────────────────
   const [homeworkList, setHomeworkList] = React.useState<HomeworkRecord[]>(INITIAL_HOMEWORK);
+
+  // Sync homework assignments from Django backend (/api/v1/homework/assignments/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<
+          Array<{
+            id: string;
+            assignment_code: string;
+            title: string;
+            subject_name: string;
+            class_section_label: string;
+            due_date: string;
+            description: string;
+            submitted_count: number;
+            total_students: number;
+            status: string;
+          }>
+        >(API_ENDPOINTS.HOMEWORK.ASSIGNMENTS);
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setHomeworkList((prev) => {
+            const existingCodes = new Set(prev.map((h) => h.code));
+            const mapped: HomeworkRecord[] = res.data
+              .filter((r) => !existingCodes.has(r.assignment_code))
+              .map((r) => ({
+                id: r.id,
+                code: r.assignment_code,
+                title: r.title,
+                subject: r.subject_name,
+                class: r.class_section_label,
+                dueDate: r.due_date,
+                instructions: r.description || '',
+                submitted: r.submitted_count || 0,
+                totalStudents: r.total_students || 40,
+                status: r.status === 'Draft' ? 'Draft' : r.status === 'Closed' ? 'Closed' : 'Published',
+                createdAt: 'Synced',
+              }));
+            return mapped.length > 0 ? [...mapped, ...prev] : prev;
+          });
+        }
+      } catch {
+        // Fallback to INITIAL_HOMEWORK
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
   const [reviewSearch, setReviewSearch] = React.useState<string>('');
   const [reviewStatusFilter, setReviewStatusFilter] = React.useState<string>('All');
   // When set, shows the submission detail view for that homework
@@ -213,6 +264,18 @@ function HomeworkPage() {
     };
 
     setHomeworkList((prev) => [newHW, ...prev]);
+    apiClient
+      .post(API_ENDPOINTS.HOMEWORK.ASSIGNMENTS, {
+        assignment_code: newHW.code,
+        title: newHW.title,
+        description: htmlContent,
+        class_section_label: assignClass,
+        subject_name: assignSubject,
+        teacher_name: 'Faculty',
+        due_date: assignDue,
+        status: assignStatus === 'Draft' ? 'Draft' : 'Active',
+      })
+      .catch(() => {});
     if (editorRef.current) editorRef.current.innerHTML = '';
     setAssignDue('');
 

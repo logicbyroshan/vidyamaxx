@@ -100,4 +100,38 @@ export const API_ENDPOINTS = {
     APPROVE: (id: string) => `${V1}/admissions/applications/${id}/approve/`,
     ENROLL: (id: string) => `${V1}/admissions/applications/${id}/enroll/`,
   },
+
+  // Phase 3: Daily Academic Operations
+  TIMETABLE: {
+    ENTRIES: `${V1}/timetable/entries/`,
+    ENTRY_DETAIL: (id: string) => `${V1}/timetable/entries/${id}/`,
+    SUBSTITUTIONS: `${V1}/timetable/substitutions/`,
+  },
+
+  ATTENDANCE: {
+    RECORDS: `${V1}/attendance/records/`,
+    MARK_BULK: `${V1}/attendance/mark-bulk/`,
+    LEAVES: `${V1}/attendance/leaves/`,
+    LEAVE_DECIDE: (id: string) => `${V1}/attendance/leaves/${id}/decide/`,
+  },
+
+  TEACHING: {
+    LESSON_PLANS: `${V1}/teaching/lesson-plans/`,
+    LESSON_PLAN_DETAIL: (id: string) => `${V1}/teaching/lesson-plans/${id}/`,
+    DIARY: `${V1}/teaching/diary/`,
+    RESOURCES: `${V1}/teaching/resources/`,
+    ONLINE_CLASSES: `${V1}/teaching/online-classes/`,
+  },
+
+  HOMEWORK: {
+    ASSIGNMENTS: `${V1}/homework/assignments/`,
+    ASSIGNMENT_DETAIL: (id: string) => `${V1}/homework/assignments/${id}/`,
+    SUBMISSIONS: (id: string) => `${V1}/homework/assignments/${id}/submissions/`,
+  },
+
+  EXAMINATIONS: {
+    CYCLES: `${V1}/examinations/cycles/`,
+    CYCLE_LOCK: (id: string) => `${V1}/examinations/cycles/${id}/lock/`,
+    MARKS: `${V1}/examinations/marks/`,
+  },
 } as const;
