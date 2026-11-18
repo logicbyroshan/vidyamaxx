@@ -22,19 +22,17 @@
 | 1 | **Admissions** | `modules.admissions` | `Admissions-VidyaFloww` (standalone) | `VERIFIED COMPLETE` |
 | 2 | **Students** | `modules.students` | `apps/web/src/routes/students.tsx` | `VERIFIED COMPLETE` |
 | 3 | **Academics** | `modules.academics` | `apps/web/src/routes/academics.tsx` | `VERIFIED COMPLETE` |
-| 4 | **Timetable** | `modules.timetable` | `apps/web/src/routes/timetable.tsx` | `NOT STARTED` |
-| 5 | **Attendance** | `modules.attendance` | `apps/web/src/routes/attendance.tsx` | `NOT STARTED` |
-
-*(Note: `modules.timetable` has 1 partial model `TimetableSlot` using raw string names — requires full relational redesign.)*
+| 4 | **Timetable** | `modules.timetable` | `apps/web/src/routes/timetable.tsx` | `VERIFIED COMPLETE` |
+| 5 | **Attendance** | `modules.attendance` | `apps/web/src/routes/attendance.tsx` | `VERIFIED COMPLETE` |
 
 ### GROUP 2 — LEARNING
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
-| 6 | **Teaching** | `modules.teaching` *(new)* / `academics` | `apps/web/src/routes/teaching.tsx` | `NOT STARTED` |
-| 7 | **Homework** | `modules.homework` | `apps/web/src/routes/homework.tsx` | `NOT STARTED` |
-| 8 | **Examinations** | `modules.examinations` | `Examinations-VidyaFloww` (standalone) | `NOT STARTED` |
-| 9 | **Learning Resources** | `modules.lms` (resources) | `LMS-VidyaFloww` (`resources.tsx`) | `NOT STARTED` |
-| 10 | **Online Classes** | `modules.lms` (classes) + `E-Class` adapter | `LMS-VidyaFloww`, `E-Class-VidyaFloww` | `NOT STARTED` |
+| 6 | **Teaching** | `modules.lms` (`/api/v1/teaching/`) | `apps/web/src/routes/teaching.tsx` | `VERIFIED COMPLETE` |
+| 7 | **Homework** | `modules.homework` | `apps/web/src/routes/homework.tsx` | `VERIFIED COMPLETE` |
+| 8 | **Examinations** | `modules.examinations` | `Examinations-VidyaFloww` (standalone) | `VERIFIED COMPLETE` |
+| 9 | **Learning Resources** | `modules.lms` (resources) | `LMS-VidyaFloww` (`resources.tsx`) | `VERIFIED COMPLETE` |
+| 10 | **Online Classes** | `modules.lms` (classes) + `E-Class` adapter | `LMS-VidyaFloww`, `E-Class-VidyaFloww` | `VERIFIED COMPLETE` |
 
 ### GROUP 3 — SCHOOL OPERATIONS
 | # | Work Division | Backend App(s) | UI Location | Status |
