@@ -37,7 +37,7 @@
 ### GROUP 3 — SCHOOL OPERATIONS
 | # | Work Division | Backend App(s) | UI Location | Status |
 |---|---|---|---|---|
-| 11 | **Fees & Finance** | `modules.finance`, `modules.accounting`, `integrations.payment` | `Payments-VidyaFloww` (standalone) | `NOT STARTED` |
+| 11 | **Fees & Finance** | `modules.finance`, `modules.accounting`, `integrations.payment` | `Payments-VidyaFloww` (standalone), `students.tsx` | `VERIFIED COMPLETE` |
 | 12 | **Documents & Certificates** | `modules.documents`, `modules.certificates` + `Design-Lab` adapter | `Design-VidyaFloww`, `students.tsx` | `NOT STARTED` |
 | 13 | **Library** | `modules.library` + E-Library adapter | `Library-VidyaFloww` | `NOT STARTED` |
 | 14 | **Transport** | `modules.transport` (integration adapter) | `Transport-VidyaFloww` | `NOT STARTED` |
