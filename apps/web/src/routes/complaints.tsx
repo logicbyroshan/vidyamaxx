@@ -2,6 +2,8 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
+import { apiClient } from '@vidyafloww/api';
 import {
   VFPageContainer,
   VFPageToolbar,
@@ -123,6 +125,58 @@ function ComplaintsManagementPage() {
 
   const [activeTab, setActiveTab] = React.useState<'registry' | 'queue'>('registry');
   const [grievances, setGrievances] = React.useState<GrievanceTicket[]>(INITIAL_GRIEVANCES);
+
+  // Sync grievances from Django backend (/api/v1/engagement/complaints/)
+  React.useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await apiClient.get<
+          Array<{
+            id: string;
+            ticket_number: string;
+            complainant_type: string;
+            complainant_name: string;
+            category: string;
+            subject: string;
+            description: string;
+            priority: string;
+            assigned_officer: string;
+            status: string;
+            resolution_notes?: string;
+            expected_sla: string;
+          }>
+        >(API_ENDPOINTS.ENGAGEMENT.COMPLAINTS);
+        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+          setGrievances((prev) => {
+            const existingIds = new Set(prev.map((g) => g.id));
+            const mapped: GrievanceTicket[] = res.data
+              .filter((r) => !existingIds.has(r.ticket_number))
+              .map((r) => ({
+                id: r.ticket_number || r.id,
+                complainantType: (r.complainant_type as GrievanceTicket['complainantType']) || 'Parent',
+                complainantName: r.complainant_name,
+                category: (r.category as GrievanceTicket['category']) || 'Transport',
+                subject: r.subject,
+                description: r.description,
+                priority: (r.priority as GrievanceTicket['priority']) || 'High',
+                lodgedDate: 'Synced',
+                assignedOfficer: r.assigned_officer,
+                status: (r.status as GrievanceTicket['status']) || 'Open',
+                resolutionNotes: r.resolution_notes,
+                expectedSLA: r.expected_sla,
+              }));
+            return mapped.length > 0 ? [...mapped, ...prev] : prev;
+          });
+        }
+      } catch {
+        // Fallback to INITIAL_GRIEVANCES
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
   const [statusFilter, setStatusFilter] = React.useState<'All' | 'Open' | 'In Progress' | 'Resolved'>('All');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
   const [searchGrievance, setSearchGrievance] = React.useState('');
@@ -158,6 +212,20 @@ function ComplaintsManagementPage() {
     };
 
     setGrievances([newTicket, ...grievances]);
+    apiClient
+      .post(API_ENDPOINTS.ENGAGEMENT.COMPLAINTS, {
+        ticket_number: newTicket.id,
+        complainant_type: newTicket.complainantType,
+        complainant_name: newTicket.complainantName,
+        category: newTicket.category,
+        subject: newTicket.subject,
+        description: newTicket.description,
+        priority: newTicket.priority,
+        assigned_officer: newTicket.assignedOfficer,
+        status: 'Open',
+        expected_sla: newTicket.expectedSLA,
+      })
+      .catch(() => {});
     setIsLodgeModalOpen(false);
     setComplainantName('');
     setTicketSubject('');
