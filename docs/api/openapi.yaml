@@ -1100,6 +1100,402 @@ paths:
               schema:
                 $ref: '#/components/schemas/Notification'
           description: ''
+  /api/v1/operations/activities/:
+    get:
+      operationId: v1_operations_activities_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentActivity'
+          description: ''
+    post:
+      operationId: v1_operations_activities_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentActivityRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentActivityRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentActivity'
+          description: ''
+  /api/v1/operations/assets/:
+    get:
+      operationId: v1_operations_assets_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedAsset'
+          description: ''
+    post:
+      operationId: v1_operations_assets_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FixedAssetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FixedAssetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedAsset'
+          description: ''
+  /api/v1/operations/certificates/issued/:
+    get:
+      operationId: v1_operations_certificates_issued_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssuedCertificate'
+          description: ''
+    post:
+      operationId: v1_operations_certificates_issued_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssuedCertificateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IssuedCertificateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssuedCertificate'
+          description: ''
+  /api/v1/operations/certificates/templates/:
+    get:
+      operationId: v1_operations_certificates_templates_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateTemplate'
+          description: ''
+    post:
+      operationId: v1_operations_certificates_templates_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateTemplateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CertificateTemplateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateTemplate'
+          description: ''
+  /api/v1/operations/documents/:
+    get:
+      operationId: v1_operations_documents_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceDocument'
+          description: ''
+    post:
+      operationId: v1_operations_documents_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceDocumentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ComplianceDocumentRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceDocument'
+          description: ''
+  /api/v1/operations/events/:
+    get:
+      operationId: v1_operations_events_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolCalendarEvent'
+          description: ''
+    post:
+      operationId: v1_operations_events_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchoolCalendarEventRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SchoolCalendarEventRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolCalendarEvent'
+          description: ''
+  /api/v1/operations/front-office/visitors/:
+    get:
+      operationId: v1_operations_front_office_visitors_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitorPass'
+          description: ''
+    post:
+      operationId: v1_operations_front_office_visitors_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisitorPassRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VisitorPassRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitorPass'
+          description: ''
+  /api/v1/operations/hostel/allocations/:
+    get:
+      operationId: v1_operations_hostel_allocations_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostelAllocation'
+          description: ''
+    post:
+      operationId: v1_operations_hostel_allocations_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostelAllocationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HostelAllocationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostelAllocation'
+          description: ''
+  /api/v1/operations/inventory/items/:
+    get:
+      operationId: v1_operations_inventory_items_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryStock'
+          description: ''
+    post:
+      operationId: v1_operations_inventory_items_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryStockRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InventoryStockRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryStock'
+          description: ''
+  /api/v1/operations/library/books/:
+    get:
+      operationId: v1_operations_library_books_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryBook'
+          description: ''
+    post:
+      operationId: v1_operations_library_books_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibraryBookRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LibraryBookRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryBook'
+          description: ''
+  /api/v1/operations/transport/routes/:
+    get:
+      operationId: v1_operations_transport_routes_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportRoute'
+          description: ''
+    post:
+      operationId: v1_operations_transport_routes_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransportRouteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TransportRouteRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportRoute'
+          description: ''
   /api/v1/permissions/policies/:
     get:
       operationId: v1_permissions_policies_retrieve
@@ -2880,6 +3276,57 @@ components:
             $ref: '#/components/schemas/BulkAttendanceEntryRequest'
       required:
       - entries
+    CertificateTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 40
+        title:
+          type: string
+          maxLength: 120
+        certificate_type:
+          type: string
+          maxLength: 50
+        template_html:
+          type: string
+        design_lab_template_id:
+          type: string
+          maxLength: 80
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - title
+    CertificateTemplateRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        certificate_type:
+          type: string
+          minLength: 1
+          maxLength: 50
+        template_html:
+          type: string
+        design_lab_template_id:
+          type: string
+          maxLength: 80
+      required:
+      - title
     ChartOfAccount:
       type: object
       properties:
@@ -3103,6 +3550,79 @@ components:
       - amount_inr
       - invoice_id
       - receipt_number
+    ComplianceDocument:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_code:
+          type: string
+          maxLength: 50
+        owner_name:
+          type: string
+          maxLength: 150
+        document_name:
+          type: string
+          maxLength: 180
+        document_category:
+          type: string
+          maxLength: 80
+        verification_status:
+          type: string
+          maxLength: 30
+        file_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - document_name
+      - id
+      - owner_code
+      - owner_name
+    ComplianceDocumentRequest:
+      type: object
+      properties:
+        owner_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        owner_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        document_name:
+          type: string
+          minLength: 1
+          maxLength: 180
+        document_category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        verification_status:
+          type: string
+          minLength: 1
+          maxLength: 30
+        file_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+      required:
+      - document_name
+      - owner_code
+      - owner_name
     CreateResponsibilityRequest:
       type: object
       properties:
@@ -3468,6 +3988,65 @@ components:
       description: |-
         * `ISSUED` - Issued
         * `REVERSED` - Reversed
+    FixedAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        asset_tag:
+          type: string
+          maxLength: 50
+        asset_name:
+          type: string
+          maxLength: 150
+        location_room:
+          type: string
+          maxLength: 80
+        purchase_value_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        condition_status:
+          type: string
+          maxLength: 30
+        last_service_notes:
+          type: string
+          maxLength: 255
+      required:
+      - asset_name
+      - asset_tag
+      - id
+    FixedAssetRequest:
+      type: object
+      properties:
+        asset_tag:
+          type: string
+          minLength: 1
+          maxLength: 50
+        asset_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        location_room:
+          type: string
+          minLength: 1
+          maxLength: 80
+        purchase_value_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        condition_status:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_service_notes:
+          type: string
+          maxLength: 255
+      required:
+      - asset_name
+      - asset_tag
     GenderEnum:
       enum:
       - male
@@ -3826,6 +4405,216 @@ components:
         * `Pending` - Pending
         * `Late` - Late
         * `Graded` - Graded
+    HostelAllocation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        hostel_block:
+          type: string
+          maxLength: 80
+        room_number:
+          type: string
+          maxLength: 30
+        admission_number:
+          type: string
+          maxLength: 50
+        student_name:
+          type: string
+          maxLength: 150
+        warden_name:
+          type: string
+          maxLength: 120
+        status:
+          type: string
+          maxLength: 25
+      required:
+      - admission_number
+      - id
+      - room_number
+      - student_name
+    HostelAllocationRequest:
+      type: object
+      properties:
+        hostel_block:
+          type: string
+          minLength: 1
+          maxLength: 80
+        room_number:
+          type: string
+          minLength: 1
+          maxLength: 30
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        warden_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+      required:
+      - admission_number
+      - room_number
+      - student_name
+    InventoryStock:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        sku_code:
+          type: string
+          maxLength: 50
+        item_name:
+          type: string
+          maxLength: 150
+        category:
+          type: string
+          maxLength: 80
+        quantity_on_hand:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        reorder_threshold:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        unit_label:
+          type: string
+          maxLength: 30
+      required:
+      - id
+      - item_name
+      - sku_code
+    InventoryStockRequest:
+      type: object
+      properties:
+        sku_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        item_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        quantity_on_hand:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        reorder_threshold:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        unit_label:
+          type: string
+          minLength: 1
+          maxLength: 30
+      required:
+      - item_name
+      - sku_code
+    IssuedCertificate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        serial_number:
+          type: string
+          maxLength: 60
+        certificate_type:
+          type: string
+          maxLength: 50
+        recipient_code:
+          type: string
+          maxLength: 50
+        recipient_name:
+          type: string
+          maxLength: 150
+        class_or_dept:
+          type: string
+          maxLength: 60
+        issue_date:
+          type: string
+          format: date
+        reason:
+          type: string
+          maxLength: 255
+        verification_hash:
+          type: string
+          maxLength: 64
+        status:
+          type: string
+          maxLength: 20
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - recipient_code
+      - recipient_name
+      - serial_number
+    IssuedCertificateRequest:
+      type: object
+      properties:
+        serial_number:
+          type: string
+          minLength: 1
+          maxLength: 60
+        certificate_type:
+          type: string
+          minLength: 1
+          maxLength: 50
+        recipient_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        recipient_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        class_or_dept:
+          type: string
+          minLength: 1
+          maxLength: 60
+        issue_date:
+          type: string
+          format: date
+        reason:
+          type: string
+          maxLength: 255
+        verification_hash:
+          type: string
+          maxLength: 64
+        status:
+          type: string
+          minLength: 1
+          maxLength: 20
+      required:
+      - recipient_code
+      - recipient_name
+      - serial_number
     LearningResource:
       type: object
       properties:
@@ -4170,6 +4959,71 @@ components:
         * `In Progress` - In Progress
         * `Upcoming` - Upcoming
         * `Pending Review` - Pending Review
+    LibraryBook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        isbn_or_code:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 200
+        author:
+          type: string
+          maxLength: 150
+        category:
+          type: string
+          maxLength: 80
+        total_copies:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        available_copies:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - id
+      - isbn_or_code
+      - title
+    LibraryBookRequest:
+      type: object
+      properties:
+        isbn_or_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        author:
+          type: string
+          minLength: 1
+          maxLength: 150
+        category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        total_copies:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        available_copies:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - isbn_or_code
+      - title
     LifecycleAction:
       type: object
       properties:
@@ -5511,6 +6365,65 @@ components:
       - short_code
       - tenant_id
       - updated_at
+    SchoolCalendarEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 180
+        category:
+          type: string
+          maxLength: 60
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        venue:
+          type: string
+          maxLength: 120
+        audience:
+          type: string
+          maxLength: 80
+      required:
+      - end_date
+      - id
+      - start_date
+      - title
+    SchoolCalendarEventRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        category:
+          type: string
+          minLength: 1
+          maxLength: 60
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        venue:
+          type: string
+          minLength: 1
+          maxLength: 120
+        audience:
+          type: string
+          minLength: 1
+          maxLength: 80
+      required:
+      - end_date
+      - start_date
+      - title
     Section:
       type: object
       properties:
@@ -6113,6 +7026,58 @@ components:
       - created_at
       - full_name
       - id
+    StudentActivity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activity_name:
+          type: string
+          maxLength: 180
+        club_or_house:
+          type: string
+          maxLength: 80
+        coordinator_name:
+          type: string
+          maxLength: 120
+        participant_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        achievement_notes:
+          type: string
+          maxLength: 255
+      required:
+      - activity_name
+      - id
+    StudentActivityRequest:
+      type: object
+      properties:
+        activity_name:
+          type: string
+          minLength: 1
+          maxLength: 180
+        club_or_house:
+          type: string
+          minLength: 1
+          maxLength: 80
+        coordinator_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        participant_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        achievement_notes:
+          type: string
+          maxLength: 255
+      required:
+      - activity_name
     StudentAttendanceRecord:
       type: object
       properties:
@@ -6842,6 +7807,78 @@ components:
       - period_number
       - subject_name
       - teacher_name
+    TransportRoute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        route_code:
+          type: string
+          maxLength: 40
+        route_name:
+          type: string
+          maxLength: 150
+        vehicle_number:
+          type: string
+          maxLength: 40
+        driver_name:
+          type: string
+          maxLength: 120
+        driver_phone:
+          type: string
+          maxLength: 25
+        capacity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        assigned_students_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - id
+      - route_code
+      - route_name
+    TransportRouteRequest:
+      type: object
+      properties:
+        route_code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        route_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        vehicle_number:
+          type: string
+          minLength: 1
+          maxLength: 40
+        driver_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        driver_phone:
+          type: string
+          minLength: 1
+          maxLength: 25
+        capacity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        assigned_students_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - route_code
+      - route_name
     UserTypeEnum:
       enum:
       - STAFF
@@ -6896,6 +7933,86 @@ components:
         * `PRIVATE` - Private
         * `SCHOOL` - School Internal
         * `PUBLIC` - Public Asset
+    VisitorPass:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        pass_number:
+          type: string
+          maxLength: 40
+        visitor_name:
+          type: string
+          maxLength: 150
+        visitor_phone:
+          type: string
+          maxLength: 25
+        purpose:
+          type: string
+          maxLength: 180
+        person_to_meet:
+          type: string
+          maxLength: 150
+        visit_date:
+          type: string
+          format: date
+        check_in_time:
+          type: string
+          maxLength: 25
+        check_out_time:
+          type: string
+          maxLength: 25
+        status:
+          type: string
+          maxLength: 25
+      required:
+      - id
+      - pass_number
+      - visitor_name
+      - visitor_phone
+    VisitorPassRequest:
+      type: object
+      properties:
+        pass_number:
+          type: string
+          minLength: 1
+          maxLength: 40
+        visitor_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        visitor_phone:
+          type: string
+          minLength: 1
+          maxLength: 25
+        purpose:
+          type: string
+          minLength: 1
+          maxLength: 180
+        person_to_meet:
+          type: string
+          minLength: 1
+          maxLength: 150
+        visit_date:
+          type: string
+          format: date
+        check_in_time:
+          type: string
+          minLength: 1
+          maxLength: 25
+        check_out_time:
+          type: string
+          maxLength: 25
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+      required:
+      - pass_number
+      - visitor_name
+      - visitor_phone
     WorkDivisionEnum:
       enum:
       - admissions
