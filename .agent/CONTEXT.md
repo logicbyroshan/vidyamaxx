@@ -38,7 +38,6 @@
   * `@vidyafloww/validation`: Shared Zod validation schemas.
   * `@vidyafloww/hooks`, `@vidyafloww/utils`, `@vidyafloww/themes`, `@vidyafloww/icons`, `@vidyafloww/config`, `@vidyafloww/assets`.
 * **Additional Applications**:
-  * `apps/landing`: Marketing and product discovery site (Vite + React 19).
   * `apps/desktop`: Electron wrapper targeting cross-platform desktop execution.
   * `apps/mobile`: React Native + Expo shell.
 
