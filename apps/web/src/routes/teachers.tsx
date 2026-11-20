@@ -51,7 +51,7 @@ import {
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/teachers')({
   component: StaffPage,
@@ -565,69 +565,60 @@ function StaffPage() {
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.teachers') + ' \u2013 VidyaFloww'; }, [t]);
-  const [staffList, setStaffList] = React.useState<StaffRecord[]>(INITIAL_STAFF);
+  const [staffList, setStaffList] = React.useState<StaffRecord[]>([]);
   const [selectedStaffIndex, setSelectedStaffIndex] = React.useState<number | null>(null);
 
   // Sync unified staff roster from Django backend (/api/v1/staff/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            employee_code: string;
-            full_name: string;
-            avatar_url?: string;
-            designation_title: string;
-            department_name: string;
-            primary_subject?: string;
-            secondary_subject?: string;
-            qualification?: string;
-            experience_years?: number;
-            joining_date?: string;
-            phone?: string;
-            email?: string;
-            weekly_periods_load?: number;
-            max_weekly_periods?: number;
-            employment_status?: string;
-            base_salary_inr?: string;
-          }>
-        >(API_ENDPOINTS.STAFF.LIST);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setStaffList((prev) => {
-            const existingCodes = new Set(prev.map((s) => s.code));
-            const mapped: StaffRecord[] = res.data
-              .filter((r) => !existingCodes.has(r.employee_code))
-              .map((r) => ({
-                ...INITIAL_STAFF[0],
-                id: r.id,
-                code: r.employee_code,
-                name: r.full_name,
-                avatarUrl: r.avatar_url || INITIAL_STAFF[0].avatarUrl,
-                designation: r.designation_title || 'Faculty',
-                department: r.department_name || 'Academics',
-                subject: r.primary_subject || 'General',
-                secondarySubject: r.secondary_subject || undefined,
-                phone: r.phone || '+91 98765 00000',
-                email: r.email || 'faculty@vidyafloww.edu.in',
-                qualification: r.qualification || 'M.Sc., B.Ed.',
-                experience: `${r.experience_years || 5} Years`,
-                weeklyPeriods: r.weekly_periods_load || 22,
-                maxWeeklyPeriods: r.max_weekly_periods || 28,
-                status: (r.employment_status as StaffRecord['status']) || 'Active',
-              }));
-            return mapped.length > 0 ? [...mapped, ...prev] : prev;
-          });
-        }
-      } catch {
-        // Fallback to INITIAL_STAFF when offline/unauthenticated
-      }
-    })();
-    return () => {
-      active = false;
-    };
+  const loadStaff = React.useCallback(async () => {
+    try {
+      const res = await apiClient.get(API_ENDPOINTS.STAFF.LIST);
+      const rows = extractApiList<{
+        id: string;
+        employee_code: string;
+        full_name: string;
+        avatar_url?: string;
+        designation_title: string;
+        department_name: string;
+        primary_subject?: string;
+        secondary_subject?: string;
+        qualification?: string;
+        experience_years?: number;
+        joining_date?: string;
+        phone?: string;
+        email?: string;
+        weekly_periods_load?: number;
+        max_weekly_periods?: number;
+        employment_status?: string;
+        base_salary_inr?: string;
+      }>(res);
+      setStaffList(
+        rows.map((r) => ({
+          ...INITIAL_STAFF[0],
+          id: r.id,
+          code: r.employee_code,
+          name: r.full_name,
+          avatarUrl: r.avatar_url || INITIAL_STAFF[0].avatarUrl,
+          designation: r.designation_title || 'Faculty',
+          department: r.department_name || 'Academics',
+          subject: r.primary_subject || 'General',
+          secondarySubject: r.secondary_subject || undefined,
+          phone: r.phone || '',
+          email: r.email || '',
+          qualification: r.qualification || '',
+          experience: `${r.experience_years || 0} Years`,
+          weeklyPeriods: r.weekly_periods_load || 0,
+          maxWeeklyPeriods: r.max_weekly_periods || 28,
+          status: (r.employment_status as StaffRecord['status']) || 'Active',
+        }))
+      );
+    } catch {
+      setStaffList([]);
+    }
   }, []);
+
+  React.useEffect(() => {
+    loadStaff();
+  }, [loadStaff]);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const [drawerTab, setDrawerTab] = React.useState<'overview' | 'academics' | 'attendance' | 'credentials' | 'payroll'>('overview');
   const [isEditingStaff, setIsEditingStaff] = React.useState<boolean>(false);
@@ -742,122 +733,66 @@ function StaffPage() {
     setStaffFormData(null);
   };
 
-  const handleSaveStaff = () => {
+  const handleSaveStaff = async () => {
     if (!staffFormData || selectedStaffIndex === null) return;
-    const updated = [...staffList];
-    updated[selectedStaffIndex] = { ...staffFormData };
-    setStaffList(updated);
-    if (staffFormData.id && staffFormData.id.includes('-')) {
-      apiClient
-        .patch(API_ENDPOINTS.STAFF.DETAIL(staffFormData.id), {
-          full_name: staffFormData.name,
-          designation_title: staffFormData.designation,
-          department_name: staffFormData.department,
-          primary_subject: staffFormData.subject,
-          phone: staffFormData.phone,
-          email: staffFormData.email,
-        })
-        .catch(() => {});
+    try {
+      await apiClient.patch(API_ENDPOINTS.STAFF.DETAIL(staffFormData.id), {
+        full_name: staffFormData.name,
+        designation_title: staffFormData.designation,
+        department_name: staffFormData.department,
+        primary_subject: staffFormData.subject,
+        phone: staffFormData.phone,
+        email: staffFormData.email,
+      });
+      await loadStaff();
+      setIsEditingStaff(false);
+      setStaffFormData(null);
+      addNotification({
+        title: 'Faculty Record Updated',
+        description: `Changes to ${staffFormData.name}'s profile persisted to database.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Update Failed',
+        description: err instanceof Error ? err.message : 'Unable to save staff profile.',
+        type: 'error',
+      });
     }
-    setIsEditingStaff(false);
-    setStaffFormData(null);
-    addNotification({
-      title: 'Faculty Record Updated',
-      description: `Changes to ${staffFormData.name}'s profile saved successfully.`,
-      type: 'success',
-    });
   };
 
-  const handleCreateStaff = () => {
+  const handleCreateStaff = async () => {
     if (!newStaffForm.name.trim()) {
-      alert('Please provide a full legal name for the faculty member.');
+      addNotification({ title: 'Validation Error', description: 'Please provide a full legal name for the faculty member.', type: 'error' });
       return;
     }
-
-    const createdStaff: StaffRecord = {
-      id: String(Date.now()),
-      code: newStaffForm.code,
-      name: newStaffForm.name,
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-      designation: newStaffForm.designation,
-      department: newStaffForm.department,
-      subject: newStaffForm.subject,
-      secondarySubject: newStaffForm.secondarySubject,
-      assignedClasses: [
-        { grade: 'Class 9', section: 'A', subject: newStaffForm.subject, periodsPerWeek: 6, room: 'Room 101' },
-        { grade: 'Class 10', section: 'A', subject: newStaffForm.subject, periodsPerWeek: 6, room: 'Room 102' },
-      ],
-      classTeacherOf: newStaffForm.classTeacherOfGrade
-        ? {
-            grade: newStaffForm.classTeacherOfGrade,
-            section: newStaffForm.classTeacherOfSection || 'A',
-            room: newStaffForm.classTeacherRoom || 'Room 101',
-            studentCount: 40,
-          }
-        : undefined,
-      phone: newStaffForm.phone,
-      email: newStaffForm.email || `${newStaffForm.name.toLowerCase().replace(/\s+/g, '.')}@vidyafloww.edu.in`,
-      address: newStaffForm.address || 'Institutional Staff Quarters, New Delhi',
-      dob: newStaffForm.dob,
-      bloodGroup: newStaffForm.bloodGroup,
-      qualification: newStaffForm.qualification,
-      experience: newStaffForm.experience,
-      salaryGrade: newStaffForm.salaryGrade,
-      basicPay: newStaffForm.basicPay,
-      hra: '₹ 12,000',
-      da: '₹ 8,000',
-      specialAllowance: '₹ 6,000',
-      grossPay: newStaffForm.grossPay,
-      pfDeduction: '₹ 5,500',
-      taxDeduction: '₹ 2,500',
-      netPay: '₹ 64,000',
-      bankName: newStaffForm.bankName,
-      bankAccountNo: newStaffForm.bankAccountNo,
-      bankIfsc: newStaffForm.bankIfsc,
-      pfAccountNo: newStaffForm.pfAccountNo,
-      aadhaarNo: newStaffForm.aadhaarNo,
-      tetCertification: newStaffForm.tetCertification,
-      emergencyContact: 'Family Emergency Contact On Record',
-      attendance: '100%',
-      weeklyPeriods: Number(newStaffForm.weeklyPeriods) || 22,
-      maxWeeklyPeriods: 28,
-      studentSatisfaction: '100%',
-      passPercentage: '100%',
-      status: newStaffForm.status,
-      joinDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-      leaveBalance: { casual: 10, medical: 10, earned: 15 },
-      schedule: [
-        { day: 'Monday', period: 'Period 1 (08:00 AM)', classSection: 'Class 9-A', subject: newStaffForm.subject, room: 'Room 101' },
-      ],
-      payoutHistory: [
-        { month: 'August 2026', gross: newStaffForm.grossPay, deductions: '₹ 8,000', net: '₹ 64,000', status: 'Credited' },
-      ],
-      attendanceLog: [
-        { date: '31 Aug 2026', day: 'Monday', inTime: '07:45 AM', outTime: '03:15 PM', totalHours: '7h 30m', status: 'Present' },
-      ],
-    };
-
-    setStaffList([createdStaff, ...staffList]);
-    apiClient
-      .post(API_ENDPOINTS.STAFF.LIST, {
-        employee_code: createdStaff.code,
-        full_name: createdStaff.name,
-        designation_title: createdStaff.designation,
-        department_name: createdStaff.department,
-        primary_subject: createdStaff.subject,
-        secondary_subject: createdStaff.secondarySubject || '',
-        qualification: createdStaff.qualification,
-        phone: createdStaff.phone,
-        email: createdStaff.email,
-        weekly_periods_load: createdStaff.weeklyPeriods,
-      })
-      .catch(() => {});
-    setIsAddStaffDrawerOpen(false);
-    addNotification({
-      title: 'Faculty Member Onboarded',
-      description: `${createdStaff.name} registered under ID ${createdStaff.code}.`,
-      type: 'success',
-    });
+    try {
+      await apiClient.post(API_ENDPOINTS.STAFF.LIST, {
+        employee_code: newStaffForm.code,
+        full_name: newStaffForm.name.trim(),
+        designation_title: newStaffForm.designation,
+        department_name: newStaffForm.department,
+        primary_subject: newStaffForm.subject,
+        secondary_subject: newStaffForm.secondarySubject || '',
+        qualification: newStaffForm.qualification,
+        phone: newStaffForm.phone,
+        email: newStaffForm.email || `${newStaffForm.name.toLowerCase().replace(/\s+/g, '.')}@vidyafloww.edu.in`,
+        weekly_periods_load: Number(newStaffForm.weeklyPeriods) || 22,
+      });
+      await loadStaff();
+      setIsAddStaffDrawerOpen(false);
+      addNotification({
+        title: 'Faculty Member Onboarded',
+        description: `${newStaffForm.name} registered under ID ${newStaffForm.code} in database.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Onboarding Failed',
+        description: err instanceof Error ? err.message : 'Unable to create staff profile.',
+        type: 'error',
+      });
+    }
   };
 
   const handlePrevStaff = () => {

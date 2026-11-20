@@ -122,6 +122,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     "x-school-id",
     "x-branch-id",
     "x-request-id",
+    "idempotency-key",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -180,10 +181,19 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-PASSWORD_HASHERS = [
-    "django.contrib.auth.hashers.Argon2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
-]
+import importlib.util as _importlib_util
+
+PASSWORD_HASHERS = (
+    [
+        "django.contrib.auth.hashers.Argon2PasswordHasher",
+        "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    ]
+    if _importlib_util.find_spec("argon2") is not None
+    else [
+        "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+        "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    ]
+)
 
 AUTH_USER_MODEL = "accounts.User"
 

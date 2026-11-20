@@ -27,7 +27,7 @@ import {
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/reports')({
   component: ReportsPage,
@@ -349,47 +349,40 @@ function ReportsPage() {
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
 
   // Sync generated reports from Django backend (/api/v1/analytics/reports/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            report_code: string;
-            domain: DomainType;
-            title: string;
-            export_format: string;
-            row_count: number;
-          }>
-        >(API_ENDPOINTS.ANALYTICS.REPORTS);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setReports((prev) => {
-            const existingCodes = new Set(prev.map((r) => r.code));
-            const mapped: ReportCatalogItem[] = res.data
-              .filter((r) => !existingCodes.has(r.report_code))
-              .map((r) => ({
-                id: r.id,
-                code: r.report_code,
-                name: r.title,
-                domain: r.domain || 'students',
-                format: r.export_format.toUpperCase(),
-                frequency: 'On-Demand Export',
-                lastGenerated: 'Synced',
-                size: `${Math.max(8, r.row_count || 16)}.4 KB`,
-                status: 'Compiled',
-              }));
-            return mapped.length > 0 ? [...mapped, ...prev] : prev;
-          });
-        }
-      } catch {
-        // Fallback to INITIAL_CATALOG
-      }
-    })();
-    return () => {
-      active = false;
-    };
+  const loadReports = React.useCallback(async () => {
+    try {
+      const res = await apiClient.get(API_ENDPOINTS.ANALYTICS.REPORTS);
+      const rows = extractApiList<{
+        id: string;
+        report_code: string;
+        domain: DomainType;
+        title: string;
+        export_format: string;
+        row_count: number;
+        created_at?: string;
+      }>(res);
+      setReports(
+        rows.map((r) => ({
+          id: r.id,
+          code: r.report_code,
+          name: r.title,
+          domain: r.domain || 'students',
+          format: (r.export_format || 'csv').toUpperCase(),
+          frequency: 'On-Demand Export',
+          lastGenerated: r.created_at ? new Date(r.created_at).toLocaleDateString('en-IN') : 'Synced',
+          size: `${Math.max(4, r.row_count || 1)}.0 KB`,
+          status: 'Compiled',
+        }))
+      );
+    } catch {
+      setReports([]);
+    }
   }, []);
+
+  React.useEffect(() => {
+    loadReports();
+  }, [loadReports]);
+  void INITIAL_CATALOG;
 
   // Side Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -490,19 +483,19 @@ function ReportsPage() {
       downloadBlob(htmlData, `${filenameBase}.html`, 'text/html');
     }
 
-    // Prepend to catalog history
-    const newEntry: ReportCatalogItem = {
-      id: String(Date.now()),
-      code: `EXP-${selectedDomain.slice(0, 3).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`,
-      name: `${domainDef.labelEn} (${selectedFormat.toUpperCase()})`,
-      domain: selectedDomain,
-      format: selectedFormat.toUpperCase(),
-      frequency: 'On-Demand Export',
-      lastGenerated: 'Just Now',
-      size: `${(Math.random() * 20 + 8).toFixed(1)} KB`,
-      status: 'Compiled',
-    };
-    setReports((prev) => [newEntry, ...prev]);
+    // Persist generated report metadata to Django backend (/api/v1/analytics/reports/)
+    const reportCode = `EXP-${selectedDomain.slice(0, 3).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
+    const reportTitle = `${domainDef.labelEn} (${selectedFormat.toUpperCase()})`;
+    apiClient
+      .post(API_ENDPOINTS.ANALYTICS.REPORTS, {
+        report_code: reportCode,
+        domain: selectedDomain,
+        title: reportTitle,
+        export_format: selectedFormat,
+        row_count: rows.length,
+      })
+      .then(() => loadReports())
+      .catch(() => {});
 
     setIsDrawerOpen(false);
     addNotification({

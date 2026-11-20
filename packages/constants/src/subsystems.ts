@@ -15,47 +15,47 @@ export interface SubsystemDefinition {
 }
 
 export const SUBSYSTEMS = {
+  DESIGN_LAB: {
+    id: 'designlab',
+    name: 'Design Lab & Visual Studio',
+    subdomain: 'designlab.vidyafloww.com',
+    localPort: 8010,
+    envKey: 'VITE_SUBSYSTEM_DESIGNLAB_URL',
+  },
+  HOSTEL: {
+    id: 'hostel',
+    name: 'Hostel & Residential',
+    subdomain: 'hostel.vidyafloww.com',
+    localPort: 8011,
+    envKey: 'VITE_SUBSYSTEM_HOSTEL_URL',
+  },
   TRANSPORT: {
     id: 'transport',
     name: 'Transport & Telematics',
     subdomain: 'transport.vidyafloww.com',
-    localPort: 8010,
+    localPort: 8012,
     envKey: 'VITE_SUBSYSTEM_TRANSPORT_URL',
+  },
+  HR_MANAGE: {
+    id: 'hr',
+    name: 'HR & Biometrics',
+    subdomain: 'hr.vidyafloww.com',
+    localPort: 8013,
+    envKey: 'VITE_SUBSYSTEM_HR_URL',
   },
   ELIBRARY: {
     id: 'elibrary',
     name: 'E-Library & NCERT Repository',
     subdomain: 'elibrary.vidyafloww.com',
-    localPort: 8011,
+    localPort: 8014,
     envKey: 'VITE_SUBSYSTEM_ELIBRARY_URL',
   },
   ECLASS: {
     id: 'eclass',
     name: 'E-Classroom Studio',
     subdomain: 'eclass.vidyafloww.com',
-    localPort: 8012,
+    localPort: 8016,
     envKey: 'VITE_SUBSYSTEM_ECLASS_URL',
-  },
-  HOSTEL: {
-    id: 'hostel',
-    name: 'Hostel & Residential',
-    subdomain: 'hostel.vidyafloww.com',
-    localPort: 8013,
-    envKey: 'VITE_SUBSYSTEM_HOSTEL_URL',
-  },
-  HR_MANAGE: {
-    id: 'hr',
-    name: 'HR & Biometrics',
-    subdomain: 'hr.vidyafloww.com',
-    localPort: 8014,
-    envKey: 'VITE_SUBSYSTEM_HR_URL',
-  },
-  DESIGN_LAB: {
-    id: 'designlab',
-    name: 'Design Lab & Visual Studio',
-    subdomain: 'designlab.vidyafloww.com',
-    localPort: 8015,
-    envKey: 'VITE_SUBSYSTEM_DESIGNLAB_URL',
   },
   PORTAL: {
     id: 'portal',

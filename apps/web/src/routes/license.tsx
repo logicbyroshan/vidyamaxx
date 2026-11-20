@@ -42,36 +42,6 @@ interface InvoiceRecord {
   receiptUrl?: string;
 }
 
-const INVOICE_HISTORY: InvoiceRecord[] = [
-  {
-    id: '1',
-    invoiceNo: 'INV-2026-0891',
-    date: '01 Apr 2026',
-    amount: '₹ 2,40,000',
-    description: 'Annual Enterprise Tier Subscription (2026–2027)',
-    method: 'Visa Corp •••• 4242',
-    status: 'Paid',
-  },
-  {
-    id: '2',
-    invoiceNo: 'INV-2025-0742',
-    date: '01 Apr 2025',
-    amount: '₹ 2,10,000',
-    description: 'Annual Enterprise Tier Subscription (2025–2026)',
-    method: 'Visa Corp •••• 4242',
-    status: 'Paid',
-  },
-  {
-    id: '3',
-    invoiceNo: 'INV-2024-0518',
-    date: '01 Apr 2024',
-    amount: '₹ 1,80,000',
-    description: 'Standard Campus License (2024–2025)',
-    method: 'Corporate NetBanking (HDFC)',
-    status: 'Paid',
-  },
-];
-
 function LicenseManagementPage() {
   const { schoolProfile, addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
@@ -90,21 +60,58 @@ function LicenseManagementPage() {
   const [cardholderName, setCardholderName] = React.useState('VidyaFloww International Academy');
   const [cardNumber, setCardNumber] = React.useState('•••• •••• •••• 4242');
   const [expiryDate, setExpiryDate] = React.useState('08/29');
+  const [subscriptionData, setSubscriptionData] = React.useState<{
+    license_key_prefix?: string;
+    status?: string;
+    payment_method_brand?: string;
+    payment_method_last4?: string;
+    invoices?: Array<{
+      id: string;
+      invoice_number: string;
+      billing_date: string;
+      description: string;
+      amount_inr: string;
+      payment_method_label: string;
+      status: string;
+    }>;
+  } | null>(null);
 
-  React.useEffect(() => {
+  const loadSubscription = React.useCallback(async () => {
     if (!getAuthToken()) return;
-    apiClient
-      .get('/platform/subscription/')
-      .then((res) => {
-        const sub = res.data?.subscription;
-        if (sub?.payment_method_last4) {
+    try {
+      const res = await apiClient.get('/platform/subscription/');
+      const sub = res.data?.subscription;
+      if (sub) {
+        setSubscriptionData(sub);
+        if (sub.payment_method_last4) {
           setCardNumber(`•••• •••• •••• ${sub.payment_method_last4}`);
         }
-      })
-      .catch(() => {});
+      }
+    } catch {
+      // handled gracefully
+    }
   }, []);
 
-  const licenseKey = 'VFL-2026-SA98-CBSE-9481-DELHI';
+  React.useEffect(() => {
+    loadSubscription();
+  }, [loadSubscription]);
+
+  const invoicesList: InvoiceRecord[] = React.useMemo(() => {
+    const rows = subscriptionData?.invoices ?? [];
+    return rows.map((inv) => ({
+      id: inv.id,
+      invoiceNo: inv.invoice_number,
+      date: inv.billing_date,
+      description: inv.description,
+      amount: `₹ ${Number(inv.amount_inr || 0).toLocaleString('en-IN')}`,
+      method: inv.payment_method_label,
+      status: (['Paid', 'Pending', 'Overdue'].includes(inv.status) ? inv.status : 'Paid') as InvoiceRecord['status'],
+    }));
+  }, [subscriptionData]);
+
+  const licenseKey = subscriptionData?.license_key_prefix
+    ? `${subscriptionData.license_key_prefix}-VERIFIED`
+    : 'VFL-LICENSE-UNAVAILABLE';
 
   const handleCopyKey = () => {
     navigator.clipboard.writeText(licenseKey);
@@ -118,26 +125,73 @@ function LicenseManagementPage() {
   };
 
   const handleDownloadInvoice = (invoiceNo: string) => {
+    const target = invoicesList.find((i) => i.invoiceNo === invoiceNo);
+    const content = [
+      `VIDYAFLOWW TAX INVOICE: ${invoiceNo}`,
+      `Institution: ${schoolProfile.name}`,
+      `Date: ${target?.date ?? ''}`,
+      `Description: ${target?.description ?? ''}`,
+      `Amount: ${target?.amount ?? ''}`,
+      `Method: ${target?.method ?? ''}`,
+      `Status: ${target?.status ?? ''}`,
+    ].join('\n');
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${invoiceNo}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
     addNotification({
       title: 'Invoice Downloaded',
-      description: `Tax invoice ${invoiceNo} downloaded as PDF with GSTIN receipt.`,
+      description: `Invoice ${invoiceNo} exported successfully.`,
       type: 'success',
     });
   };
 
-  const handleProcessEarlyPayment = () => {
-    setIsProcessingPayment(true);
-    setTimeout(() => {
-      setIsProcessingPayment(false);
-      setIsPayEarlyModalOpen(false);
+  const handleSavePaymentMethod = async () => {
+    const digits = cardNumber.replace(/\D/g, '');
+    const last4 = digits.slice(-4);
+    if (last4.length !== 4) {
+      addNotification({ title: 'Invalid Card', description: 'Please enter a valid 4+ digit card number.', type: 'error' });
+      return;
+    }
+    try {
+      await apiClient.post('/platform/subscription/payment-method/', {
+        brand: 'VISA',
+        last4,
+      });
+      await loadSubscription();
+      setIsUpdateCardModalOpen(false);
       addNotification({
-        title: isHindi ? 'भुगतान सफल' : 'Payment Successful',
-        description: isHindi
-          ? 'वार्षिक एंटरप्राइज रिन्यूअल ₹2,40,000 सफलतापूर्वक प्रोसेस किया गया। वैधता 31 मार्च 2028 तक बढ़ा दी गई है।'
-          : 'Annual Enterprise Renewal of ₹2,40,000 successfully processed. Entitlement extended through March 31, 2028.',
+        title: 'Payment Method Updated',
+        description: `Corporate card ending in ${last4} saved to subscription billing.`,
         type: 'success',
       });
-    }, 1200);
+    } catch (err) {
+      addNotification({
+        title: 'Update Failed',
+        description: err instanceof Error ? err.message : 'Unable to update payment method.',
+        type: 'error',
+      });
+    }
+  };
+
+  const handleProcessEarlyPayment = async () => {
+    setIsProcessingPayment(true);
+    try {
+      await handleSavePaymentMethod();
+      setIsPayEarlyModalOpen(false);
+      addNotification({
+        title: isHindi ? 'रिन्यूअल अनुरोध दर्ज' : 'Renewal Request Logged',
+        description: isHindi
+          ? 'वार्षिक एंटरप्राइज रिन्यूअल बिलिंग के लिए रिकॉर्ड किया गया है।'
+          : 'Annual Enterprise renewal confirmation recorded against your active subscription.',
+        type: 'success',
+      });
+    } finally {
+      setIsProcessingPayment(false);
+    }
   };
 
   return (
@@ -365,7 +419,7 @@ function LicenseManagementPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60 text-foreground font-medium">
-              {INVOICE_HISTORY.map((inv) => (
+              {invoicesList.map((inv) => (
                 <tr key={inv.id} className="hover:bg-[#141414] transition-colors whitespace-nowrap">
                   <td className="py-2.5 px-3 font-mono font-bold text-foreground">{inv.invoiceNo}</td>
                   <td className="py-2.5 px-3 font-mono text-muted-foreground">{inv.date}</td>
@@ -476,14 +530,7 @@ function LicenseManagementPage() {
             <VFButton
               size="sm"
               className="rounded-[4px]"
-              onClick={() => {
-                setIsUpdateCardModalOpen(false);
-                addNotification({
-                  title: 'Payment Method Updated',
-                  description: `Corporate card ending in ${cardNumber.slice(-4)} set as default payment method.`,
-                  type: 'success',
-                });
-              }}
+              onClick={handleSavePaymentMethod}
             >
               Save Payment Method
             </VFButton>

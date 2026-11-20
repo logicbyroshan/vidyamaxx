@@ -33,7 +33,7 @@ import {
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/timetable')({
   component: TimetablePage,
@@ -280,24 +280,27 @@ function TimetablePage() {
   const [scheduleData, setScheduleData] = React.useState<Record<string, PeriodSlot[]>>(INITIAL_SCHEDULE_DATA);
 
   // Sync timetable entries & proxy substitutions from Django backend (/api/v1/timetable/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            day_of_week: string;
-            period_number: number;
-            subject_name: string;
-            teacher_name: string;
-            room_label: string;
-            entry_type: string;
-          }>
-        >(API_ENDPOINTS.TIMETABLE.ENTRIES, { params: { class_section: selectedClass.replace('Class ', '') } });
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+  const loadTimetable = React.useCallback(async () => {
+    try {
+      const [entRes, subRes] = await Promise.allSettled([
+        apiClient.get(API_ENDPOINTS.TIMETABLE.ENTRIES, {
+          params: { class_section: selectedClass.replace('Class ', '') },
+        }),
+        apiClient.get(API_ENDPOINTS.TIMETABLE.SUBSTITUTIONS),
+      ]);
+      if (entRes.status === 'fulfilled') {
+        const rows = extractApiList<{
+          day_of_week: string;
+          period_number: number;
+          subject_name: string;
+          teacher_name: string;
+          room_label: string;
+          entry_type: string;
+        }>(entRes.value);
+        if (rows.length > 0) {
           setScheduleData((prev) => {
             const next = { ...prev };
-            for (const entry of res.data) {
+            for (const entry of rows) {
               const daySlots = [...(next[entry.day_of_week] || [])];
               const idx = Math.max(0, entry.period_number - 1);
               if (idx < daySlots.length) {
@@ -313,14 +316,39 @@ function TimetablePage() {
             return next;
           });
         }
-      } catch {
-        // Fallback to INITIAL_SCHEDULE_DATA
       }
-    })();
-    return () => {
-      active = false;
-    };
+      if (subRes.status === 'fulfilled') {
+        const subRows = extractApiList<{
+          id: string;
+          absent_teacher_name: string;
+          proxy_teacher_name: string;
+          period_label: string;
+          subject_name: string;
+          room_label: string;
+          reason: string;
+          status: string;
+        }>(subRes.value);
+        setSubstitutionsList(
+          subRows.map((s) => ({
+            id: s.id,
+            absentTeacher: s.absent_teacher_name,
+            proxyTeacher: s.proxy_teacher_name,
+            period: s.period_label,
+            subject: s.subject_name,
+            room: s.room_label,
+            reason: s.reason,
+            status: (s.status as ProxySubstitution['status']) || 'Assigned',
+          }))
+        );
+      }
+    } catch {
+      // Handled gracefully
+    }
   }, [selectedClass]);
+
+  React.useEffect(() => {
+    loadTimetable();
+  }, [loadTimetable]);
 
   // Configuration Drawers State
   const [isConfigurePeriodsOpen, setIsConfigurePeriodsOpen] = React.useState<boolean>(false);
@@ -389,28 +417,10 @@ function TimetablePage() {
     });
   };
 
-  const handleSaveSlotEdit = () => {
+  const handleSaveSlotEdit = async () => {
     if (!editingSlot) return;
-
-    setScheduleData((prev) => {
-      const daySlots = [...(prev[editingSlot.day] || [])];
-      daySlots[editingSlot.slotIndex] = {
-        subject: editingSlot.subject,
-        teacher: editingSlot.teacher,
-        room: editingSlot.room,
-        isLab: editingSlot.isLab,
-      };
-      return { ...prev, [editingSlot.day]: daySlots };
-    });
-
-    addNotification({
-      title: 'Timetable Slot Updated',
-      description: `${editingSlot.day} Period ${editingSlot.slotIndex + 1} updated to ${editingSlot.subject} (${editingSlot.teacher}).`,
-      type: 'success',
-    });
-
-    apiClient
-      .post(API_ENDPOINTS.TIMETABLE.ENTRIES, {
+    try {
+      await apiClient.post(API_ENDPOINTS.TIMETABLE.ENTRIES, {
         class_section_label: selectedClass.replace('Class ', ''),
         day_of_week: editingSlot.day,
         period_number: editingSlot.slotIndex + 1,
@@ -418,33 +428,58 @@ function TimetablePage() {
         teacher_name: editingSlot.teacher,
         room_label: editingSlot.room,
         entry_type: editingSlot.isLab ? 'Lab' : 'Core',
-      })
-      .catch(() => {});
-
-    setEditingSlot(null);
+      });
+      setScheduleData((prev) => {
+        const daySlots = [...(prev[editingSlot.day] || [])];
+        daySlots[editingSlot.slotIndex] = {
+          subject: editingSlot.subject,
+          teacher: editingSlot.teacher,
+          room: editingSlot.room,
+          isLab: editingSlot.isLab,
+        };
+        return { ...prev, [editingSlot.day]: daySlots };
+      });
+      addNotification({
+        title: 'Timetable Slot Updated',
+        description: `${editingSlot.day} Period ${editingSlot.slotIndex + 1} saved (${editingSlot.subject} · ${editingSlot.teacher}).`,
+        type: 'success',
+      });
+      setEditingSlot(null);
+    } catch (err) {
+      addNotification({
+        title: 'Scheduling Conflict Detected',
+        description: err instanceof Error ? err.message : 'Teacher or room conflict detected on this period slot.',
+        type: 'error',
+      });
+    }
   };
 
-  const handleCreateProxy = () => {
+  const handleCreateProxy = async () => {
     if (!newAbsentTeacher || !newProxyTeacher) return;
-
-    const newProxy: ProxySubstitution = {
-      id: `SUB-${Date.now()}`,
-      absentTeacher: newAbsentTeacher,
-      proxyTeacher: newProxyTeacher,
-      period: newProxyPeriod,
-      subject: newProxySubject,
-      room: newProxyRoom,
-      reason: newProxyReason,
-      status: 'Assigned',
-    };
-
-    setSubstitutionsList([newProxy, ...substitutionsList]);
-    setIsAssigningProxy(false);
-    addNotification({
-      title: 'Substitute Teacher Assigned',
-      description: `${newProxyTeacher} appointed as proxy for ${newAbsentTeacher} on ${newProxyPeriod}.`,
-      type: 'success',
-    });
+    try {
+      await apiClient.post(API_ENDPOINTS.TIMETABLE.SUBSTITUTIONS, {
+        class_section_label: selectedClass.replace('Class ', ''),
+        absent_teacher_name: newAbsentTeacher,
+        proxy_teacher_name: newProxyTeacher,
+        period_label: newProxyPeriod,
+        subject_name: newProxySubject,
+        room_label: newProxyRoom,
+        reason: newProxyReason,
+      });
+      await loadTimetable();
+      setIsAssigningProxy(false);
+      addNotification({
+        title: 'Substitute Teacher Assigned',
+        description: `${newProxyTeacher} persisted as proxy for ${newAbsentTeacher}.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Proxy Assignment Failed',
+        description: err instanceof Error ? err.message : 'Unable to save proxy substitution.',
+        type: 'error',
+      });
+    }
   };
 
   const handleExecuteExport = async () => {

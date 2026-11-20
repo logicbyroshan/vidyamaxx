@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 import {
   VFPageContainer,
   VFPageToolbar,
@@ -107,51 +107,43 @@ function TeachingPage() {
 
   const [activeTab, setActiveTab] = React.useState<'classes' | 'planner'>('classes');
   const [classes] = React.useState<ClassWorkload[]>(INITIAL_CLASSES);
-  const [plans, setPlans] = React.useState<LessonPlanItem[]>(INITIAL_PLANS);
+  const [plans, setPlans] = React.useState<LessonPlanItem[]>([]);
 
   // Sync lesson plans from Django backend (/api/v1/teaching/lesson-plans/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            plan_code: string;
-            topic_title: string;
-            subject_name: string;
-            class_section_label: string;
-            duration_minutes: number;
-            scheduled_date: string;
-            learning_objectives: string;
-          }>
-        >(API_ENDPOINTS.TEACHING.LESSON_PLANS);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setPlans((prev) => {
-            const existingIds = new Set(prev.map((p) => p.id));
-            const mapped: LessonPlanItem[] = res.data
-              .filter((r) => !existingIds.has(r.plan_code))
-              .map((r) => ({
-                id: r.plan_code || r.id,
-                title: r.topic_title,
-                subject: r.subject_name,
-                grade: r.class_section_label,
-                duration: `${r.duration_minutes || 45} mins`,
-                date: r.scheduled_date,
-                objectives: r.learning_objectives ? [r.learning_objectives] : ['Master core topic concepts.'],
-                outline: `Structured classroom session for ${r.topic_title}`,
-              }));
-            return mapped.length > 0 ? [...mapped, ...prev] : prev;
-          });
-        }
-      } catch {
-        // Fallback to INITIAL_PLANS
-      }
-    })();
-    return () => {
-      active = false;
-    };
+  const loadPlans = React.useCallback(async () => {
+    try {
+      const res = await apiClient.get(API_ENDPOINTS.TEACHING.LESSON_PLANS);
+      const rows = extractApiList<{
+        id: string;
+        plan_code: string;
+        topic_title: string;
+        subject_name: string;
+        class_section_label: string;
+        duration_minutes?: number;
+        scheduled_date?: string;
+        learning_objectives?: string;
+      }>(res);
+      setPlans(
+        rows.map((r) => ({
+          id: r.plan_code || r.id,
+          title: r.topic_title,
+          subject: r.subject_name,
+          grade: r.class_section_label,
+          duration: `${r.duration_minutes || 45} mins`,
+          date: r.scheduled_date || 'Scheduled',
+          objectives: r.learning_objectives ? r.learning_objectives.split('\n').filter(Boolean) : ['Master core topic concepts.'],
+          outline: `Structured classroom session for ${r.topic_title}`,
+        }))
+      );
+    } catch {
+      setPlans([]);
+    }
   }, []);
+
+  React.useEffect(() => {
+    loadPlans();
+  }, [loadPlans]);
+  void INITIAL_PLANS;
   const [activePlan, setActivePlan] = React.useState<LessonPlanItem | null>(null);
   const [isNewPlanModalOpen, setIsNewPlanModalOpen] = React.useState(false);
 
@@ -162,56 +154,61 @@ function TeachingPage() {
   const [newObjective, setNewObjective] = React.useState('');
   const [isGeneratingAI, setIsGeneratingAI] = React.useState(false);
 
-  const handleCreatePlan = (e: React.FormEvent) => {
+  const handleCreatePlan = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
 
-    const newPlan: LessonPlanItem = {
-      id: `LP-${Date.now().toString().slice(-3)}`,
-      title: newTitle.trim(),
-      subject: newSubject,
-      grade: newGrade,
-      duration: '45 mins',
-      date: 'Today, Just now',
-      objectives: newObjective.trim() ? [newObjective.trim()] : [
-        'Understand foundational concepts with real-world applications.',
-        'Solve 3 interactive problem examples in class.',
-      ],
-      outline: `00-10m: Concept introduction & previous recap\n10-25m: Structured explanation of ${newTitle}\n25-35m: Small group peer exercise\n35-45m: Rapid recap quiz & homework assignment`,
-    };
-
-    setPlans([newPlan, ...plans]);
-    apiClient
-      .post(API_ENDPOINTS.TEACHING.LESSON_PLANS, {
-        plan_code: newPlan.id,
-        class_section_label: newPlan.grade,
-        subject_name: newPlan.subject,
-        teacher_name: 'Dr. Rajesh Sharma',
-        unit_title: newPlan.title,
-        topic_title: newPlan.title,
-        learning_objectives: newPlan.objectives.join('\n'),
+    const code = `LP-${Date.now().toString().slice(-4)}`;
+    try {
+      await apiClient.post(API_ENDPOINTS.TEACHING.LESSON_PLANS, {
+        plan_code: code,
+        class_section_label: newGrade,
+        subject_name: newSubject,
+        teacher_name: 'Faculty',
+        unit_title: newTitle.trim(),
+        topic_title: newTitle.trim(),
+        learning_objectives:
+          newObjective.trim() || 'Understand foundational concepts with real-world applications.',
         status: 'In Progress',
-      })
-      .catch(() => {});
-    setIsNewPlanModalOpen(false);
-    setNewTitle('');
-    setNewObjective('');
-    addNotification({
-      title: isHindi ? 'लेसन प्लान क्रिएट हुआ' : 'Lesson Plan Created',
-      description: isHindi ? `"${newPlan.title}" सफलतापूर्वक सेव हुआ।` : `"${newPlan.title}" has been saved.`,
-      type: 'success',
-    });
+      });
+      await loadPlans();
+      setIsNewPlanModalOpen(false);
+      setNewTitle('');
+      setNewObjective('');
+      addNotification({
+        title: isHindi ? 'लेसन प्लान क्रिएट हुआ' : 'Lesson Plan Created',
+        description: isHindi ? `"${newTitle.trim()}" सफलतापूर्वक सेव हुआ।` : `"${newTitle.trim()}" persisted to database.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Save Failed',
+        description: err instanceof Error ? err.message : 'Unable to save lesson plan.',
+        type: 'error',
+      });
+    }
   };
 
-  const handleAIAssist = () => {
-    if (!newTitle.trim()) {
-      setNewTitle('Thermodynamics & Heat Engine Cycles');
-    }
+  const handleAIAssist = async () => {
+    const topic = newTitle.trim() || `${newSubject} Lesson (${newGrade})`;
+    if (!newTitle.trim()) setNewTitle(topic);
     setIsGeneratingAI(true);
-    setTimeout(() => {
+    try {
+      const res = await apiClient.post(API_ENDPOINTS.ANALYTICS.AI_ASSIST, {
+        capability: 'lesson_plan',
+        prompt: `${newSubject} for ${newGrade}: ${topic}`,
+      });
+      const suggestion = res.data?.data?.suggestion || res.data?.suggestion || '';
+      setNewObjective(suggestion);
+    } catch (err) {
+      addNotification({
+        title: 'AI Assist Unavailable',
+        description: err instanceof Error ? err.message : 'Unable to generate lesson plan.',
+        type: 'error',
+      });
+    } finally {
       setIsGeneratingAI(false);
-      setNewObjective('Derive Carnot efficiency formula and explain real-life refrigeration cycles.');
-    }, 400);
+    }
   };
 
   return (

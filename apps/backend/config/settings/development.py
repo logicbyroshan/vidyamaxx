@@ -15,8 +15,22 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 # ─── CORS ─────────────────────────────────────────────────────────────────────
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Web
-    "http://localhost:5173",  # Vite
+    "http://localhost:3000",   # Main Command Portal (apps/web)
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",   # Vite default
+    "http://127.0.0.1:5173",
+    "http://localhost:8010",   # Design Lab
+    "http://localhost:8011",   # Hostel
+    "http://localhost:8012",   # Transport
+    "http://localhost:8013",   # HRM & Biometrics
+    "http://localhost:8014",   # E-Library
+    "http://localhost:8016",   # E-Class
+    "http://localhost:8017",   # Parent & Student Portal
+    "http://localhost:8018",   # Admissions
+    "http://localhost:8019",   # LMS
+    "http://localhost:8020",   # Payments Engine
+    "http://localhost:8021",   # Examinations Engine
+    "http://localhost:8022",   # Communication Hub
 ]
 CORS_ALLOW_CREDENTIALS = True
 

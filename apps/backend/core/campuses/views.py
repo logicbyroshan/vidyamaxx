@@ -86,3 +86,27 @@ class BranchDetailView(APIView):
             target_id=str(branch.id),
         )
         return Response({"success": True, "branch": BranchSerializer(branch).data})
+
+    def delete(self, request, pk):
+        membership = resolve_user_tenant_context(request, require_school=True)
+        branch = get_object_or_404(Branch, id=pk, school=request.school)
+        if branch.is_primary:
+            return Response(
+                {"success": False, "code": "PRIMARY_BRANCH_LOCKED", "message": "Cannot delete the primary campus branch."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        branch_code = branch.code
+        branch.delete()
+        record_audit_event(
+            school_id=request.school.id,
+            tenant_id=request.school.tenant_id,
+            actor_user_id=membership.user_id,
+            actor_name=membership.user.full_name,
+            actor_role_label=membership.user_type,
+            category="Settings",
+            action="BRANCH_DELETED",
+            target_type="Branch",
+            target_id=str(pk),
+            metadata={"code": branch_code},
+        )
+        return Response({"success": True, "deleted": True, "id": str(pk)}, status=status.HTTP_200_OK)

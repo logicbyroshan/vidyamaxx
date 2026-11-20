@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 import {
   VFPageContainer,
   VFPageToolbar,
@@ -124,59 +124,58 @@ function ComplaintsManagementPage() {
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'registry' | 'queue'>('registry');
-  const [grievances, setGrievances] = React.useState<GrievanceTicket[]>(INITIAL_GRIEVANCES);
+  const [grievances, setGrievances] = React.useState<GrievanceTicket[]>([]);
+  const [backendIdByCode, setBackendIdByCode] = React.useState<Record<string, string>>({});
 
   // Sync grievances from Django backend (/api/v1/engagement/complaints/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            ticket_number: string;
-            complainant_type: string;
-            complainant_name: string;
-            category: string;
-            subject: string;
-            description: string;
-            priority: string;
-            assigned_officer: string;
-            status: string;
-            resolution_notes?: string;
-            expected_sla: string;
-          }>
-        >(API_ENDPOINTS.ENGAGEMENT.COMPLAINTS);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setGrievances((prev) => {
-            const existingIds = new Set(prev.map((g) => g.id));
-            const mapped: GrievanceTicket[] = res.data
-              .filter((r) => !existingIds.has(r.ticket_number))
-              .map((r) => ({
-                id: r.ticket_number || r.id,
-                complainantType: (r.complainant_type as GrievanceTicket['complainantType']) || 'Parent',
-                complainantName: r.complainant_name,
-                category: (r.category as GrievanceTicket['category']) || 'Transport',
-                subject: r.subject,
-                description: r.description,
-                priority: (r.priority as GrievanceTicket['priority']) || 'High',
-                lodgedDate: 'Synced',
-                assignedOfficer: r.assigned_officer,
-                status: (r.status as GrievanceTicket['status']) || 'Open',
-                resolutionNotes: r.resolution_notes,
-                expectedSLA: r.expected_sla,
-              }));
-            return mapped.length > 0 ? [...mapped, ...prev] : prev;
-          });
-        }
-      } catch {
-        // Fallback to INITIAL_GRIEVANCES
-      }
-    })();
-    return () => {
-      active = false;
-    };
+  const loadGrievances = React.useCallback(async () => {
+    try {
+      const res = await apiClient.get(API_ENDPOINTS.ENGAGEMENT.COMPLAINTS);
+      const rows = extractApiList<{
+        id: string;
+        ticket_number: string;
+        complainant_type: string;
+        complainant_name: string;
+        category: string;
+        subject: string;
+        description: string;
+        priority: string;
+        assigned_officer: string;
+        status: string;
+        resolution_notes?: string;
+        expected_sla: string;
+        created_at?: string;
+      }>(res);
+      const idMap: Record<string, string> = {};
+      const mapped: GrievanceTicket[] = rows.map((r) => {
+        const displayId = r.ticket_number || r.id;
+        idMap[displayId] = r.id;
+        return {
+          id: displayId,
+          complainantType: (r.complainant_type as GrievanceTicket['complainantType']) || 'Parent',
+          complainantName: r.complainant_name,
+          category: (r.category as GrievanceTicket['category']) || 'Transport',
+          subject: r.subject,
+          description: r.description,
+          priority: (r.priority as GrievanceTicket['priority']) || 'High',
+          lodgedDate: r.created_at ? new Date(r.created_at).toLocaleDateString('en-IN') : 'Synced',
+          assignedOfficer: r.assigned_officer || 'Department In-Charge',
+          status: (r.status as GrievanceTicket['status']) || 'Open',
+          resolutionNotes: r.resolution_notes,
+          expectedSLA: r.expected_sla || 'Within 48 Hours',
+        };
+      });
+      setBackendIdByCode(idMap);
+      setGrievances(mapped);
+    } catch {
+      setGrievances([]);
+    }
   }, []);
+
+  React.useEffect(() => {
+    loadGrievances();
+  }, [loadGrievances]);
+  void INITIAL_GRIEVANCES;
   const [statusFilter, setStatusFilter] = React.useState<'All' | 'Open' | 'In Progress' | 'Resolved'>('All');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
   const [searchGrievance, setSearchGrievance] = React.useState('');
@@ -193,60 +192,65 @@ function ComplaintsManagementPage() {
   const [ticketPriority, setTicketPriority] = React.useState<'Urgent' | 'High' | 'Medium' | 'Low'>('High');
   const [ticketDesc, setTicketDesc] = React.useState('');
 
-  const handleLodgeSubmit = (e: React.FormEvent) => {
+  const handleLodgeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!ticketSubject.trim() || !complainantName.trim()) return;
 
-    const newTicket: GrievanceTicket = {
-      id: `TKT-2026-${Math.floor(100 + Math.random() * 900)}`,
-      complainantType,
-      complainantName: complainantName.trim(),
-      category: ticketCategory,
-      subject: ticketSubject.trim(),
-      description: ticketDesc.trim() || 'Details provided to grievance cell.',
-      priority: ticketPriority,
-      lodgedDate: 'Today, Just now',
-      assignedOfficer: 'Department In-Charge',
-      status: 'Open',
-      expectedSLA: 'Within 48 Hours',
-    };
-
-    setGrievances([newTicket, ...grievances]);
-    apiClient
-      .post(API_ENDPOINTS.ENGAGEMENT.COMPLAINTS, {
-        ticket_number: newTicket.id,
-        complainant_type: newTicket.complainantType,
-        complainant_name: newTicket.complainantName,
-        category: newTicket.category,
-        subject: newTicket.subject,
-        description: newTicket.description,
-        priority: newTicket.priority,
-        assigned_officer: newTicket.assignedOfficer,
+    const ticketNo = `TKT-2026-${Math.floor(100 + Math.random() * 900)}`;
+    try {
+      await apiClient.post(API_ENDPOINTS.ENGAGEMENT.COMPLAINTS, {
+        ticket_number: ticketNo,
+        complainant_type: complainantType,
+        complainant_name: complainantName.trim(),
+        category: ticketCategory,
+        subject: ticketSubject.trim(),
+        description: ticketDesc.trim() || 'Details provided to grievance cell.',
+        priority: ticketPriority,
+        assigned_officer: 'Department In-Charge',
         status: 'Open',
-        expected_sla: newTicket.expectedSLA,
-      })
-      .catch(() => {});
-    setIsLodgeModalOpen(false);
-    setComplainantName('');
-    setTicketSubject('');
-    setTicketDesc('');
-
-    addNotification({
-      title: isHindi ? 'शिकायत दर्ज हुई' : 'Grievance Registered',
-      description: `Ticket ${newTicket.id} has been routed to ${newTicket.category} department.`,
-      type: 'success',
-    });
+        expected_sla: 'Within 48 Hours',
+      });
+      await loadGrievances();
+      setIsLodgeModalOpen(false);
+      setComplainantName('');
+      setTicketSubject('');
+      setTicketDesc('');
+      addNotification({
+        title: isHindi ? 'शिकायत दर्ज हुई' : 'Grievance Registered',
+        description: `Ticket ${ticketNo} persisted and routed to ${ticketCategory} department.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Registration Failed',
+        description: err instanceof Error ? err.message : 'Unable to register grievance ticket.',
+        type: 'error',
+      });
+    }
   };
 
-  const handleMarkResolved = (id: string) => {
-    setGrievances((prev) =>
-      prev.map((g) => (g.id === id ? { ...g, status: 'Resolved', resolutionNotes: 'Resolved by administrative authority.' } : g))
-    );
-    addNotification({
-      title: isHindi ? 'शिकायत का समाधान हुआ' : 'Grievance Marked Resolved',
-      description: `Ticket ${id} closed successfully.`,
-      type: 'success',
-    });
+  const handleMarkResolved = async (id: string) => {
+    const uuid = backendIdByCode[id] ?? id;
+    try {
+      await apiClient.patch(API_ENDPOINTS.ENGAGEMENT.COMPLAINT_DETAIL(uuid), {
+        status: 'Resolved',
+        resolution_notes: 'Resolved by administrative authority.',
+      });
+      setGrievances((prev) =>
+        prev.map((g) => (g.id === id ? { ...g, status: 'Resolved', resolutionNotes: 'Resolved by administrative authority.' } : g))
+      );
+      addNotification({
+        title: isHindi ? 'शिकायत का समाधान हुआ' : 'Grievance Marked Resolved',
+        description: `Ticket ${id} closed and persisted to database.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Update Failed',
+        description: err instanceof Error ? err.message : 'Could not update grievance ticket.',
+        type: 'error',
+      });
+    }
   };
 
   return (

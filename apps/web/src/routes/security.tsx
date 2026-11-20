@@ -57,23 +57,47 @@ function SecurityManagementPage() {
   const [sessionTimeout, setSessionTimeout] = React.useState(30);
   const [whitelistSubnet, setWhitelistSubnet] = React.useState('103.21.244.0/24');
   const [isEditingPolicies, setIsEditingPolicies] = React.useState(false);
+  const [liveResponsibilities, setLiveResponsibilities] = React.useState<
+    Array<{ id: string; work_division: string; actions: string[]; staff_name?: string; notes?: string }>
+  >([]);
+
+  const loadSecurityData = React.useCallback(async () => {
+    if (!getAuthToken()) return;
+    const [polRes, respRes] = await Promise.allSettled([
+      apiClient.get('/permissions/policies/'),
+      apiClient.get('/permissions/responsibilities/'),
+    ]);
+    if (polRes.status === 'fulfilled') {
+      const p = polRes.value.data?.policy;
+      if (p) {
+        setTwoFactorEnforced(Boolean(p.two_factor_enforced));
+        setSessionTimeout(Number(p.session_timeout_minutes) || 30);
+        if (Array.isArray(p.ip_whitelist_cidrs) && p.ip_whitelist_cidrs.length > 0) {
+          setWhitelistSubnet(p.ip_whitelist_cidrs.join(', '));
+        }
+      }
+    }
+    if (respRes.status === 'fulfilled') {
+      const rows = respRes.value.data?.results ?? [];
+      if (Array.isArray(rows)) setLiveResponsibilities(rows);
+    }
+  }, []);
 
   React.useEffect(() => {
-    if (!getAuthToken()) return;
-    apiClient
-      .get('/permissions/policies/')
-      .then((res) => {
-        const p = res.data?.policy;
-        if (p) {
-          setTwoFactorEnforced(Boolean(p.two_factor_enforced));
-          setSessionTimeout(Number(p.session_timeout_minutes) || 30);
-          if (Array.isArray(p.ip_whitelist_cidrs) && p.ip_whitelist_cidrs.length > 0) {
-            setWhitelistSubnet(p.ip_whitelist_cidrs.join(', '));
-          }
-        }
-      })
-      .catch(() => {});
-  }, []);
+    loadSecurityData();
+  }, [loadSecurityData]);
+
+  const handleRevokeResponsibility = async (id: string) => {
+    try {
+      await apiClient.delete(`/permissions/responsibilities/${id}/`);
+      setLiveResponsibilities((prev) => prev.filter((r) => r.id !== id));
+      addNotification({ title: 'Responsibility Revoked', description: 'Scoped staff responsibility revoked & audited.', type: 'warning' });
+    } catch (err) {
+      addNotification({ title: 'Revoke Failed', description: err instanceof Error ? err.message : 'Unable to revoke.', type: 'error' });
+    }
+  };
+  void liveResponsibilities;
+  void handleRevokeResponsibility;
 
   const handleTogglePermission = (moduleIndex: number, roleKey: keyof Omit<RolePermission, 'module'>) => {
     setPermissions((prev) => {
@@ -100,26 +124,28 @@ function SecurityManagementPage() {
   };
 
   const handleSavePolicies = async () => {
-    if (getAuthToken()) {
-      try {
-        await apiClient.patch('/permissions/policies/', {
-          two_factor_enforced: twoFactorEnforced,
-          session_timeout_minutes: sessionTimeout,
-          ip_whitelist_cidrs: whitelistSubnet
-            .split(',')
-            .map((s) => s.trim())
-            .filter(Boolean),
-        });
-      } catch {
-        // fallback notification below
-      }
+    try {
+      await apiClient.patch('/permissions/policies/', {
+        two_factor_enforced: twoFactorEnforced,
+        session_timeout_minutes: sessionTimeout,
+        ip_whitelist_cidrs: whitelistSubnet
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
+      });
+      setIsEditingPolicies(false);
+      addNotification({
+        title: 'Security Policies Saved',
+        description: 'Network perimeter parameters and timeout policies persisted to backend.',
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Save Failed',
+        description: err instanceof Error ? err.message : 'Unable to persist security policy.',
+        type: 'error',
+      });
     }
-    setIsEditingPolicies(false);
-    addNotification({
-      title: 'Security Policies Saved',
-      description: 'Network perimeter parameters and timeout policies applied.',
-      type: 'success',
-    });
   };
 
   return (

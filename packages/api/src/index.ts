@@ -1,7 +1,11 @@
 export {
   apiClient,
+  clearSessionTokens,
   createApiClient,
+  extractApiList,
   getAuthToken,
+  getTenantHeaders,
+  registerAuthFailureHandler,
   setAuthToken,
   setTenantHeaders,
 } from './client';

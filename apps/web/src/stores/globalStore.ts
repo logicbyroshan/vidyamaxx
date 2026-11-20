@@ -1,10 +1,67 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { clearSessionTokens, setTenantHeaders } from '@vidyafloww/api';
 
 // Theme is permanently dark — no light/system mode
 export type Theme = 'dark';
 
 export type Language = 'en' | 'hi';
+
+export type AuthStatus = 'idle' | 'checking' | 'authenticated' | 'unauthenticated';
+
+export interface AuthUser {
+  id: string;
+  full_name: string;
+  hindi_name?: string;
+  email: string | null;
+  phone: string | null;
+  is_verified: boolean;
+  user_type?: string | null;
+  active_school_id?: string | null;
+}
+
+export interface UserMembership {
+  id: string;
+  user_type: string;
+  tenant_id: string;
+  tenant_name: string;
+  school_id: string | null;
+  school_name: string | null;
+  school_code: string | null;
+  default_branch_id: string | null;
+  preferences?: Record<string, unknown>;
+}
+
+export interface StaffResponsibilityScope {
+  id: string;
+  work_division: string;
+  submodule_code?: string;
+  actions: string[];
+  branch_ids?: string[];
+  grade_class_ids?: string[];
+  section_ids?: string[];
+  subject_ids?: string[];
+}
+
+export interface BranchSummary {
+  id: string;
+  code: string;
+  name: string;
+  city: string;
+  board?: string;
+  principal_name?: string;
+  is_primary?: boolean;
+  status: string;
+}
+
+export interface AcademicSessionSummary {
+  id: string;
+  code: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  is_current: boolean;
+}
 
 export interface Notification {
   id: string;
@@ -13,9 +70,12 @@ export interface Notification {
   type: 'success' | 'error' | 'warning' | 'info';
   read: boolean;
   createdAt: number;
+  actionUrl?: string;
+  fromServer?: boolean;
 }
 
 export interface SchoolProfile {
+  id?: string;
   name: string;
   shortCode: string;
   tagline: string;
@@ -24,6 +84,9 @@ export interface SchoolProfile {
   logoPreset: 'building' | 'shield' | 'graduation' | 'award' | 'book';
   customLogoUrl?: string;
   city: string;
+  establishedYear?: string;
+  academicLevel?: string;
+  principalName?: string;
 }
 
 export const DEFAULT_DASHBOARD_SHORTCUTS = [
@@ -56,6 +119,29 @@ export const DEFAULT_DASHBOARD_KPIS = [
 interface GlobalState {
   // Theme (always dark)
   theme: Theme;
+
+  // Auth & Tenant Context
+  authStatus: AuthStatus;
+  currentUser: AuthUser | null;
+  activeMembership: UserMembership | null;
+  memberships: UserMembership[];
+  responsibilities: StaffResponsibilityScope[];
+  branches: BranchSummary[];
+  activeBranchId: string | null;
+  academicSessionRecords: AcademicSessionSummary[];
+  setAuthStatus: (status: AuthStatus) => void;
+  setAuthSession: (payload: {
+    user: AuthUser;
+    activeMembership: UserMembership | null;
+    memberships: UserMembership[];
+    responsibilities?: StaffResponsibilityScope[];
+  }) => void;
+  clearAuthSession: () => void;
+  setBranches: (branches: BranchSummary[]) => void;
+  setActiveBranch: (branchId: string | null) => void;
+  switchActiveSchool: (schoolId: string) => void;
+  setAcademicSessionRecords: (records: AcademicSessionSummary[]) => void;
+  hasDivisionAccess: (division: string, action?: string) => boolean;
 
   // Language / Locale
   language: Language;
@@ -104,6 +190,7 @@ interface GlobalState {
 
   // Notifications
   notifications: Notification[];
+  setNotificationsFromServer: (items: Notification[]) => void;
   addNotification: (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
@@ -113,17 +200,120 @@ interface GlobalState {
 
 export const useGlobalStore = create<GlobalState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Always dark
       theme: 'dark',
+
+      // Auth & Tenant Context
+      authStatus: 'idle',
+      currentUser: null,
+      activeMembership: null,
+      memberships: [],
+      responsibilities: [],
+      branches: [],
+      activeBranchId: null,
+      academicSessionRecords: [],
+
+      setAuthStatus: (authStatus) => set({ authStatus }),
+      setAuthSession: ({ user, activeMembership, memberships, responsibilities = [] }) => {
+        const schoolId = activeMembership?.school_id ?? user.active_school_id ?? null;
+        const branchId = activeMembership?.default_branch_id ?? null;
+        setTenantHeaders(schoolId, branchId);
+        const prefs = (activeMembership?.preferences ?? {}) as Record<string, unknown>;
+        const updates: Partial<GlobalState> = {
+          authStatus: 'authenticated',
+          currentUser: user,
+          activeMembership,
+          memberships,
+          responsibilities,
+          activeBranchId: branchId,
+        };
+        if (Array.isArray(prefs.dashboardShortcuts) && prefs.dashboardShortcuts.length > 0) {
+          updates.dashboardShortcuts = prefs.dashboardShortcuts as string[];
+        }
+        if (Array.isArray(prefs.dashboardKpiOrder) && prefs.dashboardKpiOrder.length === 4) {
+          updates.dashboardKpiOrder = prefs.dashboardKpiOrder as string[];
+        }
+        if (Array.isArray(prefs.dashboardSectionOrder) && prefs.dashboardSectionOrder.length > 0) {
+          updates.dashboardSectionOrder = prefs.dashboardSectionOrder as string[];
+        }
+        if (prefs.language === 'en' || prefs.language === 'hi') {
+          updates.language = prefs.language;
+        }
+        set(updates);
+      },
+      clearAuthSession: () => {
+        clearSessionTokens();
+        set({
+          authStatus: 'unauthenticated',
+          currentUser: null,
+          activeMembership: null,
+          memberships: [],
+          responsibilities: [],
+          branches: [],
+          activeBranchId: null,
+        });
+      },
+      setBranches: (branches) =>
+        set((state) => {
+          const validCurrent = branches.find((b) => b.id === state.activeBranchId);
+          const primary = validCurrent ?? branches.find((b) => b.is_primary) ?? branches[0] ?? null;
+          const nextBranchId = primary?.id ?? null;
+          const schoolId = state.activeMembership?.school_id ?? state.currentUser?.active_school_id ?? null;
+          setTenantHeaders(schoolId, nextBranchId);
+          return { branches, activeBranchId: nextBranchId };
+        }),
+      setActiveBranch: (branchId) => {
+        const state = get();
+        const schoolId = state.activeMembership?.school_id ?? state.currentUser?.active_school_id ?? null;
+        setTenantHeaders(schoolId, branchId);
+        set({ activeBranchId: branchId });
+      },
+      switchActiveSchool: (schoolId) => {
+        const state = get();
+        const nextMembership =
+          state.memberships.find((m) => m.school_id === schoolId) ?? state.activeMembership;
+        const nextBranchId = nextMembership?.default_branch_id ?? null;
+        setTenantHeaders(schoolId, nextBranchId);
+        set({
+          activeMembership: nextMembership,
+          activeBranchId: nextBranchId,
+        });
+      },
+      setAcademicSessionRecords: (records) =>
+        set(() => {
+          const codes = records.map((r) => r.code);
+          const current = records.find((r) => r.is_current) ?? records[0];
+          return {
+            academicSessionRecords: records,
+            academicSessions: codes.length > 0 ? codes : ['2026-2027'],
+            activeSession: current?.code ?? '2026-2027',
+          };
+        }),
+      hasDivisionAccess: (division, action = 'view') => {
+        const { activeMembership, responsibilities } = get();
+        if (!activeMembership) return false;
+        const ut = activeMembership.user_type;
+        if (['SUPER_ADMIN', 'SUPER_EXECUTIVE', 'SCHOOL_ADMIN', 'SCHOOL_EXECUTIVE'].includes(ut)) {
+          return true;
+        }
+        if (ut === 'STAFF') {
+          return responsibilities.some(
+            (r) =>
+              r.work_division === division &&
+              (r.actions.includes(action) || r.actions.includes('manage') || r.actions.includes('*'))
+          );
+        }
+        return false;
+      },
 
       // Language default — English
       language: 'en',
       setLanguage: (language) => set({ language }),
 
-      // School Profile default
+      // School Profile default (hydrated from GET /api/v1/schools/current/)
       schoolProfile: {
-        name: 'VidyaFlow International Academy',
+        name: 'VidyaFloww International Academy',
         shortCode: 'VF-DELHI',
         tagline: 'Excellence in Education & Character',
         affiliation: 'CBSE Affiliation #1630982',
@@ -140,9 +330,9 @@ export const useGlobalStore = create<GlobalState>()(
           },
         })),
 
-      // Academic Session state
-      academicSessions: ['2026–2027', '2025–2026', '2024–2025'],
-      activeSession: '2026–2027',
+      // Academic Session state (hydrated from GET /api/v1/academics/sessions/)
+      academicSessions: ['2026-2027'],
+      activeSession: '2026-2027',
       setActiveSession: (activeSession) => set({ activeSession }),
 
       // Sidebar state
@@ -179,6 +369,12 @@ export const useGlobalStore = create<GlobalState>()(
 
       // Notifications state
       notifications: [],
+      setNotificationsFromServer: (items) =>
+        set((state) => {
+          const localOnly = state.notifications.filter((n) => !n.fromServer);
+          const merged = [...items, ...localOnly].slice(0, 50);
+          return { notifications: merged };
+        }),
       addNotification: (notif) =>
         set((state) => ({
           notifications: [
@@ -187,6 +383,7 @@ export const useGlobalStore = create<GlobalState>()(
               id: Math.random().toString(36).substring(2, 9),
               read: false,
               createdAt: Date.now(),
+              fromServer: false,
             },
             ...state.notifications,
           ].slice(0, 50),
@@ -214,6 +411,8 @@ export const useGlobalStore = create<GlobalState>()(
         sidebarExpanded: state.sidebarExpanded,
         hasSeenPreloader: state.hasSeenPreloader,
         dashboardShortcuts: state.dashboardShortcuts,
+        dashboardKpiOrder: state.dashboardKpiOrder,
+        dashboardSectionOrder: state.dashboardSectionOrder,
         language: state.language,
       }),
     }

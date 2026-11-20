@@ -22,6 +22,8 @@ import {
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { TranslationKey } from '../lib/i18n';
+import { apiClient } from '@vidyafloww/api';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
 
 interface NavItem {
   id: string;
@@ -64,6 +66,7 @@ const NAVIGATION_GROUPS: NavGroup[] = [
     id: 'admin-group',
     items: [
       { id: 'statistics', labelKey: 'nav.statistics', route: '/statistics', icon: BarChart3 },
+      { id: 'operations', labelKey: 'nav.operations', route: '/operations', icon: BookOpenCheck },
       { id: 'complaints', labelKey: 'nav.complaints', route: '/complaints', icon: MessageSquareWarning },
       { id: 'surveys', labelKey: 'nav.surveys', route: '/surveys', icon: Vote },
       { id: 'reports', labelKey: 'nav.reports', route: '/reports', icon: FileSpreadsheet },
@@ -78,12 +81,37 @@ const EXPANDED_LINK_PL = 12;
 const EXPANDED_ICON_GAP = 10;
 
 export function Sidebar() {
-  const { sidebarExpanded, activeSession, addNotification } = useGlobalStore();
+  const { sidebarExpanded, activeSession, addNotification, currentUser, activeMembership, clearAuthSession } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
   const location = useLocation();
   const navigate = useNavigate();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
+  const displayName = currentUser?.full_name || 'Authenticated User';
+  const roleLabel = (activeMembership?.user_type || currentUser?.user_type || 'STAFF')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const handleConfirmLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT);
+    } catch {
+      // Proceed to clear local session even if token already expired
+    } finally {
+      clearAuthSession();
+      setIsLoggingOut(false);
+      setIsLogoutModalOpen(false);
+      addNotification({
+        title: isHindi ? 'साइन आउट किया गया' : 'Signed Out',
+        description: isHindi ? 'VidyaFloww से सफलतापूर्वक साइन आउट हो गए।' : 'Safely signed out of VidyaFloww.',
+        type: 'info',
+      });
+      navigate({ to: '/login' });
+    }
+  };
 
   // Unified fixed expanded width ensuring both English and Devanagari Hindi labels fit comfortably with ample breathing room and never shift or resize layout on language toggle
   const expandedWidth = 240;
@@ -198,7 +226,7 @@ export function Sidebar() {
           onClick={() => {
             if (!sidebarExpanded) setIsLogoutModalOpen(true);
           }}
-          title={!sidebarExpanded ? 'Roshan Singh (Super Admin) - Click to Sign Out' : undefined}
+          title={!sidebarExpanded ? `${displayName} (${roleLabel}) - Click to Sign Out` : undefined}
           style={{
             paddingLeft: sidebarExpanded ? '4px' : '4px',
             paddingRight: sidebarExpanded ? '8px' : '4px',
@@ -207,7 +235,7 @@ export function Sidebar() {
         >
           {/* Avatar: strictly 32px, centered with 4px margin on each side when collapsed */}
           <div className="h-8 w-8 min-w-[32px] max-w-[32px] shrink-0 flex items-center justify-center">
-            <VFAvatar fallback="Roshan Singh" size="sm" className="h-8 w-8 text-xs font-bold rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30" />
+            <VFAvatar fallback={displayName} size="sm" className="h-8 w-8 text-xs font-bold rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30" />
           </div>
 
           {/* User info: fades on collapse */}
@@ -220,8 +248,8 @@ export function Sidebar() {
               transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
             }}
           >
-            <p className="text-xs font-bold text-foreground truncate leading-none">Roshan Singh</p>
-            <p className="text-[10px] text-muted-foreground font-semibold truncate mt-[3px]">Super Admin</p>
+            <p className="text-xs font-bold text-foreground truncate leading-none">{displayName}</p>
+            <p className="text-[10px] text-muted-foreground font-semibold truncate mt-[3px]">{roleLabel}</p>
           </div>
 
           {/* Sign-out button: visible when expanded */}
@@ -268,25 +296,18 @@ export function Sidebar() {
             <VFButton
               variant="danger"
               size="sm"
+              disabled={isLoggingOut}
               leftIcon={<LogOut className="h-3.5 w-3.5" />}
               className="rounded-md font-bold"
-              onClick={() => {
-                setIsLogoutModalOpen(false);
-                addNotification({
-                  title: isHindi ? 'साइन आउट किया गया' : 'Signed Out',
-                  description: isHindi ? 'VidyaFloww से सफलतापूर्वक साइन आउट हो गए।' : 'Safely signed out of VidyaFloww.',
-                  type: 'info',
-                });
-                navigate({ to: '/' });
-              }}
+              onClick={handleConfirmLogout}
             >
-              {t('action.signOut')}
+              {isLoggingOut ? (isHindi ? 'साइन आउट हो रहा है...' : 'Signing out...') : t('action.signOut')}
             </VFButton>
           </div>
         }
       >
         <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 text-xs text-muted-foreground space-y-1">
-          <p>User: <strong className="text-foreground">Roshan Singh</strong> (Super Admin)</p>
+          <p>User: <strong className="text-foreground">{displayName}</strong> ({roleLabel})</p>
           <p>Session: <strong className="text-emerald-400 font-mono">{activeSession}</strong></p>
         </div>
       </VFDialog>

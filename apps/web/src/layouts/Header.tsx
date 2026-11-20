@@ -10,11 +10,14 @@ import {
   PanelLeftOpen,
   Languages,
   Sparkles,
+  Building2,
 } from 'lucide-react';
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { cn } from '@vidyafloww/ui';
+import { apiClient, getAuthToken } from '@vidyafloww/api';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -27,6 +30,10 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
     activeSession,
     setActiveSession,
     academicSessions,
+    academicSessionRecords,
+    branches,
+    activeBranchId,
+    setActiveBranch,
     isDashboardEditMode,
     toggleDashboardEditMode,
     sidebarExpanded,
@@ -39,22 +46,29 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
   const [isSessionMenuOpen, setIsSessionMenuOpen] = React.useState(false);
+  const [isBranchMenuOpen, setIsBranchMenuOpen] = React.useState(false);
   const sessionMenuRef = React.useRef<HTMLDivElement>(null);
+  const branchMenuRef = React.useRef<HTMLDivElement>(null);
   const unreadCount = notifications.filter((n) => !n.read).length;
   const { location } = useRouterState();
   const isOnDashboard = location.pathname === '/';
+  const currentSessionObj = academicSessionRecords.find((s) => s.is_current);
+  const activeBranch = branches.find((b) => b.id === activeBranchId) ?? branches[0] ?? null;
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (sessionMenuRef.current && !sessionMenuRef.current.contains(event.target as Node)) {
         setIsSessionMenuOpen(false);
       }
+      if (branchMenuRef.current && !branchMenuRef.current.contains(event.target as Node)) {
+        setIsBranchMenuOpen(false);
+      }
     };
-    if (isSessionMenuOpen) {
+    if (isSessionMenuOpen || isBranchMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isSessionMenuOpen]);
+  }, [isSessionMenuOpen, isBranchMenuOpen]);
 
   return (
     <header className="h-[64px] border-b border-border bg-black flex items-center justify-between px-4 sticky top-0 z-20 shrink-0 select-none">
@@ -84,7 +98,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                 {activeSession}
               </span>
             </div>
-            {activeSession === '2026–2027' && (
+            {(currentSessionObj ? activeSession === currentSessionObj.code : activeSession === '2026-2027') && (
               <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                 {t('status.active')}
               </span>
@@ -102,7 +116,8 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
               </div>
               {academicSessions.map((session) => {
                 const isCurrent = session === activeSession;
-                const isActiveAY = session === '2026–2027';
+                const rec = academicSessionRecords.find((r) => r.code === session);
+                const isActiveAY = rec ? rec.is_current : session === '2026-2027';
                 return (
                   <button
                     key={session}
@@ -144,6 +159,57 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             </div>
           )}
         </div>
+
+        {/* Multi-Branch Campus Switcher (sets X-Branch-ID tenant header) */}
+        {branches.length > 0 && activeBranch && (
+          <div className="relative" ref={branchMenuRef}>
+            <button
+              onClick={() => setIsBranchMenuOpen(!isBranchMenuOpen)}
+              className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none max-w-[220px]"
+              title="Switch Active Campus / Branch"
+            >
+              <Building2 className="h-3.5 w-3.5 shrink-0 text-primary" />
+              <span className="text-xs font-bold truncate">{activeBranch.code} · {activeBranch.city}</span>
+              <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 shrink-0", isBranchMenuOpen && "rotate-180")} />
+            </button>
+            {isBranchMenuOpen && (
+              <div className="absolute left-0 mt-2 w-72 rounded-[4px] border border-border bg-[#0e0e0e] shadow-2xl p-1.5 z-50 space-y-1">
+                <div className="px-2.5 py-1.5 border-b border-border/60 mb-1">
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
+                    Active Campus Branch
+                  </span>
+                </div>
+                {branches.map((br) => {
+                  const selected = br.id === activeBranch.id;
+                  return (
+                    <button
+                      key={br.id}
+                      onClick={() => {
+                        setActiveBranch(br.id);
+                        setIsBranchMenuOpen(false);
+                        addNotification({
+                          title: 'Active Campus Switched',
+                          description: `Now scoped to ${br.name} (${br.code}).`,
+                          type: 'info',
+                        });
+                      }}
+                      className={cn(
+                        "flex items-center justify-between w-full px-2.5 py-1.5 rounded-md text-xs transition-all cursor-pointer text-left",
+                        selected ? "bg-[#1c1c1c] text-foreground border border-border font-bold" : "text-muted-foreground hover:text-foreground hover:bg-[#161616]"
+                      )}
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold">{br.name}</p>
+                        <p className="text-[10px] text-muted-foreground">{br.code} · {br.city}</p>
+                      </div>
+                      {selected && <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Right: Configure Dashboard Button, Search, Notifications & School Identity */}
@@ -196,6 +262,9 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           onClick={() => {
             const nextLang = isHindi ? 'en' : 'hi';
             setLanguage(nextLang);
+            if (getAuthToken()) {
+              apiClient.patch(API_ENDPOINTS.AUTH.ME, { preferences: { language: nextLang } }).catch(() => {});
+            }
             addNotification({
               title: nextLang === 'hi' ? 'लैंग्वेज चेंज की गई' : 'Language Changed',
               description: nextLang === 'hi' ? 'प्लेटफॉर्म लैंग्वेज हिन्दी (Hinglish) सेट की गई।' : 'Platform language set to English (Mukta).',

@@ -116,22 +116,26 @@ function ShortcutsConfigPage() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setDashboardShortcuts(selectedIds);
-    apiClient
-      .patch(API_ENDPOINTS.AUTH.ME, {
-        preferences_json: { dashboardShortcuts: selectedIds },
-      })
-      .catch(() => {});
-    setSaveToast(true);
-    addNotification({
-      title: isHindi ? 'शॉर्टकट्स सेव हुए' : 'Shortcuts Saved',
-      description: isHindi ? 'डैशबोर्ड क्विक एक्शंस सफलतापूर्वक अपडेट हुए।' : 'Active home workspace quick action links updated successfully.',
-      type: 'success',
-    });
-    setTimeout(() => {
-      setSaveToast(false);
-    }, 3000);
+    try {
+      await apiClient.patch(API_ENDPOINTS.AUTH.ME, {
+        preferences: { dashboardShortcuts: selectedIds },
+      });
+      setSaveToast(true);
+      addNotification({
+        title: isHindi ? 'शॉर्टकट्स सेव हुए' : 'Shortcuts Saved',
+        description: isHindi ? 'डैशबोर्ड क्विक एक्शंस सफलतापूर्वक अपडेट हुए।' : 'Active home workspace quick action links persisted to server.',
+        type: 'success',
+      });
+      setTimeout(() => setSaveToast(false), 3000);
+    } catch (err) {
+      addNotification({
+        title: 'Sync Failed',
+        description: err instanceof Error ? err.message : 'Unable to save shortcuts to server.',
+        type: 'error',
+      });
+    }
   };
 
   const handleReset = () => {

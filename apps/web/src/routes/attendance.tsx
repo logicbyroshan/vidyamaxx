@@ -35,7 +35,7 @@ import {
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/attendance')({
   component: AttendancePage,
@@ -596,48 +596,60 @@ function AttendancePage() {
   const [selectedDate] = React.useState<string>('2026-08-20');
   const [studentRoster, setStudentRoster] = React.useState<StudentAttendanceRecord[]>(INITIAL_ROSTER);
 
-  // Sync daily attendance records from Django backend (/api/v1/attendance/records/)
+  // Sync daily attendance records & leaves from Django backend (/api/v1/attendance/)
   React.useEffect(() => {
     let active = true;
     (async () => {
       try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            admission_number: string;
-            student_name: string;
-            roll_number: string;
-            class_section_label: string;
-            status: string;
-            check_in_time: string;
-          }>
-        >(API_ENDPOINTS.ATTENDANCE.RECORDS, {
+        const res = await apiClient.get(API_ENDPOINTS.ATTENDANCE.RECORDS, {
           params: {
             date: selectedDate,
             class_section: selectedClass.replace('Class ', ''),
           },
         });
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setStudentRoster((prev) =>
-            prev.map((s) => {
-              const matched = res.data.find((r) => r.admission_number === s.admNo);
-              if (!matched) return s;
-              const statusMap: Record<string, StudentAttendanceRecord['status']> = {
-                present: 'Present',
-                absent: 'Absent',
-                late: 'Late',
-                medical_leave: 'Leave',
-              };
+        const rows = extractApiList<{
+          id: string;
+          admission_number: string;
+          student_name: string;
+          roll_number: string;
+          class_section_label: string;
+          status: string;
+          check_in_time: string;
+        }>(res);
+        if (active && rows.length > 0) {
+          const statusMap: Record<string, StudentAttendanceRecord['status']> = {
+            present: 'Present',
+            absent: 'Absent',
+            late: 'Late',
+            medical_leave: 'Leave',
+            half_day: 'Late',
+          };
+          setStudentRoster((prev) => {
+            const byAdm = new Map(prev.map((s) => [s.admNo, s]));
+            const merged = rows.map((r) => {
+              const existing = byAdm.get(r.admission_number);
+              if (existing) {
+                return {
+                  ...existing,
+                  status: statusMap[r.status] || existing.status,
+                  punchTime: r.check_in_time || existing.punchTime,
+                };
+              }
               return {
-                ...s,
-                status: statusMap[matched.status] || s.status,
-                punchTime: matched.check_in_time || s.punchTime,
+                ...INITIAL_ROSTER[0],
+                id: r.id,
+                admNo: r.admission_number,
+                name: r.student_name,
+                rollNo: r.roll_number || '1',
+                status: statusMap[r.status] || 'Present',
+                punchTime: r.check_in_time || '08:00 AM',
               };
-            })
-          );
+            });
+            return merged;
+          });
         }
       } catch {
-        // Fallback to INITIAL_ROSTER
+        // Keep current roster state on error
       }
     })();
     return () => {
@@ -714,50 +726,88 @@ function AttendancePage() {
     }
   };
 
-  const handleMarkAllPresent = () => {
-    setStudentRoster((prev) =>
-      prev.map((s) =>
-        s.status === 'Leave' && s.leaves.some((l) => l.isApproved)
-          ? s
-          : { ...s, status: 'Present', punchTime: '08:00 AM' }
-      )
-    );
-    addNotification({
-      title: 'Roll Call Updated',
-      description: `All active students in ${selectedClass} marked Present for ${selectedDate}.`,
-      type: 'success',
-    });
+  const handleMarkAllPresent = async () => {
+    const entries = studentRoster
+      .filter((s) => !(s.status === 'Leave' && s.leaves.some((l) => l.isApproved)))
+      .map((s) => ({
+        admission_number: s.admNo,
+        student_name: s.name,
+        roll_number: s.rollNo,
+        status: 'present',
+      }));
+    try {
+      await apiClient.post(API_ENDPOINTS.ATTENDANCE.MARK_BULK, {
+        attendance_date: selectedDate,
+        class_section_label: selectedClass.replace('Class ', ''),
+        entries,
+      });
+      setStudentRoster((prev) =>
+        prev.map((s) =>
+          s.status === 'Leave' && s.leaves.some((l) => l.isApproved)
+            ? s
+            : { ...s, status: 'Present', punchTime: '08:00 AM' }
+        )
+      );
+      addNotification({
+        title: 'Roll Call Saved',
+        description: `All active students in ${selectedClass} persisted as Present for ${selectedDate}.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Roll Call Save Failed',
+        description: err instanceof Error ? err.message : 'Unable to save bulk attendance.',
+        type: 'error',
+      });
+    }
   };
 
-  const handleStatusToggle = (id: string, newStatus: 'Present' | 'Absent' | 'Late' | 'Leave') => {
-    setStudentRoster((prev) =>
-      prev.map((s) => {
-        if (s.id !== id) return s;
-        apiClient
-          .post(API_ENDPOINTS.ATTENDANCE.MARK_BULK, {
-            attendance_date: selectedDate,
-            class_section_label: selectedClass.replace('Class ', ''),
-            entries: [
-              {
-                admission_number: s.admNo,
-                student_name: s.name,
-                roll_number: s.rollNo,
-                status: newStatus === 'Leave' ? 'medical_leave' : newStatus.toLowerCase(),
-              },
-            ],
-          })
-          .catch(() => {});
-        return {
-          ...s,
-          status: newStatus,
-          punchTime: newStatus === 'Present' ? s.punchTime || '08:00 AM' : newStatus === 'Late' ? '08:20 AM' : undefined,
-        };
-      })
-    );
+  const handleStatusToggle = async (id: string, newStatus: 'Present' | 'Absent' | 'Late' | 'Leave') => {
+    const target = studentRoster.find((s) => s.id === id);
+    if (!target) return;
+    try {
+      await apiClient.post(API_ENDPOINTS.ATTENDANCE.MARK_BULK, {
+        attendance_date: selectedDate,
+        class_section_label: selectedClass.replace('Class ', ''),
+        entries: [
+          {
+            admission_number: target.admNo,
+            student_name: target.name,
+            roll_number: target.rollNo,
+            status: newStatus === 'Leave' ? 'medical_leave' : newStatus.toLowerCase(),
+          },
+        ],
+      });
+      setStudentRoster((prev) =>
+        prev.map((s) =>
+          s.id === id
+            ? {
+                ...s,
+                status: newStatus,
+                punchTime: newStatus === 'Present' ? s.punchTime || '08:00 AM' : newStatus === 'Late' ? '08:20 AM' : undefined,
+              }
+            : s
+        )
+      );
+    } catch (err) {
+      addNotification({
+        title: 'Attendance Update Failed',
+        description: err instanceof Error ? err.message : 'Could not update student attendance.',
+        type: 'error',
+      });
+    }
   };
 
-  const handleApproveLeaveInDrawer = (leaveId: string) => {
+  const handleApproveLeaveInDrawer = async (leaveId: string) => {
     if (!activeStudent) return;
+    if (leaveId.includes('-')) {
+      try {
+        await apiClient.post(API_ENDPOINTS.ATTENDANCE.LEAVE_DECIDE(leaveId), { status: 'Approved' });
+      } catch (err) {
+        addNotification({ title: 'Decision Failed', description: err instanceof Error ? err.message : 'Unable to approve leave.', type: 'error' });
+        return;
+      }
+    }
     const updatedLeaves = activeStudent.leaves.map((l) =>
       l.id === leaveId ? { ...l, isApproved: true, approvedBy: 'Authorized Administrator' } : l
     );
@@ -766,13 +816,21 @@ function AttendancePage() {
     );
     addNotification({
       title: 'Leave Sanctioned',
-      description: `Official leave granted for ${activeStudent.name}. Roster updated.`,
+      description: `Official leave granted for ${activeStudent.name}.`,
       type: 'success',
     });
   };
 
-  const handleRejectLeaveInDrawer = (leaveId: string) => {
+  const handleRejectLeaveInDrawer = async (leaveId: string) => {
     if (!activeStudent) return;
+    if (leaveId.includes('-')) {
+      try {
+        await apiClient.post(API_ENDPOINTS.ATTENDANCE.LEAVE_DECIDE(leaveId), { status: 'Rejected' });
+      } catch (err) {
+        addNotification({ title: 'Decision Failed', description: err instanceof Error ? err.message : 'Unable to reject leave.', type: 'error' });
+        return;
+      }
+    }
     const updatedLeaves = activeStudent.leaves.filter((l) => l.id !== leaveId);
     setStudentRoster((prev) =>
       prev.map((s) => (s.id === activeStudent.id ? { ...s, status: 'Absent', leaves: updatedLeaves } : s))

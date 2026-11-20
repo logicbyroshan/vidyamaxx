@@ -56,12 +56,18 @@ describe('VidyaFloww Shared Utilities', () => {
 
 describe('VidyaFloww Subsystem Gateway (ADR-012)', () => {
   it('registers all decoupled subsystems with valid ports and domains', () => {
-    expect(SUBSYSTEMS.TRANSPORT.localPort).toBe(8010);
-    expect(SUBSYSTEMS.ELIBRARY.localPort).toBe(8011);
-    expect(SUBSYSTEMS.ECLASS.localPort).toBe(8012);
-    expect(SUBSYSTEMS.HOSTEL.localPort).toBe(8013);
-    expect(SUBSYSTEMS.HR_MANAGE.localPort).toBe(8014);
-    expect(SUBSYSTEMS.DESIGN_LAB.localPort).toBe(8015);
+    expect(SUBSYSTEMS.DESIGN_LAB.localPort).toBe(8010);
+    expect(SUBSYSTEMS.HOSTEL.localPort).toBe(8011);
+    expect(SUBSYSTEMS.TRANSPORT.localPort).toBe(8012);
+    expect(SUBSYSTEMS.HR_MANAGE.localPort).toBe(8013);
+    expect(SUBSYSTEMS.ELIBRARY.localPort).toBe(8014);
+    expect(SUBSYSTEMS.ECLASS.localPort).toBe(8016);
+    expect(SUBSYSTEMS.PORTAL.localPort).toBe(8017);
+    expect(SUBSYSTEMS.ADMISSIONS.localPort).toBe(8018);
+    expect(SUBSYSTEMS.LMS.localPort).toBe(8019);
+    expect(SUBSYSTEMS.PAYMENTS.localPort).toBe(8020);
+    expect(SUBSYSTEMS.EXAMINATIONS.localPort).toBe(8021);
+    expect(SUBSYSTEMS.COMMUNICATION.localPort).toBe(8022);
   });
 
   it('resolves subsystem URLs correctly with environment override', () => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Outlet, useLocation } from '@tanstack/react-router';
+import { Outlet, useLocation, useNavigate } from '@tanstack/react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
@@ -7,14 +7,26 @@ import { CommandPalette } from './CommandPalette';
 import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
 import { AIChatDrawer } from '../components/AIChatDrawer';
-import { useGlobalStore, initTheme } from '../stores/globalStore';
+import {
+  useGlobalStore,
+  initTheme,
+  type AcademicSessionSummary,
+  type BranchSummary,
+  type Notification,
+} from '../stores/globalStore';
+import {
+  apiClient,
+  getAuthToken,
+  registerAuthFailureHandler,
+  setAuthToken,
+} from '@vidyafloww/api';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
 import { VFPage } from '@vidyafloww/ui';
-import { Monitor, Smartphone, Laptop, ArrowRight } from 'lucide-react';
+import { Monitor, Smartphone, Laptop, ArrowRight, RefreshCw } from 'lucide-react';
 
 function SmallScreenBlocker() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
-      {/* Subtle background grid */}
       <div
         className="absolute inset-0 opacity-[0.035] pointer-events-none"
         style={{
@@ -22,13 +34,9 @@ function SmallScreenBlocker() {
           backgroundSize: '32px 32px',
         }}
       />
-
-      {/* Glow orb */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full bg-primary/8 blur-[100px] pointer-events-none" />
 
-      {/* Content */}
       <div className="relative z-10 flex flex-col items-center max-w-md">
-        {/* Icon stack */}
         <div className="relative mb-8">
           <div className="w-20 h-20 rounded-[4px] bg-card border border-border/80 flex items-center justify-center shadow-lg">
             <Monitor className="h-9 w-9 text-primary" />
@@ -38,7 +46,6 @@ function SmallScreenBlocker() {
           </div>
         </div>
 
-        {/* Heading */}
         <div className="mb-2 flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 bg-destructive/10 border border-destructive/25 text-destructive text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-[4px]">
             <span className="h-1.5 w-1.5 rounded-full bg-destructive animate-pulse inline-block" />
@@ -53,7 +60,6 @@ function SmallScreenBlocker() {
           VidyaFloww Command Portal is built exclusively for desktop screens. Your current viewport is too narrow to display it correctly.
         </p>
 
-        {/* Requirement card */}
         <div className="mt-8 w-full bg-card border border-border/70 rounded-[4px] overflow-hidden">
           <div className="px-5 py-3 border-b border-border/50 bg-muted/30">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Minimum Requirements</p>
@@ -74,18 +80,6 @@ function SmallScreenBlocker() {
           </div>
         </div>
 
-        {/* Mobile app hint */}
-        <div className="mt-4 w-full bg-muted/40 border border-border/50 rounded-[4px] px-5 py-4 flex items-start gap-3 text-left">
-          <Smartphone className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
-          <div>
-            <p className="text-sm font-semibold text-foreground">Need mobile access?</p>
-            <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-              Download the VidyaFloww Mobile App for iOS & Android — full feature parity for parents, students and teachers on the go.
-            </p>
-          </div>
-        </div>
-
-        {/* CTA */}
         <button
           onClick={() => window.location.reload()}
           className="mt-6 flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold uppercase tracking-wide px-6 py-2.5 rounded-[4px] transition-all active:scale-95 cursor-pointer"
@@ -118,6 +112,8 @@ const ROUTE_PAGE_NAMES: Record<string, string> = {
   '/surveys': 'Surveys',
   '/reports': 'Reports',
   '/settings': 'Settings',
+  '/security': 'Security & Permissions',
+  '/audit': 'Audit Trail',
   '/shortcuts': 'Quick Shortcuts',
   '/license': 'License Details',
   '/login': 'Login',
@@ -127,7 +123,24 @@ const ROUTE_PAGE_NAMES: Record<string, string> = {
 
 export function AppShell() {
   const location = useLocation();
-  const { addNotification, schoolProfile, language, isAIDrawerOpen, setAIDrawerOpen, toggleAIDrawer } = useGlobalStore();
+  const navigate = useNavigate();
+  const {
+    authStatus,
+    setAuthStatus,
+    setAuthSession,
+    clearAuthSession,
+    setBranches,
+    setAcademicSessionRecords,
+    setNotificationsFromServer,
+    updateSchoolProfile,
+    addNotification,
+    schoolProfile,
+    language,
+    isAIDrawerOpen,
+    setAIDrawerOpen,
+    toggleAIDrawer,
+  } = useGlobalStore();
+
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
@@ -135,11 +148,151 @@ export function AppShell() {
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
 
-  // Dynamic Browser Tab Title: VidyaFlow@{schoolProfile.name} - {pageName}
+  const isFullScreenPage =
+    location.pathname === '/login' ||
+    location.pathname === '/signup' ||
+    location.pathname === '/forgot-password';
+
+  // Register global 401 failure handler
+  React.useEffect(() => {
+    registerAuthFailureHandler(() => {
+      clearAuthSession();
+      if (window.location.pathname !== '/login') {
+        navigate({ to: '/login' });
+      }
+    });
+    return () => registerAuthFailureHandler(null);
+  }, [clearAuthSession, navigate]);
+
+  // Bootstrap real session, school profile, branches, sessions & notifications on app load
+  React.useEffect(() => {
+    if (isFullScreenPage) return;
+    if (authStatus === 'authenticated' && getAuthToken()) return;
+
+    let cancelled = false;
+    async function bootstrapSession() {
+      setAuthStatus('checking');
+      try {
+        // Attempt silent refresh from HttpOnly cookie if in-memory token was cleared by page reload
+        if (!getAuthToken()) {
+          const refreshRes = await apiClient.post<{ access_token: string }>(API_ENDPOINTS.AUTH.REFRESH);
+          if (refreshRes.data?.access_token) {
+            setAuthToken(refreshRes.data.access_token);
+          }
+        }
+
+        if (!getAuthToken()) {
+          if (!cancelled) {
+            clearAuthSession();
+            navigate({ to: '/login' });
+          }
+          return;
+        }
+
+        const meRes = await apiClient.get(API_ENDPOINTS.AUTH.ME);
+        if (cancelled) return;
+
+        const me = meRes.data;
+        const activeMem = me.active_membership ?? me.memberships?.[0] ?? null;
+        setAuthSession({
+          user: me.user,
+          activeMembership: activeMem,
+          memberships: me.memberships ?? [],
+          responsibilities: me.responsibilities ?? [],
+        });
+
+        // Hydrate school branding, branches, academic sessions, and notifications in parallel
+        const [schoolRes, branchesRes, sessionsRes, notifsRes] = await Promise.allSettled([
+          apiClient.get(API_ENDPOINTS.SCHOOLS.CURRENT),
+          apiClient.get(API_ENDPOINTS.SCHOOLS.BRANCHES),
+          apiClient.get(API_ENDPOINTS.ACADEMICS.SESSIONS),
+          apiClient.get(API_ENDPOINTS.NOTIFICATIONS.LIST),
+        ]);
+
+        if (cancelled) return;
+
+        if (schoolRes.status === 'fulfilled') {
+          const sc = schoolRes.value.data?.school ?? schoolRes.value.data?.data ?? schoolRes.value.data;
+          if (sc?.name) {
+            updateSchoolProfile({
+              id: sc.id,
+              name: sc.name,
+              shortCode: sc.short_code || schoolProfile.shortCode,
+              tagline: sc.tagline || schoolProfile.tagline,
+              affiliation: sc.affiliation_number
+                ? `${sc.board_affiliation || 'CBSE'} Affiliation #${sc.affiliation_number}`
+                : schoolProfile.affiliation,
+              city: sc.city || schoolProfile.city,
+              establishedYear: sc.established_year,
+              academicLevel: sc.academic_level,
+              principalName: sc.principal_name,
+              customLogoUrl: sc.logo_url || '',
+            });
+          }
+        }
+
+        if (branchesRes.status === 'fulfilled') {
+          const rows = (branchesRes.value.data?.results ?? branchesRes.value.data?.data ?? []) as BranchSummary[];
+          if (Array.isArray(rows) && rows.length > 0) {
+            setBranches(rows);
+          }
+        }
+
+        if (sessionsRes.status === 'fulfilled') {
+          const rows = (sessionsRes.value.data?.results ?? sessionsRes.value.data?.data ?? []) as AcademicSessionSummary[];
+          if (Array.isArray(rows) && rows.length > 0) {
+            setAcademicSessionRecords(rows);
+          }
+        }
+
+        if (notifsRes.status === 'fulfilled') {
+          const raw = notifsRes.value.data?.results ?? notifsRes.value.data?.data ?? [];
+          if (Array.isArray(raw)) {
+            const mapped: Notification[] = raw.map((n: Record<string, unknown>) => ({
+              id: String(n.id),
+              title: String(n.title ?? ''),
+              description: n.description ? String(n.description) : undefined,
+              type: (['success', 'error', 'warning', 'info'].includes(String(n.notification_type))
+                ? String(n.notification_type)
+                : 'info') as Notification['type'],
+              read: Boolean(n.is_read),
+              createdAt: n.created_at ? new Date(String(n.created_at)).getTime() : Date.now(),
+              actionUrl: n.action_url ? String(n.action_url) : undefined,
+              fromServer: true,
+            }));
+            setNotificationsFromServer(mapped);
+          }
+        }
+      } catch {
+        if (!cancelled) {
+          clearAuthSession();
+          navigate({ to: '/login' });
+        }
+      }
+    }
+
+    bootstrapSession();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    isFullScreenPage,
+    authStatus,
+    setAuthStatus,
+    setAuthSession,
+    clearAuthSession,
+    setBranches,
+    setAcademicSessionRecords,
+    setNotificationsFromServer,
+    updateSchoolProfile,
+    navigate,
+  ]);
+
+  // Dynamic Browser Tab Title
   React.useEffect(() => {
     const pageName = ROUTE_PAGE_NAMES[location.pathname] || 'Dashboard';
-    const schoolName = schoolProfile?.name || 'VidyaFlow International Academy';
-    document.title = `VidyaFlow@${schoolName} - ${pageName}`;
+    const schoolName = schoolProfile?.name || 'VidyaFloww International Academy';
+    document.title = `VidyaFloww@${schoolName} - ${pageName}`;
   }, [location.pathname, schoolProfile?.name]);
 
   // Scroll to top on route change
@@ -156,7 +309,6 @@ export function AppShell() {
     return () => window.removeEventListener('resize', checkWidth);
   }, []);
 
-  // Apply language class to <html> for font switching
   React.useEffect(() => {
     const html = document.documentElement;
     if (language === 'hi') {
@@ -170,30 +322,26 @@ export function AppShell() {
 
   React.useEffect(() => {
     initTheme();
-    // Only display the welcome notification immediately after an explicit user login
     const justLoggedIn = sessionStorage.getItem('vidyafloww_just_logged_in');
-    if (justLoggedIn && location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/forgot-password') {
+    if (justLoggedIn && !isFullScreenPage) {
       sessionStorage.removeItem('vidyafloww_just_logged_in');
       const timer = setTimeout(() => {
         addNotification({
           title: 'Welcome to VidyaFloww',
-          description: 'Your enterprise school management platform is ready.',
-          type: 'info',
+          description: 'Your authenticated enterprise school workspace is connected.',
+          type: 'success',
         });
-      }, 1000);
+      }, 600);
       return () => clearTimeout(timer);
     }
-  }, [location.pathname, addNotification]);
+  }, [isFullScreenPage, addNotification]);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Shift+K for VidyaFloww AI Copilot Drawer
       if (e.shiftKey && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         toggleAIDrawer();
-      }
-      // Ctrl+K / Cmd+K for Command Palette
-      else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setIsCommandPaletteOpen(true);
       }
@@ -201,11 +349,6 @@ export function AppShell() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [toggleAIDrawer]);
-
-  const isFullScreenPage =
-    location.pathname === '/login' ||
-    location.pathname === '/signup' ||
-    location.pathname === '/forgot-password';
 
   if (isFullScreenPage) {
     return (
@@ -217,6 +360,15 @@ export function AppShell() {
 
   if (viewportWidth < 1000) {
     return <SmallScreenBlocker />;
+  }
+
+  if (authStatus === 'checking' || authStatus === 'idle') {
+    return (
+      <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center gap-3 text-muted-foreground">
+        <RefreshCw className="h-6 w-6 animate-spin text-primary" />
+        <p className="text-xs font-mono uppercase tracking-widest">Verifying VidyaFloww Session...</p>
+      </div>
+    );
   }
 
   return (

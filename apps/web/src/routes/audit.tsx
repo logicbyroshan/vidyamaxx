@@ -43,18 +43,6 @@ interface AuditLogEntry {
   status: 'Success' | 'Warning' | 'Blocked';
 }
 
-const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
-  { id: 'EVT-9041', timestamp: '01 Sep 2026, 02:44:12 PM', actor: 'Roshan Singh (Super Admin)', role: 'Super Administrator', action: 'Modified School Identity & Branding', target: 'Settings > School Profile', category: 'Settings', ip: '103.21.244.18', status: 'Success' },
-  { id: 'EVT-9040', timestamp: '01 Sep 2026, 02:30:05 PM', actor: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Approved Class 10 Admission Dossier & Faculty Schedule', target: 'Student #STU-2026-042', category: 'Students', ip: '103.21.244.22', status: 'Success' },
-  { id: 'EVT-9039', timestamp: '01 Sep 2026, 01:15:42 PM', actor: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Assigned Proxy Teacher for Class 9 Physics Lab', target: 'Timetable > Proxy Matrix', category: 'Students', ip: '103.21.244.22', status: 'Success' },
-  { id: 'EVT-9038', timestamp: '01 Sep 2026, 11:45:18 AM', actor: 'Unknown Client (External IP)', role: 'Parent & Student Portal', action: 'Failed 2FA Login Attempt (Invalid OTP)', target: 'Auth / Gateway', category: 'Auth', ip: '49.207.192.8', status: 'Blocked' },
-  { id: 'EVT-9037', timestamp: '01 Sep 2026, 10:20:33 AM', actor: 'Mr. Arvind Gupta', role: 'Accountant / Bursar', action: 'Generated Monthly Fee Reconciliation', target: 'Finance > Term 1 Dues', category: 'Finance', ip: '103.21.244.30', status: 'Success' },
-  { id: 'EVT-9036', timestamp: '01 Sep 2026, 09:05:10 AM', actor: 'Biometric Gateway Sync', role: 'Super Administrator', action: 'Turnstile Terminal Handshake Synchronized', target: 'Gate 1 & Gate 2 Turnstiles', category: 'Gate', ip: '192.168.1.101', status: 'Success' },
-  { id: 'EVT-9035', timestamp: '01 Sep 2026, 08:30:19 AM', actor: 'Mrs. S. Joshi', role: 'Front Office / Registrar', action: 'Issued Transfer Certificate #TC-882', target: 'Student Registry', category: 'Students', ip: '103.21.244.41', status: 'Success' },
-  { id: 'EVT-9034', timestamp: '01 Sep 2026, 08:02:44 AM', actor: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Reviewed & Approved Class 11 Term Marksheets', target: 'Examinations > Class 11-Sci', category: 'Exams', ip: '103.21.244.22', status: 'Success' },
-  { id: 'EVT-9033', timestamp: '01 Sep 2026, 07:45:00 AM', actor: 'System Automated Daemon', role: 'Super Administrator', action: 'Created AES-256 Cloud Backup Snapshot', target: 'AWS S3 Mumbai Archive', category: 'Settings', ip: '127.0.0.1', status: 'Success' },
-];
-
 const ROLE_OPTIONS = [
   { label: 'All Roles', value: 'All' },
   { label: 'Super Administrator', value: 'Super Administrator' },
@@ -93,70 +81,55 @@ function AuditLogPage() {
   const [selectedCategoryFilter, setSelectedCategoryFilter] = React.useState<string>('All');
   const [selectedStatusFilter, setSelectedStatusFilter] = React.useState<string>('All');
 
-  // Live stream log state
-  const [liveStreamLogs, setLiveStreamLogs] = React.useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
+  // Live server audit log state (zero simulated/fake events)
+  const [liveStreamLogs, setLiveStreamLogs] = React.useState<AuditLogEntry[]>([]);
+  const [isLoadingLogs, setIsLoadingLogs] = React.useState(true);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
 
-  // Sync live backend audit events when authenticated
+  const fetchAuditEvents = React.useCallback(async () => {
+    if (!getAuthToken()) {
+      setIsLoadingLogs(false);
+      return;
+    }
+    setIsLoadingLogs(true);
+    setLoadError(null);
+    try {
+      const params: Record<string, string> = {};
+      if (selectedCategoryFilter !== 'All') params.category = selectedCategoryFilter;
+      if (selectedStatusFilter !== 'All') params.status = selectedStatusFilter;
+      if (searchQuery.trim()) params.search = searchQuery.trim();
+      const res = await apiClient.get('/audit/events/', { params });
+      const rows = res.data?.results ?? res.data?.data ?? [];
+      const mapped: AuditLogEntry[] = (Array.isArray(rows) ? rows : []).map((r: Record<string, unknown>) => ({
+        id: String(r.id ?? '').slice(0, 8).toUpperCase(),
+        timestamp: r.created_at ? new Date(String(r.created_at)).toLocaleString('en-IN') : '—',
+        actor: String(r.actor_name || 'System'),
+        role: String(r.actor_role_label || 'Staff'),
+        action: String(r.action || 'EVENT'),
+        target: `${r.target_type || 'Resource'} ${r.target_id || ''}`.trim(),
+        category: (['Auth', 'Students', 'Exams', 'Finance', 'Settings', 'Gate'].includes(String(r.category))
+          ? String(r.category)
+          : 'Settings') as AuditLogEntry['category'],
+        ip: String(r.ip_address || '127.0.0.1'),
+        status: (['Success', 'Warning', 'Blocked'].includes(String(r.status))
+          ? String(r.status)
+          : 'Success') as AuditLogEntry['status'],
+      }));
+      setLiveStreamLogs(mapped);
+    } catch (err) {
+      setLoadError(err instanceof Error ? err.message : 'Unable to load audit events.');
+    } finally {
+      setIsLoadingLogs(false);
+    }
+  }, [selectedCategoryFilter, selectedStatusFilter, searchQuery]);
+
   React.useEffect(() => {
-    if (!getAuthToken()) return;
-    apiClient
-      .get('/audit/events/')
-      .then((res) => {
-        const rows = res.data?.results;
-        if (Array.isArray(rows) && rows.length > 0) {
-          const mapped: AuditLogEntry[] = rows.map((r: any) => ({
-            id: String(r.id).slice(0, 8).toUpperCase(),
-            timestamp: new Date(r.created_at).toLocaleString('en-IN'),
-            actor: r.actor_name || 'System',
-            role: r.actor_role_label || 'Staff',
-            action: r.action,
-            target: `${r.target_type || 'Resource'} ${r.target_id || ''}`.trim(),
-            category: (['Auth', 'Students', 'Exams', 'Finance', 'Settings', 'Gate'].includes(r.category)
-              ? r.category
-              : 'Settings') as AuditLogEntry['category'],
-            ip: r.ip_address || '127.0.0.1',
-            status: (['Success', 'Warning', 'Blocked'].includes(r.status) ? r.status : 'Success') as AuditLogEntry['status'],
-          }));
-          setLiveStreamLogs((prev) => [...mapped, ...prev]);
-        }
-      })
-      .catch(() => {});
-  }, []);
+    fetchAuditEvents();
+  }, [fetchAuditEvents]);
 
-  // Live simulation for table events
-  React.useEffect(() => {
-    const mockActors = [
-      { name: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Viewed Faculty Workload Matrix', target: 'Teachers > Schedule', category: 'Students' as const, ip: '103.21.244.22', status: 'Success' as const },
-      { name: 'Biometric Turnstile #1', role: 'Super Administrator', action: 'Student Gate Tap (ADM-2026-081)', target: 'Main Gate Terminal', category: 'Gate' as const, ip: '192.168.1.101', status: 'Success' as const },
-      { name: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Signed off Class 10 Midterm Exam Schedule', target: 'Examinations > Class 10', category: 'Exams' as const, ip: '103.21.244.22', status: 'Success' as const },
-      { name: 'Gateway Webhook', role: 'Super Administrator', action: 'WhatsApp Broadcast Receipt Delivered', target: 'Gupshup Gateway DLT', category: 'Settings' as const, ip: '103.21.244.18', status: 'Success' as const },
-      { name: 'Mrs. S. Joshi', role: 'Front Office / Registrar', action: 'Registered New Admission Candidate #ADM-2026-118', target: 'Admissions Pipeline', category: 'Students' as const, ip: '103.21.244.41', status: 'Success' as const },
-      { name: 'Mr. Arvind Gupta', role: 'Accountant / Bursar', action: 'Recorded Term 1 Fee Receipt #REC-9824', target: 'Fees > Payment Ledger', category: 'Finance' as const, ip: '103.21.244.30', status: 'Success' as const },
-    ];
-
-    const interval = setInterval(() => {
-      const randomEntry = mockActors[Math.floor(Math.random() * mockActors.length)];
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-      const dateStr = now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
-
-      const newLog: AuditLogEntry = {
-        id: `EVT-${Math.floor(9042 + Math.random() * 1000)}`,
-        timestamp: `${dateStr}, ${timeStr}`,
-        actor: randomEntry.name,
-        role: randomEntry.role,
-        action: randomEntry.action,
-        target: randomEntry.target,
-        category: randomEntry.category,
-        ip: randomEntry.ip,
-        status: randomEntry.status,
-      };
-
-      setLiveStreamLogs((prev) => [newLog, ...prev.slice(0, 50)]);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, []);
+  // Keep reference to void unused state lint warnings if any
+  void isLoadingLogs;
+  void loadError;
 
   const handleExportAuditLogs = () => {
     addNotification({

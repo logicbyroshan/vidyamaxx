@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Command } from 'cmdk';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VFBadge } from '@vidyafloww/ui';
-import { MODULE_REGISTRY } from '@vidyafloww/constants';
+import { API_ENDPOINTS, MODULE_REGISTRY } from '@vidyafloww/constants';
+import { apiClient, getAuthToken } from '@vidyafloww/api';
 import {
   Search,
   LayoutDashboard,
@@ -57,6 +58,60 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
   const isHindi = lang === 'hi';
   const [search, setSearch] = React.useState('');
   const [activeCategory, setActiveCategory] = React.useState<'all' | 'modules' | 'actions'>('all');
+  const [liveRecords, setLiveRecords] = React.useState<
+    Array<{ id: string; label: string; sublabel: string; route: string; type: 'Student' | 'Faculty' }>
+  >([]);
+
+  // Debounced live search against Django students & staff endpoints
+  React.useEffect(() => {
+    if (!isOpen || !getAuthToken() || search.trim().length < 2) {
+      setLiveRecords([]);
+      return;
+    }
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      try {
+        const q = encodeURIComponent(search.trim());
+        const [stuRes, staffRes] = await Promise.allSettled([
+          apiClient.get(`${API_ENDPOINTS.STUDENTS.LIST}?search=${q}`),
+          apiClient.get(`${API_ENDPOINTS.STAFF.LIST}?search=${q}`),
+        ]);
+        if (cancelled) return;
+        const found: Array<{ id: string; label: string; sublabel: string; route: string; type: 'Student' | 'Faculty' }> = [];
+        if (stuRes.status === 'fulfilled') {
+          const rows = stuRes.value.data?.results ?? stuRes.value.data?.data ?? [];
+          for (const s of rows.slice(0, 5)) {
+            found.push({
+              id: `stu-${s.id}`,
+              label: `${s.full_name} (${s.admission_number})`,
+              sublabel: `Class ${s.class_section_label || '—'} · Guardian: ${s.primary_guardian_name || '—'}`,
+              route: '/students',
+              type: 'Student',
+            });
+          }
+        }
+        if (staffRes.status === 'fulfilled') {
+          const rows = staffRes.value.data?.results ?? staffRes.value.data?.data ?? [];
+          for (const st of rows.slice(0, 5)) {
+            found.push({
+              id: `staff-${st.id}`,
+              label: `${st.full_name} (${st.employee_code})`,
+              sublabel: `${st.designation_title || 'Staff'} · ${st.department_name || 'General'}`,
+              route: '/teachers',
+              type: 'Faculty',
+            });
+          }
+        }
+        setLiveRecords(found);
+      } catch {
+        if (!cancelled) setLiveRecords([]);
+      }
+    }, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [search, isOpen]);
 
   const commands = React.useMemo(() => {
     const moduleCommands = MODULE_REGISTRY.map((mod) => ({
@@ -262,6 +317,37 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                 <p className="font-bold text-foreground text-sm">{isHindi ? "कोई रिजल्ट नहीं मिला" : "No matching results found"}</p>
                 <p className="text-xs text-muted-foreground">{isHindi ? "स्टूडेंट्स, अटेंडेंस, टीचर्स, रिपोर्ट्स या सेटिंग्स सर्च करके देखें" : 'Try searching for "Students", "Attendance", "Teachers", "Reports" or "Settings"'}</p>
               </Command.Empty>
+
+              {liveRecords.length > 0 && (
+                <Command.Group
+                  heading={isHindi ? 'लाइव डेटाबेस रिजल्ट्स' : 'Live Institutional Records'}
+                  className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-extrabold [&_[cmdk-group-heading]]:text-primary [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest mb-2"
+                >
+                  {liveRecords.map((rec) => (
+                    <Command.Item
+                      key={rec.id}
+                      value={`${rec.label} ${rec.sublabel} ${rec.type}`}
+                      onSelect={() => {
+                        navigate({ to: rec.route });
+                        onClose();
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-md transition-all outline-none text-xs text-left cursor-pointer border border-transparent data-[selected=true]:bg-[#1c1c1c] data-[selected=true]:border-border/80 text-foreground hover:bg-[#181818]"
+                    >
+                      <div className="h-8 w-8 rounded-md flex items-center justify-center shrink-0 bg-primary/10 border border-primary/25 text-primary">
+                        {rec.type === 'Student' ? <GraduationCap className="h-4 w-4" /> : <Users className="h-4 w-4" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-foreground truncate leading-tight">{rec.label}</p>
+                        <p className="text-[11px] text-muted-foreground truncate">{rec.sublabel}</p>
+                      </div>
+                      <VFBadge variant="outline" className="text-[10px] font-semibold px-2 py-0.5 bg-[#141414]">
+                        {rec.type}
+                      </VFBadge>
+                      <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
+                    </Command.Item>
+                  ))}
+                </Command.Group>
+              )}
 
               <Command.Group
                 heading={activeCategory === 'all' ? (isHindi ? 'क्विक नेविगेशन व एक्शन्स' : 'Quick Navigation & ERP Actions') : activeCategory === 'modules' ? (isHindi ? 'ERP मॉड्यूल' : 'ERP Modules') : (isHindi ? 'इंस्टीट्यूशनल एक्शन्स' : 'Institutional Actions')}

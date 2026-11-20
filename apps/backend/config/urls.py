@@ -84,6 +84,11 @@ urlpatterns = [
 
     # ─── API v1 Phase 7 & 8: Analytics, Reports, Compliance, AI & Subsystems ─
     path("api/v1/analytics/", include("modules.analytics.urls")),
+    path("api/v1/portal/overview/", __import__("modules.analytics.views", fromlist=["PortalOverviewView"]).PortalOverviewView.as_view(), name="portal-overview"),
+
+    # ─── API v1 External Integrations (Payment, Biometrics) ─────────────────
+    path("api/v1/integrations/payment/", include("integrations.payment.urls")),
+    path("api/v1/integrations/biometric/", include("integrations.biometric.urls")),
 
     # ─── API Schema & Docs ──────────────────────────────────────────────────
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),

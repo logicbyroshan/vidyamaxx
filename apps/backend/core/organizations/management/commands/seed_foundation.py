@@ -59,8 +59,17 @@ from platform_services.reports.models import GeneratedReportRecord, StatutoryCom
 class Command(BaseCommand):
     help = "Seeds non-sensitive Phase 1 institutional foundation records for local development."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--dev-password",
+            type=str,
+            default=None,
+            help="Optional local development password applied to seeded accounts (never hardcoded).",
+        )
+
     @transaction.atomic
     def handle(self, *args, **options):
+        dev_password = options.get("dev_password")
         admin_user, created = User.objects.get_or_create(
             email="principal@vidyafloww.edu.in",
             defaults={
@@ -73,11 +82,14 @@ class Command(BaseCommand):
                 "is_staff": True,
             },
         )
-        if created:
+        if dev_password:
+            admin_user.set_password(dev_password)
+            admin_user.save(update_fields=["password"])
+        elif created:
             admin_user.set_unusable_password()
             admin_user.save(update_fields=["password"])
 
-        staff_user, _ = User.objects.get_or_create(
+        staff_user, s_created = User.objects.get_or_create(
             email="faculty@vidyafloww.edu.in",
             defaults={
                 "phone": "+919876500001",
@@ -86,6 +98,44 @@ class Command(BaseCommand):
                 "is_active": True,
             },
         )
+        if dev_password:
+            staff_user.set_password(dev_password)
+            staff_user.save(update_fields=["password"])
+        elif s_created:
+            staff_user.set_unusable_password()
+            staff_user.save(update_fields=["password"])
+
+        parent_user, p_created = User.objects.get_or_create(
+            email="parent@vidyafloww.edu.in",
+            defaults={
+                "phone": "+919876543211",
+                "full_name": "Vikram Patel",
+                "is_verified": True,
+                "is_active": True,
+            },
+        )
+        if dev_password:
+            parent_user.set_password(dev_password)
+            parent_user.save(update_fields=["password"])
+        elif p_created:
+            parent_user.set_unusable_password()
+            parent_user.save(update_fields=["password"])
+
+        student_user, st_created = User.objects.get_or_create(
+            email="student@vidyafloww.edu.in",
+            defaults={
+                "phone": "+919876543212",
+                "full_name": "Aarav Sharma",
+                "is_verified": True,
+                "is_active": True,
+            },
+        )
+        if dev_password:
+            student_user.set_password(dev_password)
+            student_user.save(update_fields=["password"])
+        elif st_created:
+            student_user.set_unusable_password()
+            student_user.save(update_fields=["password"])
 
         tenant, _ = CustomerTenant.objects.get_or_create(
             slug="vidyafloww-academy-trust",
@@ -203,6 +253,20 @@ class Command(BaseCommand):
             tenant=tenant,
             school=school,
             user_type=UserType.STAFF,
+            defaults={"default_branch": primary_branch},
+        )
+        Membership.objects.get_or_create(
+            user=parent_user,
+            tenant=tenant,
+            school=school,
+            user_type=UserType.PARENT,
+            defaults={"default_branch": primary_branch},
+        )
+        Membership.objects.get_or_create(
+            user=student_user,
+            tenant=tenant,
+            school=school,
+            user_type=UserType.STUDENT,
             defaults={"default_branch": primary_branch},
         )
 

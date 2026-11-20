@@ -237,13 +237,47 @@ export function DashboardPage() {
       : DEFAULT_DASHBOARD_KPIS;
   }, [dashboardKpiOrder]);
 
+  // Live executive command dashboard data from Django backend (/api/v1/analytics/dashboard/)
+  const [dashboardData, setDashboardData] = React.useState<{
+    total_students: number;
+    active_students?: number;
+    total_staff: number;
+    active_staff?: number;
+    total_classes: number;
+    open_grievances: number;
+    pending_admissions: number;
+    daily_attendance_pct: string;
+    fee_collection_status: string;
+    attendance_exceptions?: Array<{
+      id: string;
+      admission_number: string;
+      student: string;
+      class_section: string;
+      roll_number: string;
+      status: string;
+      remarks: string;
+      severity: 'danger' | 'warning';
+    }>;
+  } | null>(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    apiClient
+      .get(API_ENDPOINTS.ANALYTICS.DASHBOARD)
+      .then((res) => {
+        if (!cancelled) {
+          const d = res.data?.data ?? res.data;
+          if (d) setDashboardData(d);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [activeSession]);
+
   // Drag and drop states for dashboard customization
   const [draggedKpiIdx, setDraggedKpiIdx] = React.useState<number | null>(null);
-
-  // Sync executive command dashboard summary from Django backend (/api/v1/analytics/dashboard/)
-  React.useEffect(() => {
-    apiClient.get(API_ENDPOINTS.ANALYTICS.DASHBOARD).catch(() => {});
-  }, []);
   const [draggedSectionIdx, setDraggedSectionIdx] = React.useState<number | null>(null);
   const [dragOverKpiIdx, setDragOverKpiIdx] = React.useState<number | null>(null);
   const [dragOverSectionIdx, setDragOverSectionIdx] = React.useState<number | null>(null);
@@ -258,6 +292,7 @@ export function DashboardPage() {
     nextOrder[fromIndex] = nextOrder[target];
     nextOrder[target] = temp;
     setDashboardSectionOrder(nextOrder);
+    apiClient.patch(API_ENDPOINTS.AUTH.ME, { preferences: { dashboardSectionOrder: nextOrder } }).catch(() => {});
   };
 
   // Swap KPIs handler
@@ -270,139 +305,21 @@ export function DashboardPage() {
     nextOrder[fromIndex] = nextOrder[target];
     nextOrder[target] = temp;
     setDashboardKpiOrder(nextOrder);
+    apiClient.patch(API_ENDPOINTS.AUTH.ME, { preferences: { dashboardKpiOrder: nextOrder } }).catch(() => {});
   };
 
-  // Student exceptions items with photo avatars
-  const studentExceptions = [
-    {
-      student: 'Priya Patel',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 10-A · Roll #18',
-      alert: '3rd Consecutive Absence (Uninformed)',
-      severity: 'danger',
-      action: 'WhatsApp Alert',
-    },
-    {
-      student: 'Sneha Singh',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 11-Sci · Roll #04',
-      alert: 'Bus Route 4 Delayed (09:15 AM Arrival)',
-      severity: 'warning',
-      action: 'Issue Gate Pass',
-    },
-    {
-      student: 'Amit Patel',
-      avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 8-A · Roll #29',
-      alert: 'Uninformed Absenteeism (No Note)',
-      severity: 'danger',
-      action: 'Send SMS',
-    },
-    {
-      student: 'Aarav Sharma',
-      avatar: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 12-Sci · Roll #02',
-      alert: 'Early Gate Exit (Doctor Appointment)',
-      severity: 'warning',
-      action: 'Gate Pass Active',
-    },
-    {
-      student: 'Kavya Nair',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 11-Com · Roll #12',
-      alert: 'Medical Leave (Aug 18 – Aug 19)',
-      severity: 'neutral',
-      action: 'Leave Approved',
-    },
-    {
-      student: 'Rohan Deshmukh',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 9-B · Roll #31',
-      alert: 'Late Gate Entry (3rd time this week)',
-      severity: 'warning',
-      action: 'Notify Parent',
-    },
-    {
-      student: 'Ananya Joshi',
-      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 7-C · Roll #15',
-      alert: 'Infirmary Check-in (Mild Fever)',
-      severity: 'warning',
-      action: 'Call Parent',
-    },
-    {
-      student: 'Vikramaditya Roy',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 10-B · Roll #22',
-      alert: 'Unexcused Absence (2nd Day)',
-      severity: 'danger',
-      action: 'SMS Broadcast',
-    },
-    {
-      student: 'Aditya Verma',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 10-A · Roll #09',
-      alert: 'Unexcused Half-Day Departure',
-      severity: 'danger',
-      action: 'Parent Alerted',
-    },
-    {
-      student: 'Rhea Chawla',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 12-Com · Roll #17',
-      alert: 'Medical Certificate Verification Pending',
-      severity: 'warning',
-      action: 'Request Slip',
-    },
-    {
-      student: 'Tanvi Mehta',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 9-A · Roll #11',
-      alert: 'Repeated Bus Route 2 Delay (09:20 AM)',
-      severity: 'warning',
-      action: 'Driver Alerted',
-    },
-    {
-      student: 'Arjun Rao',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 8-B · Roll #24',
-      alert: '4th Consecutive Unreported Absence',
-      severity: 'danger',
-      action: 'Send SMS',
-    },
-    {
-      student: 'Meera Sen',
-      avatar: 'https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 11-Arts · Roll #07',
-      alert: 'Library Overdue Clearance (Notice Sent)',
-      severity: 'warning',
-      action: 'Issue Reminder',
-    },
-    {
-      student: 'Devansh Gupta',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 6-A · Roll #19',
-      alert: 'Unapproved Absence from Sports Period',
-      severity: 'danger',
-      action: 'Send Notice',
-    },
-    {
-      student: 'Ishita Banerjee',
-      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 10-C · Roll #26',
-      alert: 'Late Arrival Route 7 Bus Delay',
-      severity: 'warning',
-      action: 'Gate Entry Note',
-    },
-    {
-      student: 'Siddharth Malhotra',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
-      class: 'Class 12-Sci · Roll #33',
-      alert: 'Science Olympiad Leave (Approved)',
-      severity: 'neutral',
-      action: 'Verify Pass',
-    },
-  ];
+  // Live attendance exceptions mapped from backend response
+  const studentExceptions = React.useMemo(() => {
+    const rows = dashboardData?.attendance_exceptions ?? [];
+    return rows.map((ex) => ({
+      student: ex.student,
+      avatar: '',
+      class: `Class ${ex.class_section}${ex.roll_number ? ` · Roll #${ex.roll_number}` : ''}`,
+      alert: ex.remarks,
+      severity: ex.severity,
+      action: ex.severity === 'danger' ? 'Notify Guardian' : 'Review Log',
+    }));
+  }, [dashboardData]);
 
   // Render individual KPI Card with sleek corner move handle
   const renderKpiCard = (kpiId: string, index: number) => {
@@ -410,37 +327,40 @@ export function DashboardPage() {
     if (kpiId === 'students') {
       kpiProps = {
         title: t('dashboard.totalStudents'),
-        value: '2,451',
+        value: dashboardData ? dashboardData.total_students.toLocaleString('en-IN') : '—',
         icon: <Users className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
-        trendLabel: '+12 this month',
+        trendLabel: dashboardData ? `${dashboardData.total_classes} Active Classes` : 'Loading...',
         accentColor: 'blue',
       };
     } else if (kpiId === 'staff' || kpiId === 'teachers') {
+      const staffCount = dashboardData?.total_staff ?? 0;
+      const activeStaff = dashboardData?.active_staff ?? staffCount;
+      const coverage = staffCount > 0 ? `${Math.round((activeStaff / staffCount) * 100)}%` : '0%';
       kpiProps = {
         title: t('dashboard.totalTeachers'),
-        value: '98.2%',
+        value: dashboardData ? `${staffCount}` : '—',
         icon: <GraduationCap className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
-        trendLabel: 'Optimal coverage',
+        trendLabel: dashboardData ? `${coverage} active faculty` : 'Loading...',
         accentColor: 'cyan',
       };
     } else if (kpiId === 'attendance') {
       kpiProps = {
         title: t('dashboard.todayAttendance'),
-        value: '94.5%',
+        value: dashboardData?.daily_attendance_pct ?? '—',
         icon: <CalendarCheck className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
-        trendLabel: '+1.2% vs yesterday',
+        trendLabel: dashboardData ? `${studentExceptions.length} exceptions logged` : 'Loading...',
         accentColor: 'emerald',
       };
     } else if (kpiId === 'admissions') {
       kpiProps = {
         title: t('dashboard.newAdmissions'),
-        value: '28',
+        value: dashboardData ? String(dashboardData.pending_admissions) : '—',
         icon: <FileText className="h-5.5 w-5.5 text-foreground" />,
         trend: 'neutral',
-        trendLabel: '18 auto-verified',
+        trendLabel: dashboardData ? `${dashboardData.open_grievances} open grievances` : 'Loading...',
         accentColor: 'amber',
       };
     }
@@ -587,46 +507,53 @@ export function DashboardPage() {
               className="space-y-2 sm:space-y-2.5 overflow-y-auto flex-1 min-h-0 h-0 pr-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {studentExceptions.map((s, i) => (
-                <div
-                  key={i}
-                  className="p-2 sm:p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-2.5 shadow-xs shrink-0"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <img
-                      src={s.avatar}
-                      alt={s.student}
-                      className="h-8 w-8 rounded-[4px] object-cover shrink-0 border border-border/80 shadow-xs"
-                    />
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <p className="text-xs sm:text-[13px] font-bold text-foreground truncate">{s.student}</p>
-                        <span className="text-[10.5px] font-mono text-muted-foreground">{s.class}</span>
+              {studentExceptions.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full py-10 text-center text-xs text-muted-foreground">
+                  <CalendarCheck className="h-7 w-7 text-emerald-400/70 mb-2" />
+                  <p className="font-bold text-foreground">Zero Attendance Exceptions</p>
+                  <p className="text-[11px] mt-0.5">All recorded students are marked present for the latest attendance cycle.</p>
+                </div>
+              ) : (
+                studentExceptions.map((s, i) => (
+                  <div
+                    key={i}
+                    className="p-2 sm:p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-2.5 shadow-xs shrink-0"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="h-8 w-8 rounded-[4px] bg-primary/15 border border-primary/30 text-primary font-bold text-xs flex items-center justify-center shrink-0">
+                        {s.student.slice(0, 2).toUpperCase()}
                       </div>
-                      <p
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-xs sm:text-[13px] font-bold text-foreground truncate">{s.student}</p>
+                          <span className="text-[10.5px] font-mono text-muted-foreground">{s.class}</span>
+                        </div>
+                        <p
+                          className={cn(
+                            "text-[10.5px] font-bold mt-0.5 truncate",
+                            s.severity === 'danger' ? 'text-rose-400' : 'text-amber-400'
+                          )}
+                        >
+                          {s.alert}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Link to="/attendance">
+                      <VFButton
+                        size="sm"
+                        variant={s.severity === 'danger' ? 'danger' : 'outline'}
                         className={cn(
-                          "text-[10.5px] font-bold mt-0.5 truncate",
-                          s.severity === 'danger' ? 'text-rose-400' : s.severity === 'warning' ? 'text-amber-400' : 'text-emerald-400'
+                          "h-7 px-2.5 text-xs shrink-0 self-end sm:self-center rounded-[4px]",
+                          s.severity !== 'danger' && "bg-[#141414] hover:bg-[#1f1f1f]"
                         )}
                       >
-                        {s.alert}
-                      </p>
-                    </div>
+                        {s.action}
+                      </VFButton>
+                    </Link>
                   </div>
-
-                  <VFButton
-                    size="sm"
-                    variant={s.severity === 'danger' ? 'danger' : 'outline'}
-                    className={cn(
-                      "h-7 px-2.5 text-xs shrink-0 self-end sm:self-center rounded-[4px]",
-                      s.severity !== 'danger' && "bg-[#141414] hover:bg-[#1f1f1f]"
-                    )}
-                    onClick={() => addNotification({ title: 'Action Executed', description: `${s.action} for ${s.student}.`, type: 'info' })}
-                  >
-                    {s.action}
-                  </VFButton>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </VFCard>
           {cornerHandle}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { SUBSYSTEMS, getSubsystemUrl, API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 import JSZip from 'jszip';
 import {
   VFPageContainer,
@@ -1093,81 +1093,69 @@ function StudentsPage() {
   const currentEnrolledList = enrolledStudentsMap[activeSession] || enrolledStudentsMap['2026–2027'] || [];
 
   // Sync Student 360 directory from Django backend (/api/v1/students/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            admission_number: string;
-            full_name: string;
-            avatar_url?: string;
-            class_section_label?: string;
-            current_roll_number?: string;
-            house_name?: string;
-            primary_guardian_name?: string;
-            mother_name?: string;
-            guardian_phone?: string;
-            guardian_email?: string;
-            address?: string;
-            date_of_birth?: string;
-            blood_group?: string;
-            status?: string;
-            attendance_pct?: string;
-            gpa?: string;
-            fee_status?: string;
-            transport_route_label?: string;
-            medical_notes?: string;
-            class_teacher_name?: string;
-          }>
-        >(API_ENDPOINTS.STUDENTS.LIST);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setEnrolledStudentsMap((prev) => {
-            const targetKey = prev[activeSession] ? activeSession : '2026–2027';
-            const current = prev[targetKey] || [];
-            const existingAdmNos = new Set(current.map((s) => s.admNo));
-            const mapped = res.data
-              .filter((r) => !existingAdmNos.has(r.admission_number))
-              .map((r) => ({
-                id: r.id,
-                admNo: r.admission_number,
-                name: r.full_name,
-                avatarUrl:
-                  r.avatar_url ||
-                  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-                class: r.class_section_label?.split('-')[0] || 'Class 10',
-                section: r.class_section_label?.split('-')[1] || 'A',
-                roll: r.current_roll_number || '101',
-                house: r.house_name || 'Ashoka House',
-                guardian: r.primary_guardian_name || 'Guardian',
-                motherName: r.mother_name || 'Mother',
-                phone: r.guardian_phone || '+91 98765 43210',
-                email: r.guardian_email || 'student@vidyafloww.edu.in',
-                address: r.address || 'New Delhi, India',
-                dob: r.date_of_birth || '10 May 2011',
-                bloodGroup: r.blood_group || 'O+',
-                status: r.status === 'active' ? 'Active' : r.status || 'Active',
-                attendance: `${r.attendance_pct || '95.0'}%`,
-                gpa: r.gpa || '3.80',
-                rank: '#1 in Section',
-                feeStatus: r.fee_status || 'Paid',
-                transport: r.transport_route_label || 'Self / Private',
-                medical: r.medical_notes || 'No known allergies',
-                classTeacher: r.class_teacher_name || 'Dr. Rajesh Sharma',
-                session: targetKey,
-              }));
-            return mapped.length > 0 ? { ...prev, [targetKey]: [...mapped, ...current] } : prev;
-          });
-        }
-      } catch {
-        // Fallback to local state when unauthenticated or offline
-      }
-    })();
-    return () => {
-      active = false;
-    };
+  const loadStudents = React.useCallback(async () => {
+    try {
+      const res = await apiClient.get(API_ENDPOINTS.STUDENTS.LIST);
+      const rows = extractApiList<{
+        id: string;
+        admission_number: string;
+        full_name: string;
+        avatar_url?: string;
+        class_section_label?: string;
+        current_roll_number?: string;
+        house_name?: string;
+        primary_guardian_name?: string;
+        mother_name?: string;
+        guardian_phone?: string;
+        guardian_email?: string;
+        address?: string;
+        date_of_birth?: string;
+        blood_group?: string;
+        status?: string;
+        attendance_pct?: string;
+        gpa?: string;
+        fee_status?: string;
+        transport_route_label?: string;
+        medical_notes?: string;
+        class_teacher_name?: string;
+      }>(res);
+      const mapped = rows.map((r) => ({
+        id: r.id,
+        admNo: r.admission_number,
+        name: r.full_name,
+        avatarUrl:
+          r.avatar_url ||
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+        class: r.class_section_label?.split('-')[0] || 'Class 10',
+        section: r.class_section_label?.split('-')[1] || 'A',
+        roll: r.current_roll_number || '1',
+        house: r.house_name || 'Ashoka House',
+        guardian: r.primary_guardian_name || 'Guardian',
+        motherName: r.mother_name || 'Mother',
+        phone: r.guardian_phone || '',
+        email: r.guardian_email || '',
+        address: r.address || '',
+        dob: r.date_of_birth || '',
+        bloodGroup: r.blood_group || 'O+',
+        status: r.status === 'active' ? 'Active' : r.status || 'Active',
+        attendance: `${r.attendance_pct || '0.0'}%`,
+        gpa: r.gpa || '0.00',
+        rank: 'Ranked',
+        feeStatus: r.fee_status || 'Paid',
+        transport: r.transport_route_label || 'Self / Private',
+        medical: r.medical_notes || 'No known allergies',
+        classTeacher: r.class_teacher_name || 'Assigned Mentor',
+        session: activeSession,
+      }));
+      setEnrolledStudentsMap((prev) => ({ ...prev, [activeSession]: mapped }));
+    } catch {
+      // Keep current list on transient network error
+    }
   }, [activeSession]);
+
+  React.useEffect(() => {
+    loadStudents();
+  }, [loadStudents]);
 
   // URL Deep-linking Handler (e.g. /students?student=ADM-2026-001&tab=scholarship)
   React.useEffect(() => {
@@ -1252,17 +1240,11 @@ function StudentsPage() {
     setStudentFormData(null);
   };
 
-  const handleSaveStudent = () => {
+  const handleSaveStudent = async () => {
     if (!studentFormData || selectedStudentIndex === null) return;
-    const updatedList = [...currentEnrolledList];
-    updatedList[selectedStudentIndex] = { ...studentFormData };
-    setEnrolledStudentsMap((prev) => ({
-      ...prev,
-      [activeSession]: updatedList,
-    }));
     if (studentFormData.id && String(studentFormData.id).includes('-')) {
-      apiClient
-        .patch(API_ENDPOINTS.STUDENTS.DETAIL(String(studentFormData.id)), {
+      try {
+        await apiClient.patch(API_ENDPOINTS.STUDENTS.DETAIL(String(studentFormData.id)), {
           full_name: studentFormData.name,
           primary_guardian_name: studentFormData.guardian,
           mother_name: studentFormData.motherName,
@@ -1270,8 +1252,18 @@ function StudentsPage() {
           guardian_email: studentFormData.email,
           address: studentFormData.address,
           house_name: studentFormData.house,
-        })
-        .catch(() => {});
+        });
+        await loadStudents();
+      } catch {
+        return;
+      }
+    } else {
+      const updatedList = [...currentEnrolledList];
+      updatedList[selectedStudentIndex] = { ...studentFormData };
+      setEnrolledStudentsMap((prev) => ({
+        ...prev,
+        [activeSession]: updatedList,
+      }));
     }
     setIsEditingStudent(false);
     setStudentFormData(null);

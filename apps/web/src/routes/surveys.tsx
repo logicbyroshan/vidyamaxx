@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 import {
   VFPageContainer,
   VFButton,
@@ -114,56 +114,48 @@ function SurveysManagementPage() {
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'active' | 'results'>('active');
-  const [surveys, setSurveys] = React.useState<InstitutionalSurvey[]>(INITIAL_SURVEYS);
+  const [surveys, setSurveys] = React.useState<InstitutionalSurvey[]>([]);
 
   // Sync surveys from Django backend (/api/v1/engagement/surveys/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            survey_code: string;
-            title: string;
-            target_audience: string;
-            category: string;
-            responses_count: number;
-            total_target: number;
-            satisfaction_score: string;
-            status: string;
-            end_date_label: string;
-            key_finding: string;
-          }>
-        >(API_ENDPOINTS.ENGAGEMENT.SURVEYS);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setSurveys((prev) => {
-            const existingIds = new Set(prev.map((s) => s.id));
-            const mapped: InstitutionalSurvey[] = res.data
-              .filter((r) => !existingIds.has(r.survey_code))
-              .map((r) => ({
-                id: r.survey_code || r.id,
-                title: r.title,
-                targetAudience: (r.target_audience as InstitutionalSurvey['targetAudience']) || 'Parents',
-                category: r.category,
-                responsesCount: r.responses_count,
-                totalTarget: r.total_target,
-                satisfactionScore: r.satisfaction_score,
-                status: r.status === 'Completed' ? 'Completed' : 'Active',
-                endDate: r.end_date_label,
-                keyFinding: r.key_finding || 'Active survey collecting responses.',
-              }));
-            return mapped.length > 0 ? [...mapped, ...prev] : prev;
-          });
-        }
-      } catch {
-        // Fallback to INITIAL_SURVEYS
-      }
-    })();
-    return () => {
-      active = false;
-    };
+  const loadSurveys = React.useCallback(async () => {
+    try {
+      const res = await apiClient.get(API_ENDPOINTS.ENGAGEMENT.SURVEYS);
+      const rows = extractApiList<{
+        id: string;
+        survey_code: string;
+        title: string;
+        target_audience: string;
+        category: string;
+        responses_count: number;
+        total_target: number;
+        satisfaction_score: string;
+        status: string;
+        end_date_label: string;
+        key_finding: string;
+      }>(res);
+      setSurveys(
+        rows.map((r) => ({
+          id: r.survey_code || r.id,
+          title: r.title,
+          targetAudience: (r.target_audience as InstitutionalSurvey['targetAudience']) || 'Parents',
+          category: r.category,
+          responsesCount: r.responses_count,
+          totalTarget: r.total_target,
+          satisfactionScore: r.satisfaction_score,
+          status: r.status === 'Completed' ? 'Completed' : 'Active',
+          endDate: r.end_date_label,
+          keyFinding: r.key_finding || 'Active survey collecting responses.',
+        }))
+      );
+    } catch {
+      setSurveys([]);
+    }
   }, []);
+
+  React.useEffect(() => {
+    loadSurveys();
+  }, [loadSurveys]);
+  void INITIAL_SURVEYS;
   const [archives] = React.useState<HistoricalSurvey[]>(ARCHIVED_SURVEYS);
   const [selectedSurvey, setSelectedSurvey] = React.useState<InstitutionalSurvey | null>(null);
   const [isNewSurveyModalOpen, setIsNewSurveyModalOpen] = React.useState(false);
@@ -174,44 +166,37 @@ function SurveysManagementPage() {
   const [surveyCategory, setSurveyCategory] = React.useState('Academic & Student Welfare');
   const [surveyTarget, setSurveyTarget] = React.useState('500');
 
-  const handleCreateSurvey = (e: React.FormEvent) => {
+  const handleCreateSurvey = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!surveyTitle.trim()) return;
 
-    const newSurvey: InstitutionalSurvey = {
-      id: `SURV-${Math.floor(100 + Math.random() * 900)}`,
-      title: surveyTitle.trim(),
-      targetAudience: surveyAudience,
-      category: surveyCategory,
-      responsesCount: 0,
-      totalTarget: parseInt(surveyTarget, 10) || 500,
-      satisfactionScore: '—',
-      status: 'Active',
-      endDate: '30 Sep 2026',
-      keyFinding: 'Survey initialized. Accepting community responses.',
-    };
-
-    setSurveys([newSurvey, ...surveys]);
-    apiClient
-      .post(API_ENDPOINTS.ENGAGEMENT.SURVEYS, {
-        survey_code: newSurvey.id,
-        title: newSurvey.title,
-        target_audience: newSurvey.targetAudience,
-        category: newSurvey.category,
-        total_target: newSurvey.totalTarget,
+    const code = `SURV-${Math.floor(100 + Math.random() * 900)}`;
+    try {
+      await apiClient.post(API_ENDPOINTS.ENGAGEMENT.SURVEYS, {
+        survey_code: code,
+        title: surveyTitle.trim(),
+        target_audience: surveyAudience,
+        category: surveyCategory,
+        total_target: parseInt(surveyTarget, 10) || 500,
         status: 'Active',
-        end_date_label: newSurvey.endDate,
-        key_finding: newSurvey.keyFinding,
-      })
-      .catch(() => {});
-    setIsNewSurveyModalOpen(false);
-    setSurveyTitle('');
-
-    addNotification({
-      title: isHindi ? 'न्यू सर्वे पब्लिश हुआ' : 'Survey Published',
-      description: `Survey "${newSurvey.title}" is now active for ${newSurvey.targetAudience}.`,
-      type: 'success',
-    });
+        end_date_label: '30 Sep 2026',
+        key_finding: 'Survey initialized. Accepting community responses.',
+      });
+      await loadSurveys();
+      setIsNewSurveyModalOpen(false);
+      setSurveyTitle('');
+      addNotification({
+        title: isHindi ? 'न्यू सर्वे पब्लिश हुआ' : 'Survey Published',
+        description: `Survey "${surveyTitle.trim()}" persisted and active for ${surveyAudience}.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Publish Failed',
+        description: err instanceof Error ? err.message : 'Unable to create survey campaign.',
+        type: 'error',
+      });
+    }
   };
 
   return (

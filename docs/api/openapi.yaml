@@ -300,7 +300,7 @@ paths:
       operationId: v1_analytics_ai_assist_create
       description: |-
         Cross-Platform AI Capability (Master Prompt Part 7.5):
-        AI is a cross-platform capability (`ai.*`), never a 31st work division.
+        Queries real tenant telemetry from PostgreSQL/SQLite to synthesize grounded operational answers.
       tags:
       - v1
       requestBody:
@@ -362,7 +362,8 @@ paths:
   /api/v1/analytics/dashboard/:
     get:
       operationId: v1_analytics_dashboard_retrieve
-      description: Backs the Executive Command Center (`/` -> `apps/web/src/routes/index.tsx`).
+      description: Backs the Executive Command Center (`/` -> `apps/web/src/routes/index.tsx`)
+        with live DB queries.
       tags:
       - v1
       security:
@@ -417,7 +418,8 @@ paths:
   /api/v1/analytics/statistics/:
     get:
       operationId: v1_analytics_statistics_retrieve
-      description: Backs `/statistics` (`apps/web/src/routes/statistics.tsx`).
+      description: Backs `/statistics` (`apps/web/src/routes/statistics.tsx`) with
+        live DB aggregations.
       tags:
       - v1
       security:
@@ -1459,6 +1461,80 @@ paths:
               schema:
                 $ref: '#/components/schemas/HomeworkSubmission'
           description: ''
+  /api/v1/integrations/biometric/punch/:
+    post:
+      operationId: v1_integrations_biometric_punch
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BiometricPunchRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BiometricPunchRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BiometricPunch'
+          description: ''
+  /api/v1/integrations/payment/orders/:
+    post:
+      operationId: v1_integrations_payment_create_order
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentOrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentOrderRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePaymentOrder'
+          description: ''
+  /api/v1/integrations/payment/webhook/:
+    post:
+      operationId: v1_integrations_payment_webhook
+      description: |-
+        Trusted server-to-server webhook endpoint verifying X-Razorpay-Signature HMAC
+        before atomically posting an idempotent FeeReceipt.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentWebhookInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PaymentWebhookInputRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentWebhookInput'
+          description: ''
   /api/v1/notifications/:
     get:
       operationId: v1_notifications_retrieve
@@ -1498,7 +1574,7 @@ paths:
           description: ''
   /api/v1/operations/activities/:
     get:
-      operationId: v1_operations_activities_retrieve
+      operationId: v1_operations_studentactivityrecord_list
       tags:
       - v1
       security:
@@ -1511,7 +1587,7 @@ paths:
                 $ref: '#/components/schemas/StudentActivity'
           description: ''
     post:
-      operationId: v1_operations_activities_create
+      operationId: v1_operations_studentactivityrecord_create
       tags:
       - v1
       requestBody:
@@ -1532,9 +1608,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/StudentActivity'
           description: ''
+  /api/v1/operations/activities/{id}/:
+    get:
+      operationId: v1_operations_studentactivityrecord_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentActivity'
+          description: ''
+    patch:
+      operationId: v1_operations_studentactivityrecord_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentActivityRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentActivityRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentActivity'
+          description: ''
+    delete:
+      operationId: v1_operations_studentactivityrecord_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/assets/:
     get:
-      operationId: v1_operations_assets_retrieve
+      operationId: v1_operations_fixedassetrecord_list
       tags:
       - v1
       security:
@@ -1547,7 +1688,7 @@ paths:
                 $ref: '#/components/schemas/FixedAsset'
           description: ''
     post:
-      operationId: v1_operations_assets_create
+      operationId: v1_operations_fixedassetrecord_create
       tags:
       - v1
       requestBody:
@@ -1568,9 +1709,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/FixedAsset'
           description: ''
+  /api/v1/operations/assets/{id}/:
+    get:
+      operationId: v1_operations_fixedassetrecord_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedAsset'
+          description: ''
+    patch:
+      operationId: v1_operations_fixedassetrecord_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFixedAssetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFixedAssetRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixedAsset'
+          description: ''
+    delete:
+      operationId: v1_operations_fixedassetrecord_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/certificates/issued/:
     get:
-      operationId: v1_operations_certificates_issued_retrieve
+      operationId: v1_operations_issuedcertificate_list
       tags:
       - v1
       security:
@@ -1583,7 +1789,7 @@ paths:
                 $ref: '#/components/schemas/IssuedCertificate'
           description: ''
     post:
-      operationId: v1_operations_certificates_issued_create
+      operationId: v1_operations_issuedcertificate_create
       tags:
       - v1
       requestBody:
@@ -1604,9 +1810,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/IssuedCertificate'
           description: ''
+  /api/v1/operations/certificates/issued/{id}/:
+    get:
+      operationId: v1_operations_issuedcertificate_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssuedCertificate'
+          description: ''
+    patch:
+      operationId: v1_operations_issuedcertificate_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedIssuedCertificateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedIssuedCertificateRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssuedCertificate'
+          description: ''
+    delete:
+      operationId: v1_operations_issuedcertificate_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/certificates/templates/:
     get:
-      operationId: v1_operations_certificates_templates_retrieve
+      operationId: v1_operations_certificatetemplate_list
       tags:
       - v1
       security:
@@ -1619,7 +1890,7 @@ paths:
                 $ref: '#/components/schemas/CertificateTemplate'
           description: ''
     post:
-      operationId: v1_operations_certificates_templates_create
+      operationId: v1_operations_certificatetemplate_create
       tags:
       - v1
       requestBody:
@@ -1640,9 +1911,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/CertificateTemplate'
           description: ''
+  /api/v1/operations/certificates/templates/{id}/:
+    get:
+      operationId: v1_operations_certificatetemplate_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateTemplate'
+          description: ''
+    patch:
+      operationId: v1_operations_certificatetemplate_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCertificateTemplateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCertificateTemplateRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateTemplate'
+          description: ''
+    delete:
+      operationId: v1_operations_certificatetemplate_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/documents/:
     get:
-      operationId: v1_operations_documents_retrieve
+      operationId: v1_operations_compliancedocumentrecord_list
       tags:
       - v1
       security:
@@ -1655,7 +1991,7 @@ paths:
                 $ref: '#/components/schemas/ComplianceDocument'
           description: ''
     post:
-      operationId: v1_operations_documents_create
+      operationId: v1_operations_compliancedocumentrecord_create
       tags:
       - v1
       requestBody:
@@ -1676,9 +2012,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/ComplianceDocument'
           description: ''
+  /api/v1/operations/documents/{id}/:
+    get:
+      operationId: v1_operations_compliancedocumentrecord_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceDocument'
+          description: ''
+    patch:
+      operationId: v1_operations_compliancedocumentrecord_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedComplianceDocumentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedComplianceDocumentRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceDocument'
+          description: ''
+    delete:
+      operationId: v1_operations_compliancedocumentrecord_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/events/:
     get:
-      operationId: v1_operations_events_retrieve
+      operationId: v1_operations_schoolcalendarevent_list
       tags:
       - v1
       security:
@@ -1691,7 +2092,7 @@ paths:
                 $ref: '#/components/schemas/SchoolCalendarEvent'
           description: ''
     post:
-      operationId: v1_operations_events_create
+      operationId: v1_operations_schoolcalendarevent_create
       tags:
       - v1
       requestBody:
@@ -1712,9 +2113,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/SchoolCalendarEvent'
           description: ''
+  /api/v1/operations/events/{id}/:
+    get:
+      operationId: v1_operations_schoolcalendarevent_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolCalendarEvent'
+          description: ''
+    patch:
+      operationId: v1_operations_schoolcalendarevent_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSchoolCalendarEventRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSchoolCalendarEventRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolCalendarEvent'
+          description: ''
+    delete:
+      operationId: v1_operations_schoolcalendarevent_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/front-office/visitors/:
     get:
-      operationId: v1_operations_front_office_visitors_retrieve
+      operationId: v1_operations_frontofficevisitorpass_list
       tags:
       - v1
       security:
@@ -1727,7 +2193,7 @@ paths:
                 $ref: '#/components/schemas/VisitorPass'
           description: ''
     post:
-      operationId: v1_operations_front_office_visitors_create
+      operationId: v1_operations_frontofficevisitorpass_create
       tags:
       - v1
       requestBody:
@@ -1748,9 +2214,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/VisitorPass'
           description: ''
+  /api/v1/operations/front-office/visitors/{id}/:
+    get:
+      operationId: v1_operations_frontofficevisitorpass_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitorPass'
+          description: ''
+    patch:
+      operationId: v1_operations_frontofficevisitorpass_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVisitorPassRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVisitorPassRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitorPass'
+          description: ''
+    delete:
+      operationId: v1_operations_frontofficevisitorpass_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/hostel/allocations/:
     get:
-      operationId: v1_operations_hostel_allocations_retrieve
+      operationId: v1_operations_hostelallocationrecord_list
       tags:
       - v1
       security:
@@ -1763,7 +2294,7 @@ paths:
                 $ref: '#/components/schemas/HostelAllocation'
           description: ''
     post:
-      operationId: v1_operations_hostel_allocations_create
+      operationId: v1_operations_hostelallocationrecord_create
       tags:
       - v1
       requestBody:
@@ -1784,9 +2315,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/HostelAllocation'
           description: ''
+  /api/v1/operations/hostel/allocations/{id}/:
+    get:
+      operationId: v1_operations_hostelallocationrecord_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostelAllocation'
+          description: ''
+    patch:
+      operationId: v1_operations_hostelallocationrecord_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedHostelAllocationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedHostelAllocationRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostelAllocation'
+          description: ''
+    delete:
+      operationId: v1_operations_hostelallocationrecord_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/inventory/items/:
     get:
-      operationId: v1_operations_inventory_items_retrieve
+      operationId: v1_operations_inventorystockitem_list
       tags:
       - v1
       security:
@@ -1799,7 +2395,7 @@ paths:
                 $ref: '#/components/schemas/InventoryStock'
           description: ''
     post:
-      operationId: v1_operations_inventory_items_create
+      operationId: v1_operations_inventorystockitem_create
       tags:
       - v1
       requestBody:
@@ -1820,9 +2416,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/InventoryStock'
           description: ''
+  /api/v1/operations/inventory/items/{id}/:
+    get:
+      operationId: v1_operations_inventorystockitem_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryStock'
+          description: ''
+    patch:
+      operationId: v1_operations_inventorystockitem_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInventoryStockRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInventoryStockRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryStock'
+          description: ''
+    delete:
+      operationId: v1_operations_inventorystockitem_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/library/books/:
     get:
-      operationId: v1_operations_library_books_retrieve
+      operationId: v1_operations_librarybooksummary_list
       tags:
       - v1
       security:
@@ -1835,7 +2496,7 @@ paths:
                 $ref: '#/components/schemas/LibraryBook'
           description: ''
     post:
-      operationId: v1_operations_library_books_create
+      operationId: v1_operations_librarybooksummary_create
       tags:
       - v1
       requestBody:
@@ -1856,9 +2517,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/LibraryBook'
           description: ''
+  /api/v1/operations/library/books/{id}/:
+    get:
+      operationId: v1_operations_librarybooksummary_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryBook'
+          description: ''
+    patch:
+      operationId: v1_operations_librarybooksummary_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLibraryBookRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLibraryBookRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryBook'
+          description: ''
+    delete:
+      operationId: v1_operations_librarybooksummary_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/operations/transport/routes/:
     get:
-      operationId: v1_operations_transport_routes_retrieve
+      operationId: v1_operations_transportrouterecord_list
       tags:
       - v1
       security:
@@ -1871,7 +2597,7 @@ paths:
                 $ref: '#/components/schemas/TransportRoute'
           description: ''
     post:
-      operationId: v1_operations_transport_routes_create
+      operationId: v1_operations_transportrouterecord_create
       tags:
       - v1
       requestBody:
@@ -1892,6 +2618,71 @@ paths:
               schema:
                 $ref: '#/components/schemas/TransportRoute'
           description: ''
+  /api/v1/operations/transport/routes/{id}/:
+    get:
+      operationId: v1_operations_transportrouterecord_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportRoute'
+          description: ''
+    patch:
+      operationId: v1_operations_transportrouterecord_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTransportRouteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTransportRouteRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportRoute'
+          description: ''
+    delete:
+      operationId: v1_operations_transportrouterecord_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/permissions/policies/:
     get:
       operationId: v1_permissions_policies_retrieve
@@ -2061,6 +2852,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Subscription'
           description: ''
+  /api/v1/portal/overview/:
+    get:
+      operationId: v1_portal_overview_retrieve
+      description: |-
+        Read-optimized Parent & Student Portal endpoint (`/api/v1/portal/overview/`).
+        Strictly scoped to linked children (PARENT) or self (STUDENT).
+        Admin/Staff users receive school-wide preview scoped to their active tenant.
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedReport'
+          description: ''
   /api/v1/schools/branches/:
     get:
       operationId: v1_schools_branches_retrieve
@@ -2126,6 +2935,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Branch'
           description: ''
+    delete:
+      operationId: v1_schools_branches_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/schools/current/:
     get:
       operationId: v1_schools_current_retrieve
@@ -2838,7 +3663,7 @@ components:
       properties:
         capability:
           type: string
-          default: lesson_plan
+          default: general
           maxLength: 60
         prompt:
           type: string
@@ -2850,7 +3675,7 @@ components:
         capability:
           type: string
           minLength: 1
-          default: lesson_plan
+          default: general
           maxLength: 60
         prompt:
           type: string
@@ -2888,9 +3713,8 @@ components:
           format: date
         target_syllabus_coverage:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         assessment_type:
           $ref: '#/components/schemas/AssessmentTypeEnum'
         status:
@@ -2930,9 +3754,8 @@ components:
           format: date
         target_syllabus_coverage:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         assessment_type:
           $ref: '#/components/schemas/AssessmentTypeEnum'
         status:
@@ -3460,6 +4283,73 @@ components:
         * `Success` - Success
         * `Warning` - Warning
         * `Blocked` - Blocked
+    BiometricPunch:
+      type: object
+      properties:
+        school_code:
+          type: string
+          maxLength: 50
+        device_id:
+          type: string
+          maxLength: 60
+        punch_uid:
+          type: string
+          maxLength: 100
+        admission_number:
+          type: string
+          maxLength: 50
+        punch_date:
+          type: string
+          format: date
+        punch_time_str:
+          type: string
+          maxLength: 25
+        is_late:
+          type: boolean
+          default: false
+      required:
+      - admission_number
+      - device_id
+      - punch_date
+      - punch_time_str
+      - punch_uid
+      - school_code
+    BiometricPunchRequest:
+      type: object
+      properties:
+        school_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        device_id:
+          type: string
+          minLength: 1
+          maxLength: 60
+        punch_uid:
+          type: string
+          minLength: 1
+          maxLength: 100
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        punch_date:
+          type: string
+          format: date
+        punch_time_str:
+          type: string
+          minLength: 1
+          maxLength: 25
+        is_late:
+          type: boolean
+          default: false
+      required:
+      - admission_number
+      - device_id
+      - punch_date
+      - punch_time_str
+      - punch_uid
+      - school_code
     BoardAffiliationEnum:
       enum:
       - CBSE
@@ -3882,27 +4772,23 @@ components:
           readOnly: true
         weekly_periods:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         theory_marks:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         internal_marks:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         teacher_in_charge:
           type: string
           maxLength: 150
         syllabus_chapters:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         prescribed_book_json: {}
         status:
           $ref: '#/components/schemas/ClassSubjectStatusEnum'
@@ -3927,27 +4813,23 @@ components:
           format: uuid
         weekly_periods:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         theory_marks:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         internal_marks:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         teacher_in_charge:
           type: string
           maxLength: 150
         syllabus_chapters:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         prescribed_book_json: {}
         status:
           $ref: '#/components/schemas/ClassSubjectStatusEnum'
@@ -4174,6 +5056,40 @@ components:
       - confidential_notes
       - counsellor_name
       - student_name
+    CreatePaymentOrder:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        provider:
+          allOf:
+          - $ref: '#/components/schemas/ProviderEnum'
+          default: razorpay
+      required:
+      - amount_inr
+      - invoice_id
+    CreatePaymentOrderRequest:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        provider:
+          allOf:
+          - $ref: '#/components/schemas/ProviderEnum'
+          default: razorpay
+      required:
+      - amount_inr
+      - invoice_id
     CreateResponsibilityRequest:
       type: object
       properties:
@@ -4363,9 +5279,8 @@ components:
           format: date
         weightage_pct:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         is_marks_locked:
           type: boolean
         is_published:
@@ -4410,9 +5325,8 @@ components:
           format: date
         weightage_pct:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         is_marks_locked:
           type: boolean
         is_published:
@@ -4631,9 +5545,8 @@ components:
           maxLength: 15
         row_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         generated_by_name:
           type: string
           maxLength: 150
@@ -4667,9 +5580,8 @@ components:
           maxLength: 15
         row_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         generated_by_name:
           type: string
           minLength: 1
@@ -4695,9 +5607,8 @@ components:
           maxLength: 100
         numeric_grade:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         stage:
           $ref: '#/components/schemas/GradeClassStageEnum'
         class_mentor_name:
@@ -4708,9 +5619,8 @@ components:
           maxLength: 50
         display_order:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         sections:
           type: array
           items:
@@ -4749,9 +5659,8 @@ components:
           maxLength: 100
         numeric_grade:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         stage:
           $ref: '#/components/schemas/GradeClassStageEnum'
         class_mentor_name:
@@ -4762,9 +5671,8 @@ components:
           maxLength: 50
         display_order:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
       required:
       - code
       - name
@@ -4907,27 +5815,23 @@ components:
           format: date
         max_marks:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         submission_type:
           type: string
           maxLength: 50
         total_students:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         submitted_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         evaluated_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         status:
           $ref: '#/components/schemas/HomeworkAssignmentStatusEnum'
         created_at:
@@ -4975,28 +5879,24 @@ components:
           format: date
         max_marks:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         submission_type:
           type: string
           minLength: 1
           maxLength: 50
         total_students:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         submitted_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         evaluated_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         status:
           $ref: '#/components/schemas/HomeworkAssignmentStatusEnum'
       required:
@@ -5042,9 +5942,8 @@ components:
           $ref: '#/components/schemas/HomeworkSubmissionStatusEnum'
         marks_obtained:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
           nullable: true
         grade_label:
           type: string
@@ -5088,9 +5987,8 @@ components:
           $ref: '#/components/schemas/HomeworkSubmissionStatusEnum'
         marks_obtained:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
           nullable: true
         grade_label:
           type: string
@@ -5275,14 +6173,12 @@ components:
           maxLength: 80
         quantity_on_hand:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         reorder_threshold:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         unit_label:
           type: string
           maxLength: 30
@@ -5307,14 +6203,12 @@ components:
           maxLength: 80
         quantity_on_hand:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         reorder_threshold:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         unit_label:
           type: string
           minLength: 1
@@ -5515,9 +6409,8 @@ components:
           format: date
         days_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         reason:
           type: string
         status:
@@ -5566,9 +6459,8 @@ components:
           format: date
         days_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         reason:
           type: string
           minLength: 1
@@ -5651,9 +6543,8 @@ components:
           format: date
         duration_minutes:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         pedagogy_method:
           type: string
           maxLength: 100
@@ -5661,9 +6552,8 @@ components:
           type: string
         completion_pct:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         status:
           $ref: '#/components/schemas/LessonPlanStatusEnum'
         hod_remarks:
@@ -5713,9 +6603,8 @@ components:
           format: date
         duration_minutes:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         pedagogy_method:
           type: string
           minLength: 1
@@ -5724,9 +6613,8 @@ components:
           type: string
         completion_pct:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         status:
           $ref: '#/components/schemas/LessonPlanStatusEnum'
         hod_remarks:
@@ -5771,14 +6659,12 @@ components:
           maxLength: 80
         total_copies:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         available_copies:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
       required:
       - id
       - isbn_or_code
@@ -5804,14 +6690,12 @@ components:
           maxLength: 80
         total_copies:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         available_copies:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
       required:
       - isbn_or_code
       - title
@@ -6041,9 +6925,8 @@ components:
           format: date-time
         duration_minutes:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         meeting_url:
           oneOf:
           - type: string
@@ -6094,9 +6977,8 @@ components:
           format: date-time
         duration_minutes:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         meeting_url:
           oneOf:
           - type: string
@@ -6201,6 +7083,82 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+    PatchedCertificateTemplateRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        certificate_type:
+          type: string
+          minLength: 1
+          maxLength: 50
+        template_html:
+          type: string
+        design_lab_template_id:
+          type: string
+          maxLength: 80
+    PatchedComplianceDocumentRequest:
+      type: object
+      properties:
+        owner_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        owner_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        document_name:
+          type: string
+          minLength: 1
+          maxLength: 180
+        document_category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        verification_status:
+          type: string
+          minLength: 1
+          maxLength: 30
+        file_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+    PatchedFixedAssetRequest:
+      type: object
+      properties:
+        asset_tag:
+          type: string
+          minLength: 1
+          maxLength: 50
+        asset_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        location_room:
+          type: string
+          minLength: 1
+          maxLength: 80
+        purchase_value_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        condition_status:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_service_notes:
+          type: string
+          maxLength: 255
     PatchedGradeClassRequest:
       type: object
       properties:
@@ -6217,9 +7175,8 @@ components:
           maxLength: 100
         numeric_grade:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         stage:
           $ref: '#/components/schemas/GradeClassStageEnum'
         class_mentor_name:
@@ -6230,9 +7187,8 @@ components:
           maxLength: 50
         display_order:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
     PatchedGrievanceTicketRequest:
       type: object
       properties:
@@ -6309,30 +7265,116 @@ components:
           format: date
         max_marks:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         submission_type:
           type: string
           minLength: 1
           maxLength: 50
         total_students:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         submitted_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         evaluated_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         status:
           $ref: '#/components/schemas/HomeworkAssignmentStatusEnum'
+    PatchedHostelAllocationRequest:
+      type: object
+      properties:
+        hostel_block:
+          type: string
+          minLength: 1
+          maxLength: 80
+        room_number:
+          type: string
+          minLength: 1
+          maxLength: 30
+        admission_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        student_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        warden_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
+    PatchedInventoryStockRequest:
+      type: object
+      properties:
+        sku_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        item_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        quantity_on_hand:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        reorder_threshold:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        unit_label:
+          type: string
+          minLength: 1
+          maxLength: 30
+    PatchedIssuedCertificateRequest:
+      type: object
+      properties:
+        serial_number:
+          type: string
+          minLength: 1
+          maxLength: 60
+        certificate_type:
+          type: string
+          minLength: 1
+          maxLength: 50
+        recipient_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        recipient_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        class_or_dept:
+          type: string
+          minLength: 1
+          maxLength: 60
+        issue_date:
+          type: string
+          format: date
+        reason:
+          type: string
+          maxLength: 255
+        verification_hash:
+          type: string
+          maxLength: 64
+        status:
+          type: string
+          minLength: 1
+          maxLength: 20
     PatchedLessonPlanRequest:
       type: object
       properties:
@@ -6365,9 +7407,8 @@ components:
           format: date
         duration_minutes:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         pedagogy_method:
           type: string
           minLength: 1
@@ -6376,20 +7417,71 @@ components:
           type: string
         completion_pct:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         status:
           $ref: '#/components/schemas/LessonPlanStatusEnum'
         hod_remarks:
           type: string
           maxLength: 255
+    PatchedLibraryBookRequest:
+      type: object
+      properties:
+        isbn_or_code:
+          type: string
+          minLength: 1
+          maxLength: 50
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        author:
+          type: string
+          minLength: 1
+          maxLength: 150
+        category:
+          type: string
+          minLength: 1
+          maxLength: 80
+        total_copies:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        available_copies:
+          type: integer
+          maximum: 32767
+          minimum: 0
     PatchedMePreferencesRequest:
       type: object
       properties:
         preferences:
           type: object
           additionalProperties: {}
+    PatchedSchoolCalendarEventRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        category:
+          type: string
+          minLength: 1
+          maxLength: 60
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        venue:
+          type: string
+          minLength: 1
+          maxLength: 120
+        audience:
+          type: string
+          minLength: 1
+          maxLength: 80
     PatchedSchoolRequest:
       type: object
       properties:
@@ -6465,9 +7557,8 @@ components:
           type: boolean
         session_timeout_minutes:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         ip_whitelist_cidrs: {}
     PatchedStaffProfileRequest:
       type: object
@@ -6506,9 +7597,8 @@ components:
           maxLength: 180
         experience_years:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         joining_date:
           type: string
           format: date
@@ -6530,14 +7620,12 @@ components:
           maxLength: 40
         weekly_periods_load:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         max_weekly_periods:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         employment_status:
           $ref: '#/components/schemas/StaffEmploymentStatusEnum'
         base_salary_inr:
@@ -6549,6 +7637,28 @@ components:
           maxLength: 40
         assigned_classes_json: {}
         custom_fields_json: {}
+    PatchedStudentActivityRequest:
+      type: object
+      properties:
+        activity_name:
+          type: string
+          minLength: 1
+          maxLength: 180
+        club_or_house:
+          type: string
+          minLength: 1
+          maxLength: 80
+        coordinator_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        participant_count:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        achievement_notes:
+          type: string
+          maxLength: 255
     PatchedStudentRequest:
       type: object
       properties:
@@ -6661,6 +7771,74 @@ components:
         medical_notes:
           type: string
         custom_fields_json: {}
+    PatchedTransportRouteRequest:
+      type: object
+      properties:
+        route_code:
+          type: string
+          minLength: 1
+          maxLength: 40
+        route_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        vehicle_number:
+          type: string
+          minLength: 1
+          maxLength: 40
+        driver_name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        driver_phone:
+          type: string
+          minLength: 1
+          maxLength: 25
+        capacity:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        assigned_students_count:
+          type: integer
+          maximum: 32767
+          minimum: 0
+    PatchedVisitorPassRequest:
+      type: object
+      properties:
+        pass_number:
+          type: string
+          minLength: 1
+          maxLength: 40
+        visitor_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        visitor_phone:
+          type: string
+          minLength: 1
+          maxLength: 25
+        purpose:
+          type: string
+          minLength: 1
+          maxLength: 180
+        person_to_meet:
+          type: string
+          minLength: 1
+          maxLength: 150
+        visit_date:
+          type: string
+          format: date
+        check_in_time:
+          type: string
+          minLength: 1
+          maxLength: 25
+        check_out_time:
+          type: string
+          maxLength: 25
+        status:
+          type: string
+          minLength: 1
+          maxLength: 25
     PaymentMethodUpdateInputRequest:
       type: object
       properties:
@@ -6675,6 +7853,59 @@ components:
           maxLength: 4
       required:
       - last4
+    PaymentWebhookInput:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+        payment_id:
+          type: string
+          maxLength: 100
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_mode:
+          type: string
+          default: Razorpay Online
+          maxLength: 50
+        event_id:
+          type: string
+          maxLength: 100
+      required:
+      - amount_inr
+      - event_id
+      - invoice_id
+      - payment_id
+    PaymentWebhookInputRequest:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          format: uuid
+        payment_id:
+          type: string
+          minLength: 1
+          maxLength: 100
+        amount_inr:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        payment_mode:
+          type: string
+          minLength: 1
+          default: Razorpay Online
+          maxLength: 50
+        event_id:
+          type: string
+          minLength: 1
+          maxLength: 100
+      required:
+      - amount_inr
+      - event_id
+      - invoice_id
+      - payment_id
     PlatformInvoice:
       type: object
       properties:
@@ -6788,6 +8019,14 @@ components:
       required:
       - target_grade_class_id
       - target_session_id
+    ProviderEnum:
+      enum:
+      - razorpay
+      - cashfree
+      type: string
+      description: |-
+        * `razorpay` - razorpay
+        * `cashfree` - cashfree
     ProxySubstitution:
       type: object
       properties:
@@ -6807,9 +8046,8 @@ components:
           maxLength: 40
         period_number:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         subject_name:
           type: string
           maxLength: 120
@@ -6854,9 +8092,8 @@ components:
           maxLength: 40
         period_number:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         subject_name:
           type: string
           minLength: 1
@@ -7043,9 +8280,8 @@ components:
           maxLength: 60
         waiver_pct:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         waiver_amount_inr:
           type: string
           format: decimal
@@ -7095,9 +8331,8 @@ components:
           maxLength: 60
         waiver_pct:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         waiver_amount_inr:
           type: string
           format: decimal
@@ -7288,9 +8523,8 @@ components:
           maxLength: 40
         capacity:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         room_number:
           type: string
           maxLength: 50
@@ -7319,9 +8553,8 @@ components:
           maxLength: 40
         capacity:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         room_number:
           type: string
           maxLength: 50
@@ -7344,9 +8577,8 @@ components:
           type: boolean
         session_timeout_minutes:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         ip_whitelist_cidrs: {}
         updated_at:
           type: string
@@ -7465,9 +8697,8 @@ components:
           maxLength: 180
         experience_years:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         joining_date:
           type: string
           format: date
@@ -7489,14 +8720,12 @@ components:
           maxLength: 40
         weekly_periods_load:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         max_weekly_periods:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         employment_status:
           $ref: '#/components/schemas/StaffEmploymentStatusEnum'
         base_salary_inr:
@@ -7556,9 +8785,8 @@ components:
           maxLength: 180
         experience_years:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         joining_date:
           type: string
           format: date
@@ -7580,14 +8808,12 @@ components:
           maxLength: 40
         weekly_periods_load:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         max_weekly_periods:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         employment_status:
           $ref: '#/components/schemas/StaffEmploymentStatusEnum'
         base_salary_inr:
@@ -7957,9 +9183,8 @@ components:
           maxLength: 120
         participant_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         achievement_notes:
           type: string
           maxLength: 255
@@ -7983,9 +9208,8 @@ components:
           maxLength: 120
         participant_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         achievement_notes:
           type: string
           maxLength: 255
@@ -8581,14 +9805,12 @@ components:
           maxLength: 120
         responses_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         total_target:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         satisfaction_score:
           type: string
           maxLength: 20
@@ -8630,14 +9852,12 @@ components:
           maxLength: 120
         responses_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         total_target:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 2147483647
           minimum: 0
-          format: int64
         satisfaction_score:
           type: string
           minLength: 1
@@ -8744,9 +9964,8 @@ components:
           $ref: '#/components/schemas/DayOfWeekEnum'
         period_number:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         time_label:
           type: string
           maxLength: 40
@@ -8786,9 +10005,8 @@ components:
           $ref: '#/components/schemas/DayOfWeekEnum'
         period_number:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         time_label:
           type: string
           minLength: 1
@@ -8839,14 +10057,12 @@ components:
           maxLength: 25
         capacity:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         assigned_students_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
       required:
       - id
       - route_code
@@ -8876,14 +10092,12 @@ components:
           maxLength: 25
         capacity:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
         assigned_students_count:
           type: integer
-          maximum: 9223372036854775807
+          maximum: 32767
           minimum: 0
-          format: int64
       required:
       - route_code
       - route_name

@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -140,6 +142,8 @@ class VisitorPassSerializer(serializers.ModelSerializer):
 
 
 def _make_list_create_view(model_cls, serializer_cls, division):
+    slug = model_cls._meta.model_name
+
     class GenericTenantListCreateView(APIView):
         work_division = division
         serializer_class = serializer_cls
@@ -147,12 +151,14 @@ def _make_list_create_view(model_cls, serializer_cls, division):
         def get_permissions(self):
             return [IsAuthenticatedTenantMember()] if self.request.method == "GET" else [HasWorkDivisionAccess()]
 
+        @extend_schema(operation_id=f"v1_operations_{slug}_list")
         def get(self, request):
             resolve_user_tenant_context(request, require_school=True)
             qs = model_cls.objects.for_school(request.school.id)
             payload = serializer_cls(qs, many=True).data
             return Response({"success": True, "data": payload, "results": payload})
 
+        @extend_schema(operation_id=f"v1_operations_{slug}_create")
         def post(self, request):
             membership = resolve_user_tenant_context(request, require_school=True)
             serializer = serializer_cls(data=request.data)
@@ -168,36 +174,106 @@ def _make_list_create_view(model_cls, serializer_cls, division):
     return GenericTenantListCreateView
 
 
+def _make_detail_view(model_cls, serializer_cls, division):
+    slug = model_cls._meta.model_name
+
+    class GenericTenantDetailView(APIView):
+        work_division = division
+        serializer_class = serializer_cls
+
+        def get_permissions(self):
+            return [IsAuthenticatedTenantMember()] if self.request.method == "GET" else [HasWorkDivisionAccess()]
+
+        @extend_schema(operation_id=f"v1_operations_{slug}_retrieve")
+        def get(self, request, pk):
+            resolve_user_tenant_context(request, require_school=True)
+            obj = get_object_or_404(model_cls, id=pk, school=request.school)
+            payload = serializer_cls(obj).data
+            return Response({"success": True, "data": payload})
+
+        @extend_schema(operation_id=f"v1_operations_{slug}_partial_update")
+        def patch(self, request, pk):
+            membership = resolve_user_tenant_context(request, require_school=True)
+            obj = get_object_or_404(model_cls, id=pk, school=request.school)
+            serializer = serializer_cls(obj, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            obj = serializer.save(updated_by_id=membership.user_id)
+            payload = serializer_cls(obj).data
+            return Response({"success": True, "data": payload})
+
+        @extend_schema(operation_id=f"v1_operations_{slug}_destroy")
+        def delete(self, request, pk):
+            resolve_user_tenant_context(request, require_school=True)
+            obj = get_object_or_404(model_cls, id=pk, school=request.school)
+            obj.delete()
+            return Response({"success": True, "deleted": True, "id": str(pk)}, status=status.HTTP_200_OK)
+
+    return GenericTenantDetailView
+
+
 CertificateTemplateListCreateView = _make_list_create_view(
+    CertificateTemplate, CertificateTemplateSerializer, WorkDivision.DOCUMENTS_CERTIFICATES
+)
+CertificateTemplateDetailView = _make_detail_view(
     CertificateTemplate, CertificateTemplateSerializer, WorkDivision.DOCUMENTS_CERTIFICATES
 )
 IssuedCertificateListCreateView = _make_list_create_view(
     IssuedCertificate, IssuedCertificateSerializer, WorkDivision.DOCUMENTS_CERTIFICATES
 )
+IssuedCertificateDetailView = _make_detail_view(
+    IssuedCertificate, IssuedCertificateSerializer, WorkDivision.DOCUMENTS_CERTIFICATES
+)
 ComplianceDocumentListCreateView = _make_list_create_view(
+    ComplianceDocumentRecord, ComplianceDocumentSerializer, WorkDivision.DOCUMENTS_CERTIFICATES
+)
+ComplianceDocumentDetailView = _make_detail_view(
     ComplianceDocumentRecord, ComplianceDocumentSerializer, WorkDivision.DOCUMENTS_CERTIFICATES
 )
 LibraryBookListCreateView = _make_list_create_view(
     LibraryBookSummary, LibraryBookSerializer, WorkDivision.LIBRARY
 )
+LibraryBookDetailView = _make_detail_view(
+    LibraryBookSummary, LibraryBookSerializer, WorkDivision.LIBRARY
+)
 TransportRouteListCreateView = _make_list_create_view(
+    TransportRouteRecord, TransportRouteSerializer, WorkDivision.TRANSPORT
+)
+TransportRouteDetailView = _make_detail_view(
     TransportRouteRecord, TransportRouteSerializer, WorkDivision.TRANSPORT
 )
 HostelAllocationListCreateView = _make_list_create_view(
     HostelAllocationRecord, HostelAllocationSerializer, WorkDivision.HOSTEL
 )
+HostelAllocationDetailView = _make_detail_view(
+    HostelAllocationRecord, HostelAllocationSerializer, WorkDivision.HOSTEL
+)
 InventoryItemListCreateView = _make_list_create_view(
+    InventoryStockItem, InventoryStockSerializer, WorkDivision.INVENTORY
+)
+InventoryItemDetailView = _make_detail_view(
     InventoryStockItem, InventoryStockSerializer, WorkDivision.INVENTORY
 )
 FixedAssetListCreateView = _make_list_create_view(
     FixedAssetRecord, FixedAssetSerializer, WorkDivision.ASSETS_MAINTENANCE
 )
+FixedAssetDetailView = _make_detail_view(
+    FixedAssetRecord, FixedAssetSerializer, WorkDivision.ASSETS_MAINTENANCE
+)
 SchoolEventListCreateView = _make_list_create_view(
+    SchoolCalendarEvent, SchoolCalendarEventSerializer, WorkDivision.EVENTS_CALENDAR
+)
+SchoolEventDetailView = _make_detail_view(
     SchoolCalendarEvent, SchoolCalendarEventSerializer, WorkDivision.EVENTS_CALENDAR
 )
 StudentActivityListCreateView = _make_list_create_view(
     StudentActivityRecord, StudentActivitySerializer, WorkDivision.STUDENT_ACTIVITIES
 )
+StudentActivityDetailView = _make_detail_view(
+    StudentActivityRecord, StudentActivitySerializer, WorkDivision.STUDENT_ACTIVITIES
+)
 VisitorPassListCreateView = _make_list_create_view(
+    FrontOfficeVisitorPass, VisitorPassSerializer, WorkDivision.FRONT_OFFICE
+)
+VisitorPassDetailView = _make_detail_view(
     FrontOfficeVisitorPass, VisitorPassSerializer, WorkDivision.FRONT_OFFICE
 )

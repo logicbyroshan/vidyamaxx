@@ -44,6 +44,7 @@ export const translations = {
   'nav.management':       { en: 'Management',        hi: 'मैनेजमेंट' },
   'nav.hrManage':         { en: 'HR Manage',         hi: 'स्टाफ एचआर' },
   'nav.designLab':        { en: 'Design Lab',        hi: 'डिजाइन लैब' },
+  'nav.operations':       { en: 'Operations Hub',    hi: 'कैंपस ऑपरेशन्स' },
 
   // ─── COMMON ACTIONS ───────────────────────────────────────────────────────
   'action.save':          { en: 'Save',              hi: 'सेव करें' },

@@ -55,7 +55,7 @@ const TRUSTED_INSTITUTIONS = [
 
 function ProfessionalAuthPage() {
   const navigate = useNavigate();
-  const { language, setLanguage } = useGlobalStore();
+  const { language, setLanguage, setAuthSession } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi' || language === 'hi';
   const [authMode, setAuthMode] = React.useState<AuthMode>('login');
@@ -84,6 +84,7 @@ function ProfessionalAuthPage() {
   const [fpStep, setFpStep] = React.useState<1 | 2 | 3 | 4>(1);
   const [fpIdentifier, setFpIdentifier] = React.useState('');
   const [fpOtp, setFpOt] = React.useState(['', '', '', '', '', '']);
+  const [fpActionToken, setFpActionToken] = React.useState('');
   const [fpNewPassword, setFpNewPassword] = React.useState('');
   const [fpConfirmPassword, setFpConfirmPassword] = React.useState('');
 
@@ -95,7 +96,7 @@ function ProfessionalAuthPage() {
   const [recoveredUsername, setRecoveredUsername] = React.useState<{ name: string; username: string; role: string; campus: string } | null>(null);
   const [copiedText, setCopiedText] = React.useState(false);
 
-  // Login Submit Handler
+  // Login Submit Handler (100% real backend authentication — zero offline bypass)
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatusMessage(null);
@@ -117,37 +118,48 @@ function ProfessionalAuthPage() {
         remember_me: rememberMe,
         device_info: { platform: 'web' },
       });
-      if (res.data?.access_token) {
-        setAuthToken(res.data.access_token);
-        setTenantHeaders(res.data.user?.active_school_id ?? null);
+      if (!res.data?.access_token) {
+        throw new Error('Authentication server did not return an access token.');
       }
+      setAuthToken(res.data.access_token);
+      const memberships = res.data.memberships ?? [];
+      const primaryMembership =
+        memberships.find((m: { school_id?: string | null }) => m.school_id === res.data.user?.active_school_id) ??
+        memberships.find((m: { school_id?: string | null }) => Boolean(m.school_id)) ??
+        memberships[0] ??
+        null;
+      setTenantHeaders(primaryMembership?.school_id ?? res.data.user?.active_school_id ?? null, primaryMembership?.default_branch_id ?? null);
+      setAuthSession({
+        user: res.data.user,
+        activeMembership: primaryMembership,
+        memberships,
+        responsibilities: [],
+      });
       setIsLoading(false);
       sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
       navigate({ to: '/' });
     } catch (err) {
-      if (err instanceof ApiError && err.status > 0) {
-        setStatusMessage({ type: 'error', text: err.message });
-        setIsLoading(false);
-        return;
-      }
-      // Graceful offline fallback if local backend process is stopped
+      const msg =
+        err instanceof ApiError
+          ? err.status === 0
+            ? 'Cannot reach VidyaFloww backend API (http://localhost:8000). Please ensure the Django server is running.'
+            : err.message
+          : err instanceof Error
+            ? err.message
+            : 'Authentication failed.';
+      setStatusMessage({ type: 'error', text: msg });
       setIsLoading(false);
-      sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
-      navigate({ to: '/' });
     }
   };
 
-  // Google SSO Handler
+  // Google SSO Handler — requires configured OAuth provider credentials (never fakes login)
   const handleGoogleSSO = async () => {
-    setIsLoading(true);
     setStatusMessage({
-      type: 'success',
-      text: isHindi ? 'Google Workspace सिंगल साइन-ऑन (SSO) से कनेक्ट हो रहा है...' : 'Connecting to Google Workspace Single Sign-On (SSO)...',
+      type: 'error',
+      text: isHindi
+        ? 'Google Workspace SSO के लिए संस्थागत OAuth Client ID कॉन्फ़िगर होना आवश्यक है। कृपया अपने स्कूल ईमेल/पासवर्ड से साइन इन करें।'
+        : 'Google Workspace SSO requires an institutional OAuth Client ID in environment configuration. Please sign in with your institutional email/phone and password.',
     });
-    await new Promise((r) => setTimeout(r, 800));
-    setIsLoading(false);
-    sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
-    navigate({ to: '/' });
   };
 
   // Password Strength Criteria Checks
@@ -727,7 +739,8 @@ function ProfessionalAuthPage() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => {
+                          disabled={isLoading}
+                          onClick={async () => {
                             if (!signupPassword || signupPassword !== signupConfirmPassword || !isPassValid) {
                               setStatusMessage({
                                 type: 'error',
@@ -742,8 +755,30 @@ function ProfessionalAuthPage() {
                               });
                               return;
                             }
+                            setIsLoading(true);
                             setStatusMessage(null);
-                            setSignupStep(4);
+                            try {
+                              const userTypeMap: Record<typeof signupRole, string> = {
+                                admin: 'SCHOOL_ADMIN',
+                                teacher: 'STAFF',
+                                student: 'STUDENT',
+                                parent: 'PARENT',
+                              };
+                              await apiClient.post('/auth/register/', {
+                                full_name: signupName.trim(),
+                                email: signupEmail.trim() || undefined,
+                                phone: signupPhone.trim() || undefined,
+                                school_code: signupSchoolCode.trim(),
+                                password: signupPassword,
+                                user_type: userTypeMap[signupRole],
+                              });
+                              setSignupStep(4);
+                            } catch (err) {
+                              const msg = err instanceof ApiError ? err.message : 'Registration failed.';
+                              setStatusMessage({ type: 'error', text: msg });
+                            } finally {
+                              setIsLoading(false);
+                            }
                           }}
                           className="flex-1 h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
                         >
@@ -789,14 +824,32 @@ function ProfessionalAuthPage() {
                         type="button"
                         disabled={isLoading}
                         onClick={async () => {
+                          const code = signupOtp.join('');
+                          if (code.length !== 6) {
+                            setStatusMessage({ type: 'error', text: 'Please enter the 6-digit verification code.' });
+                            return;
+                          }
                           setIsLoading(true);
-                          await new Promise((r) => setTimeout(r, 900));
-                          setIsLoading(false);
-                          setStatusMessage({
-                            type: 'success',
-                            text: isHindi ? 'अकाउंट सफलतापूर्वक क्रिएट हो गया! रिडायरेक्ट हो रहा है...' : 'Account created successfully! Redirecting...',
-                          });
-                          setTimeout(() => navigate({ to: '/' }), 700);
+                          setStatusMessage(null);
+                          try {
+                            await apiClient.post('/auth/otp/verify/', {
+                              identifier: (signupEmail || signupPhone).trim(),
+                              otp: code,
+                              purpose: 'registration',
+                            });
+                            setStatusMessage({
+                              type: 'success',
+                              text: isHindi ? 'अकाउंट वेरिफाई हो गया! कृपया साइन इन करें।' : 'Account verified successfully! Please sign in with your credentials.',
+                            });
+                            setLoginIdentifier((signupEmail || signupPhone).trim());
+                            setAuthMode('login');
+                            setSignupStep(1);
+                          } catch (err) {
+                            const msg = err instanceof ApiError ? err.message : 'OTP verification failed.';
+                            setStatusMessage({ type: 'error', text: msg });
+                          } finally {
+                            setIsLoading(false);
+                          }
                         }}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
@@ -887,10 +940,19 @@ function ProfessionalAuthPage() {
                             return;
                           }
                           setIsLoading(true);
-                          await new Promise((r) => setTimeout(r, 700));
-                          setIsLoading(false);
                           setStatusMessage(null);
-                          setFpStep(2);
+                          try {
+                            await apiClient.post('/auth/otp/request/', {
+                              identifier: fpIdentifier.trim(),
+                              purpose: 'password_reset',
+                            });
+                            setFpStep(2);
+                          } catch (err) {
+                            const msg = err instanceof ApiError ? err.message : 'Unable to send OTP.';
+                            setStatusMessage({ type: 'error', text: msg });
+                          } finally {
+                            setIsLoading(false);
+                          }
                         }}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
@@ -937,7 +999,30 @@ function ProfessionalAuthPage() {
 
                       <button
                         type="button"
-                        onClick={() => setFpStep(3)}
+                        disabled={isLoading}
+                        onClick={async () => {
+                          const code = fpOtp.join('');
+                          if (code.length !== 6) {
+                            setStatusMessage({ type: 'error', text: 'Please enter the 6-digit recovery code.' });
+                            return;
+                          }
+                          setIsLoading(true);
+                          setStatusMessage(null);
+                          try {
+                            const res = await apiClient.post('/auth/otp/verify/', {
+                              identifier: fpIdentifier.trim(),
+                              otp: code,
+                              purpose: 'password_reset',
+                            });
+                            setFpActionToken(res.data?.action_token || '');
+                            setFpStep(3);
+                          } catch (err) {
+                            const msg = err instanceof ApiError ? err.message : 'Invalid or expired OTP code.';
+                            setStatusMessage({ type: 'error', text: msg });
+                          } finally {
+                            setIsLoading(false);
+                          }
+                        }}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >
                         <span>{isHindi ? 'OTP वेरिफाई करें और आगे बढ़ें' : 'Verify Code & Continue'}</span>
@@ -990,10 +1075,19 @@ function ProfessionalAuthPage() {
                             return;
                           }
                           setIsLoading(true);
-                          await new Promise((r) => setTimeout(r, 700));
-                          setIsLoading(false);
                           setStatusMessage(null);
-                          setFpStep(4);
+                          try {
+                            await apiClient.post('/auth/password/reset/', {
+                              action_token: fpActionToken,
+                              new_password: fpNewPassword,
+                            });
+                            setFpStep(4);
+                          } catch (err) {
+                            const msg = err instanceof ApiError ? err.message : 'Failed to reset password.';
+                            setStatusMessage({ type: 'error', text: msg });
+                          } finally {
+                            setIsLoading(false);
+                          }
                         }}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
@@ -1115,18 +1209,27 @@ function ProfessionalAuthPage() {
                         type="button"
                         disabled={isLoading}
                         onClick={async () => {
-                          if (!fuPhone) {
+                          if (!fuPhone || !fuDob) {
                             setStatusMessage({
                               type: 'error',
-                              text: isHindi ? 'कृपया अपना रजिस्टर्ड मोबाइल नंबर एंटर करें।' : 'Please enter your registered mobile number.',
+                              text: isHindi ? 'कृपया अपना रजिस्टर्ड मोबाइल नंबर और जन्मतिथि (YYYY-MM-DD) एंटर करें।' : 'Please enter your registered mobile number and date of birth (YYYY-MM-DD).',
                             });
                             return;
                           }
                           setIsLoading(true);
-                          await new Promise((r) => setTimeout(r, 700));
-                          setIsLoading(false);
                           setStatusMessage(null);
-                          setFuStep(2);
+                          try {
+                            await apiClient.post('/auth/otp/request/', {
+                              identifier: fuPhone.trim(),
+                              purpose: 'username_lookup',
+                            });
+                            setFuStep(2);
+                          } catch (err) {
+                            const msg = err instanceof ApiError ? err.message : 'Unable to send OTP.';
+                            setStatusMessage({ type: 'error', text: msg });
+                          } finally {
+                            setIsLoading(false);
+                          }
                         }}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
@@ -1173,14 +1276,40 @@ function ProfessionalAuthPage() {
 
                       <button
                         type="button"
-                        onClick={() => {
-                          setRecoveredUsername({
-                            name: 'Principal Office',
-                            username: 'admin@vidyafloww.edu.in',
-                            role: isHindi ? 'स्कूल एडमिनिस्ट्रेटर' : 'School Administrator',
-                            campus: 'VidyaFloww International Academy, Delhi',
-                          });
-                          setFuStep(3);
+                        disabled={isLoading}
+                        onClick={async () => {
+                          const code = fuOtp.join('');
+                          if (code.length !== 6) {
+                            setStatusMessage({ type: 'error', text: 'Please enter the 6-digit OTP code.' });
+                            return;
+                          }
+                          setIsLoading(true);
+                          setStatusMessage(null);
+                          try {
+                            const verifyRes = await apiClient.post('/auth/otp/verify/', {
+                              identifier: fuPhone.trim(),
+                              otp: code,
+                              purpose: 'username_lookup',
+                            });
+                            const lookupRes = await apiClient.post('/auth/username/lookup/', {
+                              phone: fuPhone.trim(),
+                              date_of_birth: fuDob.trim(),
+                              action_token: verifyRes.data?.action_token,
+                            });
+                            const matched = lookupRes.data?.matched_user;
+                            setRecoveredUsername({
+                              name: matched?.name || 'Verified Account',
+                              username: matched?.username || fuPhone.trim(),
+                              role: matched?.user_type || 'Member',
+                              campus: matched?.institution || 'VidyaFloww Institution',
+                            });
+                            setFuStep(3);
+                          } catch (err) {
+                            const msg = err instanceof ApiError ? err.message : 'Unable to verify OTP or find matching account.';
+                            setStatusMessage({ type: 'error', text: msg });
+                          } finally {
+                            setIsLoading(false);
+                          }
                         }}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >

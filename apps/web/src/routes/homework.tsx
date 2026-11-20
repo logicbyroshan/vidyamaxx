@@ -34,7 +34,7 @@ import {
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/homework')({
   component: HomeworkPage,
@@ -142,56 +142,49 @@ function HomeworkPage() {
   const editorRef = React.useRef<HTMLDivElement>(null);
 
   // ── REVIEW STATE ──────────────────────────────────────────
-  const [homeworkList, setHomeworkList] = React.useState<HomeworkRecord[]>(INITIAL_HOMEWORK);
+  const [homeworkList, setHomeworkList] = React.useState<HomeworkRecord[]>([]);
 
   // Sync homework assignments from Django backend (/api/v1/homework/assignments/)
-  React.useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const res = await apiClient.get<
-          Array<{
-            id: string;
-            assignment_code: string;
-            title: string;
-            subject_name: string;
-            class_section_label: string;
-            due_date: string;
-            description: string;
-            submitted_count: number;
-            total_students: number;
-            status: string;
-          }>
-        >(API_ENDPOINTS.HOMEWORK.ASSIGNMENTS);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
-          setHomeworkList((prev) => {
-            const existingCodes = new Set(prev.map((h) => h.code));
-            const mapped: HomeworkRecord[] = res.data
-              .filter((r) => !existingCodes.has(r.assignment_code))
-              .map((r) => ({
-                id: r.id,
-                code: r.assignment_code,
-                title: r.title,
-                subject: r.subject_name,
-                class: r.class_section_label,
-                dueDate: r.due_date,
-                instructions: r.description || '',
-                submitted: r.submitted_count || 0,
-                totalStudents: r.total_students || 40,
-                status: r.status === 'Draft' ? 'Draft' : r.status === 'Closed' ? 'Closed' : 'Published',
-                createdAt: 'Synced',
-              }));
-            return mapped.length > 0 ? [...mapped, ...prev] : prev;
-          });
-        }
-      } catch {
-        // Fallback to INITIAL_HOMEWORK
-      }
-    })();
-    return () => {
-      active = false;
-    };
+  const loadHomework = React.useCallback(async () => {
+    try {
+      const res = await apiClient.get(API_ENDPOINTS.HOMEWORK.ASSIGNMENTS);
+      const rows = extractApiList<{
+        id: string;
+        assignment_code: string;
+        title: string;
+        subject_name: string;
+        class_section_label: string;
+        due_date: string;
+        description: string;
+        submitted_count: number;
+        total_students: number;
+        status: string;
+        created_at?: string;
+      }>(res);
+      setHomeworkList(
+        rows.map((r) => ({
+          id: r.id,
+          code: r.assignment_code,
+          title: r.title,
+          subject: r.subject_name,
+          class: r.class_section_label,
+          dueDate: r.due_date,
+          instructions: r.description || '',
+          submitted: r.submitted_count || 0,
+          totalStudents: r.total_students || 40,
+          status: r.status === 'Draft' ? 'Draft' : r.status === 'Closed' ? 'Closed' : 'Published',
+          createdAt: r.created_at ? new Date(r.created_at).toLocaleDateString('en-IN') : 'Synced',
+        }))
+      );
+    } catch {
+      setHomeworkList([]);
+    }
   }, []);
+
+  React.useEffect(() => {
+    loadHomework();
+  }, [loadHomework]);
+  void INITIAL_HOMEWORK;
   const [reviewSearch, setReviewSearch] = React.useState<string>('');
   const [reviewStatusFilter, setReviewStatusFilter] = React.useState<string>('All');
   // When set, shows the submission detail view for that homework
@@ -236,7 +229,7 @@ function HomeworkPage() {
   }, []);
 
   // ── ASSIGN SUBMIT ─────────────────────────────────────────
-  const handleAssignHomework = () => {
+  const handleAssignHomework = async () => {
     const textContent = editorRef.current?.textContent?.trim() || '';
     const htmlContent = editorRef.current?.innerHTML?.trim() || '';
 
@@ -249,41 +242,34 @@ function HomeworkPage() {
       return;
     }
 
-    const newHW: HomeworkRecord = {
-      id: String(Date.now()),
-      code: `HW-2026-0${homeworkList.length + 1}`,
-      title: textContent.slice(0, 60) + (textContent.length > 60 ? '…' : ''),
-      subject: assignSubject,
-      class: assignClass,
-      dueDate: assignDue,
-      instructions: htmlContent,
-      submitted: 0,
-      totalStudents: 42,
-      status: assignStatus,
-      createdAt: 'Today',
-    };
-
-    setHomeworkList((prev) => [newHW, ...prev]);
-    apiClient
-      .post(API_ENDPOINTS.HOMEWORK.ASSIGNMENTS, {
-        assignment_code: newHW.code,
-        title: newHW.title,
+    const code = `HW-2026-${String(homeworkList.length + 1).padStart(2, '0')}`;
+    const title = textContent.slice(0, 60) + (textContent.length > 60 ? '…' : '');
+    try {
+      await apiClient.post(API_ENDPOINTS.HOMEWORK.ASSIGNMENTS, {
+        assignment_code: code,
+        title,
         description: htmlContent,
         class_section_label: assignClass,
         subject_name: assignSubject,
         teacher_name: 'Faculty',
         due_date: assignDue,
         status: assignStatus === 'Draft' ? 'Draft' : 'Active',
-      })
-      .catch(() => {});
-    if (editorRef.current) editorRef.current.innerHTML = '';
-    setAssignDue('');
-
-    addNotification({
-      title: assignStatus === 'Published' ? (isHindi ? 'होमवर्क सेंड हुआ' : 'Homework Sent') : 'Draft Saved',
-      description: `${newHW.code} → ${assignClass} · ${assignSubject}`,
-      type: 'success',
-    });
+      });
+      await loadHomework();
+      if (editorRef.current) editorRef.current.innerHTML = '';
+      setAssignDue('');
+      addNotification({
+        title: assignStatus === 'Published' ? (isHindi ? 'होमवर्क सेंड हुआ' : 'Homework Sent') : 'Draft Saved',
+        description: `${code} → ${assignClass} · ${assignSubject} saved to database.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Save Failed',
+        description: err instanceof Error ? err.message : 'Unable to save homework assignment.',
+        type: 'error',
+      });
+    }
   };
 
   const handleExport = () => {

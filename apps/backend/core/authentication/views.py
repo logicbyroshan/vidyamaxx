@@ -1,4 +1,4 @@
-﻿"""
+"""
 VidyaFloww Authentication API Views
 """
 
@@ -42,7 +42,12 @@ from .services import (
 
 
 class AuthAnonThrottle(AnonRateThrottle):
-    rate = "20/min"
+    rate = None
+
+    def get_rate(self):
+        if getattr(settings, "TESTING", False):
+            return "10000/min"
+        return "20/min"
 
 
 def _set_refresh_cookie(response: Response, refresh_token: str) -> None:

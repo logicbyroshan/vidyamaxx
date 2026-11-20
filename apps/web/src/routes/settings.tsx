@@ -36,6 +36,7 @@ export const Route = createFileRoute('/settings')({
 });
 
 interface CampusRecord {
+  id?: string;
   code: string;
   name: string;
   city: string;
@@ -48,41 +49,7 @@ interface CampusRecord {
   logoUrl?: string;
 }
 
-const INITIAL_CAMPUSES: CampusRecord[] = [
-  {
-    code: 'CMP-01',
-    name: 'VidyaFloww International Academy (Main Campus)',
-    city: 'New Delhi, India',
-    board: 'CBSE Affiliation #1630982',
-    session: '2026-2027',
-    students: 1248,
-    principal: 'Dr. Rajesh Sharma',
-    status: 'Active Primary',
-    coverUrl: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=800&auto=format&fit=crop&q=80',
-  },
-  {
-    code: 'CMP-02',
-    name: 'VidyaFloww International Academy (North Branch)',
-    city: 'Gurugram, Haryana',
-    board: 'CBSE / IB World',
-    session: '2026-2027',
-    students: 840,
-    principal: 'Ms. Pooja Rao',
-    status: 'Active Branch',
-    coverUrl: 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80',
-  },
-  {
-    code: 'CMP-03',
-    name: 'VidyaFloww International Academy (South Campus)',
-    city: 'Noida, Uttar Pradesh',
-    board: 'CBSE Affiliation #1630990',
-    session: '2026-2027',
-    students: 363,
-    principal: 'Mr. Deepak Mishra',
-    status: 'Active Branch',
-    coverUrl: 'https://images.unsplash.com/photo-1592280771190-3e2e4d571952?w=800&auto=format&fit=crop&q=80',
-  },
-];
+const INITIAL_CAMPUSES: CampusRecord[] = [];
 
 function SchoolAdministrationPage() {
   const {
@@ -160,38 +127,69 @@ function SchoolAdministrationPage() {
     }
   };
 
+  // Load live school profile and campus branches from Django backend
+  const loadBranches = React.useCallback(async () => {
+    if (!getAuthToken()) return;
+    try {
+      const res = await apiClient.get('/schools/branches/');
+      const rows = res.data?.results ?? [];
+      const mapped: CampusRecord[] = rows.map((b: Record<string, unknown>) => ({
+        id: String(b.id),
+        code: String(b.code || ''),
+        name: String(b.name || ''),
+        city: String(b.city || ''),
+        board: String(b.board || 'CBSE Affiliation'),
+        session: String(b.session_label || '2026-2027'),
+        students: 0,
+        principal: String(b.principal_name || ''),
+        status: b.is_primary ? 'Active Primary' : 'Active Branch',
+        coverUrl: String(b.cover_url || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=800&auto=format&fit=crop&q=80'),
+        logoUrl: b.logo_url ? String(b.logo_url) : undefined,
+      }));
+      setCampuses(mapped);
+    } catch {
+      // handled gracefully
+    }
+  }, []);
+
+  React.useEffect(() => {
+    loadBranches();
+  }, [loadBranches]);
+
   const handleSaveBranding = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (getAuthToken()) {
-      try {
-        await apiClient.patch('/schools/current/', {
-          name: formData.name.trim() || 'VidyaFloww International Academy',
-          short_code: formData.shortCode.trim(),
-          tagline: formData.tagline.trim(),
-          city: formData.city.trim(),
-          established_year: formData.establishedYear,
-          academic_level: formData.academicLevel,
-          principal_name: formData.principalName,
-        });
-      } catch {
-        // keep optimistic local store update
-      }
+    try {
+      await apiClient.patch('/schools/current/', {
+        name: formData.name.trim() || 'VidyaFloww International Academy',
+        short_code: formData.shortCode.trim(),
+        tagline: formData.tagline.trim(),
+        city: formData.city.trim(),
+        established_year: formData.establishedYear,
+        academic_level: formData.academicLevel,
+        principal_name: formData.principalName,
+      });
+      updateSchoolProfile({
+        name: formData.name.trim() || 'VidyaFloww International Academy',
+        shortCode: formData.shortCode.trim(),
+        tagline: formData.tagline.trim(),
+        affiliation: formData.affiliation.trim(),
+        city: formData.city.trim(),
+        customLogoUrl: formData.customLogoUrl,
+        logoType: formData.customLogoUrl ? 'custom_image' : 'preset',
+      });
+      setIsEditingBranding(false);
+      addNotification({
+        title: isHindi ? 'स्कूल प्रोफाइल अपडेटेड' : 'School Profile Updated',
+        description: `Saved profile details for "${formData.name}" to database.`,
+        type: 'success',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Failed to Update School Profile',
+        description: err instanceof Error ? err.message : 'Unable to save school settings.',
+        type: 'error',
+      });
     }
-    updateSchoolProfile({
-      name: formData.name.trim() || 'VidyaFloww International Academy',
-      shortCode: formData.shortCode.trim(),
-      tagline: formData.tagline.trim(),
-      affiliation: formData.affiliation.trim(),
-      city: formData.city.trim(),
-      customLogoUrl: formData.customLogoUrl,
-      logoType: formData.customLogoUrl ? 'custom_image' : 'preset',
-    });
-    setIsEditingBranding(false);
-    addNotification({
-      title: isHindi ? 'स्कूल प्रोफाइल अपडेटेड' : 'School Profile Updated',
-      description: `Updated profile details for "${formData.name}".`,
-      type: 'success',
-    });
   };
 
   const handleCancelBrandingEdit = () => {
@@ -202,57 +200,55 @@ function SchoolAdministrationPage() {
       affiliation: schoolProfile.affiliation,
       city: schoolProfile.city,
       customLogoUrl: schoolProfile.customLogoUrl || '',
-      establishedYear: '1994',
-      academicLevel: 'K-12 Senior Secondary',
-      principalName: 'Dr. Rajesh Sharma, Ph.D.',
+      establishedYear: schoolProfile.establishedYear || '1994',
+      academicLevel: schoolProfile.academicLevel || 'K-12 Senior Secondary',
+      principalName: schoolProfile.principalName || 'Principal',
     });
     setIsEditingBranding(false);
   };
 
-  const handleAddCampus = (e: React.FormEvent) => {
+  const handleAddCampus = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCampus.name || !newCampus.city) return;
 
-    if (editingCampus) {
-      setCampuses((prev) =>
-        prev.map((c) =>
-          c.code === editingCampus.code
-            ? {
-                ...c,
-                name: newCampus.name || c.name,
-                city: newCampus.city || c.city,
-                board: newCampus.board || c.board,
-                principal: newCampus.principal || c.principal,
-                students: Number(newCampus.students) || c.students,
-                coverUrl: newCampus.coverUrl || c.coverUrl,
-                status: (newCampus.status as any) || c.status,
-              }
-            : c
-        )
-      );
+    try {
+      if (editingCampus?.id) {
+        await apiClient.patch(`/schools/branches/${editingCampus.id}/`, {
+          name: newCampus.name,
+          city: newCampus.city,
+          board: newCampus.board,
+          principal_name: newCampus.principal,
+          cover_url: newCampus.coverUrl,
+        });
+        addNotification({
+          title: isHindi ? 'ब्रांच अपडेट हुई' : 'Branch Updated',
+          description: `Saved changes for "${newCampus.name}".`,
+          type: 'success',
+        });
+      } else {
+        await apiClient.post('/schools/branches/', {
+          code: newCampus.code || `CMP-0${campuses.length + 1}`,
+          name: newCampus.name,
+          city: newCampus.city,
+          board: newCampus.board || 'CBSE Affiliation',
+          session_label: newCampus.session || '2026-2027',
+          principal_name: newCampus.principal || 'Branch Principal',
+          cover_url: newCampus.coverUrl || '',
+        });
+        addNotification({
+          title: isHindi ? 'न्यू ब्रांच ऐड हुई' : 'Branch Added',
+          description: `Campus branch "${newCampus.name}" created in database.`,
+          type: 'success',
+        });
+      }
+      await loadBranches();
+    } catch (err) {
       addNotification({
-        title: isHindi ? 'ब्रांच अपडेट हुई' : 'Branch Updated',
-        description: `Updated branch details for "${newCampus.name}".`,
-        type: 'success',
+        title: 'Branch Operation Failed',
+        description: err instanceof Error ? err.message : 'Could not persist branch.',
+        type: 'error',
       });
-    } else {
-      const added: CampusRecord = {
-        code: newCampus.code || `CMP-0${campuses.length + 1}`,
-        name: newCampus.name,
-        city: newCampus.city,
-        board: newCampus.board || 'CBSE Affiliation',
-        session: newCampus.session || '2026-2027',
-        students: Number(newCampus.students) || 200,
-        principal: newCampus.principal || 'Branch Principal',
-        status: (newCampus.status as any) || 'Active Branch',
-        coverUrl: newCampus.coverUrl || 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=800&auto=format&fit=crop&q=80',
-      };
-      setCampuses((prev) => [...prev, added]);
-      addNotification({
-        title: isHindi ? 'न्यू ब्रांच ऐड हुई' : 'Branch Added',
-        description: `Campus branch "${newCampus.name}" successfully added.`,
-        type: 'success',
-      });
+      return;
     }
 
     setIsAddCampusModalOpen(false);
@@ -263,20 +259,31 @@ function SchoolAdministrationPage() {
       city: '',
       board: 'CBSE Affiliation',
       session: '2026-2027',
-      students: 250,
+      students: 0,
       principal: '',
       status: 'Active Branch',
       coverUrl: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=800&auto=format&fit=crop&q=80',
     });
   };
 
-  const handleDeleteCampus = (code: string) => {
-    setCampuses((prev) => prev.filter((c) => c.code !== code));
-    addNotification({
-      title: isHindi ? 'ब्रांच डिलीट हुई' : 'Branch Removed',
-      description: `Campus branch [${code}] removed.`,
-      type: 'warning',
-    });
+  const handleDeleteCampus = async (code: string) => {
+    const target = campuses.find((c) => c.code === code);
+    if (!target?.id) return;
+    try {
+      await apiClient.delete(`/schools/branches/${target.id}/`);
+      setCampuses((prev) => prev.filter((c) => c.id !== target.id));
+      addNotification({
+        title: isHindi ? 'ब्रांच डिलीट हुई' : 'Branch Removed',
+        description: `Campus branch [${code}] deleted.`,
+        type: 'warning',
+      });
+    } catch (err) {
+      addNotification({
+        title: 'Cannot Remove Branch',
+        description: err instanceof Error ? err.message : 'Delete failed.',
+        type: 'error',
+      });
+    }
   };
 
   return (

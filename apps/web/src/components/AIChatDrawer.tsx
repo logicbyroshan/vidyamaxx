@@ -16,6 +16,8 @@ import {
   Zap,
 } from 'lucide-react';
 import { VFBadge, VFButton, cn } from '@vidyafloww/ui';
+import { apiClient, ApiError } from '@vidyafloww/api';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
 
 interface Message {
   id: string;
@@ -57,71 +59,14 @@ const PRESET_PROMPTS = [
   },
 ];
 
-const KNOWLEDGE_RESPONSES: Record<string, string> = {
-  proxy: `**AI Teacher Proxy Analysis — Period 3 (09:30 AM - 10:15 AM)**
-
-**Teacher on Leave**: Dr. Rajesh Sharma (HOD Physics)
-**Class**: Class 10-A | **Room**: Physics Lab 204
-
-✅ **Recommended Substitution Match:**
-1. **Mrs. Sunita Verma** (Senior PGT Mathematics)
-   - *Free during Period 3*: Yes (No scheduled class)
-   - *Department Match*: Science & Mathematics
-   - *Workload Impact*: 23 / 28 weekly periods (Optimal capacity)
-
-2. **Alternative Backup**: **Mr. Subhash Das** (Computer Science)
-   - *Free during Period 3*: Yes
-   - *Location Proximity*: Lab 3 (Adjacent wing)
-
-Would you like me to automatically assign **Mrs. Sunita Verma** and broadcast the substitution SMS to Class 10-A?`,
-
-  lesson: `**Structured 45-Minute Lesson Plan**
-**Subject**: Mathematics (Class 9) | **Topic**: Quadratic Equations
-
-### 🎯 1. Learning Objectives (Bloom's Taxonomy)
-- **Recall & Identify**: Standard form $ax^2 + bx + c = 0$ ($a \\neq 0$).
-- **Apply**: Factorization and quadratic formula to solve real-world trajectory problems.
-- **Analyze**: Determine the nature of roots using the discriminant ($D = b^2 - 4ac$).
-
----
-
-### ⏱️ 2. Classroom Time Breakdown
-- **00:00 – 00:08**: Concept hook — projectile motion of a basketball & standard equation setup.
-- **00:08 – 00:22**: Teacher demonstration with 2 guided step-by-step examples on whiteboard.
-- **00:22 – 00:35**: Peer-pairing worksheet activity (3 challenge questions with peer grading).
-- **00:35 – 00:45**: Rapid 3-question formative assessment quiz & homework assignment handout.
-
-### 📝 3. Homework Assignment
-- NCERT Exercise 4.2: Questions 1 through 6.
-- Challenge Problem: Find dimensions of a rectangular garden with perimeter 36m and area 80m².`,
-
-  fee: `**Quarterly Fee Defaulter Risk Radar — Q2 Analysis**
-
-📊 **Telemetry Summary**:
-- Total Invoiced: **₹1.84 Crore**
-- Total Collected: **₹1.62 Crore (88.0%)**
-- Overdue Balance: **₹22.14 Lakhs** across 48 student accounts.
-
-⚠️ **Top 3 High-Risk Profiles Requiring Immediate Attention:**
-1. **ADM-2024-089** — Class 10-A | Dues: **₹24,500** (Overdue: 38 days) | Guardian: Mr. Alok Saxena
-2. **ADM-2023-112** — Class 12-Sci | Dues: **₹31,000** (Overdue: 42 days) | Guardian: Mrs. Reena Mehta
-3. **ADM-2025-044** — Class 9-B | Dues: **₹18,500** (Overdue: 29 days) | Guardian: Mr. Pankaj Joshi
-
-💡 **Recommended Action**: 1-Click WhatsApp reminder broadcast with direct UPI payment link has been queued.`,
-
-  attendance: `**Chronic Absenteeism & Biometric Radar Report**
-
-🎯 **Campus Compliance Metric**: Today's Overall Attendance is **94.5%** (2,316 / 2,451 students present).
-
-🚩 **Alerts Triggered (Students Below 75% CBSE Minimum Requirement):**
-1. **Rohan Gupta** (Class 6-B) — Current: **68.2%** (3 consecutive unexcused days).
-2. **Kavya Patel** (Class 11-Sci) — Current: **71.0%** (Medical certificate pending review).
-3. **Devansh Singh** (Class 9-A) — Current: **73.5%** (Frequent Monday absences).
-
-✨ **Automated Remediation**:
-- Instant SMS alert drafted for parents.
-- Notification dispatched to Class Teacher for counseling intervention.`,
-};
+function detectCapability(query: string): string {
+  const lower = query.toLowerCase();
+  if (lower.includes('proxy') || lower.includes('substitute') || lower.includes('timetable')) return 'proxy';
+  if (lower.includes('lesson') || lower.includes('plan') || lower.includes('syllabus')) return 'lesson_plan';
+  if (lower.includes('fee') || lower.includes('defaulter') || lower.includes('dues') || lower.includes('payment')) return 'fee';
+  if (lower.includes('attendance') || lower.includes('absent') || lower.includes('radar') || lower.includes('biometric')) return 'attendance';
+  return 'general';
+}
 
 export interface AIChatDrawerProps {
   isOpen: boolean;
@@ -154,7 +99,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
     }
   }, [isOpen, messages]);
 
-  const handleSendMessage = (textToSend?: string) => {
+  const handleSendMessage = async (textToSend?: string) => {
     const query = (textToSend || inputText).trim();
     if (!query || isTyping) return;
 
@@ -169,31 +114,42 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
     setInputText('');
     setIsTyping(true);
 
-    // Context response matching
-    let responseText =
-      "I've processed your query against VidyaFloww's institutional database. All system metrics indicate nominal operations. Let me know if you would like me to generate detailed reports or initiate automated workflows.";
+    try {
+      const capability = detectCapability(query);
+      const res = await apiClient.post(API_ENDPOINTS.ANALYTICS.AI_ASSIST, {
+        capability,
+        prompt: query,
+      });
+      const responseText =
+        res.data?.data?.suggestion ||
+        res.data?.suggestion ||
+        'Institutional telemetry analyzed successfully.';
 
-    const lower = query.toLowerCase();
-    if (lower.includes('proxy') || lower.includes('substitute') || lower.includes('sharma') || lower.includes('leave')) {
-      responseText = KNOWLEDGE_RESPONSES.proxy;
-    } else if (lower.includes('lesson') || lower.includes('math') || lower.includes('quadratic') || lower.includes('plan')) {
-      responseText = KNOWLEDGE_RESPONSES.lesson;
-    } else if (lower.includes('fee') || lower.includes('defaulter') || lower.includes('dues') || lower.includes('payment')) {
-      responseText = KNOWLEDGE_RESPONSES.fee;
-    } else if (lower.includes('attendance') || lower.includes('absent') || lower.includes('radar') || lower.includes('biometric')) {
-      responseText = KNOWLEDGE_RESPONSES.attendance;
-    }
-
-    setTimeout(() => {
       const aiMsg: Message = {
         id: String(Date.now() + 1),
         sender: 'ai',
         text: responseText,
+        category: capability,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, aiMsg]);
+    } catch (err) {
+      const errMsg =
+        err instanceof ApiError
+          ? `Unable to query AI Assist (${err.status}): ${err.message}`
+          : 'Unable to reach VidyaFloww AI Assist service. Please verify your session and backend connection.';
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: String(Date.now() + 1),
+          sender: 'ai',
+          text: errMsg,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 700);
+    }
   };
 
   const handleCopy = (id: string, text: string) => {

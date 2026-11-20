@@ -27,7 +27,7 @@ import {
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { SUBSYSTEMS, getSubsystemUrl, API_ENDPOINTS } from '@vidyafloww/constants';
-import { apiClient } from '@vidyafloww/api';
+import { apiClient, extractApiList } from '@vidyafloww/api';
 
 export const Route = createFileRoute('/academics')({
   component: AcademicsPage,
@@ -1030,7 +1030,8 @@ function AcademicsPage() {
     let active = true;
     (async () => {
       try {
-        const res = await apiClient.get<Array<{
+        const res = await apiClient.get(API_ENDPOINTS.ACADEMICS.CLASSES);
+        const rows = extractApiList<{
           id: string;
           code: string;
           name: string;
@@ -1050,47 +1051,46 @@ function AcademicsPage() {
             syllabus_chapters: number;
             prescribed_book_json?: PrescribedBook;
           }>;
-        }>>(API_ENDPOINTS.ACADEMICS.CLASSES);
-        if (active && Array.isArray(res?.data) && res.data.length > 0) {
+        }>(res);
+        if (active && rows.length > 0) {
           setClassesData((prev) => {
             const next = { ...prev };
-            for (const c of res.data) {
-              const key = c.name === 'Class 10' ? 'Class 10' : c.code;
-              if (c.subject_mappings && c.subject_mappings.length > 0) {
-                next[key] = {
-                  ...(next[key] || INITIAL_CLASSES['Class 10']),
-                  classId: key,
-                  className: c.name,
-                  hindiClassName: c.hindi_name || c.name,
-                  stage: c.stage || 'Secondary Wing',
-                  classMentor: c.class_mentor_name || 'Dr. Rajesh Sharma',
-                  room: c.room_number || 'Room 201',
-                  sections: c.sections?.length
-                    ? c.sections.map((s) => `${c.name}-${s.name}`)
-                    : next[key]?.sections || ['Class 10-A', 'Class 10-B'],
-                  subjects: c.subject_mappings.map((m) => ({
-                    code: m.subject_code,
-                    name: m.subject_name,
-                    type: m.curriculum_tier || 'Core Compulsory',
-                    weeklyPeriods: m.weekly_periods,
-                    theoryMarks: m.theory_marks,
-                    internalMarks: m.internal_marks,
-                    teacherInCharge: m.teacher_in_charge || 'Faculty',
-                    syllabusChapters: m.syllabus_chapters || 12,
-                    book: m.prescribed_book_json?.title ? m.prescribed_book_json : undefined,
-                    status: 'Active',
-                  })),
-                };
-              }
+            for (const c of rows) {
+              const key = c.name === 'Class 10' ? 'Class 10' : c.name || c.code;
+              next[key] = {
+                ...(next[key] || INITIAL_CLASSES['Class 10']),
+                classId: key,
+                className: c.name,
+                hindiClassName: c.hindi_name || c.name,
+                stage: c.stage || 'Secondary Wing',
+                classMentor: c.class_mentor_name || 'Assigned Mentor',
+                room: c.room_number || 'Room 201',
+                sections: c.sections?.length
+                  ? c.sections.map((s) => `${c.name}-${s.name}`)
+                  : next[key]?.sections || [`${c.name}-A`],
+                subjects: (c.subject_mappings ?? []).map((m) => ({
+                  code: m.subject_code,
+                  name: m.subject_name,
+                  type: m.curriculum_tier || 'Core Compulsory',
+                  weeklyPeriods: m.weekly_periods,
+                  theoryMarks: m.theory_marks,
+                  internalMarks: m.internal_marks,
+                  teacherInCharge: m.teacher_in_charge || 'Faculty',
+                  syllabusChapters: m.syllabus_chapters || 12,
+                  book: m.prescribed_book_json?.title ? m.prescribed_book_json : undefined,
+                  status: 'Active',
+                })),
+              };
             }
             return next;
           });
         }
       } catch {
-        // Fallback to local state when unauthenticated or offline
+        // Keep initialized map on transient error
       }
       try {
-        const msRes = await apiClient.get<Array<{
+        const msRes = await apiClient.get(API_ENDPOINTS.ACADEMICS.MILESTONES);
+        const msRows = extractApiList<{
           id: string;
           title: string;
           term: string;
@@ -1100,10 +1100,10 @@ function AcademicsPage() {
           assessment_type: AcademicMilestone['assessmentType'];
           status: AcademicMilestone['status'];
           notes?: string;
-        }>>(API_ENDPOINTS.ACADEMICS.MILESTONES);
-        if (active && Array.isArray(msRes?.data) && msRes.data.length > 0) {
+        }>(msRes);
+        if (active && msRows.length > 0) {
           setMilestones(
-            msRes.data.map((m) => ({
+            msRows.map((m) => ({
               id: m.id,
               classId: 'Class 10',
               title: m.title,
@@ -1118,7 +1118,7 @@ function AcademicsPage() {
           );
         }
       } catch {
-        // Fallback to DEFAULT_MILESTONES
+        // Handled gracefully
       }
     })();
     return () => {

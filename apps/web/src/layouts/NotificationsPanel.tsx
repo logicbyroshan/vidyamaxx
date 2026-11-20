@@ -1,13 +1,53 @@
 import * as React from 'react';
-import { useGlobalStore } from '../stores/globalStore';
+import { useGlobalStore, type Notification } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { apiClient, getAuthToken } from '@vidyafloww/api';
+import { API_ENDPOINTS } from '@vidyafloww/constants';
 import { Bell, CheckCircle2, AlertCircle, Info, Trash2, X, CheckCheck } from 'lucide-react';
 
 export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { notifications, markNotificationRead, markAllNotificationsRead, clearNotifications } =
-    useGlobalStore();
+  const {
+    notifications,
+    setNotificationsFromServer,
+    markNotificationRead,
+    markAllNotificationsRead,
+    clearNotifications,
+  } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
+
+  // Fetch live server notifications whenever drawer opens
+  React.useEffect(() => {
+    if (!isOpen || !getAuthToken()) return;
+    apiClient
+      .get(API_ENDPOINTS.NOTIFICATIONS.LIST)
+      .then((res) => {
+        const raw = res.data?.results ?? res.data?.data ?? [];
+        if (Array.isArray(raw)) {
+          const mapped: Notification[] = raw.map((n: Record<string, unknown>) => ({
+            id: String(n.id),
+            title: String(n.title ?? ''),
+            description: n.description ? String(n.description) : undefined,
+            type: (['success', 'error', 'warning', 'info'].includes(String(n.notification_type))
+              ? String(n.notification_type)
+              : 'info') as Notification['type'],
+            read: Boolean(n.is_read),
+            createdAt: n.created_at ? new Date(String(n.created_at)).getTime() : Date.now(),
+            actionUrl: n.action_url ? String(n.action_url) : undefined,
+            fromServer: true,
+          }));
+          setNotificationsFromServer(mapped);
+        }
+      })
+      .catch(() => {});
+  }, [isOpen, setNotificationsFromServer]);
+
+  const handleMarkAllRead = async () => {
+    markAllNotificationsRead();
+    if (getAuthToken()) {
+      await apiClient.post(API_ENDPOINTS.NOTIFICATIONS.MARK_ALL_READ).catch(() => {});
+    }
+  };
 
   const [drawerWidth, setDrawerWidth] = React.useState(520);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -105,7 +145,7 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
         {notifications.length > 0 && (
           <div className="px-5 py-2.5 border-b border-border/60 bg-muted/30 flex items-center justify-between text-xs">
             <button
-              onClick={markAllNotificationsRead}
+              onClick={handleMarkAllRead}
               className="text-primary hover:underline font-semibold flex items-center gap-1 text-xs cursor-pointer"
             >
               <CheckCheck className="h-3.5 w-3.5" /> {isHindi ? 'सब मार्क रीड करें' : 'Mark all read'}

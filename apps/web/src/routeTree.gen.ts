@@ -19,6 +19,7 @@ import { Route as ShortcutsRouteImport } from './routes/shortcuts'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as OperationsRouteImport } from './routes/operations'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LicenseRouteImport } from './routes/license'
 import { Route as HomeworkRouteImport } from './routes/homework'
@@ -79,6 +80,11 @@ const ReportsRoute = ReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OperationsRoute = OperationsRouteImport.update({
+  id: '/operations',
+  path: '/operations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/homework': typeof HomeworkRoute
   '/license': typeof LicenseRoute
   '/login': typeof LoginRoute
+  '/operations': typeof OperationsRoute
   '/reports': typeof ReportsRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/homework': typeof HomeworkRoute
   '/license': typeof LicenseRoute
   '/login': typeof LoginRoute
+  '/operations': typeof OperationsRoute
   '/reports': typeof ReportsRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
@@ -178,6 +186,7 @@ export interface FileRoutesById {
   '/homework': typeof HomeworkRoute
   '/license': typeof LicenseRoute
   '/login': typeof LoginRoute
+  '/operations': typeof OperationsRoute
   '/reports': typeof ReportsRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
@@ -201,6 +210,7 @@ export interface FileRouteTypes {
     | '/homework'
     | '/license'
     | '/login'
+    | '/operations'
     | '/reports'
     | '/security'
     | '/settings'
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/homework'
     | '/license'
     | '/login'
+    | '/operations'
     | '/reports'
     | '/security'
     | '/settings'
@@ -243,6 +254,7 @@ export interface FileRouteTypes {
     | '/homework'
     | '/license'
     | '/login'
+    | '/operations'
     | '/reports'
     | '/security'
     | '/settings'
@@ -265,6 +277,7 @@ export interface RootRouteChildren {
   HomeworkRoute: typeof HomeworkRoute
   LicenseRoute: typeof LicenseRoute
   LoginRoute: typeof LoginRoute
+  OperationsRoute: typeof OperationsRoute
   ReportsRoute: typeof ReportsRoute
   SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
@@ -349,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/operations': {
+      id: '/operations'
+      path: '/operations'
+      fullPath: '/operations'
+      preLoaderRoute: typeof OperationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -425,6 +445,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeworkRoute: HomeworkRoute,
   LicenseRoute: LicenseRoute,
   LoginRoute: LoginRoute,
+  OperationsRoute: OperationsRoute,
   ReportsRoute: ReportsRoute,
   SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
