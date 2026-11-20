@@ -116,6 +116,8 @@ export const DEFAULT_DASHBOARD_KPIS = [
   'admissions',
 ];
 
+export type DashboardRightWidget = 'all' | 'notifications' | 'logs' | 'attendance';
+
 interface GlobalState {
   // Theme (always dark)
   theme: Theme;
@@ -165,10 +167,9 @@ interface GlobalState {
   hasSeenPreloader: boolean;
   setHasSeenPreloader: () => void;
 
-  // Dashboard Edit Mode & Layout Customization
-  isDashboardEditMode: boolean;
-  toggleDashboardEditMode: () => void;
-  setDashboardEditMode: (val: boolean) => void;
+  // Dashboard Right Panel (Fixed 25% Feed Widget Mode)
+  dashboardRightWidget: DashboardRightWidget;
+  setDashboardRightWidget: (widget: DashboardRightWidget) => void;
 
   dashboardSectionOrder: string[];
   setDashboardSectionOrder: (sections: string[]) => void;
@@ -344,10 +345,9 @@ export const useGlobalStore = create<GlobalState>()(
       hasSeenPreloader: false,
       setHasSeenPreloader: () => set({ hasSeenPreloader: true }),
 
-      // Dashboard Customization state
-      isDashboardEditMode: false,
-      toggleDashboardEditMode: () => set((state) => ({ isDashboardEditMode: !state.isDashboardEditMode })),
-      setDashboardEditMode: (isDashboardEditMode) => set({ isDashboardEditMode }),
+      // Dashboard Right Panel Widget (Fixed 25% Notifications & Logs Feed)
+      dashboardRightWidget: 'all',
+      setDashboardRightWidget: (dashboardRightWidget) => set({ dashboardRightWidget }),
 
       dashboardSectionOrder: DEFAULT_DASHBOARD_SECTIONS,
       setDashboardSectionOrder: (dashboardSectionOrder) => set({ dashboardSectionOrder }),
@@ -413,6 +413,7 @@ export const useGlobalStore = create<GlobalState>()(
         dashboardShortcuts: state.dashboardShortcuts,
         dashboardKpiOrder: state.dashboardKpiOrder,
         dashboardSectionOrder: state.dashboardSectionOrder,
+        dashboardRightWidget: state.dashboardRightWidget,
         language: state.language,
       }),
     }

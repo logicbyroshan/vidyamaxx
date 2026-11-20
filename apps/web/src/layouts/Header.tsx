@@ -5,14 +5,12 @@ import {
   Calendar,
   ChevronDown,
   Check,
-  LayoutGrid,
   PanelLeftClose,
   PanelLeftOpen,
   Languages,
   Sparkles,
   Building2,
 } from 'lucide-react';
-import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
 import { cn } from '@vidyafloww/ui';
@@ -34,8 +32,6 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
     branches,
     activeBranchId,
     setActiveBranch,
-    isDashboardEditMode,
-    toggleDashboardEditMode,
     sidebarExpanded,
     toggleSidebar,
     setLanguage,
@@ -50,8 +46,6 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const sessionMenuRef = React.useRef<HTMLDivElement>(null);
   const branchMenuRef = React.useRef<HTMLDivElement>(null);
   const unreadCount = notifications.filter((n) => !n.read).length;
-  const { location } = useRouterState();
-  const isOnDashboard = location.pathname === '/';
   const currentSessionObj = academicSessionRecords.find((s) => s.is_current);
   const activeBranch = branches.find((b) => b.id === activeBranchId) ?? branches[0] ?? null;
 
@@ -212,26 +206,8 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         )}
       </div>
 
-      {/* Right: Configure Dashboard Button, Search, Notifications & School Identity */}
+      {/* Right: AI Copilot, Search, Language & Notifications */}
       <div className="flex items-center gap-2.5 shrink-0">
-        {/* Configure Dashboard Button — icon-only button visible on the Dashboard page */}
-        {isOnDashboard && (
-          <button
-            onClick={toggleDashboardEditMode}
-            type="button"
-            className={cn(
-              "relative rounded-[4px] border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group",
-              isDashboardEditMode
-                ? "bg-amber-500/15 text-amber-400 border-amber-500/50 shadow-xs ring-1 ring-amber-500/40"
-                : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-foreground border-border"
-            )}
-            title={isDashboardEditMode ? (isHindi ? "कस्टमाइज़ेशन से बाहर निकलें" : "Exit Dashboard Configuration") : (isHindi ? "डैशबोर्ड कॉन्फ़िगर करें" : "Configure Dashboard & Rearrange Cards")}
-            aria-label={isDashboardEditMode ? (isHindi ? "कस्टमाइज़ेशन से बाहर निकलें" : "Exit Dashboard Configuration") : (isHindi ? "डैशबोर्ड कॉन्फ़िगर करें" : "Configure Dashboard & Rearrange Cards")}
-          >
-            <LayoutGrid className={cn("h-4 w-4 shrink-0 transition-colors", isDashboardEditMode ? "text-amber-400" : "text-muted-foreground group-hover:text-foreground")} />
-          </button>
-        )}
-
         {/* VidyaFloww AI Copilot Trigger */}
         <button
           onClick={toggleAIDrawer}

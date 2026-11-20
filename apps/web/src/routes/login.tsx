@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Toaster, toast } from 'sonner';
 import {
   Eye,
   EyeOff,
@@ -17,17 +18,14 @@ import {
   Check,
   ShieldCheck,
   UserCheck,
-  GraduationCap,
-  Users,
-  BookOpen,
   AlertCircle,
   Building2,
   Award,
   Calendar,
   Languages,
   HelpCircle,
+  X,
 } from 'lucide-react';
-import { cn } from '@vidyafloww/ui';
 import { apiClient, ApiError, setAuthToken, setTenantHeaders } from '@vidyafloww/api';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -36,7 +34,7 @@ export const Route = createFileRoute('/login')({
   component: ProfessionalAuthPage,
 });
 
-type AuthMode = 'login' | 'signup' | 'forgot-password' | 'forgot-username';
+type AuthMode = 'login' | 'forgot-choice' | 'forgot-password' | 'forgot-username';
 
 const TRUSTED_INSTITUTIONS = [
   { name: 'Delhi Public School', short: 'DPS', icon: Award },
@@ -56,9 +54,13 @@ const TRUSTED_INSTITUTIONS = [
 function ProfessionalAuthPage() {
   const navigate = useNavigate();
   const { language, setLanguage, setAuthSession } = useGlobalStore();
-  const { t, lang } = useTranslation();
+  const { lang } = useTranslation();
   const isHindi = lang === 'hi' || language === 'hi';
   const [authMode, setAuthMode] = React.useState<AuthMode>('login');
+
+  React.useEffect(() => {
+    document.title = isHindi ? 'साइन इन – VidyaFlow' : 'Sign In – VidyaFlow';
+  }, [isHindi]);
 
   // ─── LOGIN STATE ─────────────────────────────────────────────────────────────
   const [loginIdentifier, setLoginIdentifier] = React.useState('');
@@ -66,19 +68,53 @@ function ProfessionalAuthPage() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [rememberMe, setRememberMe] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [statusMessage, setStatusMessage] = React.useState<{ type: 'error' | 'success'; text: string } | null>(null);
 
-  // ─── SIGNUP STATE ────────────────────────────────────────────────────────────
-  const [signupStep, setSignupStep] = React.useState<1 | 2 | 3 | 4>(1);
-  const [signupRole, setSignupRole] = React.useState<'admin' | 'teacher' | 'student' | 'parent'>('admin');
-  const [signupName, setSignupName] = React.useState('');
-  const [signupEmail, setSignupEmail] = React.useState('');
-  const [signupPhone, setSignupPhone] = React.useState('');
-  const [signupSchoolCode, setSignupSchoolCode] = React.useState('');
-  const [signupPassword, setSignupPassword] = React.useState('');
-  const [signupConfirmPassword, setSignupConfirmPassword] = React.useState('');
-  const [signupOtp, setSignupOtp] = React.useState(['', '', '', '', '', '']);
-  const [agreedToTerms, setAgreedToTerms] = React.useState(false);
+  const showToast = React.useCallback(
+    (type: 'error' | 'success', message: string) => {
+      const title =
+        type === 'error'
+          ? isHindi
+            ? 'प्रमाणीकरण त्रुटि'
+            : 'Authentication Error'
+          : isHindi
+            ? 'सफलता'
+            : 'Success';
+
+      toast.custom(
+        (toastId) => (
+          <div
+            className={`w-[360px] max-w-[calc(100vw-2rem)] flex items-start gap-3 px-3.5 py-3 rounded-[6px] bg-[#121216]/95 backdrop-blur-md border shadow-[0_16px_40px_rgba(0,0,0,0.75)] text-xs ${
+              type === 'error'
+                ? 'border-red-500/40 text-zinc-100'
+                : 'border-emerald-500/40 text-zinc-100'
+            }`}
+          >
+            {type === 'error' ? (
+              <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+            ) : (
+              <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+            )}
+            <div className="flex-1 min-w-0 space-y-0.5">
+              <p className={`font-bold text-xs ${type === 'error' ? 'text-red-400' : 'text-emerald-400'}`}>
+                {title}
+              </p>
+              <p className="text-zinc-300 leading-relaxed select-text">{message}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => toast.dismiss(toastId)}
+              className="text-zinc-500 hover:text-zinc-200 transition-colors p-0.5 cursor-pointer shrink-0"
+              aria-label="Dismiss notification"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        ),
+        { id: 'auth-feedback', duration: 4500 }
+      );
+    },
+    [isHindi]
+  );
 
   // ─── FORGOT PASSWORD STATE ───────────────────────────────────────────────────
   const [fpStep, setFpStep] = React.useState<1 | 2 | 3 | 4>(1);
@@ -99,14 +135,14 @@ function ProfessionalAuthPage() {
   // Login Submit Handler (100% real backend authentication — zero offline bypass)
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatusMessage(null);
+    toast.dismiss('auth-feedback');
     setIsLoading(true);
 
     if (!loginIdentifier || !loginPassword) {
-      setStatusMessage({
-        type: 'error',
-        text: isHindi ? 'कृपया अपना स्कूल ईमेल / यूज़र आईडी और पासवर्ड दर्ज करें।' : 'Please enter your institutional email / user ID and password.',
-      });
+      showToast(
+        'error',
+        isHindi ? 'कृपया अपना स्कूल ईमेल / यूज़र आईडी और पासवर्ड दर्ज करें।' : 'Please enter your institutional email / user ID and password.'
+      );
       setIsLoading(false);
       return;
     }
@@ -147,132 +183,81 @@ function ProfessionalAuthPage() {
           : err instanceof Error
             ? err.message
             : 'Authentication failed.';
-      setStatusMessage({ type: 'error', text: msg });
+      showToast('error', msg);
       setIsLoading(false);
     }
   };
 
   // Google SSO Handler — requires configured OAuth provider credentials (never fakes login)
   const handleGoogleSSO = async () => {
-    setStatusMessage({
-      type: 'error',
-      text: isHindi
+    showToast(
+      'error',
+      isHindi
         ? 'Google Workspace SSO के लिए संस्थागत OAuth Client ID कॉन्फ़िगर होना आवश्यक है। कृपया अपने स्कूल ईमेल/पासवर्ड से साइन इन करें।'
-        : 'Google Workspace SSO requires an institutional OAuth Client ID in environment configuration. Please sign in with your institutional email/phone and password.',
-    });
+        : 'Google Workspace SSO requires an institutional OAuth Client ID in environment configuration. Please sign in with your institutional email/phone and password.'
+    );
   };
 
-  // Password Strength Criteria Checks
-  const hasMinLength = (signupStep === 3 ? signupPassword : fpNewPassword).length >= 8;
-  const hasUppercase = /[A-Z]/.test(signupStep === 3 ? signupPassword : fpNewPassword);
-  const hasNumber = /[0-9]/.test(signupStep === 3 ? signupPassword : fpNewPassword);
-  const hasSpecial = /[^A-Za-z0-9]/.test(signupStep === 3 ? signupPassword : fpNewPassword);
-  const isPassValid = hasMinLength && hasUppercase && hasNumber && hasSpecial;
-
   return (
-    <div className="min-h-screen bg-black text-foreground flex flex-col justify-between relative overflow-x-hidden font-sans">
-      {/* Background Decorative Mesh & Ambient Lighting */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(234,88,12,0.15),transparent_70%)] pointer-events-none" />
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Subtle Grid Lines Background */}
+    <div className="h-screen w-screen overflow-hidden bg-[#060607] text-foreground flex flex-col justify-between relative font-sans select-none">
+      {/* Floating Auth Toast Notifications */}
+      <Toaster
+        position="top-right"
+        offset={{ top: 68, right: 20 }}
+        toastOptions={{
+          className: 'font-sans border-0 bg-transparent p-0 shadow-none',
+        }}
+      />
+      {/* Background Ambient Glow & Subtle Grid */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_55%_at_50%_-15%,rgba(234,88,12,0.16),transparent_68%)] pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage:
             'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
+          backgroundSize: '42px 42px',
         }}
       />
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          TOP NAVIGATION BAR: ULTRA CRISP, NO EXCESS PADDING
+          MINIMAL TOP NAVBAR: LOGO ON LEFT · WORKING LANGUAGE TOGGLE ON RIGHT
           ═══════════════════════════════════════════════════════════════════════ */}
-      <header className="relative z-10 flex items-center justify-between px-4 sm:px-8 py-4 border-b border-[#1c1c1c]">
-        {/* Brand Logo */}
-        <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-md bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center text-white shadow-xs">
-            <GraduationCap className="h-5 w-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight text-white">VidyaFloww</span>
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30">
-                v2.4
-              </span>
-            </div>
-            <p className="text-[10px] text-muted-foreground hidden sm:block">
-              {isHindi ? 'सेंट्रल सीबीएसई व स्टेट स्कूल मैनेजमेंट पोर्टल' : 'Centralized Institutional ERP & Learning Engine'}
-            </p>
-          </div>
+      <header className="relative z-20 h-14 shrink-0 flex items-center justify-between px-5 sm:px-8 border-b border-[#1b1b1e] bg-black/50 backdrop-blur-md">
+        <div className="flex items-center gap-2.5">
+          <img
+            src="/logo.png"
+            alt="VidyaFlow Logo"
+            className="h-8 w-8 object-contain shrink-0"
+          />
+          <span className="text-[18px] font-black tracking-tight leading-none text-foreground">
+            Vidya<span className="text-primary">Flow</span>
+          </span>
         </div>
 
-        {/* Top Right Actions */}
-        <div className="flex items-center gap-2.5">
-          <button
-            type="button"
-            onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#141414] hover:bg-[#1f1f1f] border border-[#262626] text-xs font-bold text-foreground transition-colors cursor-pointer"
-            title={language === 'en' ? 'Switch to Hindi (हिन्दी)' : 'Switch to English'}
-          >
-            <Languages className="h-3.5 w-3.5 text-primary" />
-            <span>{language === 'en' ? 'EN' : 'हि'}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (window.history.length > 1) {
-                window.history.back();
-              } else {
-                navigate({ to: '/' });
-              }
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#141414] hover:bg-[#1f1f1f] border border-[#262626] text-xs font-semibold text-foreground transition-colors cursor-pointer"
-            title={isHindi ? 'मुख्य वेबसाइट पर वापस जाएं' : 'Return to public website'}
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>{isHindi ? 'वापस' : 'Back'}</span>
-          </button>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#141414] border border-[#262626] text-xs font-mono font-medium text-muted-foreground shadow-xs">
-            <span className="h-1.5 w-1.5 rounded-xs bg-emerald-400" />
-            <span>AY 2026–2027</span>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => setLanguage(isHindi ? 'en' : 'hi')}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-[4px] bg-[#141417] hover:bg-[#1d1d22] border border-[#27272c] hover:border-primary/50 text-xs font-bold text-foreground transition-all cursor-pointer"
+          title={isHindi ? 'Switch to English' : 'हिन्दी में बदलें'}
+        >
+          <Languages className="h-3.5 w-3.5 text-primary" />
+          <span>{isHindi ? 'English' : 'हिन्दी'}</span>
+        </button>
       </header>
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          CENTER AUTH CARD: REFINED, GENEROUS SPACING & NO FULL ROUNDED
+          CENTER AUTH CARD: ZERO SCROLL, THEME-ALIGNED OBSIDIAN & ORANGE
           ═══════════════════════════════════════════════════════════════════════ */}
-      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-10">
-        <div className="w-full max-w-[490px]">
-          {/* Main Card Container */}
-          <div className="rounded-[4px] bg-[#101010] border border-[#242424] shadow-2xl p-6 sm:p-8 space-y-5 relative">
-
-            {/* Status Alert Toast */}
-            {statusMessage && (
-              <motion.div
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={cn(
-                  'p-3.5 rounded-md border text-xs font-medium flex items-center gap-2.5 shadow-xs',
-                  statusMessage.type === 'error'
-                    ? 'bg-destructive/10 border-destructive/30 text-destructive'
-                    : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                )}
-              >
-                {statusMessage.type === 'error' ? (
-                  <AlertCircle className="h-4 w-4 shrink-0" />
-                ) : (
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
-                )}
-                <span className="flex-1">{statusMessage.text}</span>
-              </motion.div>
-            )}
+      <main className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-4 py-3 overflow-y-auto no-scrollbar">
+        <div className="w-full max-w-[440px]">
+          <div className="relative rounded-[6px] bg-[#0e0e11]/95 backdrop-blur-md border border-[#232329] shadow-[0_24px_64px_rgba(0,0,0,0.75)] px-6 py-4 sm:px-7 sm:py-5 overflow-hidden">
+            {/* Subtle top accent highlight */}
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent pointer-events-none" />
 
             <AnimatePresence mode="wait">
               {/* ─────────────────────────────────────────────────────────────
-                  1. LOGIN VIEW
+                  1. LOGIN VIEW (COMPACT, SIDE-BY-SIDE SIGN IN + GOOGLE)
                   ───────────────────────────────────────────────────────────── */}
               {authMode === 'login' && (
                 <motion.div
@@ -280,121 +265,59 @@ function ProfessionalAuthPage() {
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.18 }}
-                  className="space-y-5"
+                  transition={{ duration: 0.16 }}
+                  className="space-y-3.5"
                 >
-                  <div className="text-center space-y-1.5">
-                    <h2 className="text-2xl font-black text-foreground tracking-tight">
-                      {isHindi ? 'विद्याफ़्लो में साइन इन करें' : t('auth.signInTitle')}
-                    </h2>
-                    <p className="text-xs text-muted-foreground">
-                      {isHindi ? 'सिक्योर स्कूल पोर्टल में साइन इन के लिए क्रेडेंशियल्स एंटर करें' : t('auth.signInSubtitle')}
-                    </p>
+                  <div className="text-center">
+                    <h1 className="text-[21px] font-black text-foreground tracking-tight leading-tight">
+                      {isHindi ? 'विद्याफ़्लो में साइन इन करें' : 'Sign In to VidyaFlow'}
+                    </h1>
                   </div>
 
-                  {/* Google Workspace SSO Button */}
-                  <button
-                    type="button"
-                    onClick={handleGoogleSSO}
-                    disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-md bg-[#141414] hover:bg-[#1a1a1a] border border-[#262626] text-foreground font-semibold text-xs sm:text-sm shadow-xs transition-colors cursor-pointer"
-                  >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      className="shrink-0"
-                      style={{ width: '18px', height: '18px', minWidth: '18px', minHeight: '18px' }}
-                    >
-                      <path
-                        fill="#4285F4"
-                        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                      />
-                      <path
-                        fill="#34A853"
-                        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
-                      />
-                      <path
-                        fill="#FBBC05"
-                        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                      />
-                      <path
-                        fill="#EA4335"
-                        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                      />
-                    </svg>
-                    <span>{isHindi ? 'Google Workspace के साथ जारी रखें' : 'Continue with Google Workspace'}</span>
-                  </button>
-
-                  {/* Divider */}
-                  <div className="relative flex items-center justify-center my-1">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-[#222222]" />
-                    </div>
-                    <span className="relative px-3 bg-[#101010] text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
-                      {isHindi ? 'या स्कूल क्रेडेंशियल्स के साथ' : 'or with institutional credentials'}
-                    </span>
-                  </div>
-
-                  {/* Form with Clean Gaps */}
-                  <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
+                  {/* Form */}
+                  <form onSubmit={handleLoginSubmit} className="flex flex-col gap-3.5">
                     {/* Identifier */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-xs font-bold text-foreground" htmlFor="identifier">
-                          {isHindi ? 'ईमेल या यूज़र आईडी' : 'Institutional Email or User ID'}
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => setAuthMode('forgot-username')}
-                          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
-                        >
-                          {isHindi ? 'आईडी भूल गए?' : 'Forgot ID?'}
-                        </button>
-                      </div>
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-bold text-zinc-200" htmlFor="identifier">
+                        {isHindi ? 'ईमेल या यूज़र आईडी' : 'Institutional Email or User ID'}
+                      </label>
                       <div className="relative">
-                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
                         <input
                           id="identifier"
                           type="text"
                           required
-                          placeholder={isHindi ? 'name@school.edu.in या ADM-2026' : 'name@school.edu.in or ADM-2026'}
+                          autoComplete="username"
+                          placeholder={isHindi ? 'principal@vidyafloww.edu.in या ADM-2026' : 'principal@vidyafloww.edu.in or ADM-2026'}
                           value={loginIdentifier}
                           onChange={(e) => setLoginIdentifier(e.target.value)}
-                          className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                          className="w-full h-10 pl-10 pr-3.5 rounded-[4px] bg-[#141418] border border-[#28282f] text-sm font-medium text-foreground placeholder:text-zinc-500 focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all select-text"
                         />
                       </div>
                     </div>
 
                     {/* Password */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-xs font-bold text-foreground" htmlFor="password">
-                          {isHindi ? 'पासवर्ड' : 'Password'}
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => setAuthMode('forgot-password')}
-                          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
-                        >
-                          {isHindi ? 'पासवर्ड भूल गए?' : 'Forgot Password?'}
-                        </button>
-                      </div>
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-bold text-zinc-200" htmlFor="password">
+                        {isHindi ? 'पासवर्ड' : 'Password'}
+                      </label>
                       <div className="relative">
-                        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
                         <input
                           id="password"
                           type={showPassword ? 'text' : 'password'}
                           required
+                          autoComplete="current-password"
                           placeholder="••••••••"
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
-                          className="w-full h-11 pl-10 pr-11 rounded-md bg-[#141414] border border-[#282828] text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                          className="w-full h-10 pl-10 pr-10 rounded-[4px] bg-[#141418] border border-[#28282f] text-sm font-medium text-foreground placeholder:text-zinc-500 focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all select-text"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-1"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-foreground cursor-pointer p-1"
+                          aria-label={showPassword ? 'Hide password' : 'Show password'}
                         >
                           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
@@ -402,471 +325,171 @@ function ProfessionalAuthPage() {
                     </div>
 
                     {/* Remember me */}
-                    <div className="flex items-center justify-between py-1">
-                      <label className="flex items-center gap-2.5 text-xs font-medium text-muted-foreground cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={rememberMe}
-                          onChange={(e) => setRememberMe(e.target.checked)}
-                          className="rounded-md border-border h-4 w-4 text-primary focus:ring-primary/40 cursor-pointer"
-                        />
-                        <span>{isHindi ? 'इस डिवाइस को याद रखें' : 'Remember this trusted device'}</span>
-                      </label>
-                    </div>
+                    <label className="flex items-center gap-2 text-xs font-medium text-zinc-400 cursor-pointer pt-0.5">
+                      <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        className="rounded-[3px] border-[#32323a] bg-[#141418] h-3.5 w-3.5 accent-primary cursor-pointer"
+                      />
+                      <span>{isHindi ? 'इस डिवाइस को याद रखें' : 'Remember this trusted device'}</span>
+                    </label>
 
-                    {/* Submit Button */}
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.99] disabled:opacity-50 cursor-pointer mt-1"
-                    >
-                      {isLoading ? (
-                        <>
-                          <RefreshCw className="h-4 w-4 animate-spin" />
-                          <span>{isHindi ? 'साइन इन हो रहा है...' : 'Signing in...'}</span>
-                        </>
-                      ) : (
-                        <>
-                          <ShieldCheck className="h-4 w-4" />
-                          <span>{isHindi ? 'विद्याफ़्लो में साइन इन करें' : 'Sign In to VidyaFloww'}</span>
-                          <ArrowRight className="h-4 w-4" />
-                        </>
-                      )}
-                    </button>
+                    {/* Side-by-Side Primary Sign In + Google Button (Single Row) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="h-10 px-4 rounded-[4px] bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+                      >
+                        {isLoading ? (
+                          <>
+                            <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                            <span>{isHindi ? 'साइन इन...' : 'Signing in...'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <ShieldCheck className="h-4 w-4 shrink-0" />
+                            <span>{isHindi ? 'साइन इन करें' : 'Sign In'}</span>
+                            <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+                          </>
+                        )}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleGoogleSSO}
+                        disabled={isLoading}
+                        className="h-10 px-4 rounded-[4px] bg-[#16161b] hover:bg-[#1e1e25] border border-[#2b2b33] hover:border-zinc-600 text-foreground font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          className="shrink-0"
+                          style={{ width: '16px', height: '16px', minWidth: '16px', minHeight: '16px' }}
+                        >
+                          <path
+                            fill="#4285F4"
+                            d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                          />
+                          <path
+                            fill="#34A853"
+                            d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
+                          />
+                          <path
+                            fill="#FBBC05"
+                            d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+                          />
+                          <path
+                            fill="#EA4335"
+                            d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                          />
+                        </svg>
+                        <span>{isHindi ? 'Google से जुड़ें' : 'Google SSO'}</span>
+                      </button>
+                    </div>
                   </form>
 
-                  {/* Bottom Register Prompt */}
-                  <div className="text-center pt-3 border-t border-[#222222] text-xs text-muted-foreground">
-                    {isHindi ? 'नया संस्थान या स्कूल?' : 'New Institution or Campus?'}{' '}
+                  {/* Single Unified Recovery Link */}
+                  <div className="flex items-center justify-center pt-3 border-t border-[#1f1f24]">
                     <button
                       type="button"
                       onClick={() => {
-                        setSignupStep(1);
-                        setAuthMode('signup');
+                        toast.dismiss('auth-feedback');
+                        setAuthMode('forgot-choice');
                       }}
-                      className="font-bold text-primary hover:underline cursor-pointer ml-1"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-primary transition-colors cursor-pointer leading-none"
                     >
-                      {isHindi ? 'नया खाता बनाएं →' : 'Register New Account →'}
+                      <HelpCircle className="h-3.5 w-3.5 text-primary/80" />
+                      <span>{isHindi ? 'यूज़र आईडी या पासवर्ड भूल गए?' : 'Forgot User ID or Password?'}</span>
                     </button>
                   </div>
                 </motion.div>
               )}
 
               {/* ─────────────────────────────────────────────────────────────
-                  2. SIGN UP (REGISTRATION WIZARD)
+                  2. UNIFIED RECOVERY CHOICE (FORGOT ID OR PASSWORD?)
                   ───────────────────────────────────────────────────────────── */}
-              {authMode === 'signup' && (
+              {authMode === 'forgot-choice' && (
                 <motion.div
-                  key="signup"
+                  key="forgot-choice"
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.18 }}
-                  className="space-y-5"
+                  transition={{ duration: 0.16 }}
+                  className="space-y-4"
                 >
                   <div className="flex items-center justify-between">
                     <button
                       type="button"
-                      onClick={() => setAuthMode('login')}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-foreground cursor-pointer"
+                      onClick={() => {
+                        toast.dismiss('auth-feedback');
+                        setAuthMode('login');
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-400 hover:text-foreground cursor-pointer"
                     >
                       <ArrowLeft className="h-3.5 w-3.5" />
                       <span>{isHindi ? 'साइन इन पर वापस जाएं' : 'Back to Sign In'}</span>
                     </button>
-                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
-                      {isHindi ? `चरण ${signupStep} / 4` : `Step ${signupStep} of 4`}
-                    </span>
                   </div>
 
                   <div className="text-center space-y-1">
                     <h2 className="text-xl font-black text-foreground tracking-tight">
-                      {signupStep === 1 && (isHindi ? 'अकाउंट रोल चुनें' : 'Select Account Role')}
-                      {signupStep === 2 && (isHindi ? 'पर्सनल & स्कूल डिटेल्स' : 'Personal & Campus Details')}
-                      {signupStep === 3 && (isHindi ? 'पासवर्ड व सुरक्षा' : 'Password & Security')}
-                      {signupStep === 4 && (isHindi ? 'ईमेल OTP सत्यापन' : 'Verify Email OTP')}
+                      {isHindi ? 'आप क्या रिकवर करना चाहते हैं?' : 'What do you need help with?'}
                     </h2>
-                    <p className="text-xs text-muted-foreground">
-                      {signupStep === 1 && (isHindi ? 'अपना निर्धारित संस्थागत रोल चुनें' : 'Choose your designated institutional role')}
-                      {signupStep === 2 && (isHindi ? 'स्कूल रजिस्टर से मेल खाने वाले आधिकारिक रिकॉर्ड' : 'Official records matching school registrar')}
-                      {signupStep === 3 && (isHindi ? 'CBSE सुरक्षा नियमों के अनुसार एन्क्रिप्टेड क्रेडेंशियल्स' : 'Encrypted credentials meeting CBSE security charter')}
-                      {signupStep === 4 && (isHindi ? `${signupEmail || 'आपके ईमेल'} पर भेजा गया 6-अंकों का कोड दर्ज करें` : `Enter 6-digit verification code for ${signupEmail || 'your email'}`)}
+                    <p className="text-xs text-zinc-400">
+                      {isHindi ? 'आगे बढ़ने के लिए नीचे एक विकल्प चुनें' : 'Choose an option below to recover access'}
                     </p>
                   </div>
 
-                  {/* Step Progress Bar with rounded-md */}
-                  <div className="h-1.5 w-full bg-[#181818] rounded-md overflow-hidden flex gap-1.5 border border-[#222222]">
-                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 1 ? 'bg-primary' : 'bg-[#181818]')} />
-                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 2 ? 'bg-primary' : 'bg-[#181818]')} />
-                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 3 ? 'bg-primary' : 'bg-[#181818]')} />
-                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 4 ? 'bg-primary' : 'bg-[#181818]')} />
+                  <div className="grid grid-cols-1 gap-2.5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        toast.dismiss('auth-feedback');
+                        setFpStep(1);
+                        setAuthMode('forgot-password');
+                      }}
+                      className="w-full p-3.5 rounded-[5px] bg-[#141418] hover:bg-[#1a1a20] border border-[#28282f] hover:border-primary/60 flex items-center gap-3.5 text-left transition-all cursor-pointer group"
+                    >
+                      <div className="h-9 w-9 rounded-[4px] bg-primary/15 border border-primary/30 text-primary flex items-center justify-center shrink-0">
+                        <KeyRound className="h-4.5 w-4.5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                          {isHindi ? 'पासवर्ड भूल गए' : 'Forgot Password'}
+                        </p>
+                        <p className="text-[11px] text-zinc-400">
+                          {isHindi ? 'OTP के ज़रिए नया पासवर्ड सेट करें' : 'Reset your account password using OTP'}
+                        </p>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-zinc-500 group-hover:text-primary shrink-0 transition-colors" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        toast.dismiss('auth-feedback');
+                        setFuStep(1);
+                        setAuthMode('forgot-username');
+                      }}
+                      className="w-full p-3.5 rounded-[5px] bg-[#141418] hover:bg-[#1a1a20] border border-[#28282f] hover:border-primary/60 flex items-center gap-3.5 text-left transition-all cursor-pointer group"
+                    >
+                      <div className="h-9 w-9 rounded-[4px] bg-primary/15 border border-primary/30 text-primary flex items-center justify-center shrink-0">
+                        <UserCheck className="h-4.5 w-4.5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                          {isHindi ? 'यूज़र आईडी भूल गए' : 'Forgot User ID'}
+                        </p>
+                        <p className="text-[11px] text-zinc-400">
+                          {isHindi ? 'रजिस्टर्ड मोबाइल और जन्मतिथि से अपनी आईडी पाएं' : 'Find your institutional ID with phone & date of birth'}
+                        </p>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-zinc-500 group-hover:text-primary shrink-0 transition-colors" />
+                    </button>
                   </div>
-
-                  {/* Step 1: Role Selection */}
-                  {signupStep === 1 && (
-                    <div className="space-y-4 animate-fade-in">
-                      <div className="grid grid-cols-1 gap-2.5">
-                        {[
-                          {
-                            id: 'admin',
-                            title: isHindi ? 'स्कूल एडमिनिस्ट्रेटर / मैनेजमेंट' : 'School Administrator / Management',
-                            desc: isHindi ? 'पूर्ण प्रशासनिक नियंत्रण, वित्तीय निगरानी व रिपोर्टिंग' : 'Full institutional governance, financial oversight & reporting',
-                            icon: School,
-                          },
-                          {
-                            id: 'teacher',
-                            title: isHindi ? 'टीचर / फैकल्टी स्टाफ' : 'Faculty / Teaching Staff',
-                            desc: isHindi ? 'स्टूडेंट ग्रेडिंग, अटेंडेंस, टाइमटेबल और असाइनमेंट्स' : 'Student grading, attendance, timetable & assignments',
-                            icon: BookOpen,
-                          },
-                          {
-                            id: 'student',
-                            title: isHindi ? 'एनरोल्ड स्टूडेंट' : 'Enrolled Student / Pupil',
-                            desc: isHindi ? 'स्टडी मटेरियल, शेड्यूल्स, एग्जाम रिजल्ट्स और प्रोफाइल' : 'Learning materials, schedules, examination scores & profile',
-                            icon: GraduationCap,
-                          },
-                          {
-                            id: 'parent',
-                            title: isHindi ? 'अभिभावक / माता-पिता' : 'Parent / Authorized Guardian',
-                            desc: isHindi ? 'फीस इनवॉइस, बस ट्रैकिंग व शैक्षणिक रिपोर्ट' : 'Fee invoices, real-time bus tracking & academic monitoring',
-                            icon: Users,
-                          },
-                        ].map((role) => {
-                          const isSelected = signupRole === role.id;
-                          const Icon = role.icon;
-                          return (
-                            <div
-                              key={role.id}
-                              onClick={() => setSignupRole(role.id as any)}
-                              className={cn(
-                                'p-3.5 rounded-md border flex items-center gap-3.5 cursor-pointer transition-all',
-                                isSelected
-                                  ? 'bg-[#141414] border-primary ring-1 ring-primary shadow-xs'
-                                  : 'bg-[#141414] border-[#262626] hover:bg-[#1a1a1a] hover:border-[#383838]'
-                              )}
-                            >
-                              <div
-                                className={cn(
-                                  'h-9 w-9 rounded-md flex items-center justify-center shrink-0 border',
-                                  isSelected
-                                    ? 'bg-primary/10 text-primary border-primary/30'
-                                    : 'bg-[#181818] text-muted-foreground border-[#262626]'
-                                )}
-                              >
-                                <Icon className="h-4.5 w-4.5" />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-xs sm:text-sm font-bold text-foreground">{role.title}</p>
-                                <p className="text-[11px] text-muted-foreground truncate">{role.desc}</p>
-                              </div>
-                              {isSelected && <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />}
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => setSignupStep(2)}
-                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer mt-2"
-                      >
-                        <span>{isHindi ? 'चरण 2 पर जारी रखें' : 'Continue to Step 2'}</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Step 2: Personal Details */}
-                  {signupStep === 2 && (
-                    <div className="space-y-4 animate-fade-in">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'आधिकारिक पूरा नाम *' : 'Official Full Name *'}</label>
-                        <input
-                          type="text"
-                          required
-                          placeholder={isHindi ? 'डॉ. राजेश शर्मा' : 'Dr. Rajesh Sharma'}
-                          value={signupName}
-                          onChange={(e) => setSignupName(e.target.value)}
-                          className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'आधिकारिक ईमेल आईडी *' : 'Official Email Address *'}</label>
-                        <input
-                          type="email"
-                          required
-                          placeholder="rajesh.s@school.edu.in"
-                          value={signupEmail}
-                          onChange={(e) => setSignupEmail(e.target.value)}
-                          className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-2">
-                          <label className="text-xs font-bold text-foreground">{isHindi ? 'मोबाइल नंबर' : 'Mobile Phone'}</label>
-                          <input
-                            type="tel"
-                            placeholder="+91 98765 43210"
-                            value={signupPhone}
-                            onChange={(e) => setSignupPhone(e.target.value)}
-                            className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground font-mono focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-xs font-bold text-foreground">{isHindi ? 'स्कूल कोड / आईडी' : 'School Code / ID'}</label>
-                          <input
-                            type="text"
-                            placeholder="CBSE-DEL-401"
-                            value={signupSchoolCode}
-                            onChange={(e) => setSignupSchoolCode(e.target.value)}
-                            className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground font-mono uppercase focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2.5 pt-2">
-                        <button
-                          type="button"
-                          onClick={() => setSignupStep(1)}
-                          className="w-1/3 h-11 rounded-md bg-[#141414] border border-[#262626] text-foreground font-bold text-xs hover:bg-[#1a1a1a] cursor-pointer"
-                        >
-                          {isHindi ? 'पीछे' : 'Back'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (!signupName || !signupEmail) {
-                              setStatusMessage({
-                                type: 'error',
-                                text: isHindi ? 'कृपया अपना नाम और आधिकारिक ईमेल दर्ज करें।' : 'Please enter your name and official email.',
-                              });
-                              return;
-                            }
-                            setStatusMessage(null);
-                            setSignupStep(3);
-                          }}
-                          className="flex-1 h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-                        >
-                          <span>{isHindi ? 'सुरक्षा चरण पर जारी रखें' : 'Continue to Security'}</span>
-                          <ArrowRight className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Step 3: Password & Terms */}
-                  {signupStep === 3 && (
-                    <div className="space-y-4 animate-fade-in">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'पासवर्ड बनाएं *' : 'Create Password *'}</label>
-                        <div className="relative">
-                          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <input
-                            type={showPassword ? 'text' : 'password'}
-                            required
-                            placeholder="••••••••"
-                            value={signupPassword}
-                            onChange={(e) => setSignupPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-11 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
-                          >
-                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                          </button>
-                        </div>
-
-                        {/* Interactive Criteria Check Grid */}
-                        <div className="grid grid-cols-2 gap-2 pt-1">
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasMinLength ? 'text-emerald-400' : 'text-muted-foreground')}>
-                            <CheckCircle2 className="h-3 w-3 shrink-0" />
-                            <span>{isHindi ? '8+ अक्षर' : '8+ Characters'}</span>
-                          </div>
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasUppercase ? 'text-emerald-400' : 'text-muted-foreground')}>
-                            <CheckCircle2 className="h-3 w-3 shrink-0" />
-                            <span>{isHindi ? 'बड़ा अक्षर (A-Z)' : 'Uppercase Letter'}</span>
-                          </div>
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasNumber ? 'text-emerald-400' : 'text-muted-foreground')}>
-                            <CheckCircle2 className="h-3 w-3 shrink-0" />
-                            <span>{isHindi ? 'संख्या (0-9)' : 'Number (0-9)'}</span>
-                          </div>
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasSpecial ? 'text-emerald-400' : 'text-muted-foreground')}>
-                            <CheckCircle2 className="h-3 w-3 shrink-0" />
-                            <span>{isHindi ? 'चिह्न (!@#$)' : 'Symbol (!@#$)'}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'पासवर्ड की पुष्टि करें *' : 'Confirm Password *'}</label>
-                        <div className="relative">
-                          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <input
-                            type="password"
-                            required
-                            placeholder="••••••••"
-                            value={signupConfirmPassword}
-                            onChange={(e) => setSignupConfirmPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
-                          />
-                        </div>
-                      </div>
-
-                      <label className="flex items-start gap-2.5 text-xs text-muted-foreground cursor-pointer select-none pt-1">
-                        <input
-                          type="checkbox"
-                          checked={agreedToTerms}
-                          onChange={(e) => setAgreedToTerms(e.target.checked)}
-                          className="rounded-md border-border h-4 w-4 text-primary mt-0.5 cursor-pointer"
-                        />
-                        <span className="text-[11px] leading-tight">
-                          {isHindi
-                            ? 'मैं विद्याफ़्लो की सेवा शर्तों, CBSE स्टूडेंट डेटा प्रोटेक्शन नियमों और क्लाउड सिक्योरिटी पॉलिसी से सहमत हूँ।'
-                            : 'I agree to VidyaFloww Terms of Service, CBSE Student Data Privacy Charter, and cloud security guidelines.'}
-                        </span>
-                      </label>
-
-                      <div className="flex gap-2.5 pt-2">
-                        <button
-                          type="button"
-                          onClick={() => setSignupStep(2)}
-                          className="w-1/3 h-11 rounded-md bg-[#141414] border border-[#262626] text-foreground font-bold text-xs hover:bg-[#1a1a1a] cursor-pointer"
-                        >
-                          {isHindi ? 'पीछे' : 'Back'}
-                        </button>
-                        <button
-                          type="button"
-                          disabled={isLoading}
-                          onClick={async () => {
-                            if (!signupPassword || signupPassword !== signupConfirmPassword || !isPassValid) {
-                              setStatusMessage({
-                                type: 'error',
-                                text: isHindi ? 'पासवर्ड मेल खाना चाहिए और सभी 4 सुरक्षा मानकों को पूरा करना चाहिए।' : 'Passwords must match and satisfy all 4 security criteria.',
-                              });
-                              return;
-                            }
-                            if (!agreedToTerms) {
-                              setStatusMessage({
-                                type: 'error',
-                                text: isHindi ? 'कृपया शर्तों और डेटा गोपनीयता नियमों को स्वीकार करें।' : 'Please agree to terms and data privacy charter.',
-                              });
-                              return;
-                            }
-                            setIsLoading(true);
-                            setStatusMessage(null);
-                            try {
-                              const userTypeMap: Record<typeof signupRole, string> = {
-                                admin: 'SCHOOL_ADMIN',
-                                teacher: 'STAFF',
-                                student: 'STUDENT',
-                                parent: 'PARENT',
-                              };
-                              await apiClient.post('/auth/register/', {
-                                full_name: signupName.trim(),
-                                email: signupEmail.trim() || undefined,
-                                phone: signupPhone.trim() || undefined,
-                                school_code: signupSchoolCode.trim(),
-                                password: signupPassword,
-                                user_type: userTypeMap[signupRole],
-                              });
-                              setSignupStep(4);
-                            } catch (err) {
-                              const msg = err instanceof ApiError ? err.message : 'Registration failed.';
-                              setStatusMessage({ type: 'error', text: msg });
-                            } finally {
-                              setIsLoading(false);
-                            }
-                          }}
-                          className="flex-1 h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-                        >
-                          <span>{isHindi ? 'OTP भेजें' : 'Send Code'}</span>
-                          <ArrowRight className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Step 4: OTP Verification */}
-                  {signupStep === 4 && (
-                    <div className="space-y-4 animate-fade-in">
-                      <div className="p-3.5 rounded-md bg-[#141414] border border-[#262626] text-center text-xs space-y-1">
-                        <p className="text-muted-foreground">{isHindi ? 'वेरिफिकेशन कोड भेजा गया:' : 'Verification code sent to:'}</p>
-                        <p className="font-mono font-bold text-foreground">{signupEmail || 'admin@school.edu.in'}</p>
-                      </div>
-
-                      <div className="flex justify-between gap-2">
-                        {signupOtp.map((digit, idx) => (
-                          <input
-                            key={idx}
-                            id={`signup-otp-${idx}`}
-                            type="text"
-                            maxLength={1}
-                            value={digit}
-                            onChange={(e) => {
-                              const val = e.target.value.replace(/[^0-9]/g, '');
-                              const newOtp = [...signupOtp];
-                              newOtp[idx] = val;
-                              setSignupOtp(newOtp);
-                              if (val && idx < 5) {
-                                const next = document.getElementById(`signup-otp-${idx + 1}`);
-                                next?.focus();
-                              }
-                            }}
-                            className="w-12 h-13 rounded-md bg-[#141414] border border-[#282828] text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
-                          />
-                        ))}
-                      </div>
-
-                      <button
-                        type="button"
-                        disabled={isLoading}
-                        onClick={async () => {
-                          const code = signupOtp.join('');
-                          if (code.length !== 6) {
-                            setStatusMessage({ type: 'error', text: 'Please enter the 6-digit verification code.' });
-                            return;
-                          }
-                          setIsLoading(true);
-                          setStatusMessage(null);
-                          try {
-                            await apiClient.post('/auth/otp/verify/', {
-                              identifier: (signupEmail || signupPhone).trim(),
-                              otp: code,
-                              purpose: 'registration',
-                            });
-                            setStatusMessage({
-                              type: 'success',
-                              text: isHindi ? 'अकाउंट वेरिफाई हो गया! कृपया साइन इन करें।' : 'Account verified successfully! Please sign in with your credentials.',
-                            });
-                            setLoginIdentifier((signupEmail || signupPhone).trim());
-                            setAuthMode('login');
-                            setSignupStep(1);
-                          } catch (err) {
-                            const msg = err instanceof ApiError ? err.message : 'OTP verification failed.';
-                            setStatusMessage({ type: 'error', text: msg });
-                          } finally {
-                            setIsLoading(false);
-                          }
-                        }}
-                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
-                      >
-                        {isLoading ? (
-                          <>
-                            <RefreshCw className="h-4 w-4 animate-spin" />
-                            <span>{isHindi ? 'अकाउंट क्रिएट हो रहा है...' : 'Creating account...'}</span>
-                          </>
-                        ) : (
-                          <>
-                            <CheckCircle2 className="h-4 w-4" />
-                            <span>{isHindi ? 'वेरिफाई करें और रजिस्ट्रेशन पूरा करें' : 'Verify & Complete Registration'}</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
                 </motion.div>
               )}
 
@@ -885,11 +508,14 @@ function ProfessionalAuthPage() {
                   <div className="flex items-center justify-between">
                     <button
                       type="button"
-                      onClick={() => setAuthMode('login')}
+                      onClick={() => {
+                        toast.dismiss('auth-feedback');
+                        setAuthMode('forgot-choice');
+                      }}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-foreground cursor-pointer"
                     >
                       <ArrowLeft className="h-3.5 w-3.5" />
-                      <span>{isHindi ? 'साइन इन पर वापस जाएं' : 'Back to Sign In'}</span>
+                      <span>{isHindi ? 'रिकवरी विकल्प पर वापस' : 'Back'}</span>
                     </button>
                     <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
                       {isHindi ? 'रिकवरी' : 'Recovery'}
@@ -933,23 +559,27 @@ function ProfessionalAuthPage() {
                         disabled={isLoading}
                         onClick={async () => {
                           if (!fpIdentifier) {
-                            setStatusMessage({
-                              type: 'error',
-                              text: isHindi ? 'कृपया अपना रजिस्टर्ड ईमेल या फोन एंटर करें।' : 'Please enter your registered email or phone.',
-                            });
+                            showToast(
+                              'error',
+                              isHindi ? 'कृपया अपना रजिस्टर्ड ईमेल या फोन एंटर करें।' : 'Please enter your registered email or phone.'
+                            );
                             return;
                           }
                           setIsLoading(true);
-                          setStatusMessage(null);
+                          toast.dismiss('auth-feedback');
                           try {
                             await apiClient.post('/auth/otp/request/', {
                               identifier: fpIdentifier.trim(),
                               purpose: 'password_reset',
                             });
+                            showToast(
+                              'success',
+                              isHindi ? 'रिकवरी कोड सफलतापूर्वक भेजा गया।' : 'Recovery OTP sent successfully.'
+                            );
                             setFpStep(2);
                           } catch (err) {
                             const msg = err instanceof ApiError ? err.message : 'Unable to send OTP.';
-                            setStatusMessage({ type: 'error', text: msg });
+                            showToast('error', msg);
                           } finally {
                             setIsLoading(false);
                           }
@@ -1003,11 +633,11 @@ function ProfessionalAuthPage() {
                         onClick={async () => {
                           const code = fpOtp.join('');
                           if (code.length !== 6) {
-                            setStatusMessage({ type: 'error', text: 'Please enter the 6-digit recovery code.' });
+                            showToast('error', isHindi ? 'कृपया 6-डिजिट रिकवरी कोड दर्ज करें।' : 'Please enter the 6-digit recovery code.');
                             return;
                           }
                           setIsLoading(true);
-                          setStatusMessage(null);
+                          toast.dismiss('auth-feedback');
                           try {
                             const res = await apiClient.post('/auth/otp/verify/', {
                               identifier: fpIdentifier.trim(),
@@ -1018,7 +648,7 @@ function ProfessionalAuthPage() {
                             setFpStep(3);
                           } catch (err) {
                             const msg = err instanceof ApiError ? err.message : 'Invalid or expired OTP code.';
-                            setStatusMessage({ type: 'error', text: msg });
+                            showToast('error', msg);
                           } finally {
                             setIsLoading(false);
                           }
@@ -1068,23 +698,27 @@ function ProfessionalAuthPage() {
                         disabled={isLoading}
                         onClick={async () => {
                           if (!fpNewPassword || fpNewPassword !== fpConfirmPassword) {
-                            setStatusMessage({
-                              type: 'error',
-                              text: isHindi ? 'पासवर्ड मैच होना चाहिए और खाली नहीं हो सकता।' : 'Passwords must match and cannot be empty.',
-                            });
+                            showToast(
+                              'error',
+                              isHindi ? 'पासवर्ड मैच होना चाहिए और खाली नहीं हो सकता।' : 'Passwords must match and cannot be empty.'
+                            );
                             return;
                           }
                           setIsLoading(true);
-                          setStatusMessage(null);
+                          toast.dismiss('auth-feedback');
                           try {
                             await apiClient.post('/auth/password/reset/', {
                               action_token: fpActionToken,
                               new_password: fpNewPassword,
                             });
+                            showToast(
+                              'success',
+                              isHindi ? 'आपका पासवर्ड सफलतापूर्वक अपडेट हो गया है।' : 'Your password has been updated successfully.'
+                            );
                             setFpStep(4);
                           } catch (err) {
                             const msg = err instanceof ApiError ? err.message : 'Failed to reset password.';
-                            setStatusMessage({ type: 'error', text: msg });
+                            showToast('error', msg);
                           } finally {
                             setIsLoading(false);
                           }
@@ -1150,11 +784,14 @@ function ProfessionalAuthPage() {
                   <div className="flex items-center justify-between">
                     <button
                       type="button"
-                      onClick={() => setAuthMode('login')}
+                      onClick={() => {
+                        toast.dismiss('auth-feedback');
+                        setAuthMode('forgot-choice');
+                      }}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-foreground cursor-pointer"
                     >
                       <ArrowLeft className="h-3.5 w-3.5" />
-                      <span>{isHindi ? 'साइन इन पर वापस जाएं' : 'Back to Sign In'}</span>
+                      <span>{isHindi ? 'रिकवरी विकल्प पर वापस' : 'Back'}</span>
                     </button>
                     <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
                       {isHindi ? 'आईडी लुकअप' : 'ID Lookup'}
@@ -1210,23 +847,27 @@ function ProfessionalAuthPage() {
                         disabled={isLoading}
                         onClick={async () => {
                           if (!fuPhone || !fuDob) {
-                            setStatusMessage({
-                              type: 'error',
-                              text: isHindi ? 'कृपया अपना रजिस्टर्ड मोबाइल नंबर और जन्मतिथि (YYYY-MM-DD) एंटर करें।' : 'Please enter your registered mobile number and date of birth (YYYY-MM-DD).',
-                            });
+                            showToast(
+                              'error',
+                              isHindi ? 'कृपया अपना रजिस्टर्ड मोबाइल नंबर और जन्मतिथि (YYYY-MM-DD) एंटर करें।' : 'Please enter your registered mobile number and date of birth (YYYY-MM-DD).'
+                            );
                             return;
                           }
                           setIsLoading(true);
-                          setStatusMessage(null);
+                          toast.dismiss('auth-feedback');
                           try {
                             await apiClient.post('/auth/otp/request/', {
                               identifier: fuPhone.trim(),
                               purpose: 'username_lookup',
                             });
+                            showToast(
+                              'success',
+                              isHindi ? 'मोबाइल OTP सफलतापूर्वक भेजा गया।' : 'Verification OTP sent successfully.'
+                            );
                             setFuStep(2);
                           } catch (err) {
                             const msg = err instanceof ApiError ? err.message : 'Unable to send OTP.';
-                            setStatusMessage({ type: 'error', text: msg });
+                            showToast('error', msg);
                           } finally {
                             setIsLoading(false);
                           }
@@ -1280,11 +921,11 @@ function ProfessionalAuthPage() {
                         onClick={async () => {
                           const code = fuOtp.join('');
                           if (code.length !== 6) {
-                            setStatusMessage({ type: 'error', text: 'Please enter the 6-digit OTP code.' });
+                            showToast('error', isHindi ? 'कृपया 6-डिजिट OTP कोड दर्ज करें।' : 'Please enter the 6-digit OTP code.');
                             return;
                           }
                           setIsLoading(true);
-                          setStatusMessage(null);
+                          toast.dismiss('auth-feedback');
                           try {
                             const verifyRes = await apiClient.post('/auth/otp/verify/', {
                               identifier: fuPhone.trim(),
@@ -1306,7 +947,7 @@ function ProfessionalAuthPage() {
                             setFuStep(3);
                           } catch (err) {
                             const msg = err instanceof ApiError ? err.message : 'Unable to verify OTP or find matching account.';
-                            setStatusMessage({ type: 'error', text: msg });
+                            showToast('error', msg);
                           } finally {
                             setIsLoading(false);
                           }
@@ -1377,29 +1018,27 @@ function ProfessionalAuthPage() {
       </main>
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          BOTTOM: SLEEK FLOATING SCHOOL LOGOS MARQUEE (MATHEMATICALLY SEAMLESS)
+          BOTTOM: COMPACT FLOATING SCHOOL LOGOS MARQUEE (FITS INSIDE 100VH)
           ═══════════════════════════════════════════════════════════════════════ */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 pb-7 select-none space-y-2.5">
+      <footer className="relative z-10 shrink-0 w-full max-w-5xl mx-auto px-4 pb-4 pt-1 select-none space-y-1.5">
         <div className="text-center">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/75 font-mono">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono">
             {isHindi ? 'भारत भर के 150+ लीडिंग एजुकेशनल इंस्टीट्यूट्स द्वारा ट्रस्टेड' : 'Trusted by 150+ Leading Educational Campuses Across India'}
           </span>
         </div>
 
         {/* Floating Marquee Capsule with Soft Vanishing Fades */}
         <div
-          className="relative w-full overflow-hidden py-1 group cursor-pointer"
+          className="relative w-full overflow-hidden py-0.5 group cursor-pointer"
           style={{
             maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
           }}
         >
-          {/* Subtle Left and Right Vignette Overlays for Extra Smoothness */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-14 bg-gradient-to-r from-[#060607] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-14 bg-gradient-to-l from-[#060607] to-transparent z-10 pointer-events-none" />
 
-          {/* Single continuous track containing 2 identical sets (never overlaps, never empty) */}
-          <div className="animate-marquee flex gap-3 items-center group-hover:[animation-play-state:paused] pr-3">
+          <div className="animate-marquee flex gap-2.5 items-center group-hover:[animation-play-state:paused] pr-2.5">
             {[
               ...TRUSTED_INSTITUTIONS,
               ...TRUSTED_INSTITUTIONS,
@@ -1410,18 +1049,18 @@ function ProfessionalAuthPage() {
               return (
                 <div
                   key={i}
-                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-[4px] bg-[#121212] border border-[#222222] text-xs font-semibold text-foreground/90 shadow-xs hover:border-zinc-700 hover:text-foreground transition-colors whitespace-nowrap shrink-0 hover:bg-[#181818] cursor-pointer"
+                  className="flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#101014] border border-[#202026] text-xs font-semibold text-zinc-300 hover:border-zinc-700 hover:text-foreground transition-colors whitespace-nowrap shrink-0"
                 >
-                  <div className="h-4 w-4 rounded-md bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                  <div className="h-4 w-4 rounded-[3px] bg-primary/15 text-primary flex items-center justify-center shrink-0">
                     <Icon className="h-2.5 w-2.5" />
                   </div>
-                  <span className="font-bold text-xs">{inst.name}</span>
+                  <span className="font-bold text-[11px]">{inst.name}</span>
                 </div>
               );
             })}
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }
