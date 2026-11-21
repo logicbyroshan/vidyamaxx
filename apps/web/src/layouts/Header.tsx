@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   Search,
-  Bell,
   Calendar,
   ChevronDown,
   Check,
@@ -19,12 +18,10 @@ import { API_ENDPOINTS } from '@vidyafloww/constants';
 
 interface HeaderProps {
   onSearchClick: () => void;
-  onNotificationsClick: () => void;
 }
 
-export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
+export function Header({ onSearchClick }: HeaderProps) {
   const {
-    notifications,
     activeSession,
     setActiveSession,
     academicSessions,
@@ -45,7 +42,6 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const [isBranchMenuOpen, setIsBranchMenuOpen] = React.useState(false);
   const sessionMenuRef = React.useRef<HTMLDivElement>(null);
   const branchMenuRef = React.useRef<HTMLDivElement>(null);
-  const unreadCount = notifications.filter((n) => !n.read).length;
   const currentSessionObj = academicSessionRecords.find((s) => s.is_current);
   const activeBranch = branches.find((b) => b.id === activeBranchId) ?? branches[0] ?? null;
 
@@ -71,7 +67,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         {/* Sidebar Toggle — same square box as Search/Notification buttons */}
         <button
           onClick={toggleSidebar}
-          className="text-muted-foreground hover:text-foreground rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs shrink-0"
+          className="text-muted-foreground hover:text-foreground rounded-[4px] bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs shrink-0"
           title={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         >
           {sidebarExpanded
@@ -82,7 +78,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         <div className="relative" ref={sessionMenuRef}>
           <button
             onClick={() => setIsSessionMenuOpen(!isSessionMenuOpen)}
-            className="flex items-center justify-between gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group min-w-[215px]"
+            className="flex items-center justify-between gap-2.5 px-3 h-9 rounded-[4px] bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group min-w-[215px]"
             title={isHindi ? "एकेडमिक सेशन चेंज करें" : "Switch Academic Session"}
           >
             <Calendar className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -120,7 +116,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                       setIsSessionMenuOpen(false);
                     }}
                     className={cn(
-                      "flex items-center justify-between w-full px-2.5 py-1.5 rounded-md text-sm transition-all cursor-pointer text-left font-semibold outline-none",
+                      "flex items-center justify-between w-full px-2.5 py-1.5 rounded-[4px] text-sm transition-all cursor-pointer text-left font-semibold outline-none",
                       isCurrent
                         ? "bg-[#1c1c1c] text-foreground border border-border font-bold"
                         : "text-muted-foreground hover:text-foreground hover:bg-[#161616]"
@@ -159,7 +155,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           <div className="relative" ref={branchMenuRef}>
             <button
               onClick={() => setIsBranchMenuOpen(!isBranchMenuOpen)}
-              className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none max-w-[220px]"
+              className="flex items-center gap-2 px-3 h-9 rounded-[4px] bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none max-w-[220px]"
               title="Switch Active Campus / Branch"
             >
               <Building2 className="h-3.5 w-3.5 shrink-0 text-primary" />
@@ -188,7 +184,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                         });
                       }}
                       className={cn(
-                        "flex items-center justify-between w-full px-2.5 py-1.5 rounded-md text-xs transition-all cursor-pointer text-left",
+                        "flex items-center justify-between w-full px-2.5 py-1.5 rounded-[4px] text-xs transition-all cursor-pointer text-left",
                         selected ? "bg-[#1c1c1c] text-foreground border border-border font-bold" : "text-muted-foreground hover:text-foreground hover:bg-[#161616]"
                       )}
                     >
@@ -213,7 +209,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           onClick={toggleAIDrawer}
           type="button"
           className={cn(
-            "relative rounded-md border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group",
+            "relative rounded-[4px] border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group",
             isAIDrawerOpen
               ? "bg-[#1c1c1c] text-primary border-primary/50"
               : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-primary border-border"
@@ -227,7 +223,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         {/* Square Search Button Beside Notifications */}
         <button
           onClick={onSearchClick}
-          className="relative text-muted-foreground hover:text-foreground rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
+          className="relative text-muted-foreground hover:text-foreground rounded-[4px] bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
           title={isHindi ? "सर्च करें... (Ctrl+K)" : "Search students, faculty, records... (⌘K / Ctrl+K)"}
         >
           <Search className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -247,23 +243,11 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
               type: 'info',
             });
           }}
-          className="relative text-muted-foreground hover:text-foreground rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
+          className="relative text-muted-foreground hover:text-foreground rounded-[4px] bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
           title={isHindi ? "Switch to English" : "Switch to हिन्दी"}
           aria-label={isHindi ? "Switch to English" : "Switch to Hindi"}
         >
           <Languages className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-        </button>
-
-        {/* Notifications */}
-        <button
-          onClick={onNotificationsClick}
-          className="relative text-muted-foreground hover:text-foreground rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs"
-          title="Notifications"
-        >
-          <Bell className="h-4 w-4" />
-          {unreadCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-destructive rounded-full" />
-          )}
         </button>
       </div>
     </header>

@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { CommandPalette } from './CommandPalette';
-import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
 import { AIChatDrawer } from '../components/AIChatDrawer';
 import {
@@ -142,7 +141,6 @@ export function AppShell() {
   } = useGlobalStore();
 
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
-  const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
   const [viewportWidth, setViewportWidth] = React.useState(() =>
     typeof window !== 'undefined' ? window.innerWidth : 1200
@@ -379,16 +377,15 @@ export function AppShell() {
           <div className="flex-1 flex flex-col h-full overflow-hidden relative transition-all duration-300 ease-in-out min-w-0 bg-background">
             <Header
               onSearchClick={() => setIsCommandPaletteOpen(true)}
-              onNotificationsClick={() => setIsNotificationsOpen(true)}
             />
             <main ref={mainRef} className="flex-1 overflow-y-auto no-scrollbar min-w-0 bg-background relative flex flex-col overflow-x-hidden">
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={location.pathname}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15, ease: 'easeOut' }}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                   className="w-full flex-1 flex flex-col min-h-full"
                 >
                   <Outlet />
@@ -399,10 +396,6 @@ export function AppShell() {
           <CommandPalette
             isOpen={isCommandPaletteOpen}
             onClose={() => setIsCommandPaletteOpen(false)}
-          />
-          <NotificationsPanel
-            isOpen={isNotificationsOpen}
-            onClose={() => setIsNotificationsOpen(false)}
           />
           <AIChatDrawer
             isOpen={isAIDrawerOpen}
