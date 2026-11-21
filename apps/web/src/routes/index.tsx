@@ -357,16 +357,16 @@ export function DashboardPage() {
   const renderSchoolLogo = (preset?: string) => {
     switch (preset) {
       case 'shield':
-        return <Shield className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400 shrink-0" />;
+        return <Shield className="h-6 w-6 sm:h-7 sm:w-7 text-white shrink-0" />;
       case 'graduation':
-        return <GraduationCap className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400 shrink-0" />;
+        return <GraduationCap className="h-6 w-6 sm:h-7 sm:w-7 text-white shrink-0" />;
       case 'award':
-        return <Award className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400 shrink-0" />;
+        return <Award className="h-6 w-6 sm:h-7 sm:w-7 text-white shrink-0" />;
       case 'book':
-        return <BookOpen className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400 shrink-0" />;
+        return <BookOpen className="h-6 w-6 sm:h-7 sm:w-7 text-white shrink-0" />;
       case 'building':
       default:
-        return <Building2 className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400 shrink-0" />;
+        return <Building2 className="h-6 w-6 sm:h-7 sm:w-7 text-white shrink-0" />;
     }
   };
 
@@ -543,7 +543,7 @@ export function DashboardPage() {
         icon: <FileText className="h-5.5 w-5.5 text-foreground" />,
         trend: 'neutral',
         trendLabel: dashboardData ? `${dashboardData.open_grievances} open grievances` : 'Loading...',
-        accentColor: 'amber',
+        accentColor: 'purple',
       };
     }
 
@@ -589,13 +589,13 @@ export function DashboardPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="w-full min-h-[112px] relative overflow-hidden rounded-[4px] border border-purple-500/30 hover:border-purple-400/60 bg-gradient-to-br from-purple-500/10 via-card to-card px-4 py-4 sm:px-5 sm:py-4 lg:px-6 shadow-xs text-card-foreground flex items-center transition-colors duration-200 group"
+                className="w-full min-h-[112px] relative overflow-hidden rounded-[4px] border border-orange-500/40 hover:border-orange-400/70 bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 px-4 py-4 sm:px-5 sm:py-4 lg:px-6 shadow-md shadow-orange-950/20 text-white flex items-center transition-all duration-200 group"
               >
-                {/* Subtle ambient stat-card glow matching VFStatCard */}
+                {/* Subtle ambient light glow */}
                 <div
-                  className="pointer-events-none absolute inset-0 transition-opacity duration-300 opacity-50 group-hover:opacity-90 z-0"
+                  className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full blur-3xl opacity-25 z-0"
                   style={{
-                    background: 'radial-gradient(ellipse 75% 45% at 50% 0%, rgba(168, 85, 247, 0.06) 0%, transparent 100%)',
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%)',
                   }}
                   aria-hidden="true"
                 />
@@ -603,7 +603,7 @@ export function DashboardPage() {
                 <div className="relative z-10 w-full flex flex-col md:flex-row md:items-center justify-between gap-3">
                   {/* Left: School Logo & Institutional Details */}
                   <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
-                    <div className="h-13 w-13 sm:h-14 sm:w-14 rounded-[4px] bg-purple-500/15 border border-purple-500/30 flex items-center justify-center shrink-0 shadow-xs overflow-hidden">
+                    <div className="h-13 w-13 sm:h-14 sm:w-14 rounded-[4px] bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shrink-0 shadow-xs overflow-hidden">
                       {schoolProfile.customLogoUrl ? (
                         <img
                           src={schoolProfile.customLogoUrl}
@@ -616,19 +616,19 @@ export function DashboardPage() {
                     </div>
 
                     <div className="min-w-0">
-                      <h1 className="text-lg sm:text-xl lg:text-2xl font-black text-foreground tracking-tight leading-snug truncate">
+                      <h1 className="text-lg sm:text-xl lg:text-2xl font-black text-white tracking-tight leading-snug truncate">
                         {schoolProfile.name}
                       </h1>
 
                       {schoolProfile.tagline && (
-                        <p className="text-xs sm:text-[13px] text-muted-foreground font-medium leading-snug truncate mt-0.5">
+                        <p className="text-xs sm:text-[13px] text-orange-100 font-medium leading-snug truncate mt-0.5">
                           {schoolProfile.tagline}
                         </p>
                       )}
 
-                      <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] sm:text-xs text-muted-foreground font-medium">
+                      <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] sm:text-xs text-orange-100/90 font-medium">
                         {schoolProfile.affiliation && (
-                          <span className="px-1.5 py-0.5 rounded bg-purple-500/10 border border-purple-500/25 text-purple-300 font-semibold text-[11px]">
+                          <span className="px-1.5 py-0.5 rounded-[3px] bg-white/15 border border-white/25 text-white font-semibold text-[11px]">
                             {schoolProfile.affiliation}
                           </span>
                         )}
@@ -640,12 +640,12 @@ export function DashboardPage() {
                   </div>
 
                   {/* Right: Academic Date & Live Time */}
-                  <div className="flex flex-col md:items-end justify-center shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-border/60">
-                    <div className="text-xl sm:text-2xl lg:text-3xl font-black text-foreground tracking-tight tabular-nums leading-none">
+                  <div className="flex flex-col md:items-end justify-center shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/20">
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight tabular-nums leading-none">
                       {timeFormatted}
                     </div>
-                    <div className="text-xs sm:text-[13px] font-semibold text-muted-foreground mt-1.5 flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5 text-purple-400 shrink-0" />
+                    <div className="text-xs sm:text-[13px] font-semibold text-orange-100 mt-1.5 flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5 text-orange-200 shrink-0" />
                       <span>{dayName}, {dateFormatted}</span>
                     </div>
                   </div>
@@ -658,7 +658,7 @@ export function DashboardPage() {
                     animate={{ scaleX: 0 }}
                     transition={{ duration: 3.5, ease: 'linear' }}
                     style={{ transformOrigin: 'left' }}
-                    className="absolute bottom-0 inset-x-0 h-[2px] bg-purple-400/60 pointer-events-none"
+                    className="absolute bottom-0 inset-x-0 h-[2px] bg-white/70 pointer-events-none"
                   />
                 )}
               </motion.div>
